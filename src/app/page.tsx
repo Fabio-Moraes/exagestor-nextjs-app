@@ -59,23 +59,20 @@ export default function SignIn() {
 
   return (
     <Container>
-      {loading && <Loading>
-        <Player
-          src={animationData}
-          className="player"
-          loop
-          autoplay
-          speed={1}
-          //style={{ height: '300px', width: '300px' }}
-        />
-      </Loading>
-      }
-
       <Form onSubmit={handleSubmit}>
         <Title>Exa Telecom</Title>
         <Input type="text" maxLength={18} placeholder="CNPJ" value={cnpj} onChange={handleChange} />
         <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button type="submit">Entrar</Button>
+        {loading ? <Loading>
+          <Player
+            src={animationData}
+            className="player"
+            loop
+            autoplay
+            speed={2}
+            style={{ height: '60px', width: '60px' }}
+          />
+        </Loading> : <Button type="submit">Entrar</Button>}
       </Form>
     </Container>
   );
