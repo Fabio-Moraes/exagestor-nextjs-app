@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.header`
   user-select: none;
   display: flex;
   flex-direction: column;

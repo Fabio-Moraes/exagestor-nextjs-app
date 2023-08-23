@@ -21,8 +21,8 @@ export function MenuBar() {
     <Container>
       <Wrapper>
         <Button
-          $path={['/dashboard/novo-servico', '/'].includes(pathname)}
-          href='/dashboard/novo-servico'
+          $path={['/dashboard/new-service', '/'].includes(pathname)}
+          href='/dashboard/new-service'
         >
           <Image
             priority
@@ -36,8 +36,8 @@ export function MenuBar() {
 
 
         <Button
-           $path={['/dashboard/em-execucao'].includes(pathname)}
-           href='/dashboard/em-execucao'
+           $path={['/dashboard/running-service'].includes(pathname)}
+           href='/dashboard/running-service'
         >
           <Image
             priority

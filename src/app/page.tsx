@@ -5,10 +5,10 @@ import Cookie from 'js-cookie';
 import { ChangeEvent, useState } from 'react';
 
 import { Player } from '@lottiefiles/react-lottie-player';
-import * as animationData from './animation2.json';
+import * as animationData from './animation.json';
 ;
 
-import { Button, Container, Form, Input, Title } from './styles';
+import { Button, Container, Form, Input, Loading, Title } from './styles';
 
 import api from 'lib/api';
 
@@ -57,25 +57,19 @@ export default function SignIn() {
     }
   };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
-
   return (
     <Container>
-      {loading && <Player
-        src={animationData}
-        className="player"
-        loop
-        autoplay
-        speed={1}
-        style={{ height: '300px', width: '300px' }}
-      />}
+      {loading && <Loading>
+        <Player
+          src={animationData}
+          className="player"
+          loop
+          autoplay
+          speed={1}
+          //style={{ height: '300px', width: '300px' }}
+        />
+      </Loading>
+      }
 
       <Form onSubmit={handleSubmit}>
         <Title>Exa Telecom</Title>

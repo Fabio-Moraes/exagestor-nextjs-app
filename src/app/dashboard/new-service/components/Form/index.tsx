@@ -120,7 +120,7 @@ export const Form = () => {
       const { success } = response?.data;
 
       if (success) {
-        router.push('/dashboard/em-execucao');
+        router.push('/dashboard/running-service');
       } else {
         console.error('Erro:', response.data.error);
       }

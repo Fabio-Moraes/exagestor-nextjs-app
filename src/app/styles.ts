@@ -3,9 +3,19 @@
 import styled from 'styled-components';
 
 export const greenTheme = {
-    primaryColor: '#4CAF50',
-    textColor: '#ffffff',
+  primaryColor: '#4CAF50',
+  textColor: '#ffffff',
 };
+
+export const Loading = styled.div`
+display: flex;
+position: absolute;
+background-color: rgba(0, 0, 0,.7);
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+`
 
 export const Container = styled.div`
     display: flex;

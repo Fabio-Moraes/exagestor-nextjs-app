@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: {
-    default: 'Novo Serviço - Exa Telecom',
+    default: 'Novo Serviço | Exa Telecom',
     template: '%s | Exa Telecom'
   }
 };

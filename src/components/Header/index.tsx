@@ -1,6 +1,7 @@
 'use client';
 
 import Cookie from 'js-cookie';
+
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -50,8 +51,8 @@ export function Header() {
 
       <MenuHeader>
         <Button
-          $path={['/dashboard/novo-servico', '/'].includes(pathname)}
-          href='/dashboard/novo-servico'
+          $path={['/dashboard/new-service', '/'].includes(pathname)}
+          href='/dashboard/new-service'
         >
           <Image
             priority
@@ -64,8 +65,8 @@ export function Header() {
         </Button>
 
         <Button
-          $path={['/dashboard/em-execucao'].includes(pathname)}
-          href='/dashboard/em-execucao'
+          $path={['/dashboard/running-service'].includes(pathname)}
+          href='/dashboard/running-service'
         >
           <Image
             priority
