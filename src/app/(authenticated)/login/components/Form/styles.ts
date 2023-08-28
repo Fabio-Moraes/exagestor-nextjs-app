@@ -16,14 +16,10 @@ export const ErrorSpan = styled.span`
   background-image: linear-gradient(to top, #FFEBE8, rgba(255, 235, 232, .9) );
   position: absolute;
   text-align: center;
-  //top: 50%;
-  //left: 50%;
   border: 2px solid #DD3C10;
   border-radius: 10px;
-  //transform: translate(-50%, -50%);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   animation: ${fadeIn} 0.3s ease-in-out;
-
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -76,11 +72,10 @@ export const Container = styled.div`
       animation: ${rotateAnimation} 1s linear infinite;
     }
     //box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-   // backdrop-filter: blur( 13.5px );
-   // -webkit-backdrop-filter: blur( 13.5px );
-   // background-color: #d76;
+    //backdrop-filter: blur( 13.5px );
+    //-webkit-backdrop-filter: blur( 13.5px );
   }
-  background-color: #8956/* Fundo branco */
+  background-color: #8956
 `
 
 export const FormContainer = styled.form`
@@ -130,8 +125,7 @@ export const Button = styled.button`
   color: #fff;
   transition: background-color 0.3s ease;
   
-    &:hover {
-      background-color: #27b466; /* Cor do botão ao passar o mouse */
-    }
-  //border: 1px solid #000000;
+  &:hover {
+    background-color: #27b466; /* Cor do botão ao passar o mouse */
+  }
 `;

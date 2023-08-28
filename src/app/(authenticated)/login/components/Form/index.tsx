@@ -1,14 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Footer } from '../Footer';
-
 import Cookie from 'js-cookie';
-import { ChangeEvent, useEffect, useState } from 'react';
-
 import api from 'lib/api';
-
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Footer } from '../Footer';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 import * as animationData from './animation.json';
@@ -56,19 +53,21 @@ export const Form = () => {
       .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3') // Coloca ponto entre o quinto e o sexto dígitos
       .replace(/\.(\d{3})(\d)/, '.$1/$2') // Coloca barra entre o oitavo e o nono dígitos
       .replace(/(\d{4})(\d)/, '$1-$2'); // Coloca hífen depois do bloco de quatro dígitos
-    setCnpj(formattedCnpj);
+    setCnpj(formattedCnpj.trim());
   };
+
+  const delay = (amount = 750) => new Promise(resolve => setTimeout(resolve, amount));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (cnpj.trim() === '' || password.trim() === '') {
+
+    if (cnpj === '' || password === '') {
       setInvalidCredentials('Credenciais inválidas');
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       // Chamar a API para fazer o login e obter o token JWT
       const response = await api.post('/login', { cnpj, password });
@@ -77,26 +76,25 @@ export const Form = () => {
         const { token } = response.data;
         // Armazenar o token JWT no cookie
         Cookie.set('auth_token', token, { expires: 7, path: '/' })
-        setTimeout(() => router.refresh(), 1000);
+        router.refresh();
 
       } else {
-        setTimeout(() => {
-          setLoading(false)
-          setInvalidCredentials('Credenciais inválidas');
-        }, 1000);
-      }
-    } catch (error) {
-      setTimeout(() => {
+        await delay()
         setLoading(false)
         setInvalidCredentials('Credenciais inválidas');
-      }, 1000);
+
+      }
+    } catch (error) {
+      await delay()
+      setLoading(false)
+      setInvalidCredentials('Credenciais inválidas');
       console.error('Erro ao fazer login:', error);
     }
   };
 
   return (
     <Container>
-       {invalidCredentials &&
+      {invalidCredentials &&
         <ErrorSpan>
           <div>
             <Image
@@ -107,7 +105,7 @@ export const Form = () => {
               height={55}
             />
           </div>
-          <span dangerouslySetInnerHTML={{ __html: invalidCredentials }}/>
+          <span dangerouslySetInnerHTML={{ __html: invalidCredentials }} />
         </ErrorSpan>}
       {loading && <div>
         <div>
@@ -134,11 +132,19 @@ export const Form = () => {
           <strong>Exa Telecom</strong>
         </div>
 
-        <Input type="text" maxLength={18} placeholder="CNPJ" value={cnpj} onChange={handleChange} />
+        <Input
+          type="text"
+          maxLength={18}
+          placeholder="CNPJ"
+          value={cnpj}
+          onChange={handleChange} />
 
-        <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input
+          type="password"
+          placeholder="Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value.trim())} />
 
-       
         <Button type="submit">Entrar</Button>
         <Footer />
       </FormContainer >

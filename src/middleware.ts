@@ -13,21 +13,21 @@ export default async function middleware(request: NextRequest, reponse: NextResp
     body: JSON.stringify({ token }),
   });
 
-  const signinURL = new URL('/', request.url);
+  const signinURL = new URL('/login', request.url);
   const dashboardURL = new URL('/dashboard/new-service', request.url);
 
   if (data.status !== 200) {
-    if (request.nextUrl.pathname === '/') {
+    if (['/', '/login'].includes(request.nextUrl.pathname)) {
       return NextResponse.next();
     }
     return NextResponse.redirect(signinURL);
   }
 
-  if (request.nextUrl.pathname === '/') {
+  if (['/', '/login'].includes(request.nextUrl.pathname)) {
     return NextResponse.redirect(dashboardURL);
   }
 }
 
 export const config = {
-  matcher: ['/', '/dashboard/:path*']
+  matcher: ['/', '/login', '/dashboard/:path*']
 };

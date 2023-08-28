@@ -11,7 +11,6 @@ export const Container = styled.footer`
   position: relative; 
   bottom: 0;
   
-
   @media (min-width: 550px) {
     border-radius: 12px 12px 0px 0px;
   }

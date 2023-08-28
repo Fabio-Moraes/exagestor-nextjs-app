@@ -8,11 +8,6 @@ export const Container = styled.header`
   display: flex;
   flex-direction: column;
   width: min(601px, 100%);
-
-  @media (min-width: 550px) {
-    //border-left: 1px solid var(--gray);
-    //border-right: 1px solid var(--gray);
-  }
 `;
 
 export const Forehead = styled.div`
@@ -33,12 +28,10 @@ export const Forehead = styled.div`
     height: 100%;
     background-image: linear-gradient(to top, #a9c4b8, #dce6dc);
     border: 2px solid #3f795e;
-
+    border-radius: 7px;
     flex-direction: column;
     justify-content: center; 
     padding: 10px; 
-
-    border-radius: 7px;
 
    > span {
     outline: 0;
@@ -63,8 +56,7 @@ export const Forehead = styled.div`
 `;
 
 export const MenuHeader = styled.div`
-    border: 2px solid #3f795e;
-    
+  border: 2px solid #3f795e;  
   position: sticky;
   display: flex;
   padding: 3px min(20px, max(10vw, 10px));
@@ -93,7 +85,6 @@ export const Button = styled(Link) <{ $path?: boolean }>`
   padding: 5px 10px 5px 10px;
   cursor: pointer;
   
-
   > span {
       text-align: center;
       font-weight: bold;
@@ -116,7 +107,6 @@ export const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 10px;
-
   width: 100%;
 
   > strong {

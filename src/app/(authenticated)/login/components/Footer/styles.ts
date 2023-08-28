@@ -7,10 +7,8 @@ export const Container = styled.footer`
   background-image: linear-gradient(to left, #3f795e, #3f7971, #3f795e );
   width: min(601px, 100%);
   padding-top: 10px;
-  //margin-top: auto;
   position: relative; 
   bottom: 0;
-  //border-radius: 0px 0px 12px 12px;
   
   > div {     
     display: flex;

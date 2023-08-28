@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Button = styled(Link)<{ $path?: boolean }>`
+export const Button = styled(Link) <{ $path?: boolean }>`
   display: block;
   align-items: center;
   flex-shrink: 0;
@@ -69,13 +69,7 @@ export const Button = styled(Link)<{ $path?: boolean }>`
       background: #27A567;
       box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
     }`;
-    
+
     return $path ? activeButtonCSS : disabledButtonCSS;
   }};
-
-  
 `;
-
-  //border-left: 1px solid #7a7a7a;
-  //border-right: 1px solid #7a7a7a;
-  //border-bottom: 1px solid #2f3336;
