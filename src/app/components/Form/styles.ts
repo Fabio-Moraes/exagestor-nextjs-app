@@ -128,5 +128,10 @@ export const Button = styled.button`
   border-radius: 4px;
   font-size: 16px;
   color: #fff;
+  transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #27b466; /* Cor do botão ao passar o mouse */
+    }
   //border: 1px solid #000000;
 `;
