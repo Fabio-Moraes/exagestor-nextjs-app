@@ -9,7 +9,7 @@ export default async function middleware(request: NextRequest, response: NextRes
   const token = request.cookies.get('auth_token')?.value;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // Set a timeout of 10 seconds
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
     const data = await fetch(`${baseURL}/verify-token`, {
@@ -20,27 +20,25 @@ export default async function middleware(request: NextRequest, response: NextRes
         'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT'
       },
       body: JSON.stringify({ token }),
-      signal: controller.signal, // Connect the AbortController signal to the fetch request
+      signal: controller.signal, 
     });
 
-    clearTimeout(timeoutId); // Clear the timeout since the request completed within the time limit
-
-    const signinURL = new URL('/login', request.url);
-    const dashboardURL = new URL('/dashboard/new-service', request.url);
+    clearTimeout(timeoutId);
 
     if (data?.status !== 200) {
       if (['/', '/login'].includes(request.nextUrl.pathname)) {
         return NextResponse.next();
       }
-      return NextResponse.redirect(signinURL);
+      return NextResponse.redirect(new URL('/login', request.url));
     }
 
     if (['/', '/login'].includes(request.nextUrl.pathname)) {
-      return NextResponse.redirect(dashboardURL);
+      return NextResponse.redirect(new URL('/dashboard/new-service', request.url));
     }
   } catch (error) {
-    clearTimeout(timeoutId); 
+    clearTimeout(timeoutId);
     console.error('An error occurred while verifying the token.');
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 }
 
