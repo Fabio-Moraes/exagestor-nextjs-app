@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import React from 'react';
+//import KeepAwake from '../functions/KeepAwake';
 
 import StyledComponentsRegistry from 'lib/registry';
 
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html>
       <body className={inter.className}>
         <StyledComponentsRegistry>
-            {children}
+          {children}
         </StyledComponentsRegistry>
       </body>
     </html>
