@@ -4,8 +4,8 @@ import Image from 'next/image';
 
 import { usePathname, useRouter } from 'next/navigation';
 import add from './assets/svg/add.svg';
-import book from './assets/svg/book.svg';
 import clipboard from './assets/svg/clipboard.svg';
+import execution from './assets/svg/execution.svg';
 import report from './assets/svg/report.svg';
 import {
   Button,
@@ -41,12 +41,12 @@ export function MenuBar() {
         >
           <Image
             priority
-            src={book}
+            src={execution}
             alt="Book"
             width={25}
             height={25}
           />
-          <span>Historico Geral</span>
+          <span>Em Execução</span>
         </Button>
 
         <Button

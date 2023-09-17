@@ -19,7 +19,7 @@ import api from 'lib/api';
 
 const cities = ['Curitiba', 'Paranaguá', 'Matinhos', 'Ponta Grossa'];
 
-export const Form = () => {  
+export const Form = () => {
   const [selectedCity, setSelectedCity] = useState('');
   const [classificationL, setClassificationL] = useState(0);
   const [classificationF, setClassificationF] = useState(0);
@@ -133,6 +133,7 @@ export const Form = () => {
     <FormContainer onSubmit={handleSubmit}>
       <label htmlFor="requester">Solicitante:</label>
       <Input
+        autoFocus
         type="text"
         id="requester"
         placeholder="Informe o nome do solicitante"

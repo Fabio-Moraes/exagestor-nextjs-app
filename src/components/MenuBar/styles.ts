@@ -62,12 +62,12 @@ export const Button = styled(Link) <{ $path?: boolean }>`
     `;
 
     const disabledButtonCSS = css`
-    background: #fff;
+    background-image:  radial-gradient(100px at center, #dce6dc, #809e91);
     border: 2px solid #3f795e;
     &:hover {
       border: 2px solid #27A567;
-      background: #27A567;
-      box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+      background-image: radial-gradient(circle, #27A567, #dce6dc);
+      box-shadow: 0px 5px 10px 0px rgba(39, 165, 103,.5);
     }`;
 
     return $path ? activeButtonCSS : disabledButtonCSS;

@@ -37,7 +37,7 @@ export function Header() {
           <span>Telecomunicações</span>
         </ProfileInfo>
         <div>
-          <span>James Junio</span>
+          <span>Caetano Veloso</span>
           <button
             onClick={() => {
               Cookie.remove('auth_token');

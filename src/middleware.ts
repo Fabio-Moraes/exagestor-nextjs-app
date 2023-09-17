@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { baseURL } from './constants/connectedOnServer';
 
-const front = process.env.NODE_ENV === 'production'
-  ? 'https://exatelecom.vercel.app'
-  : 'http://192.168.10.100:3000';
-
-export default async function middleware(request: NextRequest, response: NextResponse) {
+export default async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
-
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -20,7 +15,8 @@ export default async function middleware(request: NextRequest, response: NextRes
         'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT'
       },
       body: JSON.stringify({ token }),
-      signal: controller.signal, 
+      signal: controller.signal,
+      cache: 'no-store'
     });
 
     clearTimeout(timeoutId);
@@ -40,7 +36,7 @@ export default async function middleware(request: NextRequest, response: NextRes
     console.error('An error occurred while verifying the token.');
     return NextResponse.redirect(new URL('/login', request.url));
   }
-}
+};
 
 export const config = {
   matcher: ['/', '/login', '/dashboard/:path*']

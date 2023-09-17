@@ -1,9 +1,7 @@
 import { Inter } from 'next/font/google';
 import React from 'react';
-//import KeepAwake from '../functions/KeepAwake';
 
 import StyledComponentsRegistry from 'lib/registry';
-
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });

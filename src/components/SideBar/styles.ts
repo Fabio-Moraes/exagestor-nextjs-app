@@ -10,7 +10,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: min(180px, 100%);
-    border-left: 1px solid #7a7a7a;
+    //border-left: 1px solid #7a7a7a;
   }
 `;
 

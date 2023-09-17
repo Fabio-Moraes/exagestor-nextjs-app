@@ -44,13 +44,23 @@ export const Forehead = styled.div`
   }
 
     > button {
-      background-color: #27A567;
+      border: 2px solid #3f795e;
+      background: #27A567;
+      box-shadow: -12px 0px 0px 0px rgba(0, 0, 0, 0.5);
+      background-color: #dce6dc;
       font-weight: bold;
       font-size: 14px;
       border-radius: 5px;
       padding: 3px 8px 3px 8px;
       cursor: pointer;
       margin-left: auto;
+
+    &:hover {
+     @media (min-width: 550px) {
+      border: 2px solid #27A567;
+      background-image: radial-gradient(60px at center, #27A567, #dce6dc);
+      }
+     } 
     }
   };
 `;

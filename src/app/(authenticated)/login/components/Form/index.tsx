@@ -8,7 +8,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { Footer } from '../Footer';
 
 import { Player } from '@lottiefiles/react-lottie-player';
-import * as animationData from './animation.json';
+import * as animationData from './assets/lottie/animation.json';
 
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
@@ -20,8 +20,6 @@ import {
   FormContainer,
   Input
 } from './styles';
-
-const cities = ['Curitiba', 'Paranaguá', 'Matinhos', 'Ponta Grossa'];
 
 export const Form = () => {
   const [cnpj, setCnpj] = useState('');
@@ -43,7 +41,7 @@ export const Form = () => {
   });
 
   const router = useRouter();
-  Cookie.remove('auth_token');
+  Cookie.remove('auth_token'); // Remove token inválido
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
