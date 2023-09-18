@@ -16,11 +16,11 @@ export function Forehead() {
   return (
     <Container>
       <Image
-        priority
-        src={exa}
         alt="Axa"
+        src={exa}
         width={60}
         height={60}
+        priority
       />
       <ProfileInfo>
         <strong>EXA TELECOM</strong>

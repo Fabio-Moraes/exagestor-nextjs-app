@@ -6,11 +6,14 @@ import React, { useEffect, useState } from 'react';
 
 import Cookie from 'js-cookie';
 
+import { Spinner } from 'components/Spinner';
+
 import alert from './assets/svg/alert.svg';
 import {
   Button,
   CheckboxButton,
   ErrorSpan,
+  FixedBlock,
   FormContainer,
   Input,
   Option,
@@ -30,12 +33,14 @@ export default function NewService() {
   const [name, setName] = useState('');
   const [selectError, setSelectError] = useState('');
 
+  const [isPopupConnected, setIsPopupConnected] = useState(false);
+
   const router = useRouter();
   const storedCookie = Cookie.get('auth_token');
 
   const handleClickOutside = () => {
     if (selectError !== '') {
-      setSelectError('');
+      !isPopupConnected && setSelectError('');
     }
   };
 
@@ -73,6 +78,8 @@ export default function NewService() {
     setNomenclature(e.target.value);
   };
 
+  const MAX_RETRIES = 4;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -86,7 +93,7 @@ export default function NewService() {
     }
 
     if (!validateName(name)) {
-      setSelectError('O nome não pode conter números<br>ou caracteres inválidos.');
+      setSelectError('O nome não pode conter números ou caracteres inválidos.');
       return;
     }
 
@@ -106,103 +113,121 @@ export default function NewService() {
     }
 
     if (classificationL === 0 && classificationF === 0) {
-      setSelectError('Selecione pelo menos uma opção<br>(Classe L ou Classe F).');
+      setSelectError('Selecione pelo menos uma opção (Classe L ou Classe F).');
       return;
     }
 
-    try {
-      const response = await api.post('/services', {
-        name: name,
-        cnpj: '00.000.000/0000-00',
-        city: selectedCity,
-        classification: `${classificationL === 1 ? 'L' : ''}${classificationF === 1 ? 'F' : ''}`,
-        nomenclature: nomenclature,
-        address: address,
-        token: storedCookie
-      });
+    let retryCount = 0;
 
-      const { success } = response?.data;
+    while (retryCount < MAX_RETRIES) {
+      try {
+        setIsPopupConnected(true);
+        setSelectError(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
 
-      if (success) {
-        router.push('/dashboard/running-service');
-      } else {
-        console.error('Erro:', response.data.error);
+        const response = await api.post('/services', {
+          name: name,
+          cnpj: '00.000.000/0000-00',
+          city: selectedCity,
+          classification: `${classificationL === 1 ? 'L' : ''}${classificationF === 1 ? 'F' : ''}`,
+          nomenclature: nomenclature,
+          address: address,
+          token: storedCookie,
+        });
+
+        const { success } = response?.data;
+
+        if (success) {
+          router.push('/dashboard/running-service');
+          return;
+        } else {
+          console.error('Erro:', response.data.error);
+        }
+      } catch (error) {
+        console.error('Erro na requisição POST:', error);
       }
-    } catch (error) {
-      console.error('Erro na requisição POST:', error);
+
+      retryCount++;
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
+
+    setSelectError('Não foi possível iniciar o serviço após várias tentativas.');
+    setIsPopupConnected(false)
   };
 
+
   return (
-    <FormContainer onSubmit={handleSubmit}>
-      <label htmlFor="requester">Solicitante:</label>
-      <Input
-        autoFocus
-        type="text"
-        id="requester"
-        placeholder="Informe o nome do solicitante"
-        value={name}
-        onChange={handleName}
-      />
+    <>
+      {isPopupConnected && <FixedBlock />}
+      <FormContainer onSubmit={handleSubmit}>
+        <label htmlFor="requester">Solicitante:</label>
+        <Input
+          autoFocus
+          type="text"
+          id="requester"
+          placeholder="Informe o nome do solicitante"
+          value={name}
+          onChange={handleName}
+        />
 
-      <label htmlFor="selectedCity">Cidade:</label>
-      <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
-        <Option value="">Selecione uma cidade</Option>
-        {cities.map(city => (
-          <Option key={city} value={city}>{city}</Option>
-        ))}
-      </Select>
+        <label htmlFor="selectedCity">Cidade:</label>
+        <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
+          <Option value="">Selecione uma cidade</Option>
+          {cities.map(city => (
+            <Option key={city} value={city}>{city}</Option>
+          ))}
+        </Select>
 
-      <label htmlFor="serviceOriginAddress">Endereço de origem do serviço:</label>
-      <Input
-        type="text"
-        id="serviceOriginAddress"
-        placeholder="Informe o endereço de origem do serviço"
-        value={address}
-        onChange={handleServiceOriginAddressChange}
-      />
+        <label htmlFor="serviceOriginAddress">Endereço de origem do serviço:</label>
+        <Input
+          type="text"
+          id="serviceOriginAddress"
+          placeholder="Informe o endereço de origem do serviço"
+          value={address}
+          onChange={handleServiceOriginAddressChange}
+        />
 
-      <label htmlFor="boxOrCableNomenclature">Nomenclatura de caixa ou cabo:</label>
-      <Input
-        type="text"
-        id="boxOrCableNomenclature"
-        placeholder="Informe a nomenclatura de caixa ou cabo"
-        value={nomenclature}
-        onChange={handleBoxOrCableNomenclatureChange}
-      />
+        <label htmlFor="boxOrCableNomenclature">Nomenclatura de caixa ou cabo:</label>
+        <Input
+          type="text"
+          id="boxOrCableNomenclature"
+          placeholder="Informe a nomenclatura de caixa ou cabo"
+          value={nomenclature}
+          onChange={handleBoxOrCableNomenclatureChange}
+        />
 
-      <div>
-        <CheckboxButton
-          type="button"
-          $checked={classificationL}
-          onClick={handleCheckboxClickClassL}>
-          <div />
-          <span>Classe L</span>
-        </CheckboxButton>
+        <div>
+          <CheckboxButton
+            type="button"
+            $checked={classificationL}
+            onClick={handleCheckboxClickClassL}>
+            <div />
+            <span>Classe L</span>
+          </CheckboxButton>
 
-        <CheckboxButton
-          type="button"
-          $checked={classificationF}
-          onClick={handleCheckboxClickClassF}>
-          <div />
-          <span>Classe F</span>
-        </CheckboxButton>
-      </div >
+          <CheckboxButton
+            type="button"
+            $checked={classificationF}
+            onClick={handleCheckboxClickClassF}>
+            <div />
+            <span>Classe F</span>
+          </CheckboxButton>
+        </div >
 
-      {selectError &&
-        <ErrorSpan>
-          <div>
-            <Image
-              priority
-              src={alert}
-              alt="Book"
-              width={55}
-              height={55}
-            />
-          </div>
-          <span dangerouslySetInnerHTML={{ __html: selectError }}></span>
-        </ErrorSpan>}
-      <Button type="submit">Iniciar Serviço</Button>
-    </FormContainer >
+        {(selectError || isPopupConnected) &&
+          <ErrorSpan>
+            <div>
+              {isPopupConnected ? <Spinner /> : <Image
+                priority
+                src={alert}
+                alt="Book"
+                width={55}
+                height={55}
+              />}
+            </div>
+            <span dangerouslySetInnerHTML={{ __html: selectError }}></span>
+          </ErrorSpan>}
+        <Button type="submit">Iniciar Serviço</Button>
+      </FormContainer >
+    </>
   );
 };

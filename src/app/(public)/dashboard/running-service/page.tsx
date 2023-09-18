@@ -15,6 +15,8 @@ import api from 'lib/api';
 import { ControlButtons } from './components/ControlButtons';
 import { DisplayInfo } from './components/DisplayInfo';
 
+import { Spinner } from 'components/Spinner';
+
 interface Service {
     id: number;
     name: string;
@@ -28,19 +30,20 @@ interface Service {
 
 export default function RunningService() {
     const [services, setServices] = useState<Service[]>([]);
+    const [loading, setLoading] = useState(true);
     const storedCookie = Cookie.get('auth_token');
 
     useEffect(() => {
         async function fetchServices() {
             try {
                 const response = await api.get('/services', {
-                    params: {
-                        token: storedCookie,
-                    }
+                    params: { token: storedCookie }
                 });
 
                 setServices(response.data);
+                setLoading(false);
             } catch (error) {
+                setLoading(false);
                 console.error('Erro ao recuperar serviços', error);
             }
         }
@@ -48,19 +51,19 @@ export default function RunningService() {
         fetchServices();
     }, []);
 
+
     return (
         <Container>
             <Title>Serviços</Title>
             <ListContainer>
-                {services?.map((service) => {
-                    return (
-                        <ListItem key={String(service.id)}>             
-                            <DisplayInfo service={service}/>
-                            <ControlButtons />
-                        </ListItem>
-                    )
-                }).reverse()}
+                {services.map((service) => (
+                    <ListItem key={service.id}>
+                        <DisplayInfo service={service} />
+                        <ControlButtons />
+                    </ListItem>
+                )).reverse()}
             </ListContainer>
+            <Spinner active={loading} />
         </Container>
     );
 }

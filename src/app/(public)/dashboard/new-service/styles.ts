@@ -2,6 +2,16 @@
 
 import styled, { keyframes } from 'styled-components';
 
+export const FixedBlock = styled.div`
+  z-index: 1001;
+  background-color: rgba(0,0,0,.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -13,6 +23,7 @@ const fadeIn = keyframes`
 
 export const ErrorSpan = styled.span`
   display: flex;
+  z-index: 2000;
   background-image: linear-gradient(to top, #3f795e, rgba(63, 121, 94, 0.9));
   position: fixed;
   text-align: center;

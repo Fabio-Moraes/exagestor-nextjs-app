@@ -109,7 +109,6 @@ export const Form = () => {
         <div>
           <Player
             src={animationData}
-            //className="player"
             loop
             autoplay
             speed={1.5}
