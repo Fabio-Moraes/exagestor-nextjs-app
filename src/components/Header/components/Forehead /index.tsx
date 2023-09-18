@@ -2,39 +2,16 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from "react";
 
+import { useDecodeToken } from 'hooks/useDecodeToken';
 import Cookie from 'js-cookie';
-import jwtDecode from "jwt-decode";
-import exa from './assets/svg/exa_logo.svg';
 
+import exa from './assets/svg/exa_logo.svg';
 import { Container, ProfileInfo } from './styles';
 
-interface DecodedToken {
-  [key: string]: string;
-}
-
 export function Forehead() {
-  const [decoded, setDecoded] = useState<DecodedToken | null>(null);
+  const decoderToken = useDecodeToken<{ name: string }>('auth_token');
   const router = useRouter();
-
-  useEffect(() => {
-    const storedCookie = Cookie.get('auth_token') || '';
-
-    function handleTokenChange() {
-      try {
-        if (storedCookie && storedCookie.trim() !== "") {
-          setDecoded(jwtDecode(storedCookie) as DecodedToken);
-        } else {
-          setDecoded(null);
-        }
-      } catch {
-        setDecoded(null);
-      }
-    }
-
-    handleTokenChange();
-  }, []);
 
   return (
     <Container>
@@ -51,7 +28,7 @@ export function Forehead() {
       </ProfileInfo>
       <div>
         <span>
-          {decoded?.name || 'Carregando...'}
+          {decoderToken?.name || 'Carregando...'}
         </span>
         <button
           onClick={() => {
