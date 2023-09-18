@@ -1,30 +1,66 @@
-import { Footer } from 'components/Footer';
-import { Header } from 'components/Header';
-import { MenuBar } from 'components/MenuBar';
-import { SideBar } from 'components/SideBar';
+'use client';
 
-import { List } from './components/List';
+import { useEffect, useState } from "react";
 
-import { Container, Main, Wrapper } from './styles';
+import {
+    Container,
+    ListContainer,
+    ListItem,
+    Title
+} from './styles';
 
-export const metadata = {
-  title: 'Em Execução'
-};
+import Cookie from 'js-cookie';
+import api from 'lib/api';
 
-export default function Home() {
-  return (
-    <Container>
-      <Wrapper>
-        <MenuBar />
-        <Main>
-          <Header />
-          {/*<Form />*/}
-          {/*<Concluded />*/}
-          <List />
-          <Footer />
-        </Main>
-        <SideBar />
-      </Wrapper>
-    </Container>
-  );
+import { ControlButtons } from './components/ControlButtons';
+import { DisplayInfo } from './components/DisplayInfo';
+
+interface Service {
+    id: number;
+    name: string;
+    city: string;
+    address: string;
+    nomenclature: string;
+    classification: string;
+    created_at: string;
+    protocol: string;
+}
+
+export default function RunningService() {
+    const [services, setServices] = useState<Service[]>([]);
+    const storedCookie = Cookie.get('auth_token');
+
+    useEffect(() => {
+        async function fetchServices() {
+            try {
+                const response = await api.get('/services', {
+                    params: {
+                        token: storedCookie,
+                    }
+                });
+
+                setServices(response.data);
+            } catch (error) {
+                console.error('Erro ao recuperar serviços', error);
+            }
+        }
+
+        fetchServices();
+    }, []);
+
+    return (
+        <Container>
+            <Title>Serviços</Title>
+            <ListContainer>
+                {services?.map((service) => {
+                    return (
+                        <ListItem key={String(service.id)}>             
+                            <DisplayInfo service={service}/>
+                            <ControlButtons />
+                        </ListItem>
+                    )
+                }).reverse()}
+            </ListContainer>
+        </Container>
+    );
 }

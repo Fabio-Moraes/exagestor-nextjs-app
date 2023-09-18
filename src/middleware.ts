@@ -4,6 +4,7 @@ import { baseURL } from './constants/connectedOnServer';
 export default async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
   const controller = new AbortController();
+
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {

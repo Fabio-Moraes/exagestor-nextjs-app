@@ -3,36 +3,67 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  min-height: 100%;
-  position: relative;
-  margin: 0 auto;
-  height: 100%; /* Adicione esta linha para o Container ocupar toda a altura da tela */
+    background-color: #fff;
+    text-align: center;
+    padding: 20px;
 `;
 
-export const Wrapper = styled.div`
-  max-width: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  height: 100%;
+export const Title = styled.h1`
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    
+    
+    @media (min-width: 550px) {
+      height: 40px;
+      line-height: 40px;
+      background-color: #a9c4b8;
+    }
 `;
 
-export const Main = styled.div`
-  user-select: none;
-  flex-direction: column;
-  width: min(601px, 100%);
-  
-  display: flex;
-  min-height: 100%;
-  margin-top: auto;
-  position: relative;
-  //background: hotpink;
+export const ListContainer = styled.ul`
+    list-style: none;
+    padding: 0;
+`;
 
-  //border-left: 3px solid #7a7a7a;
+export const InfoContainer = styled.div`
+    display: flex;
+    white-space: nowrap;
+    padding: 5px;
+    width: 100%;
 
-  @media (min-width: 550px) {
-    //border-left: 1px solid #7a7a7a;
-    //border-right: 1px solid #7a7a7a;
-    //border-bottom: 1px solid #2f3336;
-  }
+    flex-direction: column;
+    justify-content: space-between;
+    
+    background-color: #E2FBEF;
+    align-items: center;
+
+   > div {
+    width: 100%;
+
+    > p {
+    margin-bottom: 10px;
+    text-align: start;
+    font-size: 15px;
+   }
+
+   > p:last-child {
+    margin-bottom: 0px;
+   }
+   }
+`
+export const ListItem = styled.li`
+    font-size: 18px;
+    margin-bottom: 30px;
+    border: 2px solid #3f795e;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    display: flex;
+    justify-content: space-between;
+    flex-direction:  column;
+
+    @media (min-width: 550px) {
+    flex-direction:  row;
+    }
 `;
