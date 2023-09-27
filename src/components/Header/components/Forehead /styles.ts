@@ -3,8 +3,15 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin-left: 6px;
-  margin-right: 10px;
+  @media (max-width: 550px) {
+    background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
+    padding-left: 22px;
+  }
+
+  @media (min-width: 550px) {
+    margin-left: 6px;
+    margin-right: 10px;
+  }
 
   z-index: 1000;
   top: 0;
@@ -12,11 +19,10 @@ export const Container = styled.div`
   align-items: center;
   text-align: left;
   padding: 8px 0 9px 13px;
-  background-color: #fff;
 
   > div:last-child {
     display: flex;
-    margin-right: 10px;
+    margin-right: 20px;
     height: 100%;
     background-image: linear-gradient(to top, #a9c4b8, #dce6dc);
     border: 2px solid #3f795e;
@@ -60,14 +66,16 @@ export const Container = styled.div`
 export const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 10px;
+  padding-left: 15px;
+  //padding-bottom: 3px;
   width: 100%;
-
+  
   > strong {
     color: #2d4535;
     font-size: 22px;
   }
-  > span {
+  > span { 
+    padding-left: 1px;
     font-size: 15px;
     color: var(--gray);
   }

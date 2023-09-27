@@ -18,8 +18,8 @@ export function Forehead() {
       <Image
         alt="Axa"
         src={exa}
-        width={60}
-        height={60}
+        width={73}
+        height={73}
         priority
       />
       <ProfileInfo>
