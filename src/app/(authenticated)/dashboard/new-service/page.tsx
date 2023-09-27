@@ -1,19 +1,19 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import { FullScreenLoading } from 'components/FullScreenLoading';
+import { Modal } from 'components/Modal';
+
+import alertSvg from './assets/svg/alert.svg';
+import checkedSvg from './assets/svg/checked.svg';
+
 import Cookie from 'js-cookie';
 
-import { Spinner } from 'components/Spinner';
-
-import alert from './assets/svg/alert.svg';
 import {
   Button,
   CheckboxButton,
-  ErrorSpan,
-  FixedBlock,
   FormContainer,
   Input,
   Option,
@@ -31,16 +31,19 @@ export default function NewService() {
   const [address, setAddress] = useState('');
   const [nomenclature, setNomenclature] = useState('');
   const [name, setName] = useState('');
-  const [selectError, setSelectError] = useState('');
 
-  const [isPopupConnected, setIsPopupConnected] = useState(false);
+  const [modalValue, setModalValue] = useState('');
+  const [iconSvgModal, setIconSvgModal] = useState(alertSvg)
+  const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
+
+  const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
   const router = useRouter();
-  const storedCookie = Cookie.get('auth_token');
+
 
   const handleClickOutside = () => {
-    if (selectError !== '') {
-      !isPopupConnected && setSelectError('');
+    if (modalValue !== '') {
+      !fullScreenLoadingValue && setModalValue('');
     }
   };
 
@@ -53,17 +56,17 @@ export default function NewService() {
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(e.target.value);
-    setSelectError('');
+    setModalValue('');
   };
 
   const handleCheckboxClickClassL = () => {
     setClassificationL((checkedState) => checkedState === 1 ? 0 : 1);
-    setSelectError('');
+    setModalValue('');
   };
 
   const handleCheckboxClickClassF = () => {
     setClassificationF((checkedState) => checkedState === 1 ? 0 : 1);
-    setSelectError('');
+    setModalValue('');
   };
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,8 +81,6 @@ export default function NewService() {
     setNomenclature(e.target.value);
   };
 
-  const MAX_RETRIES = 4;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -87,77 +88,88 @@ export default function NewService() {
       return /^[a-zA-ZÀ-ÿ ]+$/.test(str);
     }
 
-    if (name.trim() === '') {
-      setSelectError('Informe o nome do solicitante.');
-      return;
-    }
+    if (!successfullyCompleted) {
+      setIconSvgModal(iconSvgModal);
 
-    if (!validateName(name)) {
-      setSelectError('O nome não pode conter números ou caracteres inválidos.');
-      return;
-    }
-
-    if (selectedCity === '') {
-      setSelectError('Selecione pelo menos uma cidade.');
-      return;
-    }
-
-    if (address.trim() === '') {
-      setSelectError('Informe o endereço de origem do serviço.');
-      return;
-    }
-
-    if (nomenclature.trim() === '') {
-      setSelectError('Informe a nomenclatura de caixa do cabo.');
-      return;
-    }
-
-    if (classificationL === 0 && classificationF === 0) {
-      setSelectError('Selecione pelo menos uma opção (Classe L ou Classe F).');
-      return;
-    }
-
-    let retryCount = 0;
-
-    while (retryCount < MAX_RETRIES) {
-      try {
-        setIsPopupConnected(true);
-        setSelectError(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
-
-        const response = await api.post('/services', {
-          name: name,
-          cnpj: '00.000.000/0000-00',
-          city: selectedCity,
-          classification: `${classificationL === 1 ? 'L' : ''}${classificationF === 1 ? 'F' : ''}`,
-          nomenclature: nomenclature,
-          address: address,
-          token: storedCookie,
-        });
-
-        const { success } = response?.data;
-
-        if (success) {
-          router.push('/dashboard/running-service');
-          return;
-        } else {
-          console.error('Erro:', response.data.error);
-        }
-      } catch (error) {
-        console.error('Erro na requisição POST:', error);
+      if (name.trim() === '') {
+        setModalValue('Informe o nome do solicitante.');
+        return;
       }
 
-      retryCount++;
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-    }
+      if (!validateName(name)) {
+        setModalValue('O nome não pode conter números ou caracteres inválidos.');
+        return;
+      }
 
-    setSelectError('Não foi possível iniciar o serviço após várias tentativas.');
-    setIsPopupConnected(false)
+      if (selectedCity === '') {
+        setModalValue('Selecione pelo menos uma cidade.');
+        return;
+      }
+
+      if (address.trim() === '') {
+        setModalValue('Informe o endereço de origem do serviço.');
+        return;
+      }
+
+      if (nomenclature.trim() === '') {
+        setModalValue('Informe a nomenclatura de caixa do cabo.');
+        return;
+      }
+
+      if (classificationL === 0 && classificationF === 0) {
+        setModalValue('Selecione pelo menos uma opção (Classe L ou Classe F).');
+        return;
+      }
+
+      const maxRetries = 4;
+      let retryCount = 0;
+
+      while (retryCount < maxRetries) {
+        try {
+          setFullScreenLoadingValue(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
+          
+          const storedCookie = Cookie.get('auth_token');
+          
+          const response = await api.post('/services-list', {
+            name: name,
+            cnpj: '00.000.000/0000-00',
+            city: selectedCity,
+            classification: `${classificationL === 1 ? 'L' : ''}${classificationF === 1 ? 'F' : ''}`,
+            nomenclature: nomenclature,
+            address: address,
+            token: storedCookie,
+          });
+
+          const { success } = response?.data;
+
+          if (success) {
+            setSuccessfullyCompleted(true);
+            setFullScreenLoadingValue('')
+            setIconSvgModal(checkedSvg);
+            setModalValue('Novo serviço iniciado com êxito.');
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            router.push('/dashboard/running-service');
+            return;
+          } else {
+            console.error('Erro:', response.data.error);
+          }
+        } catch (error) {
+          console.error('Erro na requisição POST:', error);
+        }
+
+        retryCount++;
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
+
+      setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
+      setFullScreenLoadingValue('');
+    };
   };
 
 
   return (
     <>
-      {isPopupConnected && <FixedBlock />}
       <FormContainer onSubmit={handleSubmit}>
         <label htmlFor="requester">Solicitante:</label>
         <Input
@@ -172,8 +184,8 @@ export default function NewService() {
         <label htmlFor="selectedCity">Cidade:</label>
         <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
           <Option value="">Selecione uma cidade</Option>
-          {cities.map(city => (
-            <Option key={city} value={city}>{city}</Option>
+          {cities.map((city, index) => (
+            <Option key={index.toString()} value={city}>{city}</Option>
           ))}
         </Select>
 
@@ -213,21 +225,11 @@ export default function NewService() {
           </CheckboxButton>
         </div >
 
-        {(selectError || isPopupConnected) &&
-          <ErrorSpan>
-            <div>
-              {isPopupConnected ? <Spinner /> : <Image
-                priority
-                src={alert}
-                alt="Book"
-                width={55}
-                height={55}
-              />}
-            </div>
-            <span dangerouslySetInnerHTML={{ __html: selectError }}></span>
-          </ErrorSpan>}
         <Button type="submit">Iniciar Serviço</Button>
       </FormContainer >
+
+      {modalValue && !fullScreenLoadingValue && <Modal icon={iconSvgModal} message={modalValue} />}
+      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
     </>
   );
 };

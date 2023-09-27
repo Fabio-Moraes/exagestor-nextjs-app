@@ -11,6 +11,7 @@ const rotateAnimation = keyframes`
 
 export const Container = styled.div`
   display: flex;
+  z-index: 1000;
   flex-direction: column;
   align-items: center;
   justify-content: center; 

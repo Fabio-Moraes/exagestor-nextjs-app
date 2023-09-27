@@ -23,22 +23,22 @@ export default async function middleware(request: NextRequest) {
     clearTimeout(timeoutId);
 
     if (data?.status !== 200) {
-      if (['/', '/login'].includes(request.nextUrl.pathname)) {
+      if (['/', '/signin'].includes(request.nextUrl.pathname)) {
         return NextResponse.next();
       }
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL('/signin', request.url));
     }
 
-    if (['/', '/login'].includes(request.nextUrl.pathname)) {
+    if (['/', '/signin'].includes(request.nextUrl.pathname)) {
       return NextResponse.redirect(new URL('/dashboard/new-service', request.url));
     }
   } catch (error) {
     clearTimeout(timeoutId);
     console.error('An error occurred while verifying the token.');
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/signin', request.url));
   }
 };
 
 export const config = {
-  matcher: ['/', '/login', '/dashboard/:path*']
+  matcher: ['/', '/signin', '/dashboard/:path*']
 };

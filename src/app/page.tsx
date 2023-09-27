@@ -1,2 +1,2 @@
-import login from './(authenticated)/login/page';
-export default login;
+import signin from './(public)/signin/page';
+export default signin;

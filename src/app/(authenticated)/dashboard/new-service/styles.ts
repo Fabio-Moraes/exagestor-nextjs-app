@@ -1,55 +1,6 @@
 'use client';
 
-import styled, { keyframes } from 'styled-components';
-
-export const FixedBlock = styled.div`
-  z-index: 1001;
-  background-color: rgba(0,0,0,.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-export const ErrorSpan = styled.span`
-  display: flex;
-  z-index: 2000;
-  background-image: linear-gradient(to top, #3f795e, rgba(63, 121, 94, 0.9));
-  position: fixed;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  border: 2px solid #000000;
-  border-radius: 10px;
-  transform: translate(-50%, -50%);
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  animation: ${fadeIn} 0.3s ease-in-out;
-
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-  > div {
-    padding-top: 10px;
-  }
-
-  > span {
-    white-space: nowrap;
-    color: #fff;
-    padding: 0px 10px 10px 10px;
-    font-weight: 400;
-  }
-`;
+import styled from 'styled-components';
 
 export const FormContainer = styled.form`
   display: flex;
@@ -123,7 +74,6 @@ export const CheckboxButton = styled.button<{ $checked: number }>`
     margin-left: 5px;
     font-size: 14px;
   }
-
 `;
 
 export const Button = styled.button`
