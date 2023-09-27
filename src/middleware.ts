@@ -8,7 +8,7 @@ export default async function middleware(request: NextRequest) {
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
-    const data = await fetch(`${baseURL}/verify-token`, {
+    const data = await fetch(`${baseURL}/api/auth/verify-token`, {
       method: 'POST',
       credentials: "include",
       headers: {

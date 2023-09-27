@@ -130,7 +130,7 @@ export default function NewService() {
           
           const storedCookie = Cookie.get('auth_token');
           
-          const response = await api.post('/services-list', {
+          const response = await api.post('/api/services/services-list', {
             name: name,
             cnpj: '00.000.000/0000-00',
             city: selectedCity,

@@ -47,7 +47,7 @@ export default function RunningService() {
                     : 'Conectando'
                 );
 
-                const response = await api.get('/services-list', {
+                const response = await api.get('/api/services/services-list', {
                     params: { token: storedCookie }
                 });
 

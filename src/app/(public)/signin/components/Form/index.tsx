@@ -68,7 +68,7 @@ export const Form = () => {
 
     try {
       // Chamar a API para fazer o login e obter o token JWT
-      const response = await api.post('/signin', { cnpj, password });
+      const response = await api.post('/api/auth/signin', { cnpj, password });
 
       if (response.status === 200) {
         const { token } = response.data;
