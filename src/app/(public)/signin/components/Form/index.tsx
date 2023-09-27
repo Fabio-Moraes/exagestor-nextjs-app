@@ -122,9 +122,12 @@ export const Form = () => {
             priority
             src={exa}
             alt="Book"
-            width={30}
-            height={30}
-            style={{ marginRight: 5 }}
+            width={40}
+            height={40}
+            style={{
+              marginRight: 5,
+              marginLeft: -5
+            }}
           />
           <strong>Exa Telecom</strong>
         </div>
