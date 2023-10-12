@@ -11,42 +11,50 @@ import report from './assets/svg/report.svg';
 import { Button, Container, Wrapper } from './styles';
 
 export function MenuBar() {
-  const pathname = usePathname();
-  const proportion = { width: 25, height: 25 };
+    const pathname = usePathname();
+    const proportion = { width: 25, height: 25 };
 
-  return (
-    <Container>
-      <Wrapper>
-        <Button
-          $path={['/dashboard/new-service', '/'].includes(pathname)}
-          href='/dashboard/new-service'
-        >
-          <Image priority src={add} alt="Add" {...proportion} />
-          <span>Novo Serviço</span>
-        </Button>
+    return (
+        <Container>
+            <Wrapper>
+                <div>
+                    <Button
+                        $path={['/dashboard/new-service', '/'].includes(pathname)}
+                        href='/dashboard/new-service'
+                    >
+                        <Image priority src={add} alt="Add" {...proportion} />
+                        <span>Novo Serviço</span>
+                    </Button>
+                </div>
 
-        <Button
-          $path={['/dashboard/running-service'].includes(pathname)}
-          href='/dashboard/running-service'
-        >
-          <Image priority src={execution} alt="Book" {...proportion} />
-          <span>Em Execução</span>
-        </Button>
+                <div>
+                    <Button
+                        $path={['/dashboard/running-service'].includes(pathname)}
+                        href='/dashboard/running-service'
+                    >
+                        <Image priority src={execution} alt="Book" {...proportion} />
+                        <span>Em Execução</span>
+                    </Button>
+                </div>
 
-        <Button
-          href='/'
-        >
-          <Image priority src={report} alt="Report" {...proportion} />
-          <span>Fechamento Mensal</span>
-        </Button>
+                <div>
+                    <Button
+                        href='/'
+                    >
+                        <Image priority src={report} alt="Report" {...proportion} />
+                        <span>Fechamento Mensal</span>
+                    </Button>
+                </div>
 
-        <Button
-          href='/'
-        >
-          <Image priority src={clipboard} alt="Clipboard" {...proportion} />
-          <span>Materiais Utilizados</span>
-        </Button>
-      </Wrapper>
-    </Container>
-  );
+                <div>
+                    <Button
+                        href='/'
+                    >
+                        <Image priority src={clipboard} alt="Clipboard" {...proportion} />
+                        <span>Materiais Utilizados</span>
+                    </Button>
+                </div>
+            </Wrapper>
+        </Container>
+    );
 }

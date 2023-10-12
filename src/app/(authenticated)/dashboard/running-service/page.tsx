@@ -20,7 +20,7 @@ import { DisplayInfo } from './components/DisplayInfo';
 
 interface Service {
     id: number;
-    name: string;
+    client_name: string;
     city: string;
     address: string;
     nomenclature: string;
@@ -47,7 +47,7 @@ export default function RunningService() {
                     : 'Conectando'
                 );
 
-                const response = await api.get('/api/services/services-list', {
+                const response = await api.get('/api/services/running-service', {
                     params: { token: storedCookie }
                 });
 
@@ -67,12 +67,12 @@ export default function RunningService() {
 
     return (
         <Container>
-            <Title>Serviços</Title>
+            <Title>Em Execução</Title>
             <ListContainer>
                 {services.map((service) => (
                     <ListItem key={service.id}>
                         <DisplayInfo service={service} />
-                        <ControlButtons />
+                        <ControlButtons slug={service.protocol}/>
                     </ListItem>
                 )).reverse()}
             </ListContainer>

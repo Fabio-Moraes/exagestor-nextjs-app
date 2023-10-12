@@ -9,7 +9,7 @@ export const Container = styled.div`
   position: sticky;
   display: flex;
   padding: 3px min(20px, max(10vw, 10px));
-  background-image: linear-gradient(to right, #809e91, #dce6dc);
+  background-image:  radial-gradient(350px at center, #dce6dc 20%, #27A567);
   justify-content: space-between;
   width: 100%;
   left: 0;

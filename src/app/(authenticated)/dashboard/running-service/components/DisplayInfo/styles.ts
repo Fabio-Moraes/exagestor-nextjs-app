@@ -5,13 +5,13 @@ import styled from 'styled-components';
 export const Container = styled.div`
 display: flex;
 white-space: nowrap;
-padding: 5px;
+padding: 20px;
 width: 100%;
 
 flex-direction: column;
 justify-content: space-between;
 
-background-color: #E2FBEF;
+background-color: #dce6dc;
 align-items: center;
 
 > div {

@@ -16,12 +16,19 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 7px;
+  background-color: #8BC9A8;
   border: 2px solid #3f795e;
-
   border-radius: 15px;
-    background-image: linear-gradient(to top, #a9c4b8, #dce6dc);
+
+  > div {
+    width: 100%;
+  }
+
+  > div:not(:last-child) {
+    margin-bottom: 5px;
+  }
 
   @media (min-width: 1065px) {
     align-items: flex-start;
@@ -29,47 +36,44 @@ export const Wrapper = styled.div`
 `;
 
 export const Button = styled(Link) <{ $path?: boolean }>`
-  display: block;
   align-items: center;
   flex-shrink: 0;
-  margin: 5px;
   padding: 10px ;
   border-radius: 5px;
 
+  display: flex;
+  outline: 0;
+  width: 100%;
+
   > span {
-    display: none;
+    display: inline;
+    text-align: start;
+    font-weight: bold;
+    font-size: 12px;
   }
 
-  @media (min-width: 1065px) {
-    display: flex;
-    padding-right: 15px;
-    outline: 0;
-    width: 95%;
-
+  @media (max-width: 1065px) {
+    display: block; 
     > span {
-      display: inline;
-      margin-left: 19px;
-      text-align: start;
-      font-weight: bold;
-      font-size: 12px;
+        display: none;
     }
   }
   
+  border: 2px solid #3f795e;
+
   ${({ $path = '' }) => {
-    const activeButtonCSS = css`
-    background-color: #27A567;
-    > span {color: #fff};
-    `;
+        const activeButtonCSS = css`
+        background-color: #27A567;
+        > span {color: #fff}`;
 
-    const disabledButtonCSS = css`
-    background-image:  radial-gradient(100px at center, #dce6dc, #809e91);
-    border: 2px solid #3f795e;
-    &:hover {
-      border: 2px solid #27A567;
-      background-image: radial-gradient(circle, #27A567, #dce6dc);
-      box-shadow: 0px 5px 10px 0px rgba(39, 165, 103,.5);
-    }`;
+        const disabledButtonCSS = css`
+        background-color:  #fff;
+        &:hover {
+          border: 2px solid #27A567;
+          background-image: radial-gradient(circle, #27A567, #dce6dc);
+          box-shadow: 0px 5px 10px 0px rgba(39, 165, 103,.5);
+        }`;
 
-    return $path ? activeButtonCSS : disabledButtonCSS;
-  }};
+        return $path ? activeButtonCSS : disabledButtonCSS;
+    }};
 `;

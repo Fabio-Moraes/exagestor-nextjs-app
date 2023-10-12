@@ -1,9 +1,9 @@
-import { Container } from './styles'
+import { ButtonFinish, Container } from './styles'
 
-export function ControlButtons() {
+export function ControlButtons({ slug }: { slug: string }) {
     return (
         <Container>
-            <button>Finalizar</button>
+            <ButtonFinish href={`/dashboard/finish-service/${slug}`}><span>Finalizar</span></ButtonFinish>
             <button>Pausar</button>
             <button>Cancerlar</button>
         </Container>

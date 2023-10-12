@@ -2,7 +2,7 @@ import { Container } from './styles';
 
 interface Service {
     id: number;
-    name: string;
+    client_name: string;
     city: string;
     address: string;
     nomenclature: string;
@@ -24,7 +24,7 @@ export function DisplayInfo({ service }: {service: Service}) {
     return (
         <Container>
             <div>
-                <p>Solicitante: {service?.name}</p>
+                <p>Solicitante: {service?.client_name}</p>
                 <p>Cidade: {service?.city}</p>
                 <p>Endereço de origem do serviço: {service?.address}</p>
                 <p>Nomenclatura de caixa ou cabo: {service?.nomenclature}</p>
@@ -32,6 +32,7 @@ export function DisplayInfo({ service }: {service: Service}) {
                 <p>Protocolo: {service?.protocol}</p>
                 <p>Início: {createdAt}</p>
                 <p>Status do serviço: Em andamento</p>
+                <p>Atualização: 0</p>
             </div>
         </Container>
     )
