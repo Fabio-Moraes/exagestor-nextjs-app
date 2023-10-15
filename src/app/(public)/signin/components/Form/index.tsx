@@ -1,14 +1,15 @@
 'use client';
 
-import Cookie from 'js-cookie';
-import api from 'lib/api';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Footer } from '../Footer';
 
+import { ChangeEvent, useEffect, useState } from 'react';
+
+import Cookie from 'js-cookie';
+import api from 'lib/api';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { Footer } from '../Footer';
 
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
@@ -21,12 +22,18 @@ import {
     Input
 } from './styles';
 
+interface CustomError extends Error {
+    response?: {
+        status: number;
+    };
+}
+
+const MAX_RETRIES = 4;
+
 export const Form = () => {
     const [cnpj, setCnpj] = useState('');
     const [password, setPassword] = useState('');
-    //const [loading, setLoading] = useState(false);
     const [invalidCredentials, setInvalidCredentials] = useState('');
-
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
     const handleClickOutside = () => {
@@ -43,128 +50,114 @@ export const Form = () => {
     });
 
     const router = useRouter();
-    Cookie.remove('auth_token'); // Remove token inválido
+    Cookie.remove('auth_token');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         const formattedCnpj = value
-            .replace(/\D/g, '') // Remove tudo que não é dígito
-            .replace(/^(\d{2})(\d)/, '$1.$2') // Coloca ponto entre o segundo e o terceiro dígitos
-            .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3') // Coloca ponto entre o quinto e o sexto dígitos
-            .replace(/\.(\d{3})(\d)/, '.$1/$2') // Coloca barra entre o oitavo e o nono dígitos
-            .replace(/(\d{4})(\d)/, '$1-$2'); // Coloca hífen depois do bloco de quatro dígitos
+            .replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '$1.$2')
+            .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+            .replace(/\.(\d{3})(\d)/, '.$1/$2')
+            .replace(/(\d{4})(\d)/, '$1-$2');
         setCnpj(formattedCnpj.trim());
     };
-
-    const delay = (amount = 750) => new Promise(resolve => setTimeout(resolve, amount));
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (cnpj === '' || password === '') {
+        if (cnpj.length < 18 || password.length < 1) {
             setInvalidCredentials('Credenciais inválidas');
             return;
         }
 
-        const maxRetries = 4;
-
-        for (let count = 0; count < maxRetries; count++) {
+        for (let count = 0; count < MAX_RETRIES; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
-                );
-
-                // Chamar a API para fazer o login e obter o token JWT
+                setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
                 const response = await api.post('/api/auth/signin', { cnpj, password });
                 const { token } = response.data;
 
-                              if (response.status === 200) {
-                    // Armazenar o token JWT no cookie
-                    count = maxRetries;
+                if (response.status === 200) {
+                    count = MAX_RETRIES;
                     Cookie.set('auth_token', token, { expires: 7, path: '/' });
                     router.refresh();
-                    return;
                 }
-                
-                if (response.status === 401) {
-                    count = maxRetries;
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    const customError = error as CustomError;
+                    if (customError.response) {
+                        const statusCode = customError.response.status;
+                        console.log('Erro ao fazer login. Código de status:', statusCode);
+                        if (statusCode === 401) {
+                            count = MAX_RETRIES;
+                            setIsPopupValue(null);
+                            setInvalidCredentials('Credenciais inválidas');
+                            return;
+                        }
+                    } else {
+                        console.error('Erro desconhecido:', error);
+                    }
+                    await new Promise((resolve) => setTimeout(resolve, 5000));
+                }
+                if (count + 1 === MAX_RETRIES) {
                     setIsPopupValue(null);
-                    setInvalidCredentials('Credenciais inválidas');
-                    return;
+                    setInvalidCredentials('Conexão perdida. Por favor, tente novamente.');
                 }
-
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-
-            } catch (error) {
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-                setInvalidCredentials('Credenciais inválidas');
-                console.error('Erro ao fazer login:', error);
             }
-            setIsPopupValue(null);
         }
     };
 
-    return (<>
-        <Container>
-            {invalidCredentials &&
-                <ErrorSpan>
+    return (
+        <>
+            <Container>
+                <FormContainer onSubmit={handleSubmit}>
                     <div>
                         <Image
                             priority
-                            src={alert}
+                            src={exa}
                             alt="Book"
-                            width={55}
-                            height={55}
+                            width={40}
+                            height={40}
+                            style={{
+                                marginRight: 5,
+                                marginLeft: -5
+                            }}
                         />
+                        <strong>Exa Telecom</strong>
                     </div>
-                    <span dangerouslySetInnerHTML={{ __html: invalidCredentials }} />
-                </ErrorSpan>}
-            {/* {!loading && <div>
-                <div>
-                    <Player
-                        src={animationData}
-                        loop
-                        autoplay
-                        speed={1.5}
-                        style={{ height: '100px', width: '100px' }}
-                    />
-                </div>
-            </div>} */}
-            <FormContainer onSubmit={handleSubmit}>
-                <div>
-                    <Image
-                        priority
-                        src={exa}
-                        alt="Book"
-                        width={40}
-                        height={40}
-                        style={{
-                            marginRight: 5,
-                            marginLeft: -5
-                        }}
-                    />
-                    <strong>Exa Telecom</strong>
-                </div>
 
-                <Input
-                    type="text"
-                    maxLength={18}
-                    placeholder="CNPJ"
-                    value={cnpj}
-                    onChange={handleChange} />
+                    <Input
+                        type="text"
+                        maxLength={18}
+                        placeholder="CNPJ"
+                        value={cnpj}
+                        onChange={handleChange} />
 
-                <Input
-                    type="password"
-                    placeholder="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value.trim())} />
+                    <Input
+                        type="password"
+                        placeholder="Senha"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value.trim())} />
 
-                <Button type="submit">Entrar</Button>
-                <Footer />
-            </FormContainer >
-        </Container>
-            {isPopupValue && <FullScreenLoading /* message={isPopupValue} */ />}
+                    <Button type="submit">Entrar</Button>
+                    <Footer />
+                </FormContainer >
+                {invalidCredentials && (
+                    <ErrorSpan>
+                        <div>
+                            <Image
+                                priority
+                                src={alert}
+                                alt="Book"
+                                width={55}
+                                height={55}
+                            />
+                        </div>
+                        <span dangerouslySetInnerHTML={{ __html: invalidCredentials }} />
+                    </ErrorSpan>
+                )}
+            </Container>
+            {isPopupValue && <FullScreenLoading message={isPopupValue} />}
         </>
     );
 };

@@ -18,8 +18,7 @@ export function Forehead() {
       <Image
         alt="Axa"
         src={exa}
-        width={73}
-        height={73}
+        style={{ width: '74px', height: 'auto' }}
         priority
       />
       <ProfileInfo>

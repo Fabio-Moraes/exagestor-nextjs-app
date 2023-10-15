@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { useEffect, useState } from "react";
 
 import {
@@ -25,6 +27,8 @@ interface Service {
     address: string;
     nomenclature: string;
     classification: string;
+    update_count: number;
+    status: string;
     created_at: string;
     protocol: string;
 }
@@ -36,6 +40,8 @@ export default function RunningService() {
 
     const storedCookie = Cookie.get('auth_token');
     const maxRetries = 4
+
+    const router = useRouter();
 
     async function fetchServices() {
         setConnectionError(false);
@@ -72,9 +78,9 @@ export default function RunningService() {
                 {services.map((service) => (
                     <ListItem key={service.id}>
                         <DisplayInfo service={service} />
-                        <ControlButtons slug={service.protocol}/>
+                        <ControlButtons service={service}/>
                     </ListItem>
-                )).reverse()}
+                ))}
             </ListContainer>
             {isPopupValue && <FullScreenLoading message={isPopupValue} />}
             {connectionError && !isPopupValue && (

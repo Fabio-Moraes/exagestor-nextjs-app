@@ -12,7 +12,7 @@ export const Container = styled.div`
     margin-left: 6px;
     margin-right: 10px;
   }
-
+  
   z-index: 1000;
   top: 0;
   display: flex;
