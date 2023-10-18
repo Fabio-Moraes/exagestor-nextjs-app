@@ -14,20 +14,28 @@ interface Service {
 }
 
 export function DisplayInfo({ service }: { service: Service }) {
-    const now = new Date(service.created_at);
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const day = now.getDate().toString().padStart(2, '0');
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
+
+    function formatDate(date: string) {
+        const now = new Date(date);
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = now.getDate().toString().padStart(2, '0');
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
 
     const status = {
-        active: 'Em andamento',
-        paused: 'Pausado'
+        finished: '🟢 Finalizada',
+        active: '🟡 Em andamento',
+        paused: '🟠 Pausado',
+        canceled: '🔴 Cancelado'
     } as { [key: string]: string }
 
-    const createdAt = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    const createdAt = formatDate(service.created_at);
+
     return (
         <Container>
             <div>
@@ -39,7 +47,7 @@ export function DisplayInfo({ service }: { service: Service }) {
                 <p>Protocolo: {service?.protocol}</p>
                 <p>Início: {createdAt}</p>
                 <p>Status do serviço: {status[service?.status]}</p>
-                <p>Atualização: {service?.update_count}</p>
+                <p>Atualização de status: {service?.update_count}</p>
             </div>
         </Container>
     )

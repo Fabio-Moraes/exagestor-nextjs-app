@@ -9,8 +9,8 @@ import menu from './assets/svg/menu.svg';
 import report from './assets/svg/report.svg';
 
 import {
-  Button,
-  Container,
+    Button,
+    Container,
 } from './styles';
 
 export function Menu() {
@@ -35,9 +35,11 @@ export function Menu() {
         <span>Em<br />Execução</span>
       </Button>
 
-      <Button href='/' >
+      <Button   
+        $path={['/dashboard/historic-service'].includes(pathname)}
+        href='/dashboard/historic-service' >
         <Image priority src={report} alt="Report" {...proportion} />
-        <span>Fechamento<br />Mensal</span>
+        <span>Histórico<br />Geral</span>
       </Button>
 
       <Button href='/' >

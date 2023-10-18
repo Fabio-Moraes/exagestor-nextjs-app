@@ -1,3 +1,3 @@
 export const baseURL = process.env.NODE_ENV === 'production'
   ? 'https://exa-telecom-server.onrender.com'
-  : 'http://192.168.0.2:3333'; 
+  : 'http://192.168.0.10:3333'; 

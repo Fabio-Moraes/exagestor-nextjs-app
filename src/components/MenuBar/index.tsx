@@ -39,10 +39,11 @@ export function MenuBar() {
 
                 <div>
                     <Button
-                        href='/'
+                        $path={['/dashboard/historic-service'].includes(pathname)}
+                        href='/dashboard/historic-service'
                     >
                         <Image priority src={report} alt="Report" {...proportion} />
-                        <span>Fechamento Mensal</span>
+                        <span>Histórico Geral</span>
                     </Button>
                 </div>
 

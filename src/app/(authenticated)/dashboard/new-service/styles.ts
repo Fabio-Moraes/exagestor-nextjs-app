@@ -24,7 +24,6 @@ export const Title = styled.h1`
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #dce6dc;
   border: 2px solid #3f795e;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -38,14 +37,14 @@ export const FormContainer = styled.form`
 
   > label {
     overflow-wrap: break-word;
-    margin: 0px 20px 0px 20px;
+    margin: 0px 20px 5px 20px;
     text-align: start;
   }
 `;
 
 export const Input = styled.input`
   padding: 10px;
-  margin: 0px 20px 20px 20px;
+  margin: 0px 20px 15px 20px;
   border: 1px solid #000000;
   border-radius: 4px;
   font-size: 16px;
@@ -62,7 +61,7 @@ export const Input = styled.input`
 
 export const Select = styled.select`
   padding: 10px;
-  margin: 0px 20px 20px 20px;
+  margin: 0px 20px 15px 20px;
   border: 1px solid #000000;
   border-radius: 4px;
   font-size: 16px;
@@ -82,7 +81,7 @@ export const Option = styled.option`
 export const CheckboxButton = styled.button<{ $checked: number }>`
   display: flex;
   align-items: center;
-  margin: 0px 30px 0px 20px;
+  margin: -10px 30px 5px 20px;
   border: 1px solid #000000;
   padding: 8px 10px;
   border-radius: 4px;

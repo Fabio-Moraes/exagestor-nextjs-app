@@ -1,53 +1,42 @@
-'use client'
+'use client';
+
+import { useEffect, useState } from "react";
+
+import {
+    Container,
+    ErrorContainer,
+    ListContainer,
+    ListItem,
+    Title
+} from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import { useEffect, useState } from 'react';
-import List from './components/List';
-
-import { Container, ErrorContainer, Title } from './styles';
-
-const data = [
-    { id: '0', description: '1.11-ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '1', description: '1.12-READQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '2', description: '1.13-LANÇ DE CORD' },
-    { id: '3', description: '1.14-RETENC CORD/ CBS' },
-    { id: '4', description: '1.15-RET CORD DO POSTE' },
-    { id: '5', description: '10.11-MANUT PODA DE GALHOS COM REMOCAO-F' },
-    { id: '6', description: '10.21-MANUT CAPINA LIMPZ SOBRE TAMP DE C' },
-    { id: '7', description: '10.23-MANUT CAPINA DE POSTE RAIO = 2,0M-' },
-    { id: '8', description: '10.24-MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
-];
-
-const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-
-interface SlugType {
-    params: {
-        slug: string;
-    }
-}
+import { DisplayInfo } from './components/DisplayInfo';
 
 interface Service {
     id: number;
-    name: string;
+    client_name: string;
     city: string;
     address: string;
     nomenclature: string;
     classification: string;
+    update_count: number;
+    status: string;
     created_at: string;
+    modification_at: string;
     protocol: string;
 }
 
-export default function FinishService({ params }: SlugType) {
+export default function HistoricService() {
     const [services, setServices] = useState<Service[]>([]);
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
     const storedCookie = Cookie.get('auth_token');
     const maxRetries = 4
-
 
     async function fetchServices() {
         setConnectionError(false);
@@ -59,8 +48,8 @@ export default function FinishService({ params }: SlugType) {
                     : 'Conectando'
                 );
 
-                const response = await api.get('/api/services/finish-service', {
-                    params: { token: storedCookie, protocol: params.slug }
+                const response = await api.get('/api/services/historic-service', {
+                    params: { token: storedCookie }
                 });
 
                 count = maxRetries;
@@ -79,20 +68,24 @@ export default function FinishService({ params }: SlugType) {
 
     return (
         <Container>
-            <Title>
-                <h1>Finalizar Serviço</h1>
-                <span>PROTOCOLO: {services[0]?.protocol}</span>
-            </Title>
-            {false && <FullScreenLoading message={'isPopupValue'} />}
-            {connectionError && (
+            <Title>Histórico Geral</Title>
+            <ListContainer>
+                {services.map((service) => (
+                    <ListItem key={service.id}>
+                        <DisplayInfo service={service} />
+                    </ListItem>
+                ))}
+            </ListContainer>
+            {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+            {connectionError && !isPopupValue && (
                 <ErrorContainer>
                     <span>
-                        Não foi possível finalizar o serviço devido a
+                        Não foi possível obter dados da lista devido a
                         instabilidade na conexão. Por favor, tente novamente.
                     </span>
+                    <button onClick={() => fetchServices()}>Tentar Novamente</button>
                 </ErrorContainer>
             )}
-            <List items={data} />
         </Container>
     );
 }

@@ -11,7 +11,7 @@ width: 100%;
 flex-direction: column;
 justify-content: space-between;
 
-background-color: #dce6dc;
+//background-color: #dce6dc;
 align-items: center;
 
 > div {

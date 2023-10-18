@@ -175,7 +175,7 @@ export default function NewService() {
             <FormContainer onSubmit={handleSubmit}>
                 <label htmlFor="requester">Solicitante:</label>
                 <Input
-                    autoFocus
+                    /* autoFocus */
                     type="text"
                     id="requester"
                     placeholder="Informe o nome do solicitante"
