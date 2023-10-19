@@ -28,10 +28,10 @@ export function DisplayInfo({ service }: { service: Service }) {
     }
 
     const status = {
-        finished: '🟢 Finalizada',
-        active: '🟡 Em andamento',
-        paused: '🟠 Pausado',
-        canceled: '🔴 Cancelado'
+        concluded: '✅ Finalizada',
+        active: '🚧 Em andamento',
+        paused: '⏸️ Pausado',
+        canceled: '❌ Cancelado'
     } as { [key: string]: string }
 
     const modificationAt = formatDate(service[

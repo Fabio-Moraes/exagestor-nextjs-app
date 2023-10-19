@@ -5,7 +5,7 @@ import api from 'lib/api';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useEffect, useState } from 'react';
-import List from './components/List';
+import { List } from './components/List';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -31,11 +31,13 @@ interface SlugType {
 
 interface Service {
     id: number;
-    name: string;
+    client_name: string;
     city: string;
     address: string;
     nomenclature: string;
     classification: string;
+    status: string;
+    update_count: number;
     created_at: string;
     protocol: string;
 }
@@ -90,7 +92,7 @@ export default function FinishService({ params }: SlugType) {
                         instabilidade na conexão. Por favor, tente novamente.
                     </span>
                 </ErrorContainer>
-            ) : <List items={data} />}
+            ) : <List items={data} service={services[0]} />}
         </Container>
     );
 }
