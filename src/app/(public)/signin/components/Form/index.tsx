@@ -50,7 +50,7 @@ export const Form = () => {
     });
 
     const router = useRouter();
-    Cookie.remove('auth_token');
+    //Cookie.remove('auth_token');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
