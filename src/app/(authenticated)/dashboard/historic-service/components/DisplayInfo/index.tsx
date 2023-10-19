@@ -28,7 +28,7 @@ export function DisplayInfo({ service }: { service: Service }) {
     }
 
     const status = {
-        concluded: '✅ Finalizada',
+        concluded: '✅ Finalizado',
         active: '🚧 Em andamento',
         paused: '⏸️ Pausado',
         canceled: '❌ Cancelado'
