@@ -58,7 +58,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                     params: {
                         token: storedCookie,
                         protocol: service?.protocol,
-                        // serviceIds: selectedItems.join(',')
+                        serviceIds: ''
                     }
                 });
 
