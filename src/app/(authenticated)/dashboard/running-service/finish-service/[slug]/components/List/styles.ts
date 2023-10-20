@@ -12,13 +12,11 @@ border: 2px solid #3f795e;
 
   > div:first-child {
     display: flex;
-
     margin: 8px;
     padding: 10px;
     background-color: #3f795e; 
     border-radius: 5px;
     flex-direction: column; 
-
     align-items: center;
 
     > span {
@@ -26,12 +24,25 @@ border: 2px solid #3f795e;
         margin-top: 10px;
         color: #fff;
     }
+
+    > div {
+        width: 100%;
+        padding: 0px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        > div {
+        display: flex;
+        > button:nth-child(2) {
+        width: 80px;
+        margin-left: 10px;
+        }     
+      }
+    }
   }
 
   > div:last-child {
     display: flex;
-    //flex-direction: row;
-
     margin: 8px;
     padding: 10px;
     background-color: #3f795e; 
@@ -67,7 +78,6 @@ export const SearchBar = styled.input`
   outline: none;
   position: absolute;
   text-indent: 30px;
-
 
   &::placeholder {
     color: #333; 

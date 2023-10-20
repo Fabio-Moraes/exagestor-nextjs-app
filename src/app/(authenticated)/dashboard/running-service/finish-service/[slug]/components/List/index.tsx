@@ -3,13 +3,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
 import ListItem from '../ListItem';
 
+import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
 
 import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
@@ -30,7 +31,7 @@ interface Service {
 }
 
 export function List({ service, items }: { service: Service, items: ListProps[] }) {
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [selectedItems, setSelectedItems] = useState<{ [key: string]: number }>({});
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showSelected, setShowSelected] = useState<boolean>(false);
 
@@ -57,7 +58,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                     params: {
                         token: storedCookie,
                         protocol: service?.protocol,
-                        serviceIds: selectedItems.join(',')
+                        // serviceIds: selectedItems.join(',')
                     }
                 });
 
@@ -73,17 +74,24 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     }
 
     const toggleItem = (item: string) => {
-        if (selectedItems.includes(item)) {
-            setSelectedItems(selectedItems.filter(selectedItem => selectedItem !== item));
-        } else {
-            setSelectedItems([...selectedItems, item]);
-        }
+        setSelectedItems((prevItems) => ({
+            ...prevItems,
+            [item]: prevItems[item] ? prevItems[item] + 1 : 1
+        }));
     };
 
     const filteredItems = items?.filter(item =>
         item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (showSelected ? selectedItems.includes(item.id) : true)
+        (showSelected ? selectedItems[item.id] : true)
     );
+
+    useEffect(() => {
+        console.log(selectedItems)
+    }, [selectedItems])
+
+
+    const selectedItemKeys = Object.keys(selectedItems);
+    const proportion = { width: 30, height: 30 };
 
     return (
         <ListContainer>
@@ -98,15 +106,26 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                         onChange={e => setSearchTerm(e.target.value)}
                     />
                 </SearchWrapper>
-                <Button $path={showSelected} onClick={() => setShowSelected(!showSelected)}>
-                    {showSelected ? 'Mostrar Todos' : `Filtrar Selecionado${selectedItems.length > 1 ? 's' : ''} (${selectedItems.length})`}
-                </Button>
+                <div>
+                    <div>
+                        <Button $path={showSelected} onClick={() => setShowSelected(!showSelected)}>
+                            {showSelected
+                                ? 'Mostrar Todos'
+                                : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${selectedItemKeys.length})`}
+                        </Button>
+
+                        <Button $path={showSelected} onClick={() => setSelectedItems({})}>
+                            Limpar
+                        </Button>
+                    </div>
+                    <Image priority src={infoSvg} alt="Add" {...proportion} />
+                </div>
             </div>
             {filteredItems.map(item => (
                 <ListItem
                     key={item.description}
                     item={item.description}
-                    selected={selectedItems.includes(item.id)}
+                    count={selectedItems[item.id]}
                     onSelect={() => toggleItem(item.id)}
                 />
             ))}
