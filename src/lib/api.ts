@@ -4,8 +4,8 @@ import { baseURL } from '../constants/connectedOnServer';
 const api = axios.create({ 
     baseURL: baseURL,
     headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     },
     withCredentials: true
 });
