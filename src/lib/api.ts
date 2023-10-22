@@ -3,11 +3,11 @@ import { baseURL } from '../constants/connectedOnServer';
 
 const api = axios.create({ 
     baseURL: baseURL,
-    headers: {
+     headers: {
         'Access-Control-Allow-Origin' : '*',
         'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     },
-    withCredentials: true
+    withCredentials: false
 });
 
 export default api;
