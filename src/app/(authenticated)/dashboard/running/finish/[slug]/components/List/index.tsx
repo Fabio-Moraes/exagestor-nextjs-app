@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -54,16 +54,16 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                     : 'Conectando'
                 );
 
-                const response = await api.get('/api/services/concluded-service', {
+                const response = await api.get('/api/services/concluded', {
                     params: {
                         token: storedCookie,
                         protocol: service?.protocol,
-                        serviceIds: ''
+                        serviceIds: JSON.stringify('selectedItems')
                     }
                 });
 
                 count = maxRetries;
-                router.push('/dashboard/new-service');
+                router.push('/dashboard/new');
                 console.log(response.data);
             } catch (error) {
                 await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -84,11 +84,6 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
         item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (showSelected ? selectedItems[item.id] : true)
     );
-
-    useEffect(() => {
-        console.log(selectedItems)
-    }, [selectedItems])
-
 
     const selectedItemKeys = Object.keys(selectedItems);
     const proportion = { width: 30, height: 30 };

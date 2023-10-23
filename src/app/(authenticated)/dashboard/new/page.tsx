@@ -132,7 +132,7 @@ export default function NewService() {
 
                     const storedCookie = Cookie.get('auth_token');
 
-                    const response = await api.post('/api/services/new-service', {
+                    const response = await api.post('/api/services/new', {
                         clientName: name,
                         city: selectedCity,
                         classification: `${classificationL === 1 ? 'L' : ''}${classificationF === 1 ? 'F' : ''}`,
@@ -150,7 +150,7 @@ export default function NewService() {
                         setModalValue('Novo serviço iniciado com êxito.');
 
                         await new Promise((resolve) => setTimeout(resolve, 1000));
-                        router.push('/dashboard/running-service');
+                        router.push('/dashboard/running');
                         return;
                     } else {
                         console.error('Erro:', response.data.error);
@@ -175,7 +175,6 @@ export default function NewService() {
             <FormContainer onSubmit={handleSubmit}>
                 <label htmlFor="requester">Solicitante:</label>
                 <Input
-                    /* autoFocus */
                     type="text"
                     id="requester"
                     placeholder="Informe o nome do solicitante"

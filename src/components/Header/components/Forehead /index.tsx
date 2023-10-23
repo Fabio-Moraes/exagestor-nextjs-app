@@ -16,10 +16,11 @@ export function Forehead() {
   return (
     <Container>
       <Image
-        alt="Axa"
         src={exa}
-        style={{ width: '74px', height: 'auto' }}
         priority
+        loading="eager"
+        alt="Axa"
+        style={{ width: '74px', height: 'auto' }}
       />
       <ProfileInfo>
         <strong>EXA TELECOM</strong>

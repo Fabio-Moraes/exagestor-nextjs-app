@@ -20,30 +20,30 @@ export function Menu() {
   return (
     <Container>
       <Button
-        $path={['/dashboard/new-service', '/'].includes(pathname)}
-        href='/dashboard/new-service'
+        $path={['/dashboard/new', '/'].includes(pathname)}
+        href='/dashboard/new'
       >
-        <Image priority src={add} alt="Add" {...proportion} />
+        <Image priority loading="eager" src={add} alt="Add" {...proportion} />
         <span>Novo<br />Serviço</span>
       </Button>
 
       <Button
-        $path={['/dashboard/running-service'].includes(pathname)}
-        href='/dashboard/running-service'
+        $path={['/dashboard/running'].includes(pathname)}
+        href='/dashboard/running'
       >
-        <Image priority src={execution} alt="Book" {...proportion} />
+        <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
         <span>Em<br />Execução</span>
       </Button>
 
       <Button   
-        $path={['/dashboard/historic-service'].includes(pathname)}
-        href='/dashboard/historic-service' >
-        <Image priority src={report} alt="Report" {...proportion} />
+        $path={['/dashboard/historic'].includes(pathname)}
+        href='/dashboard/historic' >
+        <Image priority loading="eager" src={report} alt="Report" {...proportion} />
         <span>Histórico<br />Geral</span>
       </Button>
 
       <Button href='/' >
-        <Image priority src={menu} alt="Menu" {...proportion} />
+        <Image priority loading="eager" src={menu} alt="Menu" {...proportion} />
         <span>Mais<br />Opções</span>
       </Button>
     </Container>

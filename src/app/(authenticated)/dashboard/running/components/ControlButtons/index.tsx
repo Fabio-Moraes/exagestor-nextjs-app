@@ -40,12 +40,37 @@ export function ControlButtons({ service }: { service: Service }) {
                     : 'Conectando'
                 );
 
-                const response = await api.get(`/api/services/${service?.status === 'active' ? 'pause-service' : 'start-service'}`, {
+                const response = await api.get(`/api/services/${service?.status === 'active' ? 'pause' : 'start'}`, {
                     params: { token: storedCookie, protocol: service?.protocol }
                 });
 
                 count = maxRetries;
-                router.push('/dashboard/new-service');
+                router.push('/dashboard/new');
+                console.log(response.data);
+            } catch (error) {
+                await new Promise((resolve) => setTimeout(resolve, 5000));
+                setConnectionError(true);
+            }
+        }
+        setIsPopupValue(null);
+    }
+
+    async function fetchCancelServices() {
+        setConnectionError(false);
+
+        for (let count = 0; count < maxRetries; count++) {
+            try {
+                setIsPopupValue(count > 0
+                    ? `Conectando<br>Tentativa (${count + 1})`
+                    : 'Conectando'
+                );
+
+                const response = await api.get('/api/services/cancel', {
+                    params: { token: storedCookie, protocol: service?.protocol }
+                });
+
+                count = maxRetries;
+                router.push('/dashboard/new');
                 console.log(response.data);
             } catch (error) {
                 await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -57,9 +82,9 @@ export function ControlButtons({ service }: { service: Service }) {
 
     return (
         <Container>
-            <ButtonFinish href={`/dashboard/finish-service/${service?.protocol}`}><span>Finalizar</span></ButtonFinish>
+            <ButtonFinish href={`/dashboard/running/finish/${service?.protocol}`}><span>Finalizar</span></ButtonFinish>
             <button onClick={() => fetchStatusServices()}>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</button>
-            <button>Cancerlar</button>
+            <button onClick={() => fetchCancelServices()}>Cancerlar</button>
         </Container>
     )
 }

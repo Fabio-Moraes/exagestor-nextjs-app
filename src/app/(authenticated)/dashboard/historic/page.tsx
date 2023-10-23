@@ -1,7 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import { useEffect, useState } from "react";
 
 import {
@@ -16,8 +14,6 @@ import Cookie from 'js-cookie';
 import api from 'lib/api';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import { ControlButtons } from './components/ControlButtons';
-
 import { DisplayInfo } from './components/DisplayInfo';
 
 interface Service {
@@ -30,18 +26,17 @@ interface Service {
     update_count: number;
     status: string;
     created_at: string;
+    modification_at: string;
     protocol: string;
 }
 
-export default function RunningService() {
+export default function HistoricService() {
     const [services, setServices] = useState<Service[]>([]);
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
     const storedCookie = Cookie.get('auth_token');
     const maxRetries = 4
-
-    const router = useRouter();
 
     async function fetchServices() {
         setConnectionError(false);
@@ -53,7 +48,7 @@ export default function RunningService() {
                     : 'Conectando'
                 );
 
-                const response = await api.get('/api/services/running-service', {
+                const response = await api.get('/api/services/historic', {
                     params: { token: storedCookie }
                 });
 
@@ -73,12 +68,11 @@ export default function RunningService() {
 
     return (
         <Container>
-            <Title>Em Execução</Title>
+            <Title>Histórico Geral</Title>
             <ListContainer>
                 {services.map((service) => (
                     <ListItem key={service.id}>
                         <DisplayInfo service={service} />
-                        <ControlButtons service={service}/>
                     </ListItem>
                 ))}
             </ListContainer>

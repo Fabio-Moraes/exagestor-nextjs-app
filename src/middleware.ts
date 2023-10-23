@@ -9,7 +9,7 @@ export default async function middleware(request: NextRequest) {
         await jwtVerify(TOKEN ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
 
         if (['/', '/signin'].includes(request.nextUrl.pathname)) {
-            return NextResponse.redirect(new URL('/dashboard/new-service', request.url));
+            return NextResponse.redirect(new URL('/dashboard/new', request.url));
         }
 
         return NextResponse.next();
