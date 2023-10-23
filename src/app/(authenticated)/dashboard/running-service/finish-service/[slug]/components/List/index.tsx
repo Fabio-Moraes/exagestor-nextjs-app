@@ -100,8 +100,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                     <Image priority src={searchSvg} alt="Book" width={25} height={25} />
                     <SearchBar
                         type="text"
-                        placeholder="Pesquisar produto..."
-                        autoFocus
+                        placeholder="Pesquisar serviço..."
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
