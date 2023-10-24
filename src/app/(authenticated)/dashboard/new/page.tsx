@@ -135,7 +135,7 @@ export default function NewService() {
                     const response = await api.post('/api/services/new', {
                         clientName: name,
                         city: selectedCity,
-                        classification: `${classificationL === 1 ? 'L' : ''}${classificationF === 1 ? 'F' : ''}`,
+                        classification: `${classificationL === 1 ? 'L' : 'F'}${classificationF === 1 ? 'F' : 'L'}`,
                         nomenclature: nomenclature,
                         address: address,
                         token: storedCookie,
