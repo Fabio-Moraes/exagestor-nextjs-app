@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { baseURL } from '../constants/connectedOnServer';
 
 const api = axios.create({ 
-    baseURL: baseURL,
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_BASEURL,
      headers: {
         'Access-Control-Allow-Origin' : '*',
         'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
