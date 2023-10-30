@@ -42,7 +42,6 @@ export default function NewService() {
 
     const router = useRouter();
 
-
     const handleClickOutside = () => {
         if (modalValue !== '') {
             !fullScreenLoadingValue && setModalValue('');
@@ -168,7 +167,7 @@ export default function NewService() {
         };
     };
 
-
+ 
     return (
         <Container>
             <Title>Novo Serviço</Title>

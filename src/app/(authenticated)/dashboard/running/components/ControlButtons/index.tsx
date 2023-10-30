@@ -8,6 +8,8 @@ import api from 'lib/api';
 import { useRouter } from 'next/navigation';
 import { ButtonFinish, Container } from './styles';
 
+import { encryptObject } from '../../../../../../functions';
+
 interface Service {
     id: number;
     client_name: string;
@@ -80,9 +82,11 @@ export function ControlButtons({ service }: { service: Service }) {
         setIsPopupValue(null);
     }
 
+    const encryptSlug = encryptObject({ protocol: service?.protocol })
+
     return (
         <Container>
-            <ButtonFinish href={`/dashboard/running/finish/${service?.protocol}`}><span>Finalizar</span></ButtonFinish>
+            <ButtonFinish href={`/dashboard/running/finish/select-service/${encryptSlug}`}><span>Finalizar</span></ButtonFinish>
             <button onClick={() => fetchStatusServices()}>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</button>
             <button onClick={() => fetchCancelServices()}>Cancerlar</button>
         </Container>

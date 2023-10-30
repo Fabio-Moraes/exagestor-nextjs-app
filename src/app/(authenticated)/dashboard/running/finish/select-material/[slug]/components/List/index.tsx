@@ -80,6 +80,13 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
         }));
     };
 
+    const toggleItemReset = (item: string) => {
+        setSelectedItems((prevItems) => ({
+            ...prevItems,
+            [item]: 0
+        }));
+    };
+
     const filteredItems = items?.filter(item =>
         item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (showSelected ? selectedItems[item.id] : true)
@@ -102,13 +109,13 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                 </SearchWrapper>
                 <div>
                     <div>
-                        <Button $path={showSelected} onClick={() => setShowSelected(!showSelected)}>
+                        <Button onClick={() => setShowSelected(!showSelected)}>
                             {showSelected
                                 ? 'Mostrar Todos'
                                 : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${selectedItemKeys.length})`}
                         </Button>
 
-                        <Button $path={showSelected} onClick={() => setSelectedItems({})}>
+                        <Button onClick={() => setSelectedItems({})}>
                             Limpar
                         </Button>
                     </div>
@@ -121,14 +128,15 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                     item={item.description}
                     count={selectedItems[item.id]}
                     onSelect={() => toggleItem(item.id)}
+                    onReset={() => toggleItemReset(item.id)}
                 />
             ))}
             <div>
-                <Button $path={showSelected} onClick={() => setShowSelected(!showSelected)}>
+                <Button onClick={() => router.back()}>
                     Voltar
                 </Button>
-                <Button $path={showSelected} onClick={() => fetchConcludedServices()}>
-                    Concluir
+                <Button  onClick={() => fetchConcludedServices()}>
+                    Avançar
                 </Button>
             </div>
         </ListContainer>

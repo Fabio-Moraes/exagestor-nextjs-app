@@ -2,7 +2,6 @@
 
 import styled from 'styled-components';
 
-
 export const ListContainer = styled.div`
 margin-top: 20px;
 background-color: #dce6dc;
@@ -27,12 +26,18 @@ border: 2px solid #3f795e;
 
     > div {
         width: 100%;
-        padding: 0px 5px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         > div {
         display: flex;
+        align-items: 'center';
+        justify-content: flex-start;
+        > button:nth-child(1) {
+        width: 170px;
+        }  
+
         > button:nth-child(2) {
         width: 80px;
         margin-left: 10px;
@@ -84,7 +89,7 @@ export const SearchBar = styled.input`
   }
 `;
 
-export const Button = styled.button<{ $path: boolean }>`
+export const Button = styled.button`
   display: block;
   align-items: center;
   flex-shrink: 0;

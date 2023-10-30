@@ -7,18 +7,19 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useEffect, useState } from 'react';
 import { List } from './components/List';
 
+import { decryptObject } from '../../../../../../../functions';
 import { Container, ErrorContainer, Title } from './styles';
 
 const data = [
-    { id: '0', description: '1.11-ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '1', description: '1.12-READQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '2', description: '1.13-LANÇ DE CORD' },
-    { id: '3', description: '1.14-RETENC CORD/ CBS' },
-    { id: '4', description: '1.15-RET CORD DO POSTE' },
-    { id: '5', description: '10.11-MANUT PODA DE GALHOS COM REMOCAO-F' },
-    { id: '6', description: '10.21-MANUT CAPINA LIMPZ SOBRE TAMP DE C' },
-    { id: '7', description: '10.23-MANUT CAPINA DE POSTE RAIO = 2,0M-' },
-    { id: '8', description: '10.24-MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
+    { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
+    { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
+    { id: '2', description: 'TUBOS DE PVC DE 3 POLEGADAS' },
+    { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
+    { id: '4', description: 'FIBRAS DE VIDRO PARA ISOLAMENTO' },
+    { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
+    { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
+    { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
+    { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
 ];
 
 const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
@@ -60,8 +61,8 @@ export default function FinishService({ params }: SlugType) {
                     : 'Conectando'
                 );
 
-                const response = await api.get('/api/services/finish', {
-                    params: { token: storedCookie, protocol: params.slug }
+                const response = await api.get('/api/services/select-material', {
+                    params: { token: storedCookie, protocol: decryptObject(params.slug).protocol }
                 });
 
                 count = maxRetries;
@@ -81,8 +82,9 @@ export default function FinishService({ params }: SlugType) {
     return (
         <Container>
             <Title>
-                <h1>Finalizar Serviço</h1>
+                <h1>Selecionar Material</h1>
                 <span>PROTOCOLO: {services[0]?.protocol}</span>
+
             </Title>
             {false && <FullScreenLoading message={'isPopupValue'} />}
             {connectionError ? (

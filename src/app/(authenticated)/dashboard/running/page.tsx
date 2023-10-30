@@ -1,7 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import { useEffect, useState } from "react";
 
 import {
@@ -41,8 +39,6 @@ export default function RunningService() {
     const storedCookie = Cookie.get('auth_token');
     const maxRetries = 4
 
-    const router = useRouter();
-
     async function fetchServices() {
         setConnectionError(false);
 
@@ -78,7 +74,7 @@ export default function RunningService() {
                 {services.map((service) => (
                     <ListItem key={service.id}>
                         <DisplayInfo service={service} />
-                        <ControlButtons service={service}/>
+                        <ControlButtons service={service} />
                     </ListItem>
                 ))}
             </ListContainer>
