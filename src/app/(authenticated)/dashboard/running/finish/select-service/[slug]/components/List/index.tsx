@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
 
-import Cookie from 'js-cookie';
 
 import ListItem from '../ListItem';
 
@@ -16,6 +15,7 @@ import { encryptObject } from '../../../../../../../../../functions';
 
 import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
 
+import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
 
 interface ListProps { id: string, description: string };
 
@@ -33,19 +33,12 @@ interface Service {
 }
 
 export function List({ service, items }: { service: Service, items: ListProps[] }) {
-    const [selectedItems, setSelectedItems] = useState<{ [key: string]: number }>({});
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showSelected, setShowSelected] = useState<boolean>(false);
-
-
-    const [connectionError, setConnectionError] = useState(false);
-    const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-
-    const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4
+    
+    const { selectService, setSelectService } = useContexState();
 
     const router = useRouter();
-
 
     async function fetchConcludedServices() {
         const encryptSlug = encryptObject({ protocol: service?.protocol })
@@ -53,25 +46,39 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     }
 
     const toggleItem = (item: string) => {
-        setSelectedItems((prevItems) => ({
+        setSelectService(prevItems => ({
             ...prevItems,
-            [item]: prevItems[item] ? prevItems[item] + 1 : 1
+            [String(service?.protocol)]: {
+                ...(prevItems[String(service?.protocol)] || {}),
+                [item]: (prevItems[String(service?.protocol)]?.[item] || 0) + 1
+            }
         }));
+
     };
 
     const toggleItemReset = (item: string) => {
-        setSelectedItems((prevItems) => ({
+        setSelectService(prevItems => ({
             ...prevItems,
-            [item]: 0
+            [String(service?.protocol)]: {
+                ...(prevItems[String(service?.protocol)] || {}),
+                [item]: 0
+            }
         }));
     };
 
+    const selectServiceClean = () => {
+        setSelectService(prevItems => ({
+            ...prevItems,
+            [String(service?.protocol)]: {}
+        }));
+    }
+
     const filteredItems = items?.filter(item =>
         item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (showSelected ? selectedItems[item.id] : true)
+        (showSelected ? selectService[item.id] : true)
     );
 
-    const selectedItemKeys = Object.keys(selectedItems);
+    const selectedItemKeys = Object.keys(selectService);
     const proportion = { width: 30, height: 30 };
 
     return (
@@ -94,7 +101,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                                 : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${selectedItemKeys.length})`}
                         </Button>
 
-                        <Button onClick={() => setSelectedItems({})}>
+                        <Button onClick={selectServiceClean} >
                             Limpar
                         </Button>
                     </div>
@@ -105,7 +112,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                 <ListItem
                     key={item.description}
                     item={item.description}
-                    count={selectedItems[item.id]}
+                    count={selectService?.[String(service?.protocol)]?.[item.id]}
                     onSelect={() => toggleItem(item.id)}
                     onReset={() => toggleItemReset(item.id)}
                 />

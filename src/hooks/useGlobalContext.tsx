@@ -1,13 +1,17 @@
 'use client';
 
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react';
+
+type ServiceItem = {
+  [key: string]: number;
+};
 
 type StateContext = {
-  loading: boolean;
-  setLoading: (value: boolean) => void;
+  selectMaterial: { [key: string]: ServiceItem };
+  setSelectMaterial: Dispatch<SetStateAction<{ [key: string]: ServiceItem }>>;
 
-  perPage: number;
-  setPerPage: (value: number) => void;
+  selectService: { [key: string]: ServiceItem };
+  setSelectService: Dispatch<SetStateAction<{ [key: string]: ServiceItem }>>;
 };
 
 type ProviderProps = {
@@ -17,27 +21,25 @@ type ProviderProps = {
 export const Context = createContext({} as StateContext);
 
 const ContextProvider = ({ children }: ProviderProps) => {
-  const [loading, setLoading] = useState(false);
-  const [perPage, setPerPage] = useState(0);
+  const [selectService, setSelectService] = useState<{ [key: string]: ServiceItem }>({});
+  const [selectMaterial, setSelectMaterial] = useState<{ [key: string]: ServiceItem }>({});
 
   return (
     <Context.Provider
-      value={
-        {
-          loading,
-          setLoading,
+      value={{
+        selectMaterial,
+        setSelectMaterial,
 
-          perPage,
-          setPerPage,
-        } as StateContext
-      }
+        selectService,
+        setSelectService,
+      }}
     >
       {children}
     </Context.Provider>
   );
 };
 
-function useContexState() {
+function useContexState(): StateContext {
   const context = useContext(Context);
   return context;
 }
