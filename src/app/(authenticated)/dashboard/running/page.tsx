@@ -16,6 +16,7 @@ import api from 'lib/api';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { ControlButtons } from './components/ControlButtons';
 
+import { useContexState } from "hooks/useGlobalContext";
 import { DisplayInfo } from './components/DisplayInfo';
 
 interface Service {
@@ -31,13 +32,39 @@ interface Service {
     protocol: string;
 }
 
+interface Protocol {
+    [key: string]: {};
+}
+
 export default function RunningService() {
     const [services, setServices] = useState<Service[]>([]);
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
+    const {
+        setSelectService,
+        setSelectMaterial
+    } = useContexState();
+
     const storedCookie = Cookie.get('auth_token');
     const maxRetries = 4
+
+    function filterSelectedOpenProtocols(services: Service[]) {
+        const serviceProtocols = services?.map(service => service.protocol);
+
+        function filterProtocols(paramPrevItems: Protocol, paramServiceProtocols: string[]) {
+            let filteredProtocols: Protocol = {};
+            for (let key in paramPrevItems) {
+                if (paramServiceProtocols.includes(key)) {
+                    filteredProtocols[key] = paramPrevItems[key];
+                }
+            }
+            return filteredProtocols;
+        }
+
+        setSelectService(prevItems => filterProtocols(prevItems, serviceProtocols));
+        setSelectMaterial(prevItems => filterProtocols(prevItems, serviceProtocols));
+    }
 
     async function fetchServices() {
         setConnectionError(false);
@@ -54,6 +81,8 @@ export default function RunningService() {
                 });
 
                 count = maxRetries;
+
+                filterSelectedOpenProtocols(response.data)
                 setServices(response.data);
             } catch (error) {
                 await new Promise((resolve) => setTimeout(resolve, 5000));

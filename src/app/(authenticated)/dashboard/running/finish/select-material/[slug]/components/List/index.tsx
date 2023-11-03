@@ -76,39 +76,52 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     }
 
     const toggleItem = (item: string) => {
-        setSelectMaterial(prevItems => ({
-            ...prevItems,
-            [String(service?.protocol)]: {
-                ...(prevItems[String(service?.protocol)] || {}),
-                [item]: (prevItems[String(service?.protocol)]?.[item] || 0) + 1
-            }
-        }));
-
+        setSelectMaterial(prevItems => {
+            const protocolKey = String(service?.protocol);
+        
+           return { ...prevItems,
+            [protocolKey]: {
+                ...(prevItems[protocolKey] || {}),
+                [item]: (prevItems[protocolKey]?.[item] || 0) + 1
+            }}
+        });
     };
 
     const toggleItemReset = (item: string) => {
-        setSelectMaterial(prevItems => ({
-            ...prevItems,
-            [String(service?.protocol)]: {
-                ...(prevItems[String(service?.protocol)] || {}),
-                [item]: 0
+        setSelectMaterial(prevItems => {
+            const updatedItems = { ...prevItems };
+            const protocolKey = String(service?.protocol);
+            const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length
+
+            if (updatedItems[protocolKey].hasOwnProperty(item)) {
+                selectedItemsCount > 1
+                    ? delete updatedItems[protocolKey][item]
+                    : delete updatedItems[protocolKey]
             }
-        }));
+
+            return updatedItems;
+        });
     };
 
     const selectServiceClean = () => {
-        setSelectMaterial(prevItems => ({
-            ...prevItems,
-            [String(service?.protocol)]: {}
-        }));
-    }
+        setSelectMaterial(prevItems => {
+            const updatedItems = { ...prevItems };
+            const protocolKey = String(service?.protocol);
+
+            if (updatedItems.hasOwnProperty(protocolKey)) {
+                delete updatedItems[protocolKey];
+            }
+
+            return updatedItems;
+        });
+    };
 
     const filteredItems = items?.filter(item =>
         item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (showSelected ? selectMaterial[item.id] : true)
+        (showSelected ? selectMaterial[String(service?.protocol)][item.id] : true)
     );
 
-    const selectedItemKeys = Object.keys(selectMaterial);
+    const selectedItemKeys = Object.keys(selectMaterial[String(service?.protocol)] || {});
     const proportion = { width: 30, height: 30 };
 
     return (
@@ -151,7 +164,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                 <Button onClick={() => router.back()}>
                     Voltar
                 </Button>
-                <Button  onClick={() => fetchConcludedMaterial()}>
+                <Button onClick={() => fetchConcludedMaterial()}>
                     Concluir
                 </Button>
             </div>

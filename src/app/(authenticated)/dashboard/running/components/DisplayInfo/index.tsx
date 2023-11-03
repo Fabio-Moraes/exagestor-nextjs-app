@@ -14,7 +14,6 @@ interface Service {
 }
 
 export function DisplayInfo({ service }: { service: Service }) {
-
     function formatDate(date: string) {
         const now = new Date(date);
         const year = now.getFullYear();

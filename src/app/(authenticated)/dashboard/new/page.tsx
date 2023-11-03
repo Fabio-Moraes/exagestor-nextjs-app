@@ -131,10 +131,27 @@ export default function NewService() {
 
                     const storedCookie = Cookie.get('auth_token');
 
+                    const getClassification = ({classificationL = 0, classificationF = 0}) => {
+                        const classificationArray = [];
+                    
+                        if (classificationL === 1) {
+                            classificationArray.push('L');
+                        }
+                        
+                        if (classificationF === 1) {
+                            classificationArray.push('F');
+                        }
+                    
+                        const classification = classificationArray.join('');
+                        return classification;
+                    };
+
+                    const classification =  getClassification({classificationL, classificationF})
+
                     const response = await api.post('/api/services/new', {
                         clientName: name,
                         city: selectedCity,
-                        classification: `${classificationL === 1 ? 'L' : 'F'}${classificationF === 1 ? 'F' : 'L'}`,
+                        classification: classification,
                         nomenclature: nomenclature,
                         address: address,
                         token: storedCookie,
@@ -167,7 +184,7 @@ export default function NewService() {
         };
     };
 
- 
+
     return (
         <Container>
             <Title>Novo Serviço</Title>
