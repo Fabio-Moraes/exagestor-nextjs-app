@@ -17,7 +17,10 @@ import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
 
-interface ListProps { id: string, description: string }
+interface ListProps {
+    id: string;
+    description: string;
+}
 
 interface Service {
     id: number;
@@ -32,7 +35,13 @@ interface Service {
     protocol: string;
 }
 
-export function List({ service, items }: { service: Service, items: ListProps[] }) {
+export function List({
+    service,
+    items
+}: {
+    service: Service;
+    items: ListProps[];
+}) {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showSelected, setShowSelected] = useState<boolean>(false);
 
@@ -40,7 +49,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
     /* eslint-enable */
-   
+
     const { selectMaterial, setSelectMaterial } = useContexState();
 
     const storedCookie = Cookie.get('auth_token');
@@ -53,9 +62,10 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
                 const response = await api.get('/api/services/concluded', {
@@ -78,22 +88,26 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     }
 
     const toggleItem = (item: string) => {
-        setSelectMaterial(prevItems => {
+        setSelectMaterial((prevItems) => {
             const protocolKey = String(service?.protocol);
-        
-           return { ...prevItems,
-            [protocolKey]: {
-                ...(prevItems[protocolKey] || {}),
-                [item]: (prevItems[protocolKey]?.[item] || 0) + 1
-            }};
+
+            return {
+                ...prevItems,
+                [protocolKey]: {
+                    ...(prevItems[protocolKey] || {}),
+                    [item]: (prevItems[protocolKey]?.[item] || 0) + 1
+                }
+            };
         });
     };
 
     const toggleItemReset = (item: string) => {
-        setSelectMaterial(prevItems => {
+        setSelectMaterial((prevItems) => {
             const updatedItems = { ...prevItems };
             const protocolKey = String(service?.protocol);
-            const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
+            const selectedItemsCount = Object.keys(
+                updatedItems[protocolKey] || {}
+            ).length;
 
             if (updatedItems[protocolKey].hasOwnProperty(item)) {
                 selectedItemsCount > 1
@@ -106,7 +120,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     };
 
     const selectServiceClean = () => {
-        setSelectMaterial(prevItems => {
+        setSelectMaterial((prevItems) => {
             const updatedItems = { ...prevItems };
             const protocolKey = String(service?.protocol);
 
@@ -118,24 +132,35 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
         });
     };
 
-    const filteredItems = items?.filter(item =>
-        item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (showSelected ? selectMaterial[String(service?.protocol)][item.id] : true)
+    const filteredItems = items?.filter(
+        (item) =>
+            item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (showSelected
+                ? selectMaterial[String(service?.protocol)][item.id]
+                : true)
     );
 
-    const selectedItemKeys = Object.keys(selectMaterial[String(service?.protocol)] || {});
+    const selectedItemKeys = Object.keys(
+        selectMaterial[String(service?.protocol)] || {}
+    );
     const proportion = { width: 30, height: 30 };
 
     return (
         <ListContainer>
             <div>
                 <SearchWrapper>
-                    <Image priority src={searchSvg} alt="Book" width={25} height={25} />
+                    <Image
+                        priority
+                        src={searchSvg}
+                        alt="Book"
+                        width={25}
+                        height={25}
+                    />
                     <SearchBar
                         type="text"
                         placeholder="Pesquisar serviço..."
                         value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </SearchWrapper>
                 <div>
@@ -143,29 +168,29 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
                         <Button onClick={() => setShowSelected(!showSelected)}>
                             {showSelected
                                 ? 'Mostrar Todos'
-                                : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${selectedItemKeys.length})`}
+                                : `Filtrar Selecionado${
+                                      selectedItemKeys.length > 1 ? 's' : ''
+                                  } (${selectedItemKeys.length})`}
                         </Button>
 
-                        <Button onClick={selectServiceClean}>
-                            Limpar
-                        </Button>
+                        <Button onClick={selectServiceClean}>Limpar</Button>
                     </div>
                     <Image priority src={infoSvg} alt="Add" {...proportion} />
                 </div>
             </div>
-            {filteredItems.map(item => (
+            {filteredItems.map((item) => (
                 <ListItem
                     key={item.description}
                     item={item.description}
-                    count={selectMaterial?.[String(service?.protocol)]?.[item.id]}
+                    count={
+                        selectMaterial?.[String(service?.protocol)]?.[item.id]
+                    }
                     onSelect={() => toggleItem(item.id)}
                     onReset={() => toggleItemReset(item.id)}
                 />
             ))}
             <div>
-                <Button onClick={() => router.back()}>
-                    Voltar
-                </Button>
+                <Button onClick={() => router.back()}>Voltar</Button>
                 <Button onClick={() => fetchConcludedMaterial()}>
                     Concluir
                 </Button>
