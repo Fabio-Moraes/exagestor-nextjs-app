@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const api = axios.create({ 
+const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_BASEURL,
-     headers: {
-        'Access-Control-Allow-Origin' : '*',
-        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     },
     withCredentials: true
 });
