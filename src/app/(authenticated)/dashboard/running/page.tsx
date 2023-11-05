@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 import {
     Container,
@@ -16,7 +16,7 @@ import api from 'lib/api';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { ControlButtons } from './components/ControlButtons';
 
-import { useContexState } from "hooks/useGlobalContext";
+import { useContexState } from 'hooks/useGlobalContext';
 import { DisplayInfo } from './components/DisplayInfo';
 
 interface Service {
@@ -33,7 +33,7 @@ interface Service {
 }
 
 interface Protocol {
-    [key: string]: {};
+    [key: string]: { [key: string]: number };
 }
 
 export default function RunningService() {
@@ -41,20 +41,20 @@ export default function RunningService() {
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-    const {
-        setSelectService,
-        setSelectMaterial
-    } = useContexState();
+    const { setSelectService, setSelectMaterial } = useContexState();
 
     const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4
+    const maxRetries = 4;
 
     function filterSelectedOpenProtocols(services: Service[]) {
-        const serviceProtocols = services?.map(service => service.protocol);
+        const serviceProtocols = services?.map((service) => service.protocol);
 
-        function filterProtocols(paramPrevItems: Protocol, paramServiceProtocols: string[]) {
-            let filteredProtocols: Protocol = {};
-            for (let key in paramPrevItems) {
+        function filterProtocols(
+            paramPrevItems: Protocol,
+            paramServiceProtocols: string[]
+        ) {
+            const filteredProtocols: Protocol = {};
+            for (const key in paramPrevItems) {
                 if (paramServiceProtocols.includes(key)) {
                     filteredProtocols[key] = paramPrevItems[key];
                 }
@@ -62,8 +62,12 @@ export default function RunningService() {
             return filteredProtocols;
         }
 
-        setSelectService(prevItems => filterProtocols(prevItems, serviceProtocols));
-        setSelectMaterial(prevItems => filterProtocols(prevItems, serviceProtocols));
+        setSelectService((prevItems) =>
+            filterProtocols(prevItems, serviceProtocols)
+        );
+        setSelectMaterial((prevItems) =>
+            filterProtocols(prevItems, serviceProtocols)
+        );
     }
 
     async function fetchServices() {
@@ -71,9 +75,10 @@ export default function RunningService() {
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
                 const response = await api.get('/api/services/running', {
@@ -82,7 +87,7 @@ export default function RunningService() {
 
                 count = maxRetries;
 
-                filterSelectedOpenProtocols(response.data)
+                filterSelectedOpenProtocols(response.data);
                 setServices(response.data);
             } catch (error) {
                 await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -114,7 +119,9 @@ export default function RunningService() {
                         Não foi possível obter dados da lista devido a
                         instabilidade na conexão. Por favor, tente novamente.
                     </span>
-                    <button onClick={() => fetchServices()}>Tentar Novamente</button>
+                    <button onClick={() => fetchServices()}>
+                        Tentar Novamente
+                    </button>
                 </ErrorContainer>
             )}
         </Container>

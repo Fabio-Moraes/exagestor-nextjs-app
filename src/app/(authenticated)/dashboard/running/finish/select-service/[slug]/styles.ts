@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import styled from 'styled-components';
 
@@ -11,19 +11,19 @@ export const Container = styled.div`
 export const Title = styled.div`
     color: #333;
     padding: 8px;
-    
-    > h1{
+
+    > h1 {
         font-size: 30px;
         margin-bottom: 3px;
     }
-    
+
     > span {
-      font-size: 17px; 
+        font-size: 17px;
     }
-    
+
     @media (min-width: 550px) {
-      background-color: #3C7D5D;    
-      color: #fff 
+        background-color: #3c7d5d;
+        color: #fff;
     }
 `;
 
@@ -47,6 +47,6 @@ export const ErrorContainer = styled.div`
         border: 1px solid #000000;
         border-radius: 4px;
         font-size: 16px;
-        color: #fff
+        color: #fff;
     }
-`
+`;

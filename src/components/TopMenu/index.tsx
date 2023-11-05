@@ -13,7 +13,7 @@ import {
     Container,
 } from './styles';
 
-export function Menu() {
+export function TopMenu() {
   const pathname = usePathname();
   const proportion = { width: 25, height: 25 };
 

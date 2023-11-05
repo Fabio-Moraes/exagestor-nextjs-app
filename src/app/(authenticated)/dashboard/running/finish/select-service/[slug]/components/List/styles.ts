@@ -73,7 +73,7 @@ export const SearchWrapper = styled.div`
   width: 100%;
   height: 35px;
   margin-bottom: 10px;
-`
+`;
 
 export const SearchBar = styled.input`
   font-size: 16px;

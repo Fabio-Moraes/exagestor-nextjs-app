@@ -17,7 +17,7 @@ import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
 
-interface ListProps { id: string, description: string };
+interface ListProps { id: string, description: string }
 
 interface Service {
     id: number;
@@ -41,7 +41,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     const router = useRouter();
 
     async function fetchConcludedServices() {
-        const encryptSlug = encryptObject({ protocol: service?.protocol })
+        const encryptSlug = encryptObject({ protocol: service?.protocol });
         router.push(`/dashboard/running/finish/select-material/${encryptSlug}`);
     }
 
@@ -53,7 +53,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
             [protocolKey]: {
                 ...(prevItems[protocolKey] || {}),
                 [item]: (prevItems[protocolKey]?.[item] || 0) + 1
-            }}
+            }};
         });
     };
 
@@ -61,12 +61,12 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
         setSelectService(prevItems => {
             const updatedItems = { ...prevItems };
             const protocolKey = String(service?.protocol);
-            const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length
+            const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
 
             if (updatedItems[protocolKey].hasOwnProperty(item)) {
                 selectedItemsCount > 1
                     ? delete updatedItems[protocolKey][item]
-                    : delete updatedItems[protocolKey]
+                    : delete updatedItems[protocolKey];
             }
 
             return updatedItems;
@@ -140,4 +140,4 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
             </div>
         </ListContainer>
     );
-};
+}

@@ -17,5 +17,5 @@ export function Modal({ message = '', icon = null }: Props) {
             />}
             <span dangerouslySetInnerHTML={{ __html: message }} />
         </Container>
-    )
+    );
 }

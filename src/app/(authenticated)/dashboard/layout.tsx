@@ -1,15 +1,17 @@
 import { Footer } from 'components/Footer';
-import { Header } from 'components/Header';
 import { MenuBar } from 'components/MenuBar';
 import { SideBar } from 'components/SideBar';
 import React from 'react';
 
+import { Header } from 'components/Header';
+import { TopMenu } from 'components/TopMenu';
+
 import { Container, Main, Wrapper } from './styles';
 
 export default function RootLayout({
-    children,
+    children
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
     return (
         <Container>
@@ -17,6 +19,7 @@ export default function RootLayout({
                 <MenuBar />
                 <Main>
                     <Header />
+                    <TopMenu />
                     {children}
                     <Footer />
                 </Main>

@@ -1,4 +1,4 @@
-import { Container } from './styles';
+import { Container, MoreOptions } from './styles';
 
 interface Service {
     id: number;
@@ -32,11 +32,11 @@ export function DisplayInfo({ service }: { service: Service }) {
         active: '🚧 Em andamento',
         paused: '⏸️ Pausado',
         canceled: '❌ Cancelado'
-    } as { [key: string]: string }
+    } as { [key: string]: string };
 
-    const modificationAt = formatDate(service[
-        service.modification_at ? 'modification_at' : 'created_at'
-    ]);
+    const modificationAt = formatDate(
+        service[service.modification_at ? 'modification_at' : 'created_at']
+    );
 
     const createdAt = formatDate(service.created_at);
 
@@ -50,6 +50,9 @@ export function DisplayInfo({ service }: { service: Service }) {
                 <p>Início: {createdAt}</p>
                 <p>Status do serviço: {status[service?.status]}</p>
             </div>
+            <MoreOptions rel="preload" href="/dashboard/historic/details">
+                <p>Detalhes</p>
+            </MoreOptions>
         </Container>
-    )
+    );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 import {
     Container,
@@ -36,16 +36,17 @@ export default function HistoricService() {
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
     const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4
+    const maxRetries = 4;
 
     async function fetchServices() {
         setConnectionError(false);
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
                 const response = await api.get('/api/services/historic', {
@@ -83,7 +84,9 @@ export default function HistoricService() {
                         Não foi possível obter dados da lista devido a
                         instabilidade na conexão. Por favor, tente novamente.
                     </span>
-                    <button onClick={() => fetchServices()}>Tentar Novamente</button>
+                    <button onClick={() => fetchServices()}>
+                        Tentar Novamente
+                    </button>
                 </ErrorContainer>
             )}
         </Container>

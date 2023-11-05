@@ -15,7 +15,7 @@ export const Container = styled.div<{ selected: boolean }>`
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
-`
+`;
 
 export const Reset = styled.div`
     display: flex;

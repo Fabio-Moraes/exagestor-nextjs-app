@@ -12,13 +12,12 @@ export const Title = styled.h1`
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
-    
-    
+
     @media (min-width: 550px) {
-      height: 40px;
-      line-height: 40px;
-      background-color: #3C7D5D;
-      color: #fff;
+        height: 40px;
+        line-height: 40px;
+        background-color: #3c7d5d;
+        color: #fff;
     }
 `;
 
@@ -33,13 +32,13 @@ export const ListItem = styled.li`
     border: 2px solid #3f795e;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
+
     display: flex;
     justify-content: space-between;
-    flex-direction:  column;
+    flex-direction: column;
 
     @media (min-width: 550px) {
-    flex-direction:  row;
+        flex-direction: row;
     }
 `;
 
@@ -63,6 +62,6 @@ export const ErrorContainer = styled.div`
         border: 1px solid #000000;
         border-radius: 4px;
         font-size: 16px;
-        color: #fff
+        color: #fff;
     }
-`
+`;

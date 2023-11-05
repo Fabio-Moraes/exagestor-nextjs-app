@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 import Cookie from 'js-cookie';
-import jwtDecode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 
 export function useDecodeToken<S>(token: string): S | null {
     const [decoded, setDecoded] = useState<S | null>(null);
@@ -11,9 +11,9 @@ export function useDecodeToken<S>(token: string): S | null {
     useEffect(() => {
         function handleTokenChange() {
             const storedCookie = Cookie.get(token) || '';
-            
+
             try {
-                if (storedCookie && storedCookie.trim() !== "") {
+                if (storedCookie && storedCookie.trim() !== '') {
                     setDecoded(jwtDecode(storedCookie) as S);
                 } else {
                     setDecoded(null);

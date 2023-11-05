@@ -1,7 +1,7 @@
 import { Form } from './components/Form';
 import { Container, Main, Wrapper } from './styles';
 
-export default function NewService() {
+export default function SignIn() {
     return (
         <Container>
             <Wrapper>

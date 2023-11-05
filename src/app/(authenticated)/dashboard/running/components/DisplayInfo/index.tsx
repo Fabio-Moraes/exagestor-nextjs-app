@@ -29,7 +29,7 @@ export function DisplayInfo({ service }: { service: Service }) {
     const status = {
         active: '🚧 Em andamento',
         paused: '⏸️ Pausado'
-    } as { [key: string]: string }
+    } as { [key: string]: string };
 
     const createdAt = formatDate(service.created_at);
 
@@ -47,5 +47,5 @@ export function DisplayInfo({ service }: { service: Service }) {
                 <p>Atualização de status: {service?.update_count}</p>
             </div>
         </Container>
-    )
+    );
 }

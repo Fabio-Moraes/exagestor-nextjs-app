@@ -14,13 +14,7 @@ import { Footer } from '../Footer';
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
 
-import {
-    Button,
-    Container,
-    ErrorSpan,
-    FormContainer,
-    Input
-} from './styles';
+import { Button, Container, ErrorSpan, FormContainer, Input } from './styles';
 
 interface CustomError extends Error {
     response?: {
@@ -73,8 +67,15 @@ export const Form = () => {
 
         for (let count = 0; count < MAX_RETRIES; count++) {
             try {
-                setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-                const response = await api.post('/api/auth/signin', { cnpj, password });
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
+                );
+                const response = await api.post('/api/auth/signin', {
+                    cnpj,
+                    password
+                });
                 const { token } = response.data;
 
                 if (response.status === 200) {
@@ -87,7 +88,10 @@ export const Form = () => {
                     const customError = error as CustomError;
                     if (customError.response) {
                         const statusCode = customError.response.status;
-                        console.log('Erro ao fazer login. Código de status:', statusCode);
+                        console.log(
+                            'Erro ao fazer login. Código de status:',
+                            statusCode
+                        );
                         if (statusCode === 401) {
                             count = MAX_RETRIES;
                             setIsPopupValue(null);
@@ -101,7 +105,9 @@ export const Form = () => {
                 }
                 if (count + 1 === MAX_RETRIES) {
                     setIsPopupValue(null);
-                    setInvalidCredentials('Conexão perdida. Por favor, tente novamente.');
+                    setInvalidCredentials(
+                        'Conexão perdida. Por favor, tente novamente.'
+                    );
                 }
             }
         }
@@ -131,17 +137,19 @@ export const Form = () => {
                         maxLength={18}
                         placeholder="CNPJ"
                         value={cnpj}
-                        onChange={handleChange} />
+                        onChange={handleChange}
+                    />
 
                     <Input
                         type="password"
                         placeholder="Senha"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value.trim())} />
+                        onChange={(e) => setPassword(e.target.value.trim())}
+                    />
 
                     <Button type="submit">Entrar</Button>
                     <Footer />
-                </FormContainer >
+                </FormContainer>
                 {invalidCredentials && (
                     <ErrorSpan>
                         <div>
@@ -153,7 +161,11 @@ export const Form = () => {
                                 height={55}
                             />
                         </div>
-                        <span dangerouslySetInnerHTML={{ __html: invalidCredentials }} />
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: invalidCredentials
+                            }}
+                        />
                     </ErrorSpan>
                 )}
             </Container>

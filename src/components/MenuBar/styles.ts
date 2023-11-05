@@ -16,11 +16,13 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 40px;
   padding: 7px;
   background-color: #8BC9A8;
   border: 2px solid #3f795e;
   border-radius: 15px;
+
+  position: sticky;
+  top: 30px;
 
   > div {
     width: 100%;

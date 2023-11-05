@@ -35,7 +35,7 @@ export default function NewService() {
     const [name, setName] = useState('');
 
     const [modalValue, setModalValue] = useState('');
-    const [iconSvgModal, setIconSvgModal] = useState(alertSvg)
+    const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
     const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
 
     const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
@@ -61,12 +61,12 @@ export default function NewService() {
     };
 
     const handleCheckboxClickClassL = () => {
-        setClassificationL((checkedState) => checkedState === 1 ? 0 : 1);
+        setClassificationL((checkedState) => (checkedState === 1 ? 0 : 1));
         setModalValue('');
     };
 
     const handleCheckboxClickClassF = () => {
-        setClassificationF((checkedState) => checkedState === 1 ? 0 : 1);
+        setClassificationF((checkedState) => (checkedState === 1 ? 0 : 1));
         setModalValue('');
     };
 
@@ -74,11 +74,15 @@ export default function NewService() {
         setName(e.target.value);
     };
 
-    const handleServiceOriginAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleServiceOriginAddressChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         setAddress(e.target.value);
     };
 
-    const handleBoxOrCableNomenclatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBoxOrCableNomenclatureChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         setNomenclature(e.target.value);
     };
 
@@ -98,7 +102,9 @@ export default function NewService() {
             }
 
             if (!validateName(name)) {
-                setModalValue('O nome não pode conter números ou caracteres inválidos.');
+                setModalValue(
+                    'O nome não pode conter números ou caracteres inválidos.'
+                );
                 return;
             }
 
@@ -118,7 +124,9 @@ export default function NewService() {
             }
 
             if (classificationL === 0 && classificationF === 0) {
-                setModalValue('Selecione pelo menos uma opção (Classe L ou Classe F).');
+                setModalValue(
+                    'Selecione pelo menos uma opção (Classe L ou Classe F).'
+                );
                 return;
             }
 
@@ -127,26 +135,36 @@ export default function NewService() {
 
             while (retryCount < maxRetries) {
                 try {
-                    setFullScreenLoadingValue(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
+                    setFullScreenLoadingValue(
+                        retryCount > 0
+                            ? `Conectando<br>Tentativa (${retryCount + 1})`
+                            : 'Conectando'
+                    );
 
                     const storedCookie = Cookie.get('auth_token');
 
-                    const getClassification = ({classificationL = 0, classificationF = 0}) => {
+                    const getClassification = ({
+                        classificationL = 0,
+                        classificationF = 0
+                    }) => {
                         const classificationArray = [];
-                    
+
                         if (classificationL === 1) {
                             classificationArray.push('L');
                         }
-                        
+
                         if (classificationF === 1) {
                             classificationArray.push('F');
                         }
-                    
+
                         const classification = classificationArray.join('');
                         return classification;
                     };
 
-                    const classification =  getClassification({classificationL, classificationF})
+                    const classification = getClassification({
+                        classificationL,
+                        classificationF
+                    });
 
                     const response = await api.post('/api/services/new', {
                         clientName: name,
@@ -154,18 +172,20 @@ export default function NewService() {
                         classification: classification,
                         nomenclature: nomenclature,
                         address: address,
-                        token: storedCookie,
+                        token: storedCookie
                     });
 
-                    const { success } = response?.data;
+                    const { success } = response.data;
 
                     if (success) {
                         setSuccessfullyCompleted(true);
-                        setFullScreenLoadingValue('')
+                        setFullScreenLoadingValue('');
                         setIconSvgModal(checkedSvg);
                         setModalValue('Novo serviço iniciado com êxito.');
 
-                        await new Promise((resolve) => setTimeout(resolve, 1000));
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 1000)
+                        );
                         router.push('/dashboard/running');
                         return;
                     } else {
@@ -179,11 +199,12 @@ export default function NewService() {
                 await new Promise((resolve) => setTimeout(resolve, 5000));
             }
 
-            setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
+            setModalValue(
+                'Não foi possível iniciar o serviço após várias tentativas.'
+            );
             setFullScreenLoadingValue('');
-        };
+        }
     };
-
 
     return (
         <Container>
@@ -199,14 +220,22 @@ export default function NewService() {
                 />
 
                 <label htmlFor="selectedCity">Cidade:</label>
-                <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
+                <Select
+                    id="selectedCity"
+                    value={selectedCity}
+                    onChange={handleCityChange}
+                >
                     <Option value="">Selecione uma cidade</Option>
                     {cities.map((city, index) => (
-                        <Option key={index.toString()} value={city}>{city}</Option>
+                        <Option key={index.toString()} value={city}>
+                            {city}
+                        </Option>
                     ))}
                 </Select>
 
-                <label htmlFor="serviceOriginAddress">Endereço de origem do serviço:</label>
+                <label htmlFor="serviceOriginAddress">
+                    Endereço de origem do serviço:
+                </label>
                 <Input
                     type="text"
                     id="serviceOriginAddress"
@@ -215,7 +244,9 @@ export default function NewService() {
                     onChange={handleServiceOriginAddressChange}
                 />
 
-                <label htmlFor="boxOrCableNomenclature">Nomenclatura de caixa ou cabo:</label>
+                <label htmlFor="boxOrCableNomenclature">
+                    Nomenclatura de caixa ou cabo:
+                </label>
                 <Input
                     type="text"
                     id="boxOrCableNomenclature"
@@ -228,7 +259,8 @@ export default function NewService() {
                     <CheckboxButton
                         type="button"
                         $checked={classificationL}
-                        onClick={handleCheckboxClickClassL}>
+                        onClick={handleCheckboxClickClassL}
+                    >
                         <div />
                         <span>Classe L</span>
                     </CheckboxButton>
@@ -236,17 +268,22 @@ export default function NewService() {
                     <CheckboxButton
                         type="button"
                         $checked={classificationF}
-                        onClick={handleCheckboxClickClassF}>
+                        onClick={handleCheckboxClickClassF}
+                    >
                         <div />
                         <span>Classe F</span>
                     </CheckboxButton>
-                </div >
+                </div>
 
                 <Button type="submit">Iniciar Serviço</Button>
-            </FormContainer >
+            </FormContainer>
 
-            {modalValue && !fullScreenLoadingValue && <Modal icon={iconSvgModal} message={modalValue} />}
-            {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
+            {modalValue && !fullScreenLoadingValue && (
+                <Modal icon={iconSvgModal} message={modalValue} />
+            )}
+            {fullScreenLoadingValue && (
+                <FullScreenLoading message={fullScreenLoadingValue} />
+            )}
         </Container>
     );
-};
+}

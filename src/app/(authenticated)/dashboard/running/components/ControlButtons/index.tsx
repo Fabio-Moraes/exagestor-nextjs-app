@@ -5,7 +5,6 @@ import { useState } from 'react';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
-import { useRouter } from 'next/navigation';
 import { ButtonFinish, Container } from './styles';
 
 import { encryptObject } from '../../../../../../functions';
@@ -24,30 +23,39 @@ interface Service {
 }
 
 export function ControlButtons({ service }: { service: Service }) {
+    /* eslint-disable */
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+    /* eslint-enable */
 
     const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4
-
-    const router = useRouter();
+    const maxRetries = 4;
 
     async function fetchStatusServices() {
         setConnectionError(false);
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
-                const response = await api.get(`/api/services/${service?.status === 'active' ? 'pause' : 'start'}`, {
-                    params: { token: storedCookie, protocol: service?.protocol }
-                });
+                const response = await api.get(
+                    `/api/services/${
+                        service?.status === 'active' ? 'pause' : 'start'
+                    }`,
+                    {
+                        params: {
+                            token: storedCookie,
+                            protocol: service?.protocol
+                        }
+                    }
+                );
 
                 count = maxRetries;
-                router.push('/dashboard/new');
+                location.reload();
                 console.log(response.data);
             } catch (error) {
                 await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -62,9 +70,10 @@ export function ControlButtons({ service }: { service: Service }) {
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
                 const response = await api.get('/api/services/cancel', {
@@ -72,7 +81,7 @@ export function ControlButtons({ service }: { service: Service }) {
                 });
 
                 count = maxRetries;
-                router.push('/dashboard/new');
+                location.reload();
                 console.log(response.data);
             } catch (error) {
                 await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -82,13 +91,19 @@ export function ControlButtons({ service }: { service: Service }) {
         setIsPopupValue(null);
     }
 
-    const encryptSlug = encryptObject({ protocol: service?.protocol })
+    const encryptSlug = encryptObject({ protocol: service?.protocol });
 
     return (
         <Container>
-            <ButtonFinish href={`/dashboard/running/finish/select-service/${encryptSlug}`}><span>Finalizar</span></ButtonFinish>
-            <button onClick={() => fetchStatusServices()}>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</button>
+            <ButtonFinish
+                href={`/dashboard/running/finish/select-service/${encryptSlug}`}
+            >
+                <span>Finalizar</span>
+            </ButtonFinish>
+            <button onClick={() => fetchStatusServices()}>
+                {service?.status !== 'active' ? 'Retomar' : 'Pausar'}
+            </button>
             <button onClick={() => fetchCancelServices()}>Cancerlar</button>
         </Container>
-    )
+    );
 }

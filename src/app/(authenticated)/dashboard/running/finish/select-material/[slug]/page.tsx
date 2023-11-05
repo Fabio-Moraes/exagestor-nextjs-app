@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -22,12 +22,10 @@ const data = [
     { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
 ];
 
-const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-
 interface SlugType {
     params: {
         slug: string;
-    }
+    };
 }
 
 interface Service {
@@ -49,21 +47,28 @@ export default function FinishService({ params }: SlugType) {
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
     const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4
+    const maxRetries = 4;
 
     async function fetchServices() {
         setConnectionError(false);
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
-                const response = await api.get('/api/services/select-material', {
-                    params: { token: storedCookie, protocol: decryptObject(params.slug).protocol }
-                });
+                const response = await api.get(
+                    '/api/services/select-material',
+                    {
+                        params: {
+                            token: storedCookie,
+                            protocol: decryptObject(params.slug).protocol
+                        }
+                    }
+                );
 
                 count = maxRetries;
                 setServices(response.data);
@@ -84,9 +89,8 @@ export default function FinishService({ params }: SlugType) {
             <Title>
                 <h1>Selecionar Material</h1>
                 <span>PROTOCOLO: {services[0]?.protocol}</span>
-
             </Title>
-            {false && <FullScreenLoading message={'isPopupValue'} />}
+            {isPopupValue && <FullScreenLoading message={'isPopupValue'} />}
             {connectionError ? (
                 <ErrorContainer>
                     <span>
@@ -94,7 +98,9 @@ export default function FinishService({ params }: SlugType) {
                         instabilidade na conexão. Por favor, tente novamente.
                     </span>
                 </ErrorContainer>
-            ) : <List items={data} service={services[0]} />}
+            ) : (
+                <List items={data} service={services[0]} />
+            )}
         </Container>
     );
 }

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -23,12 +23,10 @@ const data = [
     { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
 ];
 
-const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-
 interface SlugType {
     params: {
         slug: string;
-    }
+    };
 }
 
 interface Service {
@@ -47,25 +45,32 @@ interface Service {
 export default function FinishService({ params }: SlugType) {
     const [services, setServices] = useState<Service[]>([]);
     const [connectionError, setConnectionError] = useState(false);
+
+    /* eslint-disable */
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+    /* eslint-enable */
 
     const storedCookie = Cookie.get('auth_token');
-    
+
     async function fetchServices() {
         setConnectionError(false);
-        
-        const maxRetries = 4
-        const decryptSlug = decryptObject(params.slug)
+
+        const maxRetries = 4;
+        const decryptSlug = decryptObject(params.slug);
 
         for (let count = 0; count < maxRetries; count++) {
             try {
-                setIsPopupValue(count > 0
-                    ? `Conectando<br>Tentativa (${count + 1})`
-                    : 'Conectando'
+                setIsPopupValue(
+                    count > 0
+                        ? `Conectando<br>Tentativa (${count + 1})`
+                        : 'Conectando'
                 );
 
                 const response = await api.get('/api/services/select-service', {
-                    params: { token: storedCookie, protocol: decryptSlug.protocol  }
+                    params: {
+                        token: storedCookie,
+                        protocol: decryptSlug.protocol
+                    }
                 });
 
                 count = maxRetries;
@@ -96,7 +101,9 @@ export default function FinishService({ params }: SlugType) {
                         instabilidade na conexão. Por favor, tente novamente.
                     </span>
                 </ErrorContainer>
-            ) : <List items={data} service={services[0]} />}
+            ) : (
+                <List items={data} service={services[0]} />
+            )}
         </Container>
     );
 }

@@ -17,7 +17,7 @@ import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
 
-interface ListProps { id: string, description: string };
+interface ListProps { id: string, description: string }
 
 interface Service {
     id: number;
@@ -36,13 +36,15 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showSelected, setShowSelected] = useState<boolean>(false);
 
+    /* eslint-disable */ 
     const [connectionError, setConnectionError] = useState(false);
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-
+    /* eslint-enable */
+   
     const { selectMaterial, setSelectMaterial } = useContexState();
 
     const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4
+    const maxRetries = 4;
 
     const router = useRouter();
 
@@ -83,7 +85,7 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
             [protocolKey]: {
                 ...(prevItems[protocolKey] || {}),
                 [item]: (prevItems[protocolKey]?.[item] || 0) + 1
-            }}
+            }};
         });
     };
 
@@ -91,12 +93,12 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
         setSelectMaterial(prevItems => {
             const updatedItems = { ...prevItems };
             const protocolKey = String(service?.protocol);
-            const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length
+            const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
 
             if (updatedItems[protocolKey].hasOwnProperty(item)) {
                 selectedItemsCount > 1
                     ? delete updatedItems[protocolKey][item]
-                    : delete updatedItems[protocolKey]
+                    : delete updatedItems[protocolKey];
             }
 
             return updatedItems;
@@ -170,4 +172,4 @@ export function List({ service, items }: { service: Service, items: ListProps[] 
             </div>
         </ListContainer>
     );
-};
+}

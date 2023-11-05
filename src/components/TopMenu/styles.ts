@@ -3,13 +3,12 @@
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
-
 export const Container = styled.div`
   border: 2px solid #3f795e;  
   position: sticky;
   display: flex;
   padding: 3px min(20px, max(10vw, 10px));
-  background-image:  radial-gradient(350px at center, #dce6dc 20%, #27A567);
+  background-image:  radial-gradient(350px at center, rgba(255,255,255,.94) 20%, #27A567);
   justify-content: space-between;
   width: 100%;
   left: 0;

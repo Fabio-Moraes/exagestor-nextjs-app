@@ -1,5 +1,4 @@
 import { Inter } from 'next/font/google';
-import React from 'react';
 
 import StyledComponentsRegistry from 'lib/registry';
 
@@ -17,17 +16,15 @@ export const metadata = {
 };
 
 export default function RootLayout({
-    children,
+    children
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
     return (
         <html>
             <body className={inter.className}>
                 <StyledComponentsRegistry>
-                    <ContextProvider>
-                        {children}
-                    </ContextProvider>
+                    <ContextProvider>{children}</ContextProvider>
                 </StyledComponentsRegistry>
             </body>
         </html>

@@ -3,7 +3,7 @@ import * as animationData from './assets/lottie/animation.json';
 
 import { Container } from './styles';
 
-export function Spinner({ active = true }) {
+export function Spinner({ active = true }: { active?: boolean }) {
     return (
         <Container>
             <div>
@@ -18,5 +18,5 @@ export function Spinner({ active = true }) {
                 </div>
             </div>
         </Container>
-    )
+    );
 }
