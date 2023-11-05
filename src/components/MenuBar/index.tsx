@@ -20,10 +20,16 @@ export function MenuBar() {
                 <div>
                     <Button
                         $path={['/dashboard/new', '/'].includes(pathname)}
-                        href='/dashboard/new'
+                        href="/dashboard/new"
                         rel="preload"
                     >
-                        <Image priority loading="eager" src={add} alt="Add" {...proportion} />
+                        <Image
+                            priority
+                            loading="eager"
+                            src={add}
+                            alt="Add"
+                            {...proportion}
+                        />
                         <span>Novo Serviço</span>
                     </Button>
                 </div>
@@ -31,10 +37,16 @@ export function MenuBar() {
                 <div>
                     <Button
                         $path={['/dashboard/running'].includes(pathname)}
-                        href='/dashboard/running'
+                        href="/dashboard/running"
                         rel="preload"
                     >
-                        <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
+                        <Image
+                            priority
+                            loading="eager"
+                            src={execution}
+                            alt="Book"
+                            {...proportion}
+                        />
                         <span>Em Execução</span>
                     </Button>
                 </div>
@@ -42,19 +54,29 @@ export function MenuBar() {
                 <div>
                     <Button
                         $path={['/dashboard/historic'].includes(pathname)}
-                        href='/dashboard/historic'
+                        href="/dashboard/historic"
                         rel="preload"
                     >
-                        <Image priority loading="eager" src={report} alt="Report" {...proportion} />
+                        <Image
+                            priority
+                            loading="eager"
+                            src={report}
+                            alt="Report"
+                            {...proportion}
+                        />
                         <span>Histórico Geral</span>
                     </Button>
                 </div>
 
                 <div>
-                    <Button
-                        href='/'
-                    >
-                        <Image priority loading="eager" src={clipboard} alt="Clipboard" {...proportion} />
+                    <Button href="/">
+                        <Image
+                            priority
+                            loading="eager"
+                            src={clipboard}
+                            alt="Clipboard"
+                            {...proportion}
+                        />
                         <span>Materiais Utilizados</span>
                     </Button>
                 </div>

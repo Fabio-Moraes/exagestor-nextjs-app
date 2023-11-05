@@ -1,27 +1,20 @@
 'use client';
 
-import {
-  Body,
-  Container,
-  Content,
-  Description,
-  ImageContent
-} from './styles';
-
+import { Body, Container, Content, Description, ImageContent } from './styles';
 
 interface propsType {
-  ImageUrl: string;
-  description?: string;
+    ImageUrl: string;
+    description?: string;
 }
 
 export function Post({ ImageUrl, description }: propsType) {
-  return (
-    <Container>
-      <Body>
-        <Content>
-        {description && <Description>{description}</Description>}
-          <ImageContent src={ImageUrl} />
-          {/* <Icons>
+    return (
+        <Container>
+            <Body>
+                <Content>
+                    {description && <Description>{description}</Description>}
+                    <ImageContent src={ImageUrl} />
+                    {/* <Icons>
             <FacebookShareButton
               quote={'234234234234'}
               url={'https://viveiromatanativa.com.br'}
@@ -44,8 +37,8 @@ export function Post({ ImageUrl, description }: propsType) {
               </Status>
             </TwitterShareButton>
           </Icons> */}
-        </Content>
-      </Body>
-    </Container>
-  );
+                </Content>
+            </Body>
+        </Container>
+    );
 }

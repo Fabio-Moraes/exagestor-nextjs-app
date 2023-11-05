@@ -29,9 +29,7 @@ export function Header() {
                 </ProfileInfo>
             </div>
             <div>
-                <span>
-                    {decoderToken?.name || 'Carregando...'}
-                </span>
+                <span>{decoderToken?.name || 'Carregando...'}</span>
                 <button
                     onClick={() => {
                         Cookie.remove('auth_token');

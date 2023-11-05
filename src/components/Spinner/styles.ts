@@ -12,30 +12,30 @@ const rotateAnimation = keyframes`
 `;
 
 export const Container = styled.div`
-  display: flex;
-  z-index: 1000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; 
-  min-height: 90px;
-  min-width: 200px;
-  border-radius: 10px;
-  overflow: hidden;
-
-  > div {
-    position: absolute;
     display: flex;
+    z-index: 1000;
     flex-direction: column;
     align-items: center;
-    justify-content: center; 
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 2;
-    padding-bottom: 70px;
+    justify-content: center;
+    min-height: 90px;
+    min-width: 200px;
     border-radius: 10px;
-    > div { 
-        animation: ${rotateAnimation} 1s linear infinite; 
-    };
-  }
-`
+    overflow: hidden;
+
+    > div {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        padding-bottom: 70px;
+        border-radius: 10px;
+        > div {
+            animation: ${rotateAnimation} 1s linear infinite;
+        }
+    }
+`;

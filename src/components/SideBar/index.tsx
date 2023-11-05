@@ -1,9 +1,9 @@
 import { Container } from './styles';
 
 export function SideBar() {
-  return (
-    <Container>
-         {/*  <Card
+    return (
+        <Container>
+            {/*  <Card
             title="Equipe"
             elements={[
               <TeamCard key='0' name="James Junio" nickname="@james_junio" />,
@@ -51,6 +51,6 @@ export function SideBar() {
               />,
             ]}
           /> */}
-    </Container>
-  );
+        </Container>
+    );
 }

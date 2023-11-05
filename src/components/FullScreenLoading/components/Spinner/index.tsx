@@ -8,13 +8,15 @@ export function Spinner({ active = true }: { active?: boolean }) {
         <Container>
             <div>
                 <div>
-                    {active && <Player
-                        src={animationData}
-                        loop
-                        autoplay
-                        speed={1.5}
-                        style={{ height: '100px', width: '100px' }}
-                    />}
+                    {active && (
+                        <Player
+                            src={animationData}
+                            loop
+                            autoplay
+                            speed={1.5}
+                            style={{ height: '100px', width: '100px' }}
+                        />
+                    )}
                 </div>
             </div>
         </Container>

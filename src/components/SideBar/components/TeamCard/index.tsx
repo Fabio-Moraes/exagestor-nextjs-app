@@ -3,20 +3,20 @@
 import { Avatar, Container, Info } from './styles';
 
 interface Props {
-  name: string;
-  nickname: string;
+    name: string;
+    nickname: string;
 }
 
 export function TeamCard({ name, nickname }: Props) {
-  return (
-    <Container>
-      <div>
-        <Avatar />
-        <Info>
-          <strong>{name}</strong>
-          <span>{nickname}</span>
-        </Info>
-      </div>
-    </Container>
-  );
+    return (
+        <Container>
+            <div>
+                <Avatar />
+                <Info>
+                    <strong>{name}</strong>
+                    <span>{nickname}</span>
+                </Info>
+            </div>
+        </Container>
+    );
 }
