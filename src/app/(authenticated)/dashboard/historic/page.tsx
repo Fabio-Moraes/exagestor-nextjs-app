@@ -2,93 +2,89 @@
 
 import { useEffect, useState } from 'react';
 
+import { DisplayInfo } from './components/DisplayInfo';
+import { FullScreenLoading } from 'components/FullScreenLoading';
+
 import {
-    Container,
-    ErrorContainer,
-    ListContainer,
-    ListItem,
-    Title
+  Container,
+  ErrorContainer,
+  ListContainer,
+  ListItem,
+  Title
 } from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
-import { FullScreenLoading } from 'components/FullScreenLoading';
-import { DisplayInfo } from './components/DisplayInfo';
-
 interface Service {
-    id: number;
-    client_name: string;
-    city: string;
-    address: string;
-    nomenclature: string;
-    classification: string;
-    update_count: number;
-    status: string;
-    created_at: string;
-    modification_at: string;
-    protocol: string;
+  id: number;
+  client_name: string;
+  city: string;
+  address: string;
+  nomenclature: string;
+  classification: string;
+  update_count: number;
+  status: string;
+  created_at: string;
+  modification_at: string;
+  protocol: string;
 }
 
 export default function HistoricService() {
-    const [services, setServices] = useState<Service[]>([]);
-    const [connectionError, setConnectionError] = useState(false);
-    const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
+  const [connectionError, setConnectionError] = useState(false);
+  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-    const storedCookie = Cookie.get('auth_token');
-    const maxRetries = 4;
+  const storedCookie = Cookie.get('auth_token');
+  const maxRetries = 4;
 
-    async function fetchServices() {
-        setConnectionError(false);
+  async function fetchServices() {
+    setConnectionError(false);
 
-        for (let count = 0; count < maxRetries; count++) {
-            try {
-                setIsPopupValue(
-                    count > 0
-                        ? `Conectando<br>Tentativa (${count + 1})`
-                        : 'Conectando'
-                );
+    for (let count = 0; count < maxRetries; count++) {
+      try {
+        setIsPopupValue(
+          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
+        );
 
-                const response = await api.get('/api/services/historic', {
-                    params: { token: storedCookie }
-                });
+        const response = await api.get('/api/services/historic', {
+          params: { token: storedCookie }
+        });
 
-                count = maxRetries;
-                setServices(response.data);
-            } catch (error) {
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-                setConnectionError(true);
-            }
-        }
-        setIsPopupValue(null);
+        count = maxRetries;
+        setServices(response.data);
+      } catch (error) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        setConnectionError(true);
+      }
     }
+    setIsPopupValue(null);
+  }
 
-    useEffect(() => {
-        fetchServices();
-    }, []);
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
-    return (
-        <Container>
-            <Title>Histórico Geral</Title>
-            <ListContainer>
-                {services.map((service) => (
-                    <ListItem key={service.id}>
-                        <DisplayInfo service={service} />
-                    </ListItem>
-                ))}
-            </ListContainer>
-            {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-            {connectionError && !isPopupValue && (
-                <ErrorContainer>
-                    <span>
-                        Não foi possível obter dados da lista devido a
-                        instabilidade na conexão. Por favor, tente novamente.
-                    </span>
-                    <button onClick={() => fetchServices()}>
-                        Tentar Novamente
-                    </button>
-                </ErrorContainer>
-            )}
-        </Container>
-    );
+  return (
+    <Container>
+      <Title>Histórico Geral</Title>
+      <ListContainer>
+        {services.map((service) => (
+          <ListItem key={service.id}>
+            <DisplayInfo service={service} />
+          </ListItem>
+        ))}
+      </ListContainer>
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+      {connectionError && !isPopupValue && (
+        <ErrorContainer>
+          <span>
+            Não foi possível obter dados da lista devido a instabilidade na
+            conexão. Por favor, tente novamente.
+          </span>
+          <button onClick={() => fetchServices()}>Tentar Novamente</button>
+        </ErrorContainer>
+      )}
+    </Container>
+  );
 }
