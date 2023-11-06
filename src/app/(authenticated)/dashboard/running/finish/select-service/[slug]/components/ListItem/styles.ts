@@ -18,6 +18,7 @@ export const Container = styled.div<{ selected: boolean }>`
   margin: 5px;
   border-radius: 5px;
   padding: 5px;
+  min-height: 30px;
   cursor: pointer;
 `;
 

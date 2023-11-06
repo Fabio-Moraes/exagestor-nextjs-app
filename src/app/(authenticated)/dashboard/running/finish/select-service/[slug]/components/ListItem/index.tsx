@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
 
 import reset from './assets/svg/reset.svg';
 import { Container, ItemContainer, Reset } from './styles';
@@ -13,12 +12,9 @@ interface ListItemProps {
   onReset: () => void;
 }
 
-const ListItem: React.FC<ListItemProps> = ({
-  item,
-  count = 0,
-  onSelect,
-  onReset
-}) => {
+export function ListItem(props: ListItemProps) {
+  const { item, count = 0, onSelect, onReset } = props;
+
   return (
     <Container selected={Boolean(count > 0)}>
       <ItemContainer onClick={onSelect}>
@@ -39,6 +35,4 @@ const ListItem: React.FC<ListItemProps> = ({
       )}
     </Container>
   );
-};
-
-export default ListItem;
+}

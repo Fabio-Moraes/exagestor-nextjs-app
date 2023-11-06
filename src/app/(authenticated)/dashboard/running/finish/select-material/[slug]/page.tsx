@@ -84,7 +84,9 @@ export default function FinishService({ params }: SlugType) {
     <Container>
       <Title>
         <h1>Selecionar Material</h1>
-        <span>PROTOCOLO: {services[0]?.protocol}</span>
+        {services[0]?.protocol && (
+          <span>PROTOCOLO: {services[0]?.protocol}</span>
+        )}
       </Title>
       {isPopupValue && <FullScreenLoading message={'isPopupValue'} />}
       {connectionError ? (

@@ -2,14 +2,21 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { encryptObject } from '../../../../../../../../../functions';
-import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
-import ListItem from '../ListItem';
+import { ListItem } from '../ListItem';
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
-import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
+import {
+  Button,
+  ItemsSkeleton,
+  ListContainer,
+  SearchBar,
+  SearchWrapper
+} from './styles';
+
+import { encryptObject } from 'functions';
+import { useContexState } from 'hooks/useGlobalContext';
 
 interface ListProps {
   id: string;
@@ -38,8 +45,21 @@ export function List({
 }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
+  /* eslint-disable */
+  const [isLoading, setIsLoading] = useState(true);
+  /* eslint-enable */
 
   const { selectService, setSelectService } = useContexState();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // Defina o tempo de atraso em milissegundos (neste exemplo, 2 segundos)
+
+    return () => {
+      clearTimeout(timer); // Limpar o temporizador se o componente for desmontado antes do tempo limite
+    };
+  }, []);
 
   const router = useRouter();
 
@@ -131,18 +151,31 @@ export function List({
           <Image priority src={infoSvg} alt="Add" {...proportion} />
         </div>
       </div>
-      {filteredItems.map((item) => (
-        <ListItem
-          key={item.description}
-          item={item.description}
-          count={selectService?.[String(service?.protocol)]?.[item.id]}
-          onSelect={() => toggleItem(item.id)}
-          onReset={() => toggleItemReset(item.id)}
-        />
-      ))}
+      {isLoading
+        ? [...Array(5)].map((_, index) => {
+            return (
+              <ItemsSkeleton key={String(index)}>
+                <div />
+                <div />
+              </ItemsSkeleton>
+            );
+          })
+        : filteredItems.map((item) => (
+            <ListItem
+              key={item.description}
+              item={item.description}
+              count={selectService?.[String(service?.protocol)]?.[item.id]}
+              onSelect={() => toggleItem(item.id)}
+              onReset={() => toggleItemReset(item.id)}
+            />
+          ))}
       <div>
-        <Button onClick={() => router.back()}>Voltar</Button>
-        <Button onClick={() => fetchConcludedServices()}>Avançar</Button>
+        <Button rel="preload" onClick={() => router.back()}>
+          Voltar
+        </Button>
+        <Button rel="preload" onClick={() => fetchConcludedServices()}>
+          Avançar
+        </Button>
       </div>
     </ListContainer>
   );

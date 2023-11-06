@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 import { Container } from './styles';
 
 interface Service {
@@ -14,6 +18,18 @@ interface Service {
 }
 
 export function DisplayInfo({ service }: { service: Service }) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // Defina o tempo de atraso em milissegundos (neste exemplo, 2 segundos)
+
+    return () => {
+      clearTimeout(timer); // Limpar o temporizador se o componente for desmontado antes do tempo limite
+    };
+  }, []);
+
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();
@@ -35,17 +51,19 @@ export function DisplayInfo({ service }: { service: Service }) {
 
   return (
     <Container>
-      <div>
-        <p>Solicitante: {service?.client_name}</p>
-        <p>Cidade: {service?.city}</p>
-        <p>Endereço de origem do serviço: {service?.address}</p>
-        <p>Nomenclatura de caixa ou cabo: {service?.nomenclature}</p>
-        <p>Classe: {service?.classification}</p>
-        <p>Protocolo: {service?.protocol}</p>
-        <p>Início: {createdAt}</p>
-        <p>Status do serviço: {status[service?.status]}</p>
-        <p>Atualização de status: {service?.update_count}</p>
-      </div>
+      {isLoading && (
+        <div>
+          <p>Solicitante: {service?.client_name}</p>
+          <p>Cidade: {service?.city}</p>
+          <p>Endereço de origem do serviço: {service?.address}</p>
+          <p>Nomenclatura de caixa ou cabo: {service?.nomenclature}</p>
+          <p>Classe: {service?.classification}</p>
+          <p>Protocolo: {service?.protocol}</p>
+          <p>Início: {createdAt}</p>
+          <p>Status do serviço: {status[service?.status]}</p>
+          <p>Atualização de status: {service?.update_count}</p>
+        </div>
+      )}
     </Container>
   );
 }

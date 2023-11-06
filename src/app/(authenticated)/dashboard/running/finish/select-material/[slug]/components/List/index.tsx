@@ -2,13 +2,19 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
 import ListItem from '../ListItem';
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
-import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
+import {
+  Button,
+  ItemsSkeleton,
+  ListContainer,
+  SearchBar,
+  SearchWrapper
+} from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -46,7 +52,19 @@ export function List({
     const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
     /* eslint-enable */
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const { selectMaterial, setSelectMaterial } = useContexState();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // Defina o tempo de atraso em milissegundos (neste exemplo, 2 segundos)
+
+    return () => {
+      clearTimeout(timer); // Limpar o temporizador se o componente for desmontado antes do tempo limite
+    };
+  }, []);
 
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
@@ -165,15 +183,24 @@ export function List({
           <Image priority src={infoSvg} alt="Add" {...proportion} />
         </div>
       </div>
-      {filteredItems.map((item) => (
-        <ListItem
-          key={item.description}
-          item={item.description}
-          count={selectMaterial?.[String(service?.protocol)]?.[item.id]}
-          onSelect={() => toggleItem(item.id)}
-          onReset={() => toggleItemReset(item.id)}
-        />
-      ))}
+      {isLoading
+        ? [...Array(5)].map((_, index) => {
+            return (
+              <ItemsSkeleton key={String(index)}>
+                <div />
+                <div />
+              </ItemsSkeleton>
+            );
+          })
+        : filteredItems.map((item) => (
+            <ListItem
+              key={item.description}
+              item={item.description}
+              count={selectMaterial?.[String(service?.protocol)]?.[item.id]}
+              onSelect={() => toggleItem(item.id)}
+              onReset={() => toggleItemReset(item.id)}
+            />
+          ))}
       <div>
         <Button onClick={() => router.back()}>Voltar</Button>
         <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
