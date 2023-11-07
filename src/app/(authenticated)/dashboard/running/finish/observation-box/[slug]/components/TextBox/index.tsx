@@ -61,7 +61,8 @@ export function TextBox({ service }: { service: Service }) {
           params: {
             token: storedCookie,
             protocol: service?.protocol,
-            serviceIds: JSON.stringify('selectedItems')
+            serviceIds: JSON.stringify('selectedItems'),
+            observation: String(observationBox[service?.protocol])
           }
         });
 

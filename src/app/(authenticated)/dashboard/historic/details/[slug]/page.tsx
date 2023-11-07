@@ -20,6 +20,7 @@ interface Service {
   update_count: number;
   created_at: string;
   modification_at: string;
+  observation: string;
   finished_at: string;
   protocol: string;
 }
@@ -113,6 +114,9 @@ export default function Details({ params }: SlugType) {
           <p>Protocolo: {services[0]?.protocol}</p>
           <p>Status: {status[services[0]?.status]}</p>
           <p>Contador de Atualização: {services[0]?.update_count}</p>
+          {services[0]?.observation && (
+            <p>Observação: {services[0]?.observation}</p>
+          )}
         </section>
 
         <Button onClick={() => router.back()}>
