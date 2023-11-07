@@ -13,12 +13,11 @@ export const ListContainer = styled.div`
 
   > div:first-child {
     display: flex;
-    margin: 8px;
     padding: 10px;
     background-color: #3f795e;
-    border-radius: 5px;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 9px;
 
     > span {
       text-align: center;
@@ -50,16 +49,15 @@ export const ListContainer = styled.div`
 
   > div:last-child {
     display: flex;
-    margin: 8px;
     padding: 10px;
     background-color: #3f795e;
-    border-radius: 5px;
+    margin-top: 9px;
 
     justify-content: space-between;
     align-items: center;
 
     > button {
-      width: 130px;
+      width: 100px;
     }
   }
 `;

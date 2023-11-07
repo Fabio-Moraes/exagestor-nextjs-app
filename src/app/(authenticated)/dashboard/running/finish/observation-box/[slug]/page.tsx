@@ -42,11 +42,10 @@ export default function FinishService({ params }: SlugType) {
     setConnectionError(false);
 
     for (let count = 0; count < maxRetries; count++) {
+      setIsPopupValue(
+        count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
+      );
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
-
         const response = await api.get('/api/services/select-material', {
           params: {
             token: storedCookie,
@@ -76,7 +75,7 @@ export default function FinishService({ params }: SlugType) {
           <span>PROTOCOLO: {services[0]?.protocol}</span>
         )}
       </Title>
-      {isPopupValue && <FullScreenLoading message={'isPopupValue'} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
           <span>

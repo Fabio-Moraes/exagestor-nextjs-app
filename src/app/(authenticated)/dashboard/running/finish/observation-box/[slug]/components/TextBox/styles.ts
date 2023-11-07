@@ -11,6 +11,12 @@ export const ListContainer = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #3f795e;
 
+  > p {
+    text-align: end;
+    padding-right: 10px;
+    margin-bottom: 7px;
+  }
+
   > div:first-child {
     display: flex;
     margin: 8px;
@@ -29,16 +35,14 @@ export const ListContainer = styled.div`
 
   > div:last-child {
     display: flex;
-    margin: 8px;
     padding: 10px;
     background-color: #3f795e;
-    border-radius: 5px;
 
     justify-content: space-between;
     align-items: center;
 
     > button {
-      width: 130px;
+      width: 100px;
     }
   }
 `;
@@ -118,17 +122,18 @@ export const InputContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Label = styled.label`
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #333;
-`;
-
 export const Input = styled.textarea`
   width: 100%;
   height: 150px;
   font-size: 16px;
   padding: 10px;
+  resize: none;
+
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: black;
+  position: relative;
+
   &:focus {
     outline: none;
   }

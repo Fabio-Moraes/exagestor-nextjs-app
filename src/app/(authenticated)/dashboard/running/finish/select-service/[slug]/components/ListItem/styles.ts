@@ -15,7 +15,7 @@ export const Container = styled.div<{ selected: boolean }>`
   align-items: center;
   justify-content: space-between;
   border: 2px solid #27a567;
-  margin: 5px;
+  margin: 5px 10px 0 10px;
   border-radius: 5px;
   padding: 5px;
   min-height: 30px;

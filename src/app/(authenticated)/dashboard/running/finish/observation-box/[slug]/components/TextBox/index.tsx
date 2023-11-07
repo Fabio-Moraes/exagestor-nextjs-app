@@ -83,7 +83,7 @@ export function TextBox({ service }: { service: Service }) {
     setObservationBox((prevItems) => {
       return {
         ...prevItems,
-        [service?.protocol]: event.target.value
+        [service?.protocol]: event.target.value.slice(0, 500)
       };
     });
   };
@@ -92,15 +92,12 @@ export function TextBox({ service }: { service: Service }) {
     <ListContainer>
       <InputContainer>
         <Input
-          value={
-            observationBox[service?.protocol]?.length > 0
-              ? observationBox[service?.protocol]
-              : ''
-          }
+          value={observationBox[service?.protocol] ?? ''}
           onChange={handleDescriptionChange}
           placeholder="Escreva sua descrição aqui..."
         />
       </InputContainer>
+      <p>{500 - (observationBox[service?.protocol]?.length ?? 0)}</p>
       <div>
         <Button onClick={() => router.back()}>Voltar</Button>
         <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
