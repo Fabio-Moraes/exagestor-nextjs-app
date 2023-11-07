@@ -16,8 +16,7 @@ import {
   SearchWrapper
 } from './styles';
 
-import Cookie from 'js-cookie';
-import api from 'lib/api';
+import { encryptObject } from 'functions';
 
 interface ListProps {
   id: string;
@@ -46,12 +45,6 @@ export function List({
 }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
-
-  /* eslint-disable */
-    const [connectionError, setConnectionError] = useState(false);
-    const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-    /* eslint-enable */
-
   const [isLoading, setIsLoading] = useState(true);
 
   const { selectMaterial, setSelectMaterial } = useContexState();
@@ -66,37 +59,11 @@ export function List({
     };
   }, []);
 
-  const storedCookie = Cookie.get('auth_token');
-  const maxRetries = 4;
-
   const router = useRouter();
 
   async function fetchConcludedMaterial() {
-    setConnectionError(false);
-
-    for (let count = 0; count < maxRetries; count++) {
-      try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
-
-        const response = await api.get('/api/services/concluded', {
-          params: {
-            token: storedCookie,
-            protocol: service?.protocol,
-            serviceIds: JSON.stringify('selectedItems')
-          }
-        });
-
-        count = maxRetries;
-        router.push('/dashboard/new');
-        console.log(response.data);
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        setConnectionError(true);
-      }
-    }
-    setIsPopupValue(null);
+    const encryptSlug = encryptObject({ protocol: service?.protocol });
+    router.push(`/dashboard/running/finish/observation-box/${encryptSlug}`);
   }
 
   const toggleItem = (item: string) => {
@@ -203,7 +170,7 @@ export function List({
           ))}
       <div>
         <Button onClick={() => router.back()}>Voltar</Button>
-        <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
+        <Button onClick={() => fetchConcludedMaterial()}>Avançar</Button>
       </div>
     </ListContainer>
   );

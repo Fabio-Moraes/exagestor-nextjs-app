@@ -22,6 +22,11 @@ type StateContext = {
   setSelectService: React.Dispatch<
     React.SetStateAction<{ [key: string]: ServiceItem }>
   >;
+
+  observationBox: { [key: string]: string };
+  setObservationBox: React.Dispatch<
+    React.SetStateAction<{ [key: string]: string }>
+  >;
 };
 
 type ProviderProps = {
@@ -32,7 +37,9 @@ const initialState: StateContext = {
   selectMaterial: {},
   setSelectMaterial: () => {},
   selectService: {},
-  setSelectService: () => {}
+  setSelectService: () => {},
+  observationBox: {},
+  setObservationBox: () => {}
 };
 
 export const Context = createContext<StateContext>(initialState);
@@ -50,6 +57,12 @@ export const ContextProvider = ({ children }: ProviderProps) => {
     isClient ? JSON.parse(localStorage.getItem('selectMaterial') || '{}') : {}
   );
 
+  const [observationBox, setObservationBox] = useState<{
+    [key: string]: string;
+  }>(
+    isClient ? JSON.parse(localStorage.getItem('observationBox') || '{}') : {}
+  );
+
   useEffect(() => {
     if (isClient) {
       Object.keys(selectService).length > 0
@@ -59,8 +72,12 @@ export const ContextProvider = ({ children }: ProviderProps) => {
       Object.keys(selectMaterial).length > 0
         ? localStorage.setItem('selectMaterial', JSON.stringify(selectMaterial))
         : localStorage.removeItem('selectMaterial');
+
+      Object.keys(observationBox).length > 0
+        ? localStorage.setItem('observationBox', JSON.stringify(observationBox))
+        : localStorage.removeItem('observationBox');
     }
-  }, [selectService, selectMaterial, isClient]);
+  }, [selectService, selectMaterial, observationBox, isClient]);
 
   return (
     <Context.Provider
@@ -68,7 +85,9 @@ export const ContextProvider = ({ children }: ProviderProps) => {
         selectMaterial,
         setSelectMaterial,
         selectService,
-        setSelectService
+        setSelectService,
+        observationBox,
+        setObservationBox
       }}
     >
       {children}

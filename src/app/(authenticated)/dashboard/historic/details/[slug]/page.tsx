@@ -84,16 +84,6 @@ export default function Details({ params }: SlugType) {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
-  const creationDate = formatDate(services[0]?.created_at);
-
-  const modificationDate = services[0]?.modification_at
-    ? formatDate(services[0]?.modification_at)
-    : '?';
-
-  const completionDate = services[0]?.finished_at
-    ? formatDate(services[0]?.finished_at)
-    : '?';
-
   const status = {
     concluded: '✅ Finalizado',
     active: '🚧 Em andamento',
@@ -110,9 +100,15 @@ export default function Details({ params }: SlugType) {
           <p>Cidade: {services[0]?.city}</p>
           <p>Classificação: {services[0]?.classification}</p>
           <p>Nome do Cliente: {services[0]?.client_name}</p>
-          <p>Data de Criação: {creationDate}</p>
-          <p>Data de Conclusão: {completionDate}</p>
-          <p>Data de Modificação: {modificationDate}</p>
+          <p>Data de Criação: {formatDate(services[0]?.created_at)}</p>
+          {services[0]?.finished_at && (
+            <p>Data de Conclusão: {formatDate(services[0]?.finished_at)}</p>
+          )}
+          {services[0]?.modification_at && (
+            <p>
+              Data de Modificação: {formatDate(services[0]?.modification_at)}
+            </p>
+          )}
           <p>Nomenclatura: {services[0]?.nomenclature}</p>
           <p>Protocolo: {services[0]?.protocol}</p>
           <p>Status: {status[services[0]?.status]}</p>

@@ -45,9 +45,7 @@ export function List({
 }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
-  /* eslint-disable */
   const [isLoading, setIsLoading] = useState(true);
-  /* eslint-enable */
 
   const { selectService, setSelectService } = useContexState();
 

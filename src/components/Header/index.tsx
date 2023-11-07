@@ -2,9 +2,16 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import exa from './assets/svg/exa_logo.svg';
-import { Container, ProfileInfo } from './styles';
+import {
+  Container,
+  ProfileCompany,
+  ProfileInfoCompany,
+  ProfileUser,
+  ProfileUserNameSkeleton
+} from './styles';
 
 import { useDecodeToken } from 'hooks/useDecodeToken';
 import Cookie from 'js-cookie';
@@ -13,9 +20,20 @@ export function Header() {
   const decoderToken = useDecodeToken<{ name: string }>('auth_token');
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // Defina o tempo de atraso em milissegundos (neste exemplo, 2 segundos)
+
+    return () => {
+      clearTimeout(timer); // Limpar o temporizador se o componente for desmontado antes do tempo limite
+    };
+  }, []);
+
   return (
     <Container>
-      <div>
+      <ProfileCompany>
         <Image
           src={exa}
           priority
@@ -23,13 +41,18 @@ export function Header() {
           alt="Axa"
           style={{ width: '74px', height: 'auto' }}
         />
-        <ProfileInfo>
+        <ProfileInfoCompany>
           <strong>EXA TELECOM</strong>
           <span>Telecomunicações</span>
-        </ProfileInfo>
-      </div>
-      <div>
-        <span>{decoderToken?.name || 'Carregando...'}</span>
+        </ProfileInfoCompany>
+      </ProfileCompany>
+      <ProfileUser>
+        {/* <ProfileUserNameSkeleton /> */}
+        {Boolean(decoderToken?.name) && !isLoading ? (
+          <span>{decoderToken?.name}</span>
+        ) : (
+          <ProfileUserNameSkeleton />
+        )}
         <button
           onClick={() => {
             Cookie.remove('auth_token');
@@ -38,7 +61,7 @@ export function Header() {
         >
           <span>Sair</span>
         </button>
-      </div>
+      </ProfileUser>
     </Container>
   );
 }
