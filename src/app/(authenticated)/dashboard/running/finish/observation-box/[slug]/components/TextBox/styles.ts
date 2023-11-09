@@ -131,10 +131,8 @@ export const Input = styled.textarea`
 
   font-size: 16px;
   font-family: Arial, sans-serif;
-  color: black;
+  color: black; /* Cor do texto */
   position: relative;
-
-  &:focus {
-    outline: none;
-  }
+  outline: none;
+  overflow-y: auto;
 `;

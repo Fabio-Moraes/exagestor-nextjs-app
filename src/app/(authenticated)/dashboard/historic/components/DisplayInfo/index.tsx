@@ -1,4 +1,4 @@
-import { Container, MoreOptions } from './styles';
+import { Container } from './styles';
 
 import { encryptObject } from 'functions';
 
@@ -48,7 +48,7 @@ export function DisplayInfo({ service }: { service: Service }) {
   });
 
   return (
-    <Container>
+    <Container href={`/dashboard/historic/details/${encryptSlug}`}>
       <p>{modificationAt}</p>
       <div>
         <p>Solicitante: {service?.client_name}</p>
@@ -57,12 +57,6 @@ export function DisplayInfo({ service }: { service: Service }) {
         <p>Início: {createdAt}</p>
         <p>Status do serviço: {status[service?.status]}</p>
       </div>
-      <MoreOptions
-        rel="preload"
-        href={`/dashboard/historic/details/${encryptSlug}`}
-      >
-        <p>Detalhes</p>
-      </MoreOptions>
     </Container>
   );
 }

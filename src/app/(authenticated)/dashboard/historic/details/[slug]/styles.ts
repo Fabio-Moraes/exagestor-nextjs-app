@@ -28,10 +28,10 @@ export const Wrapper = styled.div`
   border: 2px solid #3f795e;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  padding: 0 20px 0 20px;
+  align-items: center;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-direction: column;
 
   > p {
@@ -42,9 +42,10 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    margin-bottom: 10px;
+    width: 100%;
 
     > p {
+      padding: 0 20px 0 20px;
       margin-bottom: 10px;
       text-align: start;
       font-size: 15px;
@@ -65,9 +66,39 @@ export const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    > button {
+    > span {
       width: 130px;
     }
+  }
+`;
+
+export const Observation = styled.div`
+  margin: 10px;
+  border: 2px solid #3f795e;
+  border-radius: 5px;
+  padding-bottom: 10px;
+
+  > h2 {
+    font-size: 20px;
+    padding-bottom: 10px;
+  }
+
+  > p:first-child {
+    padding: 5px;
+    border-bottom: 2px solid #3f795e;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 15px;
+  }
+
+  > p {
+    padding: 0 20px;
+    margin-bottom: 0px;
+    text-align: start;
+    font-size: 15px;
+  }
+  > div {
+    min-height: 10px;
   }
 `;
 
@@ -78,12 +109,12 @@ export const List = styled.div`
 export const Button = styled.button`
   display: flex;
   height: 30px;
-  width: 100%;
-  margin: 0 0 0 0;
+  width: 100px;
+  margin: 0 10px 10px 10px;
   background-color: #3c7d5d;
   align-items: center;
   justify-content: center;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
 
   > p {
     color: #fff;

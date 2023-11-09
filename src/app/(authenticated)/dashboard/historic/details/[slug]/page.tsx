@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
-import { Button, Container, Title, Wrapper } from './styles';
+import { Button, Container, Wrapper, Observation, Title } from './styles';
 
 import { decryptObject } from 'functions';
 import Cookie from 'js-cookie';
@@ -37,7 +37,7 @@ export default function Details({ params }: SlugType) {
   const { protocol, update_count } = decryptObject(params.slug);
 
   /* eslint-disable */
-  const [services, setServices] = useState<Service[]>([]);
+  const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   /* eslint-enable */
@@ -59,8 +59,7 @@ export default function Details({ params }: SlugType) {
         });
 
         count = maxRetries;
-        setServices(response.data);
-        console.log('!!!!', response);
+        setServices(response.data[0]);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
@@ -92,33 +91,51 @@ export default function Details({ params }: SlugType) {
     canceled: '❌ Cancelado'
   } as { [key: string]: string };
 
+  const renderTextWithLineBreaks = (text: string) => {
+    const lines = text.split('\n');
+
+    return lines.map((line: string, index: number) => {
+      return (
+        <Fragment key={String(index)}>
+          {line ? (
+            <p key={String(index)}>{line}</p>
+          ) : (
+            <div key={`extra-div-${index}`} />
+          )}
+        </Fragment>
+      );
+    });
+  };
+
   return (
     <Container>
       <Title>Detalhes</Title>
       <Wrapper>
         <section>
-          <p>Endereço: {services[0]?.address}</p>
-          <p>Cidade: {services[0]?.city}</p>
-          <p>Classificação: {services[0]?.classification}</p>
-          <p>Nome do Cliente: {services[0]?.client_name}</p>
-          <p>Data de Criação: {formatDate(services[0]?.created_at)}</p>
-          {services[0]?.finished_at && (
-            <p>Data de Conclusão: {formatDate(services[0]?.finished_at)}</p>
+          <p>Endereço: {services?.address}</p>
+          <p>Cidade: {services?.city}</p>
+          <p>Classificação: {services?.classification}</p>
+          <p>Nome do Cliente: {services?.client_name}</p>
+          {services?.created_at && (
+            <p>Data de Criação: {formatDate(services?.created_at)}</p>
           )}
-          {services[0]?.modification_at && (
-            <p>
-              Data de Modificação: {formatDate(services[0]?.modification_at)}
-            </p>
+          {services?.finished_at && (
+            <p>Data de Conclusão: {formatDate(services?.finished_at)}</p>
           )}
-          <p>Nomenclatura: {services[0]?.nomenclature}</p>
-          <p>Protocolo: {services[0]?.protocol}</p>
-          <p>Status: {status[services[0]?.status]}</p>
-          <p>Contador de Atualização: {services[0]?.update_count}</p>
-          {services[0]?.observation && (
-            <p>Observação: {services[0]?.observation}</p>
+          {services?.modification_at && (
+            <p>Data de Modificação: {formatDate(services?.modification_at)}</p>
+          )}
+          <p>Nomenclatura: {services?.nomenclature}</p>
+          <p>Protocolo: {services?.protocol}</p>
+          <p>Status: {status[services?.status ?? 'active']}</p>
+          <p>Contador de Atualização: {services?.update_count}</p>
+          {true && services?.observation && (
+            <Observation>
+              <p>Observação</p>
+              <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
+            </Observation>
           )}
         </section>
-
         <Button onClick={() => router.back()}>
           <p>Voltar</p>
         </Button>
@@ -126,3 +143,5 @@ export default function Details({ params }: SlugType) {
     </Container>
   );
 }
+
+// Observação

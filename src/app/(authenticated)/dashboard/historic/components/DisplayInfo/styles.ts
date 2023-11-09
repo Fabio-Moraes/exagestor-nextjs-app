@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled(Link)`
   display: flex;
   white-space: nowrap;
   padding: 0 20px;
@@ -33,21 +33,5 @@ export const Container = styled.div`
     > p:last-child {
       margin-bottom: 0px;
     }
-  }
-`;
-
-export const MoreOptions = styled(Link)`
-  display: flex;
-  height: 30px;
-  width: 100%;
-  background-color: #3c7d5d;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px 10px 0 0;
-
-  > p {
-    color: #fff;
-    text-align: center;
-    font-size: 16px;
   }
 `;
