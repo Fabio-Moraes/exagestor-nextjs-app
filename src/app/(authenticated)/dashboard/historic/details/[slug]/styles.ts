@@ -38,24 +38,6 @@ export const Wrapper = styled.div`
     margin-top: 10px;
   }
 
-  > section {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    width: 100%;
-
-    > p {
-      padding: 0 20px 0 20px;
-      margin-bottom: 10px;
-      text-align: start;
-      font-size: 15px;
-    }
-
-    > p:last-child {
-      margin-bottom: 0px;
-    }
-  }
-
   > div:last-child {
     display: flex;
     margin: 8px;
@@ -69,6 +51,24 @@ export const Wrapper = styled.div`
     > span {
       width: 130px;
     }
+  }
+`;
+
+export const Info = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+
+  > p {
+    padding: 0 20px 0 20px;
+    margin-bottom: 10px;
+    text-align: start;
+    font-size: 15px;
+  }
+
+  > p:last-child {
+    margin-bottom: 0px;
   }
 `;
 
@@ -86,6 +86,7 @@ export const Observation = styled.div`
   > p:first-child {
     padding: 5px;
     border-bottom: 2px solid #3f795e;
+    background-image: radial-gradient(350px at center, #ffffff 15%, #27a567);
     margin-bottom: 10px;
     text-align: center;
     font-size: 15px;
@@ -115,10 +116,7 @@ export const Button = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-
-  > p {
-    color: #fff;
-    text-align: center;
-    font-size: 16px;
-  }
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
 `;

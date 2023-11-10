@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 
-import { Button, Container, Wrapper, Observation, Title } from './styles';
+import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
 
 import { decryptObject } from 'functions';
 import Cookie from 'js-cookie';
@@ -111,7 +111,7 @@ export default function Details({ params }: SlugType) {
     <Container>
       <Title>Detalhes</Title>
       <Wrapper>
-        <section>
+        <Info>
           <p>Endereço: {services?.address}</p>
           <p>Cidade: {services?.city}</p>
           <p>Classificação: {services?.classification}</p>
@@ -135,13 +135,9 @@ export default function Details({ params }: SlugType) {
               <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
             </Observation>
           )}
-        </section>
-        <Button onClick={() => router.back()}>
-          <p>Voltar</p>
-        </Button>
+        </Info>
+        <Button onClick={() => router.back()}>Voltar</Button>
       </Wrapper>
     </Container>
   );
 }
-
-// Observação

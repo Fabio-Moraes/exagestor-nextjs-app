@@ -11,8 +11,8 @@ export const Container = styled.div`
   padding: 3px min(20px, max(10vw, 10px));
   background-image: radial-gradient(
     350px at center,
-    rgba(255, 255, 255, 0.94) 20%,
-    #27a567
+    rgba(255, 255, 255, 0.96) 20%,
+    rgba(39, 165, 103, 0.7)
   );
   justify-content: space-between;
   width: 100%;
