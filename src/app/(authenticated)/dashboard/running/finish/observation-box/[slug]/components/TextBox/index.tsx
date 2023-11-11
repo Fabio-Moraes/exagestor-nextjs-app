@@ -168,7 +168,7 @@ export function TextBox({ service }: { service: Service }) {
   return (
     <ListContainer>
       <InputContainer>
-        {isLoading || !observationBox[service?.protocol] ? (
+        {isLoading || !service?.protocol ? (
           <SkaletonInput>
             <TextSkeleton $path={100} />
             <TextSkeleton $path={100} />
@@ -188,7 +188,7 @@ export function TextBox({ service }: { service: Service }) {
         )}
       </InputContainer>
       <ContainerCounter>
-        {isLoading || !observationBox[service?.protocol] ? (
+        {isLoading || !service?.protocol ? (
           <div>
             <TextSkeleton />
           </div>
