@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import { Container } from './styles';
 
 import { encryptObject } from 'functions';
@@ -13,10 +15,12 @@ interface Service {
   update_count: number;
   created_at: string;
   modification_at: string;
+  finished_at: string;
+  observation: string;
   protocol: string;
 }
 
-export function DisplayInfo({ service }: { service: Service }) {
+export function Card({ service }: { service: Service }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();
@@ -36,20 +40,28 @@ export function DisplayInfo({ service }: { service: Service }) {
     canceled: '❌ Cancelado'
   } as { [key: string]: string };
 
-  const modificationAt = formatDate(
-    service[service.modification_at ? 'modification_at' : 'created_at']
-  );
+  function datePicker(service: Service) {
+    if (service.finished_at) return service.finished_at;
+    if (service.modification_at) return service.modification_at;
+    return service.created_at;
+  }
 
   const createdAt = formatDate(service.created_at);
+  const postCardAt = formatDate(datePicker(service));
 
   const encryptSlug = encryptObject({
     protocol: service?.protocol,
     update_count: service?.update_count
   });
 
+  const router = useRouter();
+
   return (
-    <Container href={`/dashboard/historic/details/${encryptSlug}`}>
-      <p>{modificationAt}</p>
+    <Container
+      rel="preload"
+      onClick={() => router.push(`/dashboard/historic/details/${encryptSlug}`)}
+    >
+      <p>{postCardAt}</p>
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>

@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
+//import Link from 'next/link';
 
 import styled from 'styled-components';
 
-export const Container = styled(Link)`
+export const Container = styled.button`
   display: flex;
   white-space: nowrap;
   padding: 0 20px;

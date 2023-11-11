@@ -48,7 +48,7 @@ export function Header() {
       </ProfileCompany>
       <ProfileUser>
         {/* <ProfileUserNameSkeleton /> */}
-        {Boolean(decoderToken?.name) && !isLoading ? (
+        {decoderToken?.name && !isLoading ? (
           <span>{decoderToken?.name}</span>
         ) : (
           <ProfileUserNameSkeleton />

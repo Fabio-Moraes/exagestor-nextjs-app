@@ -43,11 +43,11 @@ export function List({
   service: Service;
   items: ListProps[];
 }) {
+  const { selectService, setSelectService } = useContexState();
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const { selectService, setSelectService } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -150,7 +150,7 @@ export function List({
         </div>
       </div>
       {isLoading
-        ? [...Array(5)].map((_, index) => {
+        ? [...Array(8)].map((_, index) => {
             return (
               <ItemsSkeleton key={String(index)}>
                 <div />

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { DisplayInfo } from './components/DisplayInfo';
+import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
 import {
@@ -23,10 +23,12 @@ interface Service {
   address: string;
   nomenclature: string;
   classification: string;
-  update_count: number;
   status: string;
+  update_count: number;
   created_at: string;
   modification_at: string;
+  finished_at: string;
+  observation: string;
   protocol: string;
 }
 
@@ -71,7 +73,7 @@ export default function HistoricService() {
       <ListContainer>
         {services.map((service) => (
           <ListItem key={service.id}>
-            <DisplayInfo service={service} />
+            <Card service={service} />
           </ListItem>
         ))}
       </ListContainer>

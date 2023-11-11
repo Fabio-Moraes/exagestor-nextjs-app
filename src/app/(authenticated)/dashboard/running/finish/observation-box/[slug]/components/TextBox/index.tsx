@@ -3,7 +3,15 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { Button, ListContainer, InputContainer, Input } from './styles';
+import {
+  Button,
+  ListContainer,
+  InputContainer,
+  Input,
+  SkaletonInput,
+  TextSkeleton,
+  ContainerCounter
+} from './styles';
 
 import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
@@ -30,13 +38,13 @@ export function TextBox({ service }: { service: Service }) {
   const [description, setDescription] = useState('');
   /* eslint-enable */
 
-  //const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { setObservationBox, observationBox } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      //setIsLoading(false);
+      setIsLoading(false);
     }, 1000);
     return () => {
       clearTimeout(timer);
@@ -160,16 +168,34 @@ export function TextBox({ service }: { service: Service }) {
   return (
     <ListContainer>
       <InputContainer>
-        <Input
-          ref={textareaRef}
-          value={observationBox[service?.protocol] ?? ''}
-          onChange={handleDescriptionChange}
-          onKeyDown={handleTextareaKeyDown}
-          placeholder="Escreva sua descrição aqui..."
-          contentEditable="true"
-        />
+        {isLoading || !observationBox[service?.protocol] ? (
+          <SkaletonInput>
+            <TextSkeleton $path={100} />
+            <TextSkeleton $path={100} />
+            <TextSkeleton $path={65} />
+            <TextSkeleton $path={85} />
+            <TextSkeleton $path={75} />
+          </SkaletonInput>
+        ) : (
+          <Input
+            ref={textareaRef}
+            value={observationBox[service?.protocol] ?? ''}
+            onChange={handleDescriptionChange}
+            onKeyDown={handleTextareaKeyDown}
+            placeholder="Escreva sua descrição aqui..."
+            contentEditable="true"
+          />
+        )}
       </InputContainer>
-      <p>{500 - (observationBox[service?.protocol]?.length ?? 0)}</p>
+      <ContainerCounter>
+        {isLoading || !observationBox[service?.protocol] ? (
+          <div>
+            <TextSkeleton />
+          </div>
+        ) : (
+          <p>{500 - (observationBox[service?.protocol]?.length ?? 0)}</p>
+        )}
+      </ContainerCounter>
       <div>
         <Button onClick={() => router.back()}>Voltar</Button>
         <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>

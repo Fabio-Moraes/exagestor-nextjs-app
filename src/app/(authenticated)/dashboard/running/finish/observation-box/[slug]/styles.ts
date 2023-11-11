@@ -1,6 +1,8 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+import { lighten } from 'polished';
 
 export const Container = styled.div`
   background-color: #fff;
@@ -9,8 +11,12 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.div`
+  display: flex;
+  flex-direction: column;
   color: #333;
   padding: 8px;
+  align-items: center;
+  justify-content: center;
 
   > h1 {
     font-size: 30px;
@@ -49,4 +55,36 @@ export const ErrorContainer = styled.div`
     font-size: 16px;
     color: #fff;
   }
+`;
+
+const animation = keyframes`
+  from {
+    background-position: 0% 0%;
+  }
+  
+  to {
+    background-position: 135% 0%;
+  }
+`;
+
+export const TextSkeleton = styled.div<{ $path?: number }>`
+  border-radius: 5px;
+  height: 20px;
+  ${({ $path = 100 }) =>
+    $path &&
+    css`
+      width: ${$path}%;
+    `};
+
+  margin-bottom: 5px;
+
+  background: linear-gradient(
+    -90deg,
+    #6ab78e 0%,
+    ${lighten(0.2, '#6AB78E')} 50%,
+    #6ab78e 100%
+  );
+
+  background-size: 400% 400%;
+  animation: ${animation} 1.2s ease-in-out infinite;
 `;

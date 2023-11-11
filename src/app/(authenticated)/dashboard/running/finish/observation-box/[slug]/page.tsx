@@ -6,7 +6,7 @@ import { TextBox } from './components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
 import { decryptObject } from '../../../../../../../functions';
-import { Container, ErrorContainer, Title } from './styles';
+import { Container, ErrorContainer, Title, TextSkeleton } from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -34,6 +34,8 @@ export default function FinishService({ params }: SlugType) {
   const [services, setServices] = useState<Service[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
@@ -65,13 +67,21 @@ export default function FinishService({ params }: SlugType) {
 
   useEffect(() => {
     fetchServices();
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
     <Container>
       <Title>
         <h1>Campo de Observação</h1>
-        {services[0]?.protocol && (
+        {isLoading || !services[0]?.protocol ? (
+          <TextSkeleton $path={90} />
+        ) : (
           <span>PROTOCOLO: {services[0]?.protocol}</span>
         )}
       </Title>

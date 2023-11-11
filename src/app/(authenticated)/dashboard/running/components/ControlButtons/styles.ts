@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -46,7 +44,7 @@ export const Container = styled.div`
   }
 `;
 
-export const ButtonFinish = styled(Link)`
+export const ButtonFinish = styled.button`
   width: 75px;
   border-radius: 5px;
   margin: 10px;

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { encryptObject } from '../../../../../../functions';
@@ -22,10 +23,12 @@ interface Service {
 }
 
 export function ControlButtons({ service }: { service: Service }) {
+  const router = useRouter();
+
   /* eslint-disable */
-    const [connectionError, setConnectionError] = useState(false);
-    const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-    /* eslint-enable */
+  const [connectionError, setConnectionError] = useState(false);
+  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  /* eslint-enable */
 
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
@@ -89,7 +92,10 @@ export function ControlButtons({ service }: { service: Service }) {
   return (
     <Container>
       <ButtonFinish
-        href={`/dashboard/running/finish/select-service/${encryptSlug}`}
+        rel="preload"
+        onClick={() =>
+          router.push(`/dashboard/running/finish/select-service/${encryptSlug}`)
+        }
       >
         <span>Finalizar</span>
       </ButtonFinish>

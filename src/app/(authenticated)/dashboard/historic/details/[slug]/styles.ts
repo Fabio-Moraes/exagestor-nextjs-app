@@ -73,7 +73,7 @@ export const Info = styled.section`
 `;
 
 export const Observation = styled.div`
-  margin: 10px;
+  margin: 0 10px 0 10px;
   border: 2px solid #3f795e;
   border-radius: 5px;
   padding-bottom: 10px;
@@ -111,7 +111,7 @@ export const Button = styled.button`
   display: flex;
   height: 30px;
   width: 100px;
-  margin: 0 10px 10px 10px;
+  margin: 10px;
   background-color: #3c7d5d;
   align-items: center;
   justify-content: center;

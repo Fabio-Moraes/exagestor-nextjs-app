@@ -151,7 +151,7 @@ export function List({
         </div>
       </div>
       {isLoading
-        ? [...Array(5)].map((_, index) => {
+        ? [...Array(8)].map((_, index) => {
             return (
               <ItemsSkeleton key={String(index)}>
                 <div />

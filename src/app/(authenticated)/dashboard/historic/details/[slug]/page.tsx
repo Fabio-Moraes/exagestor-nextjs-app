@@ -20,8 +20,8 @@ interface Service {
   update_count: number;
   created_at: string;
   modification_at: string;
-  observation: string;
   finished_at: string;
+  observation: string;
   protocol: string;
 }
 
@@ -122,9 +122,12 @@ export default function Details({ params }: SlugType) {
           {services?.finished_at && (
             <p>Data de Conclusão: {formatDate(services?.finished_at)}</p>
           )}
-          {services?.modification_at && (
-            <p>Data de Modificação: {formatDate(services?.modification_at)}</p>
-          )}
+          {/* {services?.modification_at && (
+            <p>
+              Ultima modificação de atividade:{' '}
+              {formatDate(services?.modification_at)}
+            </p>
+          )} */}
           <p>Nomenclatura: {services?.nomenclature}</p>
           <p>Protocolo: {services?.protocol}</p>
           <p>Status: {status[services?.status ?? 'active']}</p>
