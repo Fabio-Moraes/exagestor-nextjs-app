@@ -9,13 +9,7 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import { ListItem } from '../ListItem';
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
-import {
-  Button,
-  ItemsSkeleton,
-  ListContainer,
-  SearchBar,
-  SearchWrapper
-} from './styles';
+import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 import { encryptObject } from 'functions';
 import { useContexState } from 'hooks/useGlobalContext';
@@ -38,13 +32,7 @@ interface Service {
   protocol: string;
 }
 
-export function List({
-  service,
-  items
-}: {
-  service: Service;
-  items: ListProps[];
-}) {
+export function List({ service, items }: { service: Service; items: ListProps[] }) {
   const { selectService, setSelectService } = useContexState();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -65,9 +53,7 @@ export function List({
 
   async function fetchConcludedServices() {
     const encryptSlug = encryptObject({ protocol: service?.protocol });
-    router.push(
-      `/dashboard/employee/running/finish/select-material/${encryptSlug}`
-    );
+    router.push(`/dashboard/employee/running/finish/select-material/${encryptSlug}`);
   }
 
   const toggleItem = (item: string) => {
@@ -88,9 +74,7 @@ export function List({
     setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
       const protocolKey = String(service?.protocol);
-      const selectedItemsCount = Object.keys(
-        updatedItems[protocolKey] || {}
-      ).length;
+      const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
 
       if (updatedItems[protocolKey].hasOwnProperty(item)) {
         selectedItemsCount > 1
@@ -118,14 +102,10 @@ export function List({
   const filteredItems = items?.filter(
     (item) =>
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showSelected
-        ? selectService[String(service?.protocol)]?.[item.id]
-        : true)
+      (showSelected ? selectService[String(service?.protocol)]?.[item.id] : true)
   );
 
-  const selectedItemKeys = Object.keys(
-    selectService[String(service?.protocol)] || {}
-  );
+  const selectedItemKeys = Object.keys(selectService[String(service?.protocol)] || {});
   const proportion = { width: 30, height: 30 };
 
   return (
@@ -145,9 +125,9 @@ export function List({
             <Button onClick={() => setShowSelected(!showSelected)}>
               {showSelected
                 ? 'Mostrar Todos'
-                : `Filtrar Selecionado${
-                    selectedItemKeys.length > 1 ? 's' : ''
-                  } (${selectedItemKeys.length})`}
+                : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
+                    selectedItemKeys.length
+                  })`}
             </Button>
 
             <Button onClick={selectServiceClean}>Limpar</Button>

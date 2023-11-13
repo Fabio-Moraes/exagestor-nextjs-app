@@ -38,12 +38,10 @@ export function ControlButtons({ service }: { service: Service }) {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
         const response = await api.get(
-          `/api/services/${service?.status === 'active' ? 'pause' : 'start'}`,
+          `/api/employee/${service?.status === 'active' ? 'pause' : 'start'}`,
           {
             params: {
               token: storedCookie,
@@ -68,11 +66,9 @@ export function ControlButtons({ service }: { service: Service }) {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/services/cancel', {
+        const response = await api.get('/api/employee/cancel', {
           params: { token: storedCookie, protocol: service?.protocol }
         });
 
@@ -94,9 +90,7 @@ export function ControlButtons({ service }: { service: Service }) {
       <ButtonFinish
         rel="preload"
         onClick={() =>
-          router.push(
-            `/dashboard/employee/running/finish/select-service/${encryptSlug}`
-          )
+          router.push(`/dashboard/employee/running/finish/select-service/${encryptSlug}`)
         }
       >
         <span>Finalizar</span>

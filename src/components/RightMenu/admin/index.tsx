@@ -9,7 +9,7 @@ import menu from './assets/svg/menu.svg';
 import report from './assets/svg/report.svg';
 import { Button, Container, Wrapper } from './styles';
 
-export function MenuBar() {
+export function RightMenu() {
   const pathname = usePathname();
   const proportion = { width: 25, height: 25 };
 
@@ -22,13 +22,7 @@ export function MenuBar() {
             href="/dashboard/employee/new"
             rel="preload"
           >
-            <Image
-              priority
-              loading="eager"
-              src={add}
-              alt="Add"
-              {...proportion}
-            />
+            <Image priority loading="eager" src={add} alt="Add" {...proportion} />
             <span>Novo Serviço</span>
           </Button>
         </div>
@@ -39,13 +33,7 @@ export function MenuBar() {
             href="/dashboard/employee/running"
             rel="preload"
           >
-            <Image
-              priority
-              loading="eager"
-              src={execution}
-              alt="Book"
-              {...proportion}
-            />
+            <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
             <span>Em Execução</span>
           </Button>
         </div>
@@ -56,26 +44,14 @@ export function MenuBar() {
             href="/dashboard/employee/historic"
             rel="preload"
           >
-            <Image
-              priority
-              loading="eager"
-              src={report}
-              alt="Report"
-              {...proportion}
-            />
+            <Image priority loading="eager" src={report} alt="Report" {...proportion} />
             <span>Histórico Geral</span>
           </Button>
         </div>
 
         <div>
           <Button href="/">
-            <Image
-              priority
-              loading="eager"
-              src={menu}
-              alt="Clipboard"
-              {...proportion}
-            />
+            <Image priority loading="eager" src={menu} alt="Clipboard" {...proportion} />
             <span>Materiais Utilizados</span>
           </Button>
         </div>

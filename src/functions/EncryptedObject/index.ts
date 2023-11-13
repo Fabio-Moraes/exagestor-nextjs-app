@@ -19,9 +19,7 @@ export function encryptObject(object: Record<string, unknown>): string {
 }
 
 export function decryptObject(encryptedText: string): Record<string, unknown> {
-  const encryptedObject: EncryptedObject = JSON.parse(
-    decodeURIComponent(encryptedText)
-  );
+  const encryptedObject: EncryptedObject = JSON.parse(decodeURIComponent(encryptedText));
   const bytes = CryptoJS.AES.decrypt(encryptedObject.ciphertext, secretKey);
   const decryptedObject = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   return decryptedObject;

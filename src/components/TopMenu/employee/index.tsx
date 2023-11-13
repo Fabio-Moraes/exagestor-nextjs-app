@@ -31,13 +31,7 @@ export function TopMenu() {
         $path={['/dashboard/employee/running'].includes(pathname)}
         href="/dashboard/employee/running"
       >
-        <Image
-          priority
-          loading="eager"
-          src={execution}
-          alt="Book"
-          {...proportion}
-        />
+        <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
         <span>
           Em
           <br />
@@ -49,13 +43,7 @@ export function TopMenu() {
         $path={['/dashboard/employee/historic'].includes(pathname)}
         href="/dashboard/employee/historic"
       >
-        <Image
-          priority
-          loading="eager"
-          src={report}
-          alt="Report"
-          {...proportion}
-        />
+        <Image priority loading="eager" src={report} alt="Report" {...proportion} />
         <span>
           Histórico
           <br />

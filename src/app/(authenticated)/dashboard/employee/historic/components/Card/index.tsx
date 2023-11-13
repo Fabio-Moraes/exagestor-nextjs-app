@@ -59,16 +59,14 @@ export function Card({ service }: { service: Service }) {
   return (
     <Container
       rel="preload"
-      onClick={() =>
-        router.push(`/dashboard/employee/historic/details/${encryptSlug}`)
-      }
+      onClick={() => router.push(`/dashboard/employee/historic/details/${encryptSlug}`)}
     >
       <p>{postCardAt}</p>
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>
         <p>Protocolo: {service?.protocol}</p>
-        <p>Iniciado em:: {createdAt}</p>
+        <p>Iniciado em: {createdAt}</p>
         <p>Serviço: {status[service?.status]}</p>
       </div>
     </Container>

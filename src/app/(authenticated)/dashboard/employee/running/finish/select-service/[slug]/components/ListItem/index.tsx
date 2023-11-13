@@ -23,14 +23,7 @@ export function ListItem(props: ListItemProps) {
       </ItemContainer>
       {Boolean(count > 0) && (
         <Reset onClick={onReset}>
-          <Image
-            priority
-            loading="eager"
-            src={reset}
-            alt="Reset"
-            width={35}
-            height={35}
-          />
+          <Image priority loading="eager" src={reset} alt="Reset" width={35} height={35} />
         </Reset>
       )}
     </Container>

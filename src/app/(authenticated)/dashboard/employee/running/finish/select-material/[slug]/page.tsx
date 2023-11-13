@@ -57,11 +57,9 @@ export default function FinishService({ params }: SlugType) {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/services/select-material', {
+        const response = await api.get('/api/employee/select-material', {
           params: {
             token: storedCookie,
             protocol: decryptObject(params.slug).protocol
@@ -102,8 +100,8 @@ export default function FinishService({ params }: SlugType) {
       {connectionError ? (
         <ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade
-            na conexão. Por favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
+            favor, tente novamente.
           </span>
         </ErrorContainer>
       ) : (

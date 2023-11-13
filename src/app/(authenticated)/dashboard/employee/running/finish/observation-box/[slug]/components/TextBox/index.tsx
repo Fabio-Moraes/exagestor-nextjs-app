@@ -62,11 +62,9 @@ export function TextBox({ service }: { service: Service }) {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/services/concluded', {
+        const response = await api.get('/api/employee/concluded', {
           params: {
             token: storedCookie,
             protocol: service?.protocol,
@@ -103,8 +101,7 @@ export function TextBox({ service }: { service: Service }) {
 
   const handleCursorPosition = () => {
     const cursorPosition = textareaRef.current?.selectionStart ?? 0;
-    const textBeforeCursor =
-      textareaRef.current?.value.substring(0, cursorPosition) ?? '';
+    const textBeforeCursor = textareaRef.current?.value.substring(0, cursorPosition) ?? '';
 
     const lineNumber = textBeforeCursor.split('\n').length - 1;
     const columnNumber = Number(textBeforeCursor.split('\n').pop()?.length) + 1;
@@ -136,18 +133,13 @@ export function TextBox({ service }: { service: Service }) {
     const cursorPosition = textareaRef.current?.selectionStart ?? 0;
     if (textareaRef.current) {
       setTimeout(() => {
-        textareaRef.current?.setSelectionRange(
-          cursorPosition + 1,
-          cursorPosition + 1
-        );
+        textareaRef.current?.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
         textareaRef.current?.focus(); // Foca no elemento para que o cursor seja movido
       }, 0);
     }
   };
 
-  const handleTextareaKeyDown = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
+  const handleTextareaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const cursorPosition = textareaRef.current?.selectionStart ?? 0;
     const textInput = textareaRef.current?.value ?? '';
 

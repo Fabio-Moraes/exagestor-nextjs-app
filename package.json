@@ -2,6 +2,8 @@
     "name": "exa_telecom",
     "version": "0.1.0",
     "private": true,
+    "author": "fabio_vieira_moraes",
+    "license": "OWNER",
     "scripts": {
         "dev": "next dev",
         "build": "next build",

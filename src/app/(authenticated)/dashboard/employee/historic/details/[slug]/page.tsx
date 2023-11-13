@@ -53,11 +53,9 @@ export default function Details({ params }: SlugType) {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/services/historic/details', {
+        const response = await api.get('/api/employee/historic/details', {
           params: { token: storedCookie, protocol, update_count }
         });
 
@@ -106,11 +104,7 @@ export default function Details({ params }: SlugType) {
     return lines.map((line: string, index: number) => {
       return (
         <Fragment key={String(index)}>
-          {line ? (
-            <p key={String(index)}>{line}</p>
-          ) : (
-            <div key={`extra-div-${index}`} />
-          )}
+          {line ? <p key={String(index)}>{line}</p> : <div key={`extra-div-${index}`} />}
         </Fragment>
       );
     });
@@ -139,8 +133,8 @@ export default function Details({ params }: SlugType) {
       {connectionError ? (
         <ErrorContainer>
           <span>
-            Não foi possível consultar o histórico devido a instabilidade na
-            conexão. Por favor, tente novamente.
+            Não foi possível consultar o histórico devido a instabilidade na conexão. Por
+            favor, tente novamente.
           </span>
         </ErrorContainer>
       ) : (

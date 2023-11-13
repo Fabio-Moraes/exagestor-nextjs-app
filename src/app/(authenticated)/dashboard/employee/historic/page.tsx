@@ -5,13 +5,7 @@ import { useEffect, useState } from 'react';
 import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
-import {
-  Container,
-  ErrorContainer,
-  ListContainer,
-  ListItem,
-  Title
-} from './styles';
+import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -45,11 +39,9 @@ export default function HistoricService() {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/services/historic', {
+        const response = await api.get('/api/employee/historic', {
           params: { token: storedCookie }
         });
 
@@ -81,8 +73,8 @@ export default function HistoricService() {
       {connectionError && !isPopupValue && (
         <ErrorContainer>
           <span>
-            Não foi possível obter dados da lista devido a instabilidade na
-            conexão. Por favor, tente novamente.
+            Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
         </ErrorContainer>

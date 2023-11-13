@@ -91,8 +91,7 @@ export const CheckboxButton = styled.button<{ $checked: number }>`
     width: 20px;
     height: 20px;
     border: 2px solid #27a567;
-    background-color: ${({ $checked }) =>
-      $checked === 1 ? '#27a567' : '#fff'};
+    background-color: ${({ $checked }) => ($checked === 1 ? '#27a567' : '#fff')};
     border-radius: 10px;
   }
 

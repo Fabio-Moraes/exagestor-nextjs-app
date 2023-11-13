@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import iconExa from './assets/svg/exa_logo.svg';
-import iconEmployee from './assets/svg/user_employee.svg';
+import iconUser from './assets/svg/user.svg';
 import {
   Container,
   ProfileCompany,
@@ -18,7 +18,7 @@ import { useDecodeToken } from 'hooks/useDecodeToken';
 import Cookie from 'js-cookie';
 
 export function Header() {
-  const decoderToken = useDecodeToken<{ name: string }>('auth_token');
+  const decoderToken = useDecodeToken<{ name: string; role: string }>('auth_token');
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +40,7 @@ export function Header() {
           priority
           loading="eager"
           alt="Axa"
-          style={{ width: '74px', height: 'auto' }}
+          style={{ width: '54px', height: 'auto' }}
         />
         <ProfileInfoCompany>
           <strong>EXA TELECOM</strong>
@@ -55,7 +55,7 @@ export function Header() {
         )}
         <div>
           <Image
-            src={iconEmployee}
+            src={iconUser}
             priority
             loading="eager"
             alt="Axa"

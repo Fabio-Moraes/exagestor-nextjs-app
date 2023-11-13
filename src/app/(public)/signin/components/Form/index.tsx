@@ -65,9 +65,7 @@ export const Form = () => {
 
     for (let count = 0; count < MAX_RETRIES; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
         const response = await api.post('/api/auth/signin', {
           cnpj,
           password

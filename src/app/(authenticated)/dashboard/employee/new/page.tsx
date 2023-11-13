@@ -72,15 +72,11 @@ export default function NewService() {
     setName(e.target.value);
   };
 
-  const handleServiceOriginAddressChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleServiceOriginAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
 
-  const handleBoxOrCableNomenclatureChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleBoxOrCableNomenclatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNomenclature(e.target.value);
   };
 
@@ -100,9 +96,7 @@ export default function NewService() {
       }
 
       if (!validateName(name)) {
-        setModalValue(
-          'O nome não pode conter números ou caracteres inválidos.'
-        );
+        setModalValue('O nome não pode conter números ou caracteres inválidos.');
         return;
       }
 
@@ -132,17 +126,12 @@ export default function NewService() {
       while (retryCount < maxRetries) {
         try {
           setFullScreenLoadingValue(
-            retryCount > 0
-              ? `Conectando<br>Tentativa (${retryCount + 1})`
-              : 'Conectando'
+            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
 
           const storedCookie = Cookie.get('auth_token');
 
-          const getClassification = ({
-            classificationL = 0,
-            classificationF = 0
-          }) => {
+          const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
             const classificationArray = [];
 
             if (classificationL === 1) {
@@ -162,7 +151,7 @@ export default function NewService() {
             classificationF
           });
 
-          const response = await api.post('/api/services/new', {
+          const response = await api.post('/api/employee/new', {
             clientName: name,
             city: selectedCity,
             classification: classification,
@@ -193,9 +182,7 @@ export default function NewService() {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
 
-      setModalValue(
-        'Não foi possível iniciar o serviço após várias tentativas.'
-      );
+      setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
       setFullScreenLoadingValue('');
     }
   };
@@ -214,11 +201,7 @@ export default function NewService() {
         />
 
         <label htmlFor="selectedCity">Cidade:</label>
-        <Select
-          id="selectedCity"
-          value={selectedCity}
-          onChange={handleCityChange}
-        >
+        <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
           <Option value="">Selecione uma cidade</Option>
           {cities.map((city, index) => (
             <Option key={index.toString()} value={city}>
@@ -227,9 +210,7 @@ export default function NewService() {
           ))}
         </Select>
 
-        <label htmlFor="serviceOriginAddress">
-          Endereço de origem do serviço:
-        </label>
+        <label htmlFor="serviceOriginAddress">Endereço de origem do serviço:</label>
         <Input
           type="text"
           id="serviceOriginAddress"
@@ -238,9 +219,7 @@ export default function NewService() {
           onChange={handleServiceOriginAddressChange}
         />
 
-        <label htmlFor="boxOrCableNomenclature">
-          Nomenclatura de caixa ou cabo:
-        </label>
+        <label htmlFor="boxOrCableNomenclature">Nomenclatura de caixa ou cabo:</label>
         <Input
           type="text"
           id="boxOrCableNomenclature"
@@ -275,9 +254,7 @@ export default function NewService() {
       {modalValue && !fullScreenLoadingValue && (
         <Modal icon={iconSvgModal} message={modalValue} />
       )}
-      {fullScreenLoadingValue && (
-        <FullScreenLoading message={fullScreenLoadingValue} />
-      )}
+      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
     </Container>
   );
 }

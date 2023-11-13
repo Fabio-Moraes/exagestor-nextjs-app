@@ -6,13 +6,7 @@ import { ControlButtons } from './components/ControlButtons';
 import { DisplayInfo } from './components/DisplayInfo';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
-import {
-  Container,
-  ErrorContainer,
-  ListContainer,
-  ListItem,
-  Title
-} from './styles';
+import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
 import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
@@ -48,10 +42,7 @@ export default function RunningService() {
   function filterSelectedOpenProtocols(services: Service[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
-    function filterProtocols(
-      paramPrevItems: Protocol,
-      paramServiceProtocols: string[]
-    ) {
+    function filterProtocols(paramPrevItems: Protocol, paramServiceProtocols: string[]) {
       const filteredProtocols: Protocol = {};
       for (const key in paramPrevItems) {
         if (paramServiceProtocols.includes(key)) {
@@ -61,12 +52,8 @@ export default function RunningService() {
       return filteredProtocols;
     }
 
-    setSelectService((prevItems) =>
-      filterProtocols(prevItems, serviceProtocols)
-    );
-    setSelectMaterial((prevItems) =>
-      filterProtocols(prevItems, serviceProtocols)
-    );
+    setSelectService((prevItems) => filterProtocols(prevItems, serviceProtocols));
+    setSelectMaterial((prevItems) => filterProtocols(prevItems, serviceProtocols));
   }
 
   async function fetchServices() {
@@ -74,11 +61,9 @@ export default function RunningService() {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(
-          count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando'
-        );
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/services/running', {
+        const response = await api.get('/api/employee/running', {
           params: { token: storedCookie }
         });
 
@@ -105,8 +90,8 @@ export default function RunningService() {
       {connectionError ? (
         <ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade
-            na conexão. Por favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
+            favor, tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
         </ErrorContainer>
