@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { encryptObject } from '../../../../../../functions';
 import { ButtonFinish, Container } from './styles';
 
+import { encryptObject } from 'functions';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
@@ -94,7 +94,9 @@ export function ControlButtons({ service }: { service: Service }) {
       <ButtonFinish
         rel="preload"
         onClick={() =>
-          router.push(`/dashboard/running/finish/select-service/${encryptSlug}`)
+          router.push(
+            `/dashboard/employee/running/finish/select-service/${encryptSlug}`
+          )
         }
       >
         <span>Finalizar</span>

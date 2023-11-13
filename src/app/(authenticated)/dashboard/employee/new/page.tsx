@@ -180,7 +180,7 @@ export default function NewService() {
             setModalValue('Novo serviço iniciado com êxito.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            router.push('/dashboard/running');
+            router.push('/dashboard/employee/running');
             return;
           } else {
             console.error('Erro:', response.data.error);

@@ -18,8 +18,8 @@ export function MenuBar() {
       <Wrapper>
         <div>
           <Button
-            $path={['/dashboard/new', '/'].includes(pathname)}
-            href="/dashboard/new"
+            $path={['/dashboard/employee/new', '/'].includes(pathname)}
+            href="/dashboard/employee/new"
             rel="preload"
           >
             <Image
@@ -35,8 +35,8 @@ export function MenuBar() {
 
         <div>
           <Button
-            $path={['/dashboard/running'].includes(pathname)}
-            href="/dashboard/running"
+            $path={['/dashboard/employee/running'].includes(pathname)}
+            href="/dashboard/employee/running"
             rel="preload"
           >
             <Image
@@ -52,8 +52,8 @@ export function MenuBar() {
 
         <div>
           <Button
-            $path={['/dashboard/historic'].includes(pathname)}
-            href="/dashboard/historic"
+            $path={['/dashboard/employee/historic'].includes(pathname)}
+            href="/dashboard/employee/historic"
             rel="preload"
           >
             <Image

@@ -16,8 +16,8 @@ export function TopMenu() {
   return (
     <Container>
       <Button
-        $path={['/dashboard/new', '/'].includes(pathname)}
-        href="/dashboard/new"
+        $path={['/dashboard/employee/new', '/'].includes(pathname)}
+        href="/dashboard/employee/new"
       >
         <Image priority loading="eager" src={add} alt="Add" {...proportion} />
         <span>
@@ -28,8 +28,8 @@ export function TopMenu() {
       </Button>
 
       <Button
-        $path={['/dashboard/running'].includes(pathname)}
-        href="/dashboard/running"
+        $path={['/dashboard/employee/running'].includes(pathname)}
+        href="/dashboard/employee/running"
       >
         <Image
           priority
@@ -46,8 +46,8 @@ export function TopMenu() {
       </Button>
 
       <Button
-        $path={['/dashboard/historic'].includes(pathname)}
-        href="/dashboard/historic"
+        $path={['/dashboard/employee/historic'].includes(pathname)}
+        href="/dashboard/employee/historic"
       >
         <Image
           priority

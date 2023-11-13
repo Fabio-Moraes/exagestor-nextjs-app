@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 
-import ListItem from '../ListItem';
+import { ListItem } from '../ListItem';
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
 import {
@@ -45,11 +45,11 @@ export function List({
   service: Service;
   items: ListProps[];
 }) {
+  const { selectService, setSelectService } = useContexState();
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const { selectMaterial, setSelectMaterial } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -63,13 +63,15 @@ export function List({
 
   const router = useRouter();
 
-  async function fetchConcludedMaterial() {
+  async function fetchConcludedServices() {
     const encryptSlug = encryptObject({ protocol: service?.protocol });
-    router.push(`/dashboard/running/finish/observation-box/${encryptSlug}`);
+    router.push(
+      `/dashboard/employee/running/finish/select-material/${encryptSlug}`
+    );
   }
 
   const toggleItem = (item: string) => {
-    setSelectMaterial((prevItems) => {
+    setSelectService((prevItems) => {
       const protocolKey = String(service?.protocol);
 
       return {
@@ -83,7 +85,7 @@ export function List({
   };
 
   const toggleItemReset = (item: string) => {
-    setSelectMaterial((prevItems) => {
+    setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
       const protocolKey = String(service?.protocol);
       const selectedItemsCount = Object.keys(
@@ -101,7 +103,7 @@ export function List({
   };
 
   const selectServiceClean = () => {
-    setSelectMaterial((prevItems) => {
+    setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
       const protocolKey = String(service?.protocol);
 
@@ -116,13 +118,14 @@ export function List({
   const filteredItems = items?.filter(
     (item) =>
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showSelected ? selectMaterial[String(service?.protocol)][item.id] : true)
+      (showSelected
+        ? selectService[String(service?.protocol)]?.[item.id]
+        : true)
   );
 
   const selectedItemKeys = Object.keys(
-    selectMaterial[String(service?.protocol)] || {}
+    selectService[String(service?.protocol)] || {}
   );
-
   const proportion = { width: 30, height: 30 };
 
   return (
@@ -165,14 +168,18 @@ export function List({
             <ListItem
               key={item.description}
               item={item.description}
-              count={selectMaterial?.[String(service?.protocol)]?.[item.id]}
+              count={selectService?.[String(service?.protocol)]?.[item.id]}
               onSelect={() => toggleItem(item.id)}
               onReset={() => toggleItemReset(item.id)}
             />
           ))}
       <div>
-        <Button onClick={() => router.back()}>Voltar</Button>
-        <Button onClick={() => fetchConcludedMaterial()}>Avançar</Button>
+        <Button rel="preload" onClick={() => router.back()}>
+          Voltar
+        </Button>
+        <Button rel="preload" onClick={() => fetchConcludedServices()}>
+          Avançar
+        </Button>
       </div>
     </ListContainer>
   );
