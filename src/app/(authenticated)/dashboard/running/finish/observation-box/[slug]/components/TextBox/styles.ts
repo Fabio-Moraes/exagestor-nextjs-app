@@ -1,8 +1,6 @@
 'use client';
 
-import styled, { keyframes, css } from 'styled-components';
-
-import { lighten } from 'polished';
+import styled from 'styled-components';
 
 export const ListContainer = styled.div`
   margin-top: 20px;
@@ -81,47 +79,10 @@ export const ContainerCounter = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  > div {
-    display: flex;
-    min-width: 30px;
-  }
-
   > p {
     text-align: end;
     margin-bottom: 7px;
   }
-`;
-
-const animation = keyframes`
-  from {
-    background-position: 0% 0%;
-  }
-  
-  to {
-    background-position: 135% 0%;
-  }
-`;
-
-export const TextSkeleton = styled.div<{ $path?: number }>`
-  border-radius: 5px;
-  height: 20px;
-  ${({ $path = 100 }) =>
-    $path &&
-    css`
-      width: ${$path}%;
-    `};
-
-  margin-bottom: 5px;
-
-  background: linear-gradient(
-    -90deg,
-    #6ab78e 0%,
-    ${lighten(0.2, '#6AB78E')} 50%,
-    #6ab78e 100%
-  );
-
-  background-size: 400% 400%;
-  animation: ${animation} 1.2s ease-in-out infinite;
 `;
 
 export const SkaletonInput = styled.div`

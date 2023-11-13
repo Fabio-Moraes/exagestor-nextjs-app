@@ -3,13 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { LineSkaleton } from 'components/LineSkaleton';
+
 import {
   Button,
   ListContainer,
   InputContainer,
   Input,
   SkaletonInput,
-  TextSkeleton,
   ContainerCounter
 } from './styles';
 
@@ -170,11 +171,11 @@ export function TextBox({ service }: { service: Service }) {
       <InputContainer>
         {isLoading || !service?.protocol ? (
           <SkaletonInput>
-            <TextSkeleton $path={100} />
-            <TextSkeleton $path={100} />
-            <TextSkeleton $path={65} />
-            <TextSkeleton $path={85} />
-            <TextSkeleton $path={75} />
+            <LineSkaleton width="100%" />
+            <LineSkaleton width="100%" />
+            <LineSkaleton width="65%" />
+            <LineSkaleton width="85%" />
+            <LineSkaleton width="75%" />
           </SkaletonInput>
         ) : (
           <Input
@@ -189,9 +190,7 @@ export function TextBox({ service }: { service: Service }) {
       </InputContainer>
       <ContainerCounter>
         {isLoading || !service?.protocol ? (
-          <div>
-            <TextSkeleton />
-          </div>
+          <LineSkaleton width="30px" />
         ) : (
           <p>{500 - (observationBox[service?.protocol]?.length ?? 0)}</p>
         )}

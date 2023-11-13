@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import exa from './assets/svg/exa_logo.svg';
+import iconExa from './assets/svg/exa_logo.svg';
+import iconEmployee from './assets/svg/user_employee.svg';
 import {
   Container,
   ProfileCompany,
@@ -24,10 +25,10 @@ export function Header() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); // Defina o tempo de atraso em milissegundos (neste exemplo, 2 segundos)
+    }, 1000);
 
     return () => {
-      clearTimeout(timer); // Limpar o temporizador se o componente for desmontado antes do tempo limite
+      clearTimeout(timer);
     };
   }, []);
 
@@ -35,7 +36,7 @@ export function Header() {
     <Container>
       <ProfileCompany>
         <Image
-          src={exa}
+          src={iconExa}
           priority
           loading="eager"
           alt="Axa"
@@ -47,20 +48,28 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {/* <ProfileUserNameSkeleton /> */}
         {decoderToken?.name && !isLoading ? (
           <span>{decoderToken?.name}</span>
         ) : (
           <ProfileUserNameSkeleton />
         )}
-        <button
-          onClick={() => {
-            Cookie.remove('auth_token');
-            router.refresh();
-          }}
-        >
-          <span>Sair</span>
-        </button>
+        <div>
+          <Image
+            src={iconEmployee}
+            priority
+            loading="eager"
+            alt="Axa"
+            style={{ width: '25px', height: 'auto' }}
+          />
+          <button
+            onClick={() => {
+              Cookie.remove('auth_token');
+              router.refresh();
+            }}
+          >
+            <span>Sair</span>
+          </button>
+        </div>
       </ProfileUser>
     </Container>
   );

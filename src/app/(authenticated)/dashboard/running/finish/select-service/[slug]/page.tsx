@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { LineSkaleton } from 'components/LineSkaleton';
 
 import { decryptObject } from '../../../../../../../functions';
 import { Container, ErrorContainer, Title } from './styles';
@@ -45,10 +46,8 @@ interface Service {
 export default function FinishService({ params }: SlugType) {
   const [services, setServices] = useState<Service[]>([]);
   const [connectionError, setConnectionError] = useState(false);
-
-  /* eslint-disable */
-    const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-    /* eslint-enable */
+  const [isLoading, setIsLoading] = useState(true);
+  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
   const storedCookie = Cookie.get('auth_token');
 
@@ -83,22 +82,30 @@ export default function FinishService({ params }: SlugType) {
 
   useEffect(() => {
     fetchServices();
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
     <Container>
       <Title>
         <h1>Selecionar Serviço</h1>
-        {services[0]?.protocol && (
+        {isLoading || !services[0]?.protocol ? (
+          <LineSkaleton width="300px" />
+        ) : (
           <span>PROTOCOLO: {services[0]?.protocol}</span>
         )}
       </Title>
-      {false && <FullScreenLoading message={'isPopupValue'} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
           <span>
-            Não foi possível finalizar o serviço devido a instabilidade na
-            conexão. Por favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade
+            na conexão. Por favor, tente novamente.
           </span>
         </ErrorContainer>
       ) : (

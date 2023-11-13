@@ -1,8 +1,6 @@
 'use client';
 
-import styled, { keyframes } from 'styled-components';
-
-import { lighten } from 'polished';
+import styled from 'styled-components';
 
 export const ListContainer = styled.div`
   margin-top: 20px;
@@ -101,16 +99,6 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-const animation = keyframes`
-  from {
-    background-position: 0% 0%;
-  }
-  
-  to {
-    background-position: 135% 0%;
-  }
-`;
-
 export const ItemsSkeleton = styled.div`
   background-color: #fff;
 
@@ -125,37 +113,12 @@ export const ItemsSkeleton = styled.div`
   cursor: progress;
 
   > div:first-child {
-    border-radius: 5px;
-    height: 30px;
-    width: 35px;
-    margin: 0px 10px 0 10px;
-
-    background: linear-gradient(
-      -90deg,
-      #6ab78e 0%,
-      ${lighten(0.2, '#6AB78E')} 50%,
-      #6ab78e 100%
-    );
-
-    background-size: 400% 400%;
-    animation: ${animation} 1.2s ease-in-out infinite;
+    display: flex;
+    margin: 0px 10px;
   }
 
   > div:last-child {
     display: flex;
-    border-radius: 5px;
-    height: 30px;
-    width: 100%;
-    margin-right: 10px;
-
-    background: linear-gradient(
-      -90deg,
-      #6ab78e 0%,
-      ${lighten(0.2, '#6AB78E')} 50%,
-      #6ab78e 100%
-    );
-
-    background-size: 400% 400%;
-    animation: ${animation} 1.2s ease-in-out infinite;
+    margin: 0 10px 0 0;
   }
 `;

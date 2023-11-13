@@ -101,23 +101,24 @@ export default function RunningService() {
   return (
     <Container>
       <Title>Em Execução</Title>
-      <ListContainer>
-        {services.map((service) => (
-          <ListItem key={service.id}>
-            <DisplayInfo service={service} />
-            <ControlButtons service={service} />
-          </ListItem>
-        ))}
-      </ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-      {connectionError && !isPopupValue && (
+      {connectionError ? (
         <ErrorContainer>
           <span>
-            Não foi possível obter dados da lista devido a instabilidade na
-            conexão. Por favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade
+            na conexão. Por favor, tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
         </ErrorContainer>
+      ) : (
+        <ListContainer>
+          {services.map((service) => (
+            <ListItem key={service.id}>
+              <DisplayInfo service={service} />
+              <ControlButtons service={service} />
+            </ListItem>
+          ))}
+        </ListContainer>
       )}
     </Container>
   );

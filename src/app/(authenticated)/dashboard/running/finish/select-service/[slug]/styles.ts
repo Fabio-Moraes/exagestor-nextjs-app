@@ -9,8 +9,12 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.div`
+  display: flex;
+  flex-direction: column;
   color: #333;
   padding: 8px;
+  align-items: center;
+  justify-content: center;
 
   > h1 {
     font-size: 30px;

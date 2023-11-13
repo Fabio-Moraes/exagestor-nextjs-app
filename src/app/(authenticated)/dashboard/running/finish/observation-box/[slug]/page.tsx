@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 
 import { TextBox } from './components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { LineSkaleton } from 'components/LineSkaleton';
 
 import { decryptObject } from '../../../../../../../functions';
-import { Container, ErrorContainer, Title, TextSkeleton } from './styles';
+import { Container, ErrorContainer, Title } from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -80,7 +81,7 @@ export default function FinishService({ params }: SlugType) {
       <Title>
         <h1>Campo de Observação</h1>
         {isLoading || !services[0]?.protocol ? (
-          <TextSkeleton $path={90} />
+          <LineSkaleton width="300px" />
         ) : (
           <span>PROTOCOLO: {services[0]?.protocol}</span>
         )}
@@ -89,8 +90,8 @@ export default function FinishService({ params }: SlugType) {
       {connectionError ? (
         <ErrorContainer>
           <span>
-            Não foi possível finalizar o serviço devido a instabilidade na
-            conexão. Por favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade
+            na conexão. Por favor, tente novamente.
           </span>
         </ErrorContainer>
       ) : (

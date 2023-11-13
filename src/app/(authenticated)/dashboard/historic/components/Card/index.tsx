@@ -66,8 +66,8 @@ export function Card({ service }: { service: Service }) {
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>
         <p>Protocolo: {service?.protocol}</p>
-        <p>Início: {createdAt}</p>
-        <p>Status do serviço: {status[service?.status]}</p>
+        <p>Iniciado em:: {createdAt}</p>
+        <p>Serviço: {status[service?.status]}</p>
       </div>
     </Container>
   );

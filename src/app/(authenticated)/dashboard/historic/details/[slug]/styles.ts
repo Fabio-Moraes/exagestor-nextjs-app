@@ -59,9 +59,9 @@ export const Info = styled.section`
   flex-direction: column;
   margin-top: 10px;
   width: 100%;
+  padding: 0 20px 0 20px;
 
   > p {
-    padding: 0 20px 0 20px;
     margin-bottom: 10px;
     text-align: start;
     font-size: 15px;
@@ -73,7 +73,6 @@ export const Info = styled.section`
 `;
 
 export const Observation = styled.div`
-  margin: 0 10px 0 10px;
   border: 2px solid #3f795e;
   border-radius: 5px;
   padding-bottom: 10px;
@@ -119,4 +118,28 @@ export const Button = styled.button`
   color: #fff;
   text-align: center;
   font-size: 16px;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  > span {
+    text-align: left;
+    font-size: 17px;
+    color: #333;
+  }
+
+  > button {
+    width: 150px;
+    background-color: #27a567;
+    padding: 10px;
+    margin: 20px 20px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #fff;
+  }
 `;

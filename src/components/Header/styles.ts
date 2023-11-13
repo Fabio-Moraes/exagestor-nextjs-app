@@ -51,22 +51,28 @@ export const ProfileUser = styled.div`
     width: 100%;
   }
 
-  > button {
-    border: 2px solid #3f795e;
-    background: #27a567;
-    box-shadow: -12px 0px 0px 0px rgba(0, 0, 0, 0.5);
-    background-color: #fff;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 5px;
-    padding: 3px 8px 3px 8px;
-    cursor: pointer;
-    margin-left: auto;
+  > div {
+    padding-left: 4px;
+    display: flex;
+    width: 100%;
 
-    &:hover {
-      @media (min-width: 550px) {
-        border: 2px solid #27a567;
-        background-image: radial-gradient(60px at center, #27a567, #dce6dc);
+    > button {
+      border: 2px solid #3f795e;
+      background: #27a567;
+      box-shadow: -12px 0px 0px 0px rgba(0, 0, 0, 0.5);
+      background-color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 5px;
+      padding: 3px 8px 3px 8px;
+      cursor: pointer;
+      margin-left: auto;
+
+      &:hover {
+        @media (min-width: 550px) {
+          border: 2px solid #27a567;
+          background-image: radial-gradient(60px at center, #27a567, #dce6dc);
+        }
       }
     }
   }

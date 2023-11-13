@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { useContexState } from '../../../../../../../../../hooks/useGlobalContext';
+import { LineSkaleton } from 'components/LineSkaleton';
+
 import ListItem from '../ListItem';
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
@@ -17,6 +18,7 @@ import {
 } from './styles';
 
 import { encryptObject } from 'functions';
+import { useContexState } from 'hooks/useGlobalContext';
 
 interface ListProps {
   id: string;
@@ -154,8 +156,8 @@ export function List({
         ? [...Array(8)].map((_, index) => {
             return (
               <ItemsSkeleton key={String(index)}>
-                <div />
-                <div />
+                <LineSkaleton height="30px" width="35px" />
+                <LineSkaleton height="30px" />
               </ItemsSkeleton>
             );
           })

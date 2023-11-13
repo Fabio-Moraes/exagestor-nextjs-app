@@ -3,7 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 
+import { FullScreenLoading } from 'components/FullScreenLoading';
+import { LineSkaleton } from 'components/LineSkaleton';
+
 import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
+import { ErrorContainer } from './styles';
 
 import { decryptObject } from 'functions';
 import Cookie from 'js-cookie';
@@ -32,17 +36,16 @@ interface SlugType {
 }
 
 export default function Details({ params }: SlugType) {
-  const router = useRouter();
-
-  const { protocol, update_count } = decryptObject(params.slug);
-
-  /* eslint-disable */
   const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-  /* eslint-enable */
+  const [isLoading, setIsLoading] = useState(true);
 
+  const { protocol, update_count } = decryptObject(params.slug);
   const storedCookie = Cookie.get('auth_token');
+
+  const router = useRouter();
+
   const maxRetries = 4;
 
   async function fetchServices() {
@@ -70,6 +73,12 @@ export default function Details({ params }: SlugType) {
 
   useEffect(() => {
     fetchServices();
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   function formatDate(date: string) {
@@ -107,40 +116,75 @@ export default function Details({ params }: SlugType) {
     });
   };
 
+  const modificationFilter = () => {
+    if (
+      services?.modification_at &&
+      services?.update_count > 0 &&
+      services?.status !== 'concluded'
+    ) {
+      if (services?.status === 'paused') {
+        return <p>Pausado em: {formatDate(services?.modification_at)}</p>;
+      }
+
+      if (services?.status === 'active') {
+        return <p>Retomado em: {formatDate(services?.modification_at)}</p>;
+      }
+    }
+  };
+
   return (
     <Container>
       <Title>Detalhes</Title>
-      <Wrapper>
-        <Info>
-          <p>Endereço: {services?.address}</p>
-          <p>Cidade: {services?.city}</p>
-          <p>Classificação: {services?.classification}</p>
-          <p>Nome do Cliente: {services?.client_name}</p>
-          {services?.created_at && (
-            <p>Data de Criação: {formatDate(services?.created_at)}</p>
-          )}
-          {services?.finished_at && (
-            <p>Data de Conclusão: {formatDate(services?.finished_at)}</p>
-          )}
-          {/* {services?.modification_at && (
-            <p>
-              Ultima modificação de atividade:{' '}
-              {formatDate(services?.modification_at)}
-            </p>
-          )} */}
-          <p>Nomenclatura: {services?.nomenclature}</p>
-          <p>Protocolo: {services?.protocol}</p>
-          <p>Status: {status[services?.status ?? 'active']}</p>
-          <p>Contador de Atualização: {services?.update_count}</p>
-          {true && services?.observation && (
-            <Observation>
-              <p>Observação</p>
-              <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
-            </Observation>
-          )}
-        </Info>
-        <Button onClick={() => router.back()}>Voltar</Button>
-      </Wrapper>
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+      {connectionError ? (
+        <ErrorContainer>
+          <span>
+            Não foi possível consultar o histórico devido a instabilidade na
+            conexão. Por favor, tente novamente.
+          </span>
+        </ErrorContainer>
+      ) : (
+        <Wrapper>
+          <Info>
+            {isLoading || !services ? (
+              <>
+                <LineSkaleton width="180px" />
+                <LineSkaleton width="120px" />
+                <LineSkaleton width="100px" />
+                <LineSkaleton width="250px" />
+                <LineSkaleton width="230px" />
+                <LineSkaleton width="150px" />
+                <LineSkaleton width="250px" />
+                <LineSkaleton width="200px" />
+                <LineSkaleton width="210px" />
+              </>
+            ) : (
+              <>
+                <p>Endereço: {services?.address}</p>
+                <p>Cidade: {services?.city}</p>
+                <p>Classificação: {services?.classification}</p>
+                <p>Solicitante: {services?.client_name}</p>
+                <p>Iniciado em: {formatDate(services?.created_at)}</p>
+                {services?.finished_at && (
+                  <p>Concluído em: {formatDate(services?.finished_at)}</p>
+                )}
+                {services?.modification_at && modificationFilter()}
+                <p>Nomenclatura: {services?.nomenclature}</p>
+                <p>Protocolo: {services?.protocol}</p>
+                <p>Serviço: {status[services?.status]}</p>
+                <p>Contador de Atualização: {services?.update_count}</p>
+                {services?.observation && (
+                  <Observation>
+                    <p>Observação</p>
+                    <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
+                  </Observation>
+                )}
+              </>
+            )}
+          </Info>
+          <Button onClick={() => router.back()}>Voltar</Button>
+        </Wrapper>
+      )}
     </Container>
   );
 }
