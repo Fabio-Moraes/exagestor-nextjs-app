@@ -17,8 +17,20 @@ import {
 import { useDecodeToken } from 'hooks/useDecodeToken';
 import Cookie from 'js-cookie';
 
+interface Decoded {
+  user: {
+    id: number;
+    name: string;
+    role: string;
+  };
+  company: {
+    id: number;
+    name: string;
+  };
+}
+
 export function Header() {
-  const decoderToken = useDecodeToken<{ name: string; role: string }>('auth_token');
+  const decoderToken = useDecodeToken<Decoded>('auth_token');
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -48,8 +60,8 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {decoderToken?.name && !isLoading ? (
-          <span>{decoderToken?.name}</span>
+        {decoderToken?.user.name && !isLoading ? (
+          <span>{decoderToken?.user.name}</span>
         ) : (
           <ProfileUserNameSkeleton />
         )}

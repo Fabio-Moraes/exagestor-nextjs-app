@@ -16,8 +16,8 @@ export function TopMenu() {
   return (
     <Container>
       <Button
-        $path={['/dashboard/employee/running'].includes(pathname)}
-        href="/dashboard/employee/running"
+        $path={['/dashboard/admin/running'].includes(pathname)}
+        href="/dashboard/admin/running"
       >
         <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
         <span>
