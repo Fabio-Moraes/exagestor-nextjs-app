@@ -18,23 +18,23 @@ export function RightMenu() {
       <Wrapper>
         <div>
           <Button
-            $path={['/dashboard/employee/new', '/'].includes(pathname)}
-            href="/dashboard/employee/new"
+            $path={['/dashboard/admin/running'].includes(pathname)}
+            href="/dashboard/admin/running"
             rel="preload"
           >
-            <Image priority loading="eager" src={add} alt="Add" {...proportion} />
-            <span>Novo Serviço</span>
+            <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
+            <span>Em Execução</span>
           </Button>
         </div>
 
         <div>
           <Button
-            $path={['/dashboard/employee/running'].includes(pathname)}
-            href="/dashboard/employee/running"
+            $path={['/dashboard/admin/register', '/'].includes(pathname)}
+            href="/dashboard/admin/register"
             rel="preload"
           >
-            <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
-            <span>Em Execução</span>
+            <Image priority loading="eager" src={add} alt="Add" {...proportion} />
+            <span>Novo Resgistro</span>
           </Button>
         </div>
 

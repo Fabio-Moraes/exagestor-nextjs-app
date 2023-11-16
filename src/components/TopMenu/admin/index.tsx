@@ -28,14 +28,14 @@ export function TopMenu() {
       </Button>
 
       <Button
-        $path={['/dashboard/employee/new', '/'].includes(pathname)}
-        href="/dashboard/employee/new"
+        $path={['/dashboard/admin/register', '/'].includes(pathname)}
+        href="/dashboard/admin/register"
       >
         <Image priority loading="eager" src={add} alt="Add" {...proportion} />
         <span>
           Novo
           <br />
-          Cadastrar
+          Registro
         </span>
       </Button>
 

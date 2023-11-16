@@ -71,6 +71,7 @@ export default function RunningService() {
 
         filterSelectedOpenProtocols(response.data);
         setServices(response.data);
+        console.log('response', response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);

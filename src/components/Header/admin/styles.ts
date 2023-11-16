@@ -96,9 +96,9 @@ export const ProfileUserNameSkeleton = styled.div`
 
   background: linear-gradient(
     -90deg,
-    #6ab78e 0%,
-    ${lighten(0.2, '#6AB78E')} 50%,
-    #6ab78e 100%
+    #b78e6a 0%,
+    ${lighten(0.2, '#b78e6a')} 50%,
+    #b78e6a 100%
   );
 
   background-size: 400% 400%;

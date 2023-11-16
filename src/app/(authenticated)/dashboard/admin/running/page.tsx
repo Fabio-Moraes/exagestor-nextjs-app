@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { ControlButtons } from './components/ControlButtons';
+//import { ControlButtons } from './components/ControlButtons';
 import { DisplayInfo } from './components/DisplayInfo';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
@@ -23,6 +23,7 @@ interface Service {
   status: string;
   created_at: string;
   protocol: string;
+  name_employee: string;
 }
 
 interface Protocol {
@@ -63,7 +64,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/employee/running', {
+        const response = await api.get('/api/admin/running', {
           params: { token: storedCookie }
         });
 
@@ -71,6 +72,7 @@ export default function RunningService() {
 
         filterSelectedOpenProtocols(response.data);
         setServices(response.data);
+        console.log('response', response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
@@ -100,7 +102,7 @@ export default function RunningService() {
           {services.map((service) => (
             <ListItem key={service.id}>
               <DisplayInfo service={service} />
-              <ControlButtons service={service} />
+              {/* <ControlButtons service={service} /> */}
             </ListItem>
           ))}
         </ListContainer>
