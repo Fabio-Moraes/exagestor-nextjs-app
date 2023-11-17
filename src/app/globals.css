@@ -16,6 +16,10 @@
   
   *, bottom, input{
   border: 0;
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   background: none;
   font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
   }

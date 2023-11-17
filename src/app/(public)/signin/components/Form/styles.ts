@@ -50,7 +50,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
+  //min-height: 300px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow: hidden;
@@ -83,13 +83,44 @@ export const FormContainer = styled.form`
   padding-top: 10px;
   background-color: #ffffff;
 
-  > div {
+  > div:nth-child(1) {
     display: flex;
     align-items: center;
-    margin: 5px 7px 0px 0px;
+    margin: 5px 7px 10px 0px;
     > strong {
       font-size: 22px;
     }
+  }
+
+  > div:nth-child(2) {
+    //justify-content: center;
+    //padding: 10px;
+    padding: 0px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    width: 100%;
+  }
+`;
+
+export const CheckboxButton = styled.button<{ $checked: boolean }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 15px;
+
+  > div {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #27a567;
+    background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
+    border-radius: 10px;
+  }
+
+  > span {
+    margin-left: 5px;
+    font-size: 14px;
   }
 `;
 
@@ -109,6 +140,41 @@ export const Input = styled.input`
 
   &::placeholder {
     color: #777;
+  }
+`;
+
+export const PasswordInputContainer = styled.div`
+  position: relative;
+  width: 80%;
+  margin: 15px 20px 0px 20px;
+`;
+
+export const PasswordInput = styled.input`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  overflow-wrap: break-word;
+  text-align: start;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #777;
+  }
+`;
+
+export const TogglePasswordVisibilityButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  &:focus {
+    outline: none;
   }
 `;
 

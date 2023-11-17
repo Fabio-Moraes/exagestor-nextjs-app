@@ -8,15 +8,16 @@ import { Modal } from 'components/Modal';
 
 import alertSvg from './assets/svg/alert.svg';
 import checkedSvg from './assets/svg/checked.svg';
-import { Button, Container, FormContainer, Input, Title } from './styles';
+import { Button, CheckboxButton, Container, FormContainer, Input, Title } from './styles';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
 export default function NewRegister() {
-  const [cnpj, setCnpj] = useState('');
+  const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
+  const [cpfOrCnpj, setCpfOrCnpj] = useState('CNPJ');
   const [name, setName] = useState('');
 
   const [modalValue, setModalValue] = useState('');
@@ -44,15 +45,27 @@ export default function NewRegister() {
     setName(e.target.value);
   };
 
-  const handleCnpj = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCnpj = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const formattedCnpj = value
-      .replace(/\D/g, '')
+      .replace(/[^\d]/g, '') // Remove todos os caracteres não numéricos
       .replace(/^(\d{2})(\d)/, '$1.$2')
       .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
       .replace(/\.(\d{3})(\d)/, '.$1/$2')
-      .replace(/(\d{4})(\d)/, '$1-$2');
-    setCnpj(formattedCnpj.trim());
+      .replace(/(\d{4})(\d)/, '$1-$2')
+      .slice(0, 18);
+    setIdentification(formattedCnpj.trim());
+  };
+
+  const handleChangeCpf = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const formattedCpf = value
+      .replace(/[^\d]/g, '') // Remove todos os caracteres não numéricos
+      .replace(/^(\d{3})(\d)/, '$1.$2')
+      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/, '.$1-$2')
+      .slice(0, 14);
+    setIdentification(formattedCpf.trim());
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,8 +88,13 @@ export default function NewRegister() {
         return;
       }
 
-      if (cnpj.trim() === '') {
-        setModalValue('Informe o CNPJ do funcionário.');
+      if (identification.trim() === '') {
+        setModalValue(`Informe o ${cpfOrCnpj} do funcionário.`);
+        return;
+      }
+
+      if (identification.trim().length < (cpfOrCnpj === 'CPF' ? 14 : 18)) {
+        setModalValue(`${cpfOrCnpj} inválido.`);
         return;
       }
 
@@ -104,13 +122,21 @@ export default function NewRegister() {
           const response = await api.post('/api/admin/register', {
             name: name,
             password: password,
-            cnpj: cnpj,
+            identification: identification,
             token: storedCookie
           });
 
-          const { success } = response.data;
+          const { status } = response.data;
 
-          if (success) {
+          if (status === 'already registered') {
+            setFullScreenLoadingValue('');
+            setModalValue(
+              `Funcionário(a) do <br>${cpfOrCnpj} ${identification} já existente.`
+            );
+            return;
+          }
+
+          if (status === 'success') {
             setSuccessfullyCompleted(true);
             setFullScreenLoadingValue('');
             setIconSvgModal(checkedSvg);
@@ -119,8 +145,6 @@ export default function NewRegister() {
             await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push('/dashboard/admin/running');
             return;
-          } else {
-            console.error('Erro:', response.data.error);
           }
         } catch (error) {
           console.error('Erro na requisição POST:', error);
@@ -148,13 +172,38 @@ export default function NewRegister() {
           onChange={handleName}
         />
 
+        <div>
+          <CheckboxButton
+            type="button"
+            $checked={cpfOrCnpj === 'CNPJ'}
+            onClick={() => {
+              setIdentification('');
+              setCpfOrCnpj('CNPJ');
+            }}
+          >
+            <div />
+            <span>Jurídica</span>
+          </CheckboxButton>
+
+          <CheckboxButton
+            type="button"
+            $checked={cpfOrCnpj === 'CPF'}
+            onClick={() => {
+              setIdentification('');
+              setCpfOrCnpj('CPF');
+            }}
+          >
+            <div />
+            <span>Física</span>
+          </CheckboxButton>
+        </div>
+
         <label htmlFor="CNPJ">Cnpj</label>
         <Input
-          type="text"
-          maxLength={18}
-          placeholder="Cnpj"
-          value={cnpj}
-          onChange={handleCnpj}
+          type="numeric"
+          placeholder={`${cpfOrCnpj}`}
+          value={identification}
+          onChange={cpfOrCnpj === 'CNPJ' ? handleChangeCnpj : handleChangeCpf}
         />
 
         <label htmlFor="Senha">Senha:</label>

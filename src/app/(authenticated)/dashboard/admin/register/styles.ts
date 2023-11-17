@@ -32,7 +32,6 @@ export const FormContainer = styled.form`
   > div {
     display: flex;
     align-items: center;
-    margin: 20px 0px 0px 0px;
   }
 
   > label {
@@ -59,6 +58,41 @@ export const Input = styled.input`
   }
 `;
 
+export const PasswordInputContainer = styled.div`
+  position: relative;
+  width: 80%;
+  // margin: 15px 20px 0px 20px;
+`;
+
+export const PasswordInput = styled.input`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  overflow-wrap: break-word;
+  text-align: start;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #777;
+  }
+`;
+
+export const TogglePasswordVisibilityButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+`;
+
 export const Select = styled.select`
   padding: 10px;
   margin: 0px 20px 15px 20px;
@@ -78,20 +112,17 @@ export const Option = styled.option`
   color: #777;
 `;
 
-export const CheckboxButton = styled.button<{ $checked: number }>`
+export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
-  margin: -10px 30px 5px 20px;
-  border: 1px solid #000000;
-  padding: 8px 10px;
-  border-radius: 4px;
   cursor: pointer;
+  margin: 0px 10px 10px 20px;
 
   > div {
     width: 20px;
     height: 20px;
     border: 2px solid #27a567;
-    background-color: ${({ $checked }) => ($checked === 1 ? '#27a567' : '#fff')};
+    background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
     border-radius: 10px;
   }
 
