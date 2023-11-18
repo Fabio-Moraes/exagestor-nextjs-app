@@ -34,6 +34,14 @@ export const FormContainer = styled.form`
     align-items: center;
   }
 
+  > div:nth-last-child(2) {
+    //background-color: #3f795e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+  }
+
   > label {
     overflow-wrap: break-word;
     margin: 0px 20px 5px 20px;
@@ -125,7 +133,6 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
     background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
     border-radius: 10px;
   }
-
   > span {
     margin-left: 5px;
     font-size: 14px;

@@ -222,6 +222,28 @@ export default function NewRegister() {
           onChange={(e) => setPasswordCheck(e.target.value.trim())}
         />
 
+        <div>
+          <CheckboxButton type="button" $checked={true} onClick={() => {}}>
+            <div />
+            <span>Aux</span>
+          </CheckboxButton>
+
+          <CheckboxButton type="button" $checked={false} onClick={() => {}}>
+            <div />
+            <span>Dir</span>
+          </CheckboxButton>
+
+          <CheckboxButton type="button" $checked={false} onClick={() => {}}>
+            <div />
+            <span>Almox</span>
+          </CheckboxButton>
+
+          <CheckboxButton type="button" $checked={false} onClick={() => {}}>
+            <div />
+            <span>Cop</span>
+          </CheckboxButton>
+        </div>
+
         <Button type="submit">Registrar</Button>
       </FormContainer>
 
