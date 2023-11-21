@@ -55,7 +55,7 @@ export function TopMenu() {
           height="25"
         />
         <span>
-          Gerenciar <br /> Funcionários
+          Gerenciar <br /> Equipe
         </span>
       </Button>
 

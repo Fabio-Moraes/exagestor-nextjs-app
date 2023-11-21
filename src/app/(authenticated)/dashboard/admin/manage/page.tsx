@@ -63,7 +63,7 @@ export default function FinishService() {
 
   return (
     <Container>
-      <Title>Gerenciar Funcionários</Title>
+      <Title>Gerenciar Equipe</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
