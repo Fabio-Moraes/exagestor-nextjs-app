@@ -1,25 +1,26 @@
 'use client';
 
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import add from './assets/svg/add.svg';
+import employeeRegister from './assets/svg/employee-register.svg';
 import execution from './assets/svg/execution.svg';
 import menu from './assets/svg/menu.svg';
-import report from './assets/svg/report.svg';
 import { Button, Container } from './styles';
 
 export function TopMenu() {
+  const router = useRouter();
   const pathname = usePathname();
-  const proportion = { width: 25, height: 25 };
 
   return (
     <Container>
       <Button
         $path={['/dashboard/admin/running'].includes(pathname)}
-        href="/dashboard/admin/running"
+        rel="preload"
+        onClick={() => router.push(`/dashboard/admin/running`)}
       >
-        <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
+        <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
         <span>
           Em
           <br />
@@ -29,9 +30,10 @@ export function TopMenu() {
 
       <Button
         $path={['/dashboard/admin/register', '/'].includes(pathname)}
-        href="/dashboard/admin/register"
+        rel="preload"
+        onClick={() => router.push(`/dashboard/admin/register`)}
       >
-        <Image priority loading="eager" src={add} alt="Add" {...proportion} />
+        <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
         <span>
           Novo
           <br />
@@ -40,19 +42,25 @@ export function TopMenu() {
       </Button>
 
       <Button
-        $path={['/dashboard/employee/historic'].includes(pathname)}
-        href="/dashboard/employee/historic"
+        $path={['/dashboard/admin/manage'].includes(pathname)}
+        rel="preload"
+        onClick={() => router.push(`/dashboard/admin/manage`)}
       >
-        <Image priority loading="eager" src={report} alt="Report" {...proportion} />
+        <Image
+          priority
+          loading="eager"
+          src={employeeRegister}
+          alt="Report"
+          width="25"
+          height="25"
+        />
         <span>
-          Histórico
-          <br />
-          Geral
+          Gerenciar <br /> Funcionários
         </span>
       </Button>
 
-      <Button href="/">
-        <Image priority loading="eager" src={menu} alt="Menu" {...proportion} />
+      <Button rel="preload" onClick={() => router.push('/')}>
+        <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
         <span>
           Mais
           <br />

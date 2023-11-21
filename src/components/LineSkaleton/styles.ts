@@ -12,7 +12,7 @@ const animation = keyframes`
   }
 `;
 
-export const Skeleton = styled.div<{ $width: string; $height: string }>`
+export const Skeleton = styled.div<{ $width: string; $height: string; $color: string }>`
   border-radius: 5px;
   ${({ $width, $height }) =>
     $width &&
@@ -23,12 +23,14 @@ export const Skeleton = styled.div<{ $width: string; $height: string }>`
 
   margin-bottom: 5px;
 
-  background: linear-gradient(
-    -90deg,
-    #6ab78e 0%,
-    ${lighten(0.2, '#6AB78E')} 50%,
-    #6ab78e 100%
-  );
+  ${({ $color }) => css`
+    background: linear-gradient(
+      -90deg,
+      ${$color} 0%,
+      ${lighten(0.2, $color)} 50%,
+      ${$color} 100%
+    );
+  `}
 
   background-size: 400% 400%;
   animation: ${animation} 1.2s ease-in-out infinite;

@@ -16,33 +16,6 @@ export const ListContainer = styled.div`
     flex-direction: column;
     align-items: center;
     margin-bottom: 9px;
-
-    > span {
-      text-align: center;
-      margin-top: 10px;
-      color: #fff;
-    }
-
-    > div {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      > div {
-        display: flex;
-        align-items: 'center';
-        justify-content: flex-start;
-        > button:nth-child(1) {
-          width: 170px;
-        }
-
-        > button:nth-child(2) {
-          width: 80px;
-          margin-left: 10px;
-        }
-      }
-    }
   }
 
   > div:last-child {
@@ -100,25 +73,18 @@ export const Button = styled.button`
 `;
 
 export const ItemsSkeleton = styled.div`
-  background-color: #fff;
-
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column;
+  background-color: #fff;
   border: 2px solid #27a567;
-  margin: 5px;
+  margin: 5px 10px 0 10px;
+  padding: 5px;
   border-radius: 5px;
-
-  min-height: 50px;
   cursor: progress;
 
-  > div:first-child {
-    display: flex;
-    margin: 0px 10px;
-  }
-
   > div:last-child {
-    display: flex;
-    margin: 0 10px 0 0;
+    margin-bottom: 0px;
   }
 `;

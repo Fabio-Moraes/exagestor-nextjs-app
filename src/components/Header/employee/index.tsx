@@ -4,15 +4,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { LineSkaleton } from 'components/LineSkaleton';
+
 import iconExa from './assets/svg/exa_logo.svg';
 import iconUser from './assets/svg/user.svg';
-import {
-  Container,
-  ProfileCompany,
-  ProfileInfoCompany,
-  ProfileUser,
-  ProfileUserNameSkeleton
-} from './styles';
+import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
 import { useDecodeToken } from 'hooks/useDecodeToken';
 import Cookie from 'js-cookie';
@@ -63,7 +59,7 @@ export function Header() {
         {decoderToken?.user.name && !isLoading ? (
           <span>{decoderToken?.user.name}</span>
         ) : (
-          <ProfileUserNameSkeleton />
+          <LineSkaleton width="300px" />
         )}
         <div>
           <Image

@@ -11,9 +11,10 @@ interface Service {
   update_count: number;
   created_at: string;
   protocol: string;
+  name_employee: string;
 }
 
-export function DisplayInfo({ service }: { service: Service }) {
+export function CardInfo({ service }: { service: Service }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();
@@ -35,6 +36,9 @@ export function DisplayInfo({ service }: { service: Service }) {
 
   return (
     <Container>
+      <div>
+        <p>Funcionário: {service?.name_employee}</p>
+      </div>
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>

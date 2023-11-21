@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
@@ -26,7 +24,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Button = styled(Link)<{ $path?: boolean }>`
+export const Button = styled.button<{ $path?: boolean }>`
   display: flex;
   position: static;
   flex-direction: column;

@@ -231,20 +231,20 @@ export default function NewService() {
         <div>
           <CheckboxButton
             type="button"
-            $checked={classificationL}
-            onClick={handleCheckboxClickClassL}
-          >
-            <div />
-            <span>Classe L</span>
-          </CheckboxButton>
-
-          <CheckboxButton
-            type="button"
             $checked={classificationF}
             onClick={handleCheckboxClickClassF}
           >
             <div />
             <span>Classe F</span>
+          </CheckboxButton>
+
+          <CheckboxButton
+            type="button"
+            $checked={classificationL}
+            onClick={handleCheckboxClickClassL}
+          >
+            <div />
+            <span>Classe L</span>
           </CheckboxButton>
         </div>
 

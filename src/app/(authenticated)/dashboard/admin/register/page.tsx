@@ -48,7 +48,7 @@ export default function NewRegister() {
   const handleChangeCnpj = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const formattedCnpj = value
-      .replace(/[^\d]/g, '') // Remove todos os caracteres não numéricos
+      .replace(/[^\d]/g, '')
       .replace(/^(\d{2})(\d)/, '$1.$2')
       .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
       .replace(/\.(\d{3})(\d)/, '.$1/$2')
@@ -60,7 +60,7 @@ export default function NewRegister() {
   const handleChangeCpf = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const formattedCpf = value
-      .replace(/[^\d]/g, '') // Remove todos os caracteres não numéricos
+      .replace(/[^\d]/g, '')
       .replace(/^(\d{3})(\d)/, '$1.$2')
       .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
       .replace(/\.(\d{3})(\d)/, '.$1-$2')

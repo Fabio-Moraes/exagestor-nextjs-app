@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import add from './assets/svg/add.svg';
 import execution from './assets/svg/execution.svg';
@@ -11,15 +11,16 @@ import { Button, Container } from './styles';
 
 export function TopMenu() {
   const pathname = usePathname();
-  const proportion = { width: 25, height: 25 };
+  const router = useRouter();
 
   return (
     <Container>
       <Button
         $path={['/dashboard/employee/new', '/'].includes(pathname)}
-        href="/dashboard/employee/new"
+        rel="preload"
+        onClick={() => router.push(`/dashboard/employee/new`)}
       >
-        <Image priority loading="eager" src={add} alt="Add" {...proportion} />
+        <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
         <span>
           Novo
           <br />
@@ -29,9 +30,10 @@ export function TopMenu() {
 
       <Button
         $path={['/dashboard/employee/running'].includes(pathname)}
-        href="/dashboard/employee/running"
+        rel="preload"
+        onClick={() => router.push(`/dashboard/employee/running`)}
       >
-        <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
+        <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
         <span>
           Em
           <br />
@@ -41,9 +43,10 @@ export function TopMenu() {
 
       <Button
         $path={['/dashboard/employee/historic'].includes(pathname)}
-        href="/dashboard/employee/historic"
+        rel="preload"
+        onClick={() => router.push(`/dashboard/employee/running`)}
       >
-        <Image priority loading="eager" src={report} alt="Report" {...proportion} />
+        <Image priority loading="eager" src={report} alt="Report" width="25" height="25" />
         <span>
           Histórico
           <br />
@@ -51,8 +54,8 @@ export function TopMenu() {
         </span>
       </Button>
 
-      <Button href="/">
-        <Image priority loading="eager" src={menu} alt="Menu" {...proportion} />
+      <Button rel="preload" onClick={() => router.push('/')}>
+        <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
         <span>
           Mais
           <br />

@@ -18,7 +18,6 @@ export const Container = styled.div<{ selected: boolean }>`
   margin: 5px 10px 0 10px;
   border-radius: 5px;
   padding: 5px;
-  min-height: 30px;
   cursor: pointer;
 `;
 
@@ -36,14 +35,11 @@ export const ItemContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+  flex-direction: column;
 
   > p {
     text-align: start;
+    padding: 2.3px 0px;
     width: 100%;
-  }
-
-  > span {
-    font-size: 30px;
-    padding: 0px 15px;
   }
 `;

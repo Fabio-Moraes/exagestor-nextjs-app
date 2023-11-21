@@ -1,8 +1,6 @@
 'use client';
 
-import styled, { keyframes } from 'styled-components';
-
-import { lighten } from 'polished';
+import styled from 'styled-components';
 
 export const Container = styled.div`
   z-index: 1000;
@@ -76,33 +74,6 @@ export const ProfileUser = styled.div`
       }
     }
   }
-`;
-
-const animation = keyframes`
-  from {
-    background-position: 0% 0%;
-  }
-  
-  to {
-    background-position: 135% 0%;
-  }
-`;
-
-export const ProfileUserNameSkeleton = styled.div`
-  border-radius: 5px;
-  height: 20px;
-  width: 90px;
-  margin-bottom: 5px;
-
-  background: linear-gradient(
-    -90deg,
-    #b78e6a 0%,
-    ${lighten(0.2, '#b78e6a')} 50%,
-    #b78e6a 100%
-  );
-
-  background-size: 400% 400%;
-  animation: ${animation} 1.2s ease-in-out infinite;
 `;
 
 export const ProfileCompany = styled.div`
