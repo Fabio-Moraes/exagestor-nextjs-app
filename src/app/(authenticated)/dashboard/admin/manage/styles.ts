@@ -8,24 +8,14 @@ export const Container = styled.div`
   padding: 20px;
 `;
 
-export const Title = styled.div`
-  display: flex;
-  flex-direction: column;
+export const Title = styled.h1`
+  font-size: 24px;
+  margin-bottom: 20px;
   color: #333;
-  padding: 8px;
-  align-items: center;
-  justify-content: center;
-
-  > h1 {
-    font-size: 30px;
-    margin-bottom: 3px;
-  }
-
-  > span {
-    font-size: 17px;
-  }
 
   @media (min-width: 550px) {
+    height: 40px;
+    line-height: 40px;
     background-color: #3c7d5d;
     color: #fff;
   }

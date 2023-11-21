@@ -63,9 +63,7 @@ export default function FinishService() {
 
   return (
     <Container>
-      <Title>
-        <h1>Gerenciar Funcionários</h1>
-      </Title>
+      <Title>Gerenciar Funcionários</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
