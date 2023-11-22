@@ -23,7 +23,7 @@ interface Service {
   status: string;
   created_at: string;
   protocol: string;
-  name_employee: string;
+  name_tec: string;
 }
 
 interface Protocol {

@@ -6,7 +6,7 @@ import { RightMenu } from 'components/RightMenu/admin';
 import { SideBar } from 'components/SideBar';
 import { TopMenu } from 'components/TopMenu/admin';
 
-import { Container, Main, Wrapper } from '../employee/styles';
+import { Container, Main, Wrapper } from '../tec/styles';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

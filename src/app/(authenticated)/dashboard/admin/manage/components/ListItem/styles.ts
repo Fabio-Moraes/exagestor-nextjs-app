@@ -31,7 +31,7 @@ export const Reset = styled.div`
   padding-left: 10px;
 `;
 
-export const ItemContainer = styled.div`
+export const ItemContainer = styled.button`
   display: flex;
   width: 100%;
   align-items: center;

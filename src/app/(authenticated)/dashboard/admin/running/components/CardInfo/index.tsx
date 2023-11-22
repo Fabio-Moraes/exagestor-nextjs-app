@@ -11,7 +11,7 @@ interface Service {
   update_count: number;
   created_at: string;
   protocol: string;
-  name_employee: string;
+  name_tec: string;
 }
 
 export function CardInfo({ service }: { service: Service }) {
@@ -37,7 +37,7 @@ export function CardInfo({ service }: { service: Service }) {
   return (
     <Container>
       <div>
-        <p>Funcionário: {service?.name_employee}</p>
+        <p>Funcionário: {service?.name_tec}</p>
       </div>
       <div>
         <p>Solicitante: {service?.client_name}</p>

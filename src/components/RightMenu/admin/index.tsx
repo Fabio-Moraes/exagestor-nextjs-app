@@ -40,8 +40,8 @@ export function RightMenu() {
 
         <div>
           <Button
-            $path={['/dashboard/employee/historic'].includes(pathname)}
-            href="/dashboard/employee/historic"
+            $path={['/dashboard/tec/historic'].includes(pathname)}
+            href="/dashboard/tec/historic"
             rel="preload"
           >
             <Image priority loading="eager" src={report} alt="Report" {...proportion} />

@@ -19,10 +19,6 @@ interface Decoded {
     name: string;
     role: string;
   };
-  company: {
-    id: number;
-    name: string;
-  };
 }
 
 export function Header() {

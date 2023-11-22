@@ -9,10 +9,6 @@ interface Decoded {
     name: string;
     role: string;
   };
-  company?: {
-    id: number;
-    name: string;
-  };
 }
 
 export default async function middleware(request: NextRequest) {
@@ -24,12 +20,12 @@ export default async function middleware(request: NextRequest) {
   try {
     await jwtVerify(TOKEN ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
 
-    if (user?.role === 'admin' && request.nextUrl.pathname.includes('employee')) {
+    if (user?.role === 'admin' && request.nextUrl.pathname.includes('tec')) {
       return NextResponse.redirect(new URL('/dashboard/admin/running', request.url));
     }
 
-    if (user?.role === 'employee' && request.nextUrl.pathname.includes('admin')) {
-      return NextResponse.redirect(new URL('/dashboard/employee/new', request.url));
+    if (user?.role === 'tec' && request.nextUrl.pathname.includes('admin')) {
+      return NextResponse.redirect(new URL('/dashboard/tec/new', request.url));
     }
 
     if (['/', '/signin'].includes(request.nextUrl.pathname)) {
@@ -37,8 +33,8 @@ export default async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard/admin/running', request.url));
       }
 
-      if (user?.role === 'employee') {
-        return NextResponse.redirect(new URL('/dashboard/employee/new', request.url));
+      if (user?.role === 'tec') {
+        return NextResponse.redirect(new URL('/dashboard/tec/new', request.url));
       }
     }
 

@@ -225,22 +225,22 @@ export default function NewRegister() {
         <div>
           <CheckboxButton type="button" $checked={true} onClick={() => {}}>
             <div />
-            <span>Aux</span>
+            <span>TEC</span>
           </CheckboxButton>
 
           <CheckboxButton type="button" $checked={false} onClick={() => {}}>
             <div />
-            <span>Dir</span>
+            <span>DIR</span>
           </CheckboxButton>
 
           <CheckboxButton type="button" $checked={false} onClick={() => {}}>
             <div />
-            <span>Almox</span>
+            <span>ALMOX</span>
           </CheckboxButton>
 
           <CheckboxButton type="button" $checked={false} onClick={() => {}}>
             <div />
-            <span>Cop</span>
+            <span>COP</span>
           </CheckboxButton>
         </div>
 

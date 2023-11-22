@@ -1,8 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { Container, ItemContainer } from './styles';
 
+import { encryptObject } from 'functions';
+
 interface ListItemProps {
+  id: number;
   name: string;
   role: string;
   identification: string;
@@ -10,7 +15,9 @@ interface ListItemProps {
 }
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-  const { name, role, identification, created_at } = props;
+  const { id, name, role, identification, created_at } = props;
+
+  const router = useRouter();
 
   function formatDate(date: string) {
     const now = new Date(date);
@@ -24,15 +31,20 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
+  async function fetchConcludedServices() {
+    const encryptSlug = encryptObject({ userId: id });
+    router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
+  }
+
   return (
     <Container selected={false}>
-      <ItemContainer>
+      <ItemContainer onClick={fetchConcludedServices}>
         <p>Nome: {name}</p>
         <p>
           {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
         </p>
         <p>Registrado em: {formatDate(created_at)}</p>
-        <p>Cargo: {role === 'employee' ? 'FL' : role}</p>
+        <p>Cargo: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
       </ItemContainer>
     </Container>
   );
