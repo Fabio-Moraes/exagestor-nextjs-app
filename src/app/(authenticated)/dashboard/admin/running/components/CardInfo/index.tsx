@@ -12,6 +12,7 @@ interface Service {
   created_at: string;
   protocol: string;
   name_tec: string;
+  name_admin: string;
 }
 
 export function CardInfo({ service }: { service: Service }) {
@@ -37,7 +38,10 @@ export function CardInfo({ service }: { service: Service }) {
   return (
     <Container>
       <div>
-        <p>Funcionário: {service?.name_tec}</p>
+        Iniciado por:
+        {service?.name_admin
+          ? ` ${service?.name_admin.concat(' (Você)')}`
+          : ` ${service?.name_tec.concat(' (Tec)')}`}
       </div>
       <div>
         <p>Solicitante: {service?.client_name}</p>

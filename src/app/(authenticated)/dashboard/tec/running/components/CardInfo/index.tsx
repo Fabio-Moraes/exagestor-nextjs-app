@@ -2,6 +2,8 @@ import { Container } from './styles';
 
 interface Service {
   id: number;
+  name_tec: string;
+  name_admin: string;
   client_name: string;
   city: string;
   address: string;
@@ -35,6 +37,12 @@ export function CardInfo({ service }: { service: Service }) {
 
   return (
     <Container>
+      <div>
+        Iniciado por:
+        {service?.name_admin
+          ? ` ${service?.name_admin.concat(' (Admin)')}`
+          : ` ${service?.name_tec.concat(' (Você)')}`}
+      </div>
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>

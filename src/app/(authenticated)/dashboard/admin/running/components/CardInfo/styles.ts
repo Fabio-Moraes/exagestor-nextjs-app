@@ -21,6 +21,7 @@ export const Container = styled.div`
     padding: 10px;
     border-bottom: 2px solid #3f795e;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-image: radial-gradient(350px at center, #ffffff 20%, #8ed0af);
   }
 
   > div:last-child {

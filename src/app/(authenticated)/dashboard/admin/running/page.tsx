@@ -23,6 +23,7 @@ interface Service {
   status: string;
   created_at: string;
   protocol: string;
+  name_admin: string;
   name_tec: string;
 }
 

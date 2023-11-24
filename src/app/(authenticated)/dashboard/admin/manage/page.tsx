@@ -16,6 +16,7 @@ interface Service {
   role: string;
   identification: string;
   created_at: string;
+  admin_id: number;
 }
 
 export default function FinishService() {
@@ -42,7 +43,6 @@ export default function FinishService() {
 
         count = maxRetries;
         setServices(response.data);
-        console.log('!!!', response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);

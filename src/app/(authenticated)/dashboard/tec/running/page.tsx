@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { ControlButtons } from './components/ControlButtons';
 import { CardInfo } from './components/CardInfo';
+import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -14,6 +14,7 @@ import api from 'lib/api';
 
 interface Service {
   id: number;
+  name_admin: string;
   client_name: string;
   city: string;
   address: string;

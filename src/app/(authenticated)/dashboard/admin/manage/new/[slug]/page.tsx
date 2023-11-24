@@ -159,7 +159,7 @@ export default function NewService({ params }: SlugType) {
           });
 
           const response = await api.post('/api/admin/manage/new', {
-            userId: decryptObject(params.slug).userId,
+            employeeId: decryptObject(params.slug).userId,
             clientName: name,
             city: selectedCity,
             classification: classification,
