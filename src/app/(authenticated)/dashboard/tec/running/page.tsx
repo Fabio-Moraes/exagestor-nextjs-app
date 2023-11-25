@@ -14,6 +14,7 @@ import api from 'lib/api';
 
 interface Service {
   id: number;
+  name_tec: string;
   name_admin: string;
   client_name: string;
   city: string;
