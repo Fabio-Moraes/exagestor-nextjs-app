@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 //import { ControlButtons } from './components/ControlButtons';
 import { CardInfo } from './components/CardInfo';
+import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -14,6 +15,7 @@ import api from 'lib/api';
 
 interface Service {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
@@ -103,6 +105,7 @@ export default function RunningService() {
           {services.map((service) => (
             <ListItem key={service.id}>
               <CardInfo service={service} />
+              <ControlButtons service={service} />
             </ListItem>
           ))}
         </ListContainer>
