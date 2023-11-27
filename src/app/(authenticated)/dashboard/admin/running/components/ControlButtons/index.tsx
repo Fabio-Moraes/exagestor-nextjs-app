@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { ButtonFinish, Container } from './styles';
+import { Container } from './styles';
 
 import { encryptObject } from 'functions';
 import Cookie from 'js-cookie';
@@ -100,14 +100,14 @@ export function ControlButtons({ service }: { service: Service }) {
     <Container>
       {service?.status !== 'analysis' ? (
         <>
-          <ButtonFinish
+          <button
             rel="preload"
             onClick={() =>
               router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`)
             }
           >
             <span>Finalizar</span>
-          </ButtonFinish>
+          </button>
           <button rel="preload" onClick={() => fetchStatusServices()}>
             {service?.status !== 'active' ? 'Retomar' : 'Pausar'}
           </button>

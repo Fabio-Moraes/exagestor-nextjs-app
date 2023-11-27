@@ -38,7 +38,9 @@ export function Card({ service }: { service: Service }) {
 
   return (
     <Container>
-      <div>{service?.name_tec.concat(' (TEC)')}</div>
+      <div>
+        <p>{service?.name_tec.concat(' (TEC)')}</p>
+      </div>
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>
