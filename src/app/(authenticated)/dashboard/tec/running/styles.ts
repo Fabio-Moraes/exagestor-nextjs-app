@@ -29,7 +29,7 @@ export const ListContainer = styled.ul`
 export const ListItem = styled.li`
   font-size: 18px;
   margin-bottom: 30px;
-  border: 2px solid #3f795e;
+  border: 5px solid #3f795e;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 

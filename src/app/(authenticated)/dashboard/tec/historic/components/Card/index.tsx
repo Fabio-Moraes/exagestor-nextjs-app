@@ -35,6 +35,7 @@ export function Card({ service }: { service: Service }) {
 
   const status = {
     concluded: '✅ Finalizado',
+    analysis: '🔍 Em análise',
     active: '🚧 Em andamento',
     paused: '⏸️ Pausado',
     canceled: '❌ Cancelado'

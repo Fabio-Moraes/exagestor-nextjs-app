@@ -76,7 +76,7 @@ export function TextBox({ service }: { service: Service }) {
         });
 
         count = maxRetries;
-        router.push('/dashboard/tec/new');
+        router.push('/dashboard/admin/running');
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));

@@ -5,8 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import add from './assets/svg/add.svg';
 import execution from './assets/svg/execution.svg';
+import manage from './assets/svg/manage.svg';
 import menu from './assets/svg/menu.svg';
-import register from './assets/svg/register.svg';
 import { Button, Container } from './styles';
 
 export function TopMenu() {
@@ -46,7 +46,7 @@ export function TopMenu() {
         rel="preload"
         onClick={() => router.push(`/dashboard/admin/manage`)}
       >
-        <Image priority loading="eager" src={register} alt="Report" width="25" height="25" />
+        <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
         <span>
           Gerenciar <br /> Equipe
         </span>

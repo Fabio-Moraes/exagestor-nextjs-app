@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export const ListContainer = styled.div`
   margin-top: 20px;
+  padding-bottom: 10px;
   background-color: #dce6dc;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -16,9 +17,20 @@ export const ListContainer = styled.div`
     flex-direction: column;
     align-items: center;
     margin-bottom: 9px;
+
+    > div {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+
+      > button {
+        min-width: 20px;
+      }
+    }
   }
 
-  > div:last-child {
+  /*   > div:last-child {
     display: flex;
     padding: 10px;
     background-color: #3f795e;
@@ -26,11 +38,7 @@ export const ListContainer = styled.div`
 
     justify-content: space-between;
     align-items: center;
-
-    > button {
-      width: 100px;
-    }
-  }
+  } */
 `;
 
 export const SearchWrapper = styled.div`
@@ -66,7 +74,7 @@ export const Button = styled.button`
   flex-shrink: 0;
   padding: 10px;
   border-radius: 5px;
-  width: 180px;
+  width: 120px;
   background-color: #fff;
   border: 2px solid #27a567;
   cursor: pointer;

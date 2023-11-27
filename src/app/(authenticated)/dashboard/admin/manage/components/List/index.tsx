@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -21,6 +22,8 @@ interface Service {
 export function List({ service }: { service: Service[] }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,7 +54,18 @@ export function List({ service }: { service: Service[] }) {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </SearchWrapper>
-        <div>{/* <Image priority src={infoSvg} alt="Add"  width="30" height="30" /> */}</div>
+        <div>
+          {/* <Image priority src={infoSvg} alt="Add"  width="30" height="30" /> */}
+          <Button
+            rel="preload"
+            onClick={() => router.push(`/dashboard/admin/manage/general-historic`)}
+          >
+            Historico Geral
+          </Button>
+          <Button rel="preload" onClick={() => {}}>
+            Relatorio
+          </Button>
+        </div>
       </div>
       {isLoading
         ? [...Array(4)].map((_, index) => {
@@ -65,10 +79,10 @@ export function List({ service }: { service: Service[] }) {
             );
           })
         : filteredItems.map((item) => <ListItem key={String(item.id)} {...item} />)}
-      <div>
-        <Button onClick={() => {}}>Historico</Button>
+      {/*   <div>
+        <Button onClick={() => {}}>Historico Geral</Button>
         <Button onClick={() => {}}>Relatorio</Button>
-      </div>
+      </div> */}
     </ListContainer>
   );
 }

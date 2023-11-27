@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { CardInfo } from './components/CardInfo';
+import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
@@ -102,8 +102,8 @@ export default function RunningService() {
         <ListContainer>
           {services.map((service) => (
             <ListItem key={service.id}>
-              <CardInfo service={service} />
-              <ControlButtons service={service} />
+              <Card service={service} />
+              {service?.status !== 'analysis' && <ControlButtons service={service} />}
             </ListItem>
           ))}
         </ListContainer>

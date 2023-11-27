@@ -98,20 +98,28 @@ export function ControlButtons({ service }: { service: Service }) {
 
   return (
     <Container>
-      <ButtonFinish
-        rel="preload"
-        onClick={() =>
-          router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`)
-        }
-      >
-        <span>Finalizar</span>
-      </ButtonFinish>
-      <button rel="preload" onClick={() => fetchStatusServices()}>
-        {service?.status !== 'active' ? 'Retomar' : 'Pausar'}
-      </button>
-      <button rel="preload" onClick={() => fetchCancelServices()}>
-        Cancerlar
-      </button>
+      {service?.status !== 'analysis' ? (
+        <>
+          <ButtonFinish
+            rel="preload"
+            onClick={() =>
+              router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`)
+            }
+          >
+            <span>Finalizar</span>
+          </ButtonFinish>
+          <button rel="preload" onClick={() => fetchStatusServices()}>
+            {service?.status !== 'active' ? 'Retomar' : 'Pausar'}
+          </button>
+          <button rel="preload" onClick={() => fetchCancelServices()}>
+            Cancerlar
+          </button>
+        </>
+      ) : (
+        <button rel="preload" onClick={() => {}}>
+          Verificar
+        </button>
+      )}
     </Container>
   );
 }

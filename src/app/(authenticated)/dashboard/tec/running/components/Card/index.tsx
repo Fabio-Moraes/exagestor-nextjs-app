@@ -15,7 +15,7 @@ interface Service {
   protocol: string;
 }
 
-export function CardInfo({ service }: { service: Service }) {
+export function Card({ service }: { service: Service }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();
@@ -29,6 +29,7 @@ export function CardInfo({ service }: { service: Service }) {
   }
 
   const status = {
+    analysis: '🔍 Em análise',
     active: '🚧 Em andamento',
     paused: '⏸️ Pausado'
   } as { [key: string]: string };
@@ -37,12 +38,7 @@ export function CardInfo({ service }: { service: Service }) {
 
   return (
     <Container>
-      <div>
-        Iniciado por:
-        {service?.name_admin
-          ? ` ${service?.name_admin.concat(' (Admin)')}`
-          : ` ${service?.name_tec.concat(' (Você)')}`}
-      </div>
+      <div />
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>
@@ -51,6 +47,12 @@ export function CardInfo({ service }: { service: Service }) {
         <p>Classe: {service?.classification}</p>
         <p>Protocolo: {service?.protocol}</p>
         <p>Início: {createdAt}</p>
+        <p>
+          Iniciado por:
+          {service?.name_admin
+            ? ` ${service?.name_admin.concat(' (ADMIN)')}`
+            : ` ${service?.name_tec.concat(' (TEC)')}`}
+        </p>
         <p>Status do serviço: {status[service?.status]}</p>
         <p>Atualização de status: {service?.update_count}</p>
       </div>

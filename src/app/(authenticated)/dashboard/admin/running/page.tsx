@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 //import { ControlButtons } from './components/ControlButtons';
-import { CardInfo } from './components/CardInfo';
+import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
@@ -104,7 +104,7 @@ export default function RunningService() {
         <ListContainer>
           {services.map((service) => (
             <ListItem key={service.id}>
-              <CardInfo service={service} />
+              <Card service={service} />
               <ControlButtons service={service} />
             </ListItem>
           ))}
