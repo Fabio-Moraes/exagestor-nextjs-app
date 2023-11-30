@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
+
+import Image from 'components/Vercel/Image';
 
 import reset from './assets/svg/reset.svg';
 import { Container, ItemContainer, Reset } from './styles';

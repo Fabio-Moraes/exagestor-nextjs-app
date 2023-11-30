@@ -7,49 +7,35 @@ export const Container = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  background-color: #3c7d5d;
+  background-color: #8bc9a8;
+  border-width: 2px 0 0 0;
 
   @media (min-width: 550px) {
+    right: 30px;
     flex-direction: column;
   }
 
   > button {
-    width: 75px;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 5px;
+    padding-top: 2px;
+    margin: 5px 20px;
     cursor: pointer;
-    border: 2px solid #3f795e;
-    background-color: #fff;
-  }
+    font-size: 15px;
 
-  > button:nth-child(1) {
-    &:hover {
-      @media (min-width: 550px) {
-        border: 2px solid #c72323;
-        background-image: radial-gradient(circle, #c72323, #fff);
-        box-shadow: 0px 5px 10px 0px rgba(199, 35, 35, 0.5);
+    @media (min-width: 550px) {
+      &:hover {
+        filter: brightness(120%) contrast(150%) saturate(200%) sepia(50%);
       }
     }
-  }
 
-  > button:nth-child(2) {
-    &:hover {
-      @media (min-width: 550px) {
-        border: 2px solid #db9100;
-        background-image: radial-gradient(circle, #db9100, #fff);
-        box-shadow: 0px 5px 10px 0px rgba(219, 145, 0, 0.5);
-      }
+    > p {
+      color: #000;
+      margin-top: -5px;
+      font-weight: bold;
+      font-size: 12px;
     }
-  }
 
-  > button:nth-child(3) {
-    &:hover {
-      @media (min-width: 550px) {
-        border: 2px solid #c72323;
-        background-image: radial-gradient(circle, #c72323, #fff);
-        box-shadow: 0px 5px 10px 0px rgba(199, 35, 35, 0.5);
-      }
+    @media (min-width: 550px) {
+      margin: 10px 10px;
     }
   }
 `;

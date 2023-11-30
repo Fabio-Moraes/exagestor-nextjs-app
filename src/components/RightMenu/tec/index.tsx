@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+
+import Image from 'components/Vercel/Image';
 
 import add from './assets/svg/add.svg';
 import execution from './assets/svg/execution.svg';
@@ -19,7 +20,7 @@ export function RightMenu() {
         <div>
           <Button
             $path={['/dashboard/tec/new', '/'].includes(pathname)}
-            href="/dashboard/tec/new"
+            //href="/dashboard/tec/new"
             rel="preload"
           >
             <Image priority loading="eager" src={add} alt="Add" {...proportion} />
@@ -30,7 +31,7 @@ export function RightMenu() {
         <div>
           <Button
             $path={['/dashboard/tec/running'].includes(pathname)}
-            href="/dashboard/tec/running"
+            //href="/dashboard/tec/running"
             rel="preload"
           >
             <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
@@ -41,7 +42,7 @@ export function RightMenu() {
         <div>
           <Button
             $path={['/dashboard/tec/historic'].includes(pathname)}
-            href="/dashboard/tec/historic"
+            //href="/dashboard/tec/historic"
             rel="preload"
           >
             <Image priority loading="eager" src={report} alt="Report" {...proportion} />
@@ -50,7 +51,7 @@ export function RightMenu() {
         </div>
 
         <div>
-          <Button href="/">
+          <Button>
             <Image priority loading="eager" src={menu} alt="Clipboard" {...proportion} />
             <span>Materiais Utilizados</span>
           </Button>

@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
+import Image from 'components/Vercel/Image';
 
 import { ListItem } from '../ListItem';
 import infoSvg from './assets/svg/info.svg';

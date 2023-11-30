@@ -2,17 +2,18 @@ import { Container } from './styles';
 
 interface Service {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
   nomenclature: string;
   classification: string;
-  status: string;
   update_count: number;
+  status: string;
   created_at: string;
   protocol: string;
-  name_tec: string;
   name_admin: string;
+  name_tec: string;
 }
 
 export function Card({ service }: { service: Service }) {
@@ -38,9 +39,6 @@ export function Card({ service }: { service: Service }) {
 
   return (
     <Container>
-      <div>
-        <p>{service?.name_tec.concat(' (TEC)')}</p>
-      </div>
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>

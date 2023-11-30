@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+
+import Image from 'components/Vercel/Image';
 
 import add from './assets/svg/add.svg';
 import execution from './assets/svg/execution.svg';

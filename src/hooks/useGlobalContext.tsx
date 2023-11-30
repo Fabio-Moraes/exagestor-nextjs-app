@@ -6,6 +6,22 @@ type ServiceItem = {
   [key: string]: number;
 };
 
+interface RunningService {
+  id: number;
+  employee_id: number;
+  client_name: string;
+  city: string;
+  address: string;
+  nomenclature: string;
+  classification: string;
+  update_count: number;
+  status: string;
+  created_at: string;
+  protocol: string;
+  name_admin: string;
+  name_tec: string;
+}
+
 type StateContext = {
   selectMaterial: { [key: string]: ServiceItem };
   setSelectMaterial: React.Dispatch<React.SetStateAction<{ [key: string]: ServiceItem }>>;
@@ -15,25 +31,21 @@ type StateContext = {
 
   observationBox: { [key: string]: string };
   setObservationBox: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+
+  runningService: RunningService[];
+  setRunningService: (value: RunningService[]) => void;
 };
 
 type ProviderProps = {
   children: ReactNode;
 };
 
-const initialState: StateContext = {
-  selectMaterial: {},
-  setSelectMaterial: () => {},
-  selectService: {},
-  setSelectService: () => {},
-  observationBox: {},
-  setObservationBox: () => {}
-};
-
-export const Context = createContext<StateContext>(initialState);
+export const Context = createContext({} as StateContext);
 
 export const ContextProvider = ({ children }: ProviderProps) => {
   const isClient = typeof window !== 'undefined';
+
+  const [runningService, setRunningService] = useState<RunningService[]>([]);
 
   const [selectService, setSelectService] = useState<{
     [key: string]: ServiceItem;
@@ -65,14 +77,18 @@ export const ContextProvider = ({ children }: ProviderProps) => {
 
   return (
     <Context.Provider
-      value={{
-        selectMaterial,
-        setSelectMaterial,
-        selectService,
-        setSelectService,
-        observationBox,
-        setObservationBox
-      }}
+      value={
+        {
+          selectMaterial,
+          setSelectMaterial,
+          selectService,
+          setSelectService,
+          observationBox,
+          setObservationBox,
+          runningService,
+          setRunningService
+        } as StateContext
+      }
     >
       {children}
     </Context.Provider>

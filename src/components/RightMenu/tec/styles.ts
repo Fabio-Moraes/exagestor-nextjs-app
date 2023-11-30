@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
@@ -38,7 +36,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Button = styled(Link)<{ $path?: boolean }>`
+export const Button = styled.button<{ $path?: boolean }>`
   align-items: center;
   flex-shrink: 0;
   padding: 10px;

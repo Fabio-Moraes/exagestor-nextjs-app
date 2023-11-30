@@ -34,11 +34,12 @@ interface Protocol {
 }
 
 export default function RunningService() {
-  const [services, setServices] = useState<Service[]>([]);
+  //const [services, setServices] = useState<Service[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const { setSelectService, setSelectMaterial } = useContexState();
+  const { setSelectService, setSelectMaterial, runningService, setRunningService } =
+    useContexState();
 
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
@@ -74,7 +75,9 @@ export default function RunningService() {
         count = maxRetries;
 
         filterSelectedOpenProtocols(response.data);
-        setServices(response.data);
+
+        setRunningService(response.data);
+        //setServices(response.data);
         console.log('response', response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -102,10 +105,15 @@ export default function RunningService() {
         </ErrorContainer>
       ) : (
         <ListContainer>
-          {services.map((service) => (
+          {runningService.map((service) => (
             <ListItem key={service.id}>
-              <Card service={service} />
-              <ControlButtons service={service} />
+              <div>
+                <p>{service?.name_tec.concat(' (TEC)')}</p>
+              </div>
+              <div>
+                <Card service={service} />
+                <ControlButtons service={service} />
+              </div>
             </ListItem>
           ))}
         </ListContainer>
