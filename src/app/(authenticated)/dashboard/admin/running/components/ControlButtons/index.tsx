@@ -138,7 +138,7 @@ export function ControlButtons({ service }: { service: Service }) {
         }}
         rel="preload"
         onClick={() =>
-          service?.status !== 'active' &&
+          (service?.status === 'active' || service?.status !== 'paused') &&
           router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`)
         }
       >
