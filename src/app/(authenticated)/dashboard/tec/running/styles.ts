@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #fff;
   text-align: center;
   padding: 20px;
 `;
@@ -11,6 +10,8 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
+  border-radius: 7px;
+  font-family: 'OpenSans-SemiBold';
   color: #333;
 
   @media (min-width: 550px) {
@@ -27,18 +28,37 @@ export const ListContainer = styled.ul`
 `;
 
 export const ListItem = styled.li`
+  display: flex;
+  flex-direction: column;
   font-size: 18px;
   margin-bottom: 30px;
-  border: 5px solid #3f795e;
-  border-radius: 5px;
+  overflow: hidden;
+
+  border-radius: 7px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+  > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    background-color: #3c7d5d;
+    color: #ffffff;
 
-  @media (min-width: 550px) {
-    flex-direction: row;
+    > p {
+      font-family: 'OpenSans-SemiBold';
+    }
+  }
+
+  > div:last-child {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @media (min-width: 550px) {
+      flex-direction: row;
+    }
   }
 `;
 

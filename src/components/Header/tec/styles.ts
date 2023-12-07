@@ -8,7 +8,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 13px 9px 13px;
+  padding: 8px 12px 9px 15px;
 
   @media (max-width: 550px) {
     background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
@@ -23,25 +23,26 @@ export const Container = styled.div`
 export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
-  background-image: linear-gradient(to top, #8bc9a8, #dce6dc);
-  border: 2px solid #3f795e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: #8bc9a8;
+  /*  background-image: linear-gradient(to top, #8bc9a8, #dce6dc); */
   border-radius: 7px;
   flex-direction: column;
   justify-content: center;
-  padding: 7px;
-  width: 115px;
+  width: 120px;
   height: 70px;
   align-items: end;
+  padding: 0 6px 3px 4px;
 
   > span {
     margin-right: 1px;
+    padding-left: 5px;
     outline: 0;
-    text-align: end;
+    text-align: start;
     white-space: nowrap;
     font-size: 15px;
     margin-bottom: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    font-family: 'OpenSans-SemiBold';
     color: #111111;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -50,21 +51,19 @@ export const ProfileUser = styled.div`
   }
 
   > div {
-    padding-left: 4px;
     display: flex;
     width: 100%;
 
     > button {
-      border: 2px solid #3f795e;
+      border: 2px solid #27a567;
       background: #27a567;
       box-shadow: -12px 0px 0px 0px rgba(0, 0, 0, 0.5);
       background-color: #fff;
-      font-weight: bold;
-      font-size: 14px;
       border-radius: 5px;
-      padding: 3px 8px 3px 8px;
+      padding: 2px 7px 2px 7px;
       cursor: pointer;
       margin-left: auto;
+      margin-top: 1px;
 
       &:hover {
         @media (min-width: 550px) {
@@ -73,6 +72,23 @@ export const ProfileUser = styled.div`
         }
       }
     }
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      > span {
+        font-family: 'OpenSans-SemiBold';
+        color: #000;
+        font-size: 12px;
+      }
+    }
+
+    > button h2 {
+      font-family: 'OpenSans-SemiBold';
+      font-size: 12px;
+    }
   }
 `;
 
@@ -80,22 +96,33 @@ export const ProfileCompany = styled.div`
   display: flex;
   align-items: center;
   text-align: left;
+  background-color: #8bc9a8;
+  display: flex;
+  height: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /*  background-image: linear-gradient(to top, #8bc9a8, #dce6dc); */
+  padding: 7px;
+  padding-left: 11px;
+  border-radius: 7px;
+  height: 70px;
 `;
 
 export const ProfileInfoCompany = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 10px;
+  margin-right: 5px;
   width: 100%;
 
-  > strong {
-    color: #111111;
+  > h1 {
+    font-family: 'OpenSans-Bold';
+    color: #000;
     font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
   }
+
   > span {
-    padding-left: 1px;
-    font-size: 14px;
-    color: var(--gray);
+    font-family: 'OpenSans-Medium';
+    font-size: 13.8px;
+    color: #000;
   }
 `;

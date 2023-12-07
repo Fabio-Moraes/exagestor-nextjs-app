@@ -1,2 +1,2 @@
-import tec from './new/page';
-export default tec;
+import signin from 'app/(public)/signin/page';
+export default signin;

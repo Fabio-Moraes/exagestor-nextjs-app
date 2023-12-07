@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  //background-color: #fff;
   text-align: center;
   padding: 20px;
 `;
@@ -12,9 +11,11 @@ export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
   border-radius: 7px;
+  font-family: 'OpenSans-SemiBold';
   color: #333;
 
   @media (min-width: 550px) {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     height: 40px;
     line-height: 40px;
     background-color: #3c7d5d;
@@ -32,11 +33,10 @@ export const ListItem = styled.li`
   flex-direction: column;
   font-size: 18px;
   margin-bottom: 30px;
-  //border: 2px solid #3f795e;
   overflow: hidden;
 
   border-radius: 7px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
   > div:first-child {
     display: flex;
@@ -46,11 +46,14 @@ export const ListItem = styled.li`
     padding: 10px;
     background-color: #3c7d5d;
     color: #ffffff;
+
+    > p {
+      font-family: 'OpenSans-SemiBold';
+    }
   }
 
   > div:last-child {
     display: flex;
-    //border: 2px solid #3f795e;
     justify-content: space-between;
     flex-direction: column;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import Image from 'components/Vercel/Image';
 
@@ -11,6 +11,8 @@ import report from './assets/svg/report.svg';
 import { Button, Container, Wrapper } from './styles';
 
 export function RightMenu() {
+  const router = useRouter();
+
   const pathname = usePathname();
   const proportion = { width: 25, height: 25 };
 
@@ -20,7 +22,7 @@ export function RightMenu() {
         <div>
           <Button
             $path={['/dashboard/tec/new', '/'].includes(pathname)}
-            //href="/dashboard/tec/new"
+            onClick={() => router.push('/dashboard/tec/new')}
             rel="preload"
           >
             <Image priority loading="eager" src={add} alt="Add" {...proportion} />
@@ -31,7 +33,7 @@ export function RightMenu() {
         <div>
           <Button
             $path={['/dashboard/tec/running'].includes(pathname)}
-            //href="/dashboard/tec/running"
+            onClick={() => router.push('/dashboard/tec/running')}
             rel="preload"
           >
             <Image priority loading="eager" src={execution} alt="Book" {...proportion} />
@@ -42,7 +44,7 @@ export function RightMenu() {
         <div>
           <Button
             $path={['/dashboard/tec/historic'].includes(pathname)}
-            //href="/dashboard/tec/historic"
+            onClick={() => router.push('/dashboard/tec/historic')}
             rel="preload"
           >
             <Image priority loading="eager" src={report} alt="Report" {...proportion} />

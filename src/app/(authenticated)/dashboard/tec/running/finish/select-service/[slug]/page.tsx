@@ -30,7 +30,7 @@ interface SlugType {
   };
 }
 
-interface Service {
+interface ServiceData {
   id: number;
   client_name: string;
   city: string;
@@ -44,7 +44,7 @@ interface Service {
 }
 
 export default function FinishService({ params }: SlugType) {
-  const [services, setServices] = useState<Service[]>([]);
+  const [serviceData, setServiceData] = useState<ServiceData[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export default function FinishService({ params }: SlugType) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/tec/select-service', {
+        const response = await api.get('/api/tec/select-material', {
           params: {
             token: storedCookie,
             protocol: decryptSlug.protocol
@@ -69,7 +69,7 @@ export default function FinishService({ params }: SlugType) {
         });
 
         count = maxRetries;
-        setServices(response.data);
+        setServiceData(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
@@ -92,10 +92,10 @@ export default function FinishService({ params }: SlugType) {
     <Container>
       <Title>
         <h1>Selecionar Serviço</h1>
-        {isLoading || !services[0]?.protocol ? (
+        {isLoading || !serviceData[0]?.protocol ? (
           <LineSkaleton width="300px" />
         ) : (
-          <span>PROTOCOLO: {services[0]?.protocol}</span>
+          <span>PROTOCOLO: {serviceData[0]?.protocol}</span>
         )}
       </Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
@@ -107,7 +107,7 @@ export default function FinishService({ params }: SlugType) {
           </span>
         </ErrorContainer>
       ) : (
-        <List items={data} service={services[0]} />
+        <List items={data} serviceData={serviceData[0]} />
       )}
     </Container>
   );

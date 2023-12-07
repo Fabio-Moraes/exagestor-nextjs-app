@@ -18,7 +18,7 @@ interface SlugType {
   };
 }
 
-interface Service {
+interface ServiceData {
   id: number;
   client_name: string;
   city: string;
@@ -32,7 +32,7 @@ interface Service {
 }
 
 export default function FinishService({ params }: SlugType) {
-  const [services, setServices] = useState<Service[]>([]);
+  const [servicesData, setServicesData] = useState<ServiceData[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -55,7 +55,7 @@ export default function FinishService({ params }: SlugType) {
         });
 
         count = maxRetries;
-        setServices(response.data);
+        setServicesData(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
@@ -78,10 +78,10 @@ export default function FinishService({ params }: SlugType) {
     <Container>
       <Title>
         <h1>Campo de Observação</h1>
-        {isLoading || !services[0]?.protocol ? (
+        {isLoading || !servicesData[0]?.protocol ? (
           <LineSkaleton width="300px" />
         ) : (
-          <span>PROTOCOLO: {services[0]?.protocol}</span>
+          <span>PROTOCOLO: {servicesData[0]?.protocol}</span>
         )}
       </Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
@@ -93,7 +93,7 @@ export default function FinishService({ params }: SlugType) {
           </span>
         </ErrorContainer>
       ) : (
-        <TextBox service={services[0]} />
+        <TextBox serviceData={servicesData[0]} />
       )}
     </Container>
   );

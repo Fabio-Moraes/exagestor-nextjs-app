@@ -38,7 +38,6 @@ export function Card({ service }: { service: Service }) {
 
   return (
     <Container>
-      <div />
       <div>
         <p>Solicitante: {service?.client_name}</p>
         <p>Cidade: {service?.city}</p>

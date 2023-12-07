@@ -3,10 +3,11 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-  border: 2px solid #3f795e;
+  border: 0px solid #3f795e;
+  border-width: 2px 0 2px 0;
   position: sticky;
   display: flex;
-  padding: 3px min(20px, max(10vw, 10px));
+  padding: 3px min(15px, max(10vw, 10px));
   background-image: radial-gradient(
     350px at center,
     rgba(255, 255, 255, 0.96) 20%,
@@ -34,6 +35,7 @@ export const Button = styled.button<{ $path?: boolean }>`
   outline: 0;
   border-radius: 5px;
   padding: 5px 10px 5px 10px;
+  width: 75px;
   cursor: pointer;
 
   > span {
@@ -45,7 +47,7 @@ export const Button = styled.button<{ $path?: boolean }>`
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
-      border: 2px solid #000000;
+      //border: 2px solid #000000;
       background-color: #27a567;
       > span {
         color: #fff;

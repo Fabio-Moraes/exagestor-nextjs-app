@@ -18,7 +18,7 @@ import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
-interface Service {
+interface ServiceData {
   id: number;
   client_name: string;
   city: string;
@@ -31,7 +31,7 @@ interface Service {
   protocol: string;
 }
 
-export function TextBox({ service }: { service: Service }) {
+export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   /* eslint-disable */
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
@@ -67,9 +67,9 @@ export function TextBox({ service }: { service: Service }) {
         const response = await api.get('/api/tec/concluded', {
           params: {
             token: storedCookie,
-            protocol: service?.protocol,
+            protocol: serviceData?.protocol,
             serviceIds: JSON.stringify('selectedItems'),
-            observation: String(observationBox[service?.protocol])
+            observation: String(observationBox[serviceData?.protocol])
           }
         });
 
@@ -116,14 +116,14 @@ export function TextBox({ service }: { service: Service }) {
       setObservationBox((prevItems) => {
         return {
           ...prevItems,
-          [service?.protocol]: removeCharactersByIndex()
+          [serviceData?.protocol]: removeCharactersByIndex()
         };
       });
     } else {
       setObservationBox((prevItems) => {
         return {
           ...prevItems,
-          [service?.protocol]: textInput.slice(0, 500)
+          [serviceData?.protocol]: textInput.slice(0, 500)
         };
       });
     }
@@ -151,7 +151,7 @@ export function TextBox({ service }: { service: Service }) {
       setObservationBox((prevItems) => {
         return {
           ...prevItems,
-          [service?.protocol]: `${part1}\n${part2}`.slice(0, 500)
+          [serviceData?.protocol]: `${part1}\n${part2}`.slice(0, 500)
         };
       });
       moveCursor();
@@ -161,7 +161,7 @@ export function TextBox({ service }: { service: Service }) {
   return (
     <ListContainer>
       <InputContainer>
-        {isLoading || !service?.protocol ? (
+        {isLoading || !serviceData?.protocol ? (
           <SkaletonInput>
             <LineSkaleton width="100%" />
             <LineSkaleton width="100%" />
@@ -172,7 +172,7 @@ export function TextBox({ service }: { service: Service }) {
         ) : (
           <Input
             ref={textareaRef}
-            value={observationBox[service?.protocol] ?? ''}
+            value={observationBox[serviceData?.protocol] ?? ''}
             onChange={handleDescriptionChange}
             onKeyDown={handleTextareaKeyDown}
             placeholder="Escreva sua descrição aqui..."
@@ -181,10 +181,10 @@ export function TextBox({ service }: { service: Service }) {
         )}
       </InputContainer>
       <ContainerCounter>
-        {isLoading || !service?.protocol ? (
+        {isLoading || !serviceData?.protocol ? (
           <LineSkaleton width="30px" />
         ) : (
-          <p>{500 - (observationBox[service?.protocol]?.length ?? 0)}</p>
+          <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
         )}
       </ContainerCounter>
       <div>

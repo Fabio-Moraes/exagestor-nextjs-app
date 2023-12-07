@@ -102,8 +102,11 @@ export default function RunningService() {
         <ListContainer>
           {services.map((service) => (
             <ListItem key={service.id}>
-              <Card service={service} />
-              {service?.status !== 'analysis' && <ControlButtons service={service} />}
+              <div>{/* <p>{service?.name_tec.concat(' (TEC)')}</p> */}</div>
+              <div>
+                <Card service={service} />
+                <ControlButtons service={service} />
+              </div>
             </ListItem>
           ))}
         </ListContainer>

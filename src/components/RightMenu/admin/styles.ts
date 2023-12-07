@@ -15,13 +15,12 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 7px;
+  padding: 8px;
   background-color: #8bc9a8;
-  border: 2px solid #3f795e;
-  border-radius: 15px;
-
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 7px;
   position: sticky;
-  top: 30px;
+  top: 40px;
 
   > div {
     width: 100%;
@@ -50,8 +49,9 @@ export const Button = styled.button<{ $path?: boolean }>`
     color: #000;
     display: inline;
     text-align: start;
-    font-weight: bold;
+    font-family: 'OpenSans-SemiBold';
     font-size: 12px;
+    margin-left: 5px;
   }
 
   @media (max-width: 1065px) {
@@ -60,8 +60,6 @@ export const Button = styled.button<{ $path?: boolean }>`
       display: none;
     }
   }
-
-  border: 2px solid #3f795e;
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
@@ -74,7 +72,6 @@ export const Button = styled.button<{ $path?: boolean }>`
     const disabledButtonCSS = css`
       background-color: #fff;
       &:hover {
-        border: 2px solid #27a567;
         background-image: radial-gradient(circle, #27a567, #dce6dc);
         box-shadow: 0px 5px 10px 0px rgba(39, 165, 103, 0.5);
       }

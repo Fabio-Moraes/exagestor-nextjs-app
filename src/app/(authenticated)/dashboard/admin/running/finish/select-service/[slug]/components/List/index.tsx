@@ -19,7 +19,7 @@ interface ListProps {
   description: string;
 }
 
-interface Service {
+interface ServiceData {
   id: number;
   employee_id: number;
   client_name: string;
@@ -33,7 +33,13 @@ interface Service {
   protocol: string;
 }
 
-export function List({ service, items }: { service: Service; items: ListProps[] }) {
+export function List({
+  ServiceData,
+  items
+}: {
+  ServiceData: ServiceData;
+  items: ListProps[];
+}) {
   const { selectService, setSelectService } = useContexState();
 
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -54,15 +60,15 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
 
   async function fetchConcludedServices() {
     const encryptSlug = encryptObject({
-      protocol: service?.protocol,
-      employeeId: service?.employee_id
+      protocol: ServiceData?.protocol,
+      employeeId: ServiceData?.employee_id
     });
-    router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`);
+    router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`);
   }
 
   const toggleItem = (item: string) => {
     setSelectService((prevItems) => {
-      const protocolKey = String(service?.protocol);
+      const protocolKey = String(ServiceData?.protocol);
 
       return {
         ...prevItems,
@@ -77,7 +83,7 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
   const toggleItemReset = (item: string) => {
     setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
-      const protocolKey = String(service?.protocol);
+      const protocolKey = String(ServiceData?.protocol);
       const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
 
       if (updatedItems[protocolKey].hasOwnProperty(item)) {
@@ -93,7 +99,7 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
   const selectServiceClean = () => {
     setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
-      const protocolKey = String(service?.protocol);
+      const protocolKey = String(ServiceData?.protocol);
 
       if (updatedItems.hasOwnProperty(protocolKey)) {
         delete updatedItems[protocolKey];
@@ -106,10 +112,10 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
   const filteredItems = items?.filter(
     (item) =>
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showSelected ? selectService[String(service?.protocol)]?.[item.id] : true)
+      (showSelected ? selectService[String(ServiceData?.protocol)]?.[item.id] : true)
   );
 
-  const selectedItemKeys = Object.keys(selectService[String(service?.protocol)] || {});
+  const selectedItemKeys = Object.keys(selectService[String(ServiceData?.protocol)] || {});
   const proportion = { width: 30, height: 30 };
 
   return (
@@ -152,7 +158,7 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
             <ListItem
               key={item.description}
               item={item.description}
-              count={selectService?.[String(service?.protocol)]?.[item.id]}
+              count={selectService?.[String(ServiceData?.protocol)]?.[item.id]}
               onSelect={() => toggleItem(item.id)}
               onReset={() => toggleItemReset(item.id)}
             />

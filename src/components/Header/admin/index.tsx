@@ -47,7 +47,7 @@ export function Header() {
           style={{ width: '54px', height: 'auto' }}
         />
         <ProfileInfoCompany>
-          <strong>EXA TELECOM</strong>
+          <h1>EXA TELECOM</h1>
           <span>Telecomunicações</span>
         </ProfileInfoCompany>
       </ProfileCompany>
@@ -58,20 +58,23 @@ export function Header() {
           <LineSkaleton width="300px" color="#b78e6a" />
         )}
         <div>
-          <Image
-            src={iconUser}
-            priority
-            loading="eager"
-            alt="Axa"
-            style={{ width: '25px', height: 'auto' }}
-          />
+          <div>
+            <Image
+              src={iconUser}
+              priority
+              loading="eager"
+              alt="Axa"
+              style={{ width: '23px', height: 'auto' }}
+            />
+            <span>ADMIN</span>
+          </div>
           <button
             onClick={() => {
               Cookie.remove('auth_token');
               router.refresh();
             }}
           >
-            <span>Sair</span>
+            <h2>Sair</h2>
           </button>
         </div>
       </ProfileUser>

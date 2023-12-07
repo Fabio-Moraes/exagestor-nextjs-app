@@ -139,19 +139,13 @@ export function ControlButtons({ service }: { service: Service }) {
         rel="preload"
         onClick={() =>
           (service?.status === 'active' || service?.status !== 'paused') &&
-          router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`)
+          router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`)
         }
       >
         <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
         <p>Finalizar</p>
       </button>
-      <button
-        style={{
-          opacity: service?.status === 'analysis' ? 0.3 : 1
-        }}
-        rel="preload"
-        onClick={() => service?.status !== 'analysis' && fetchStatusServices()}
-      >
+      <button rel="preload" onClick={() => fetchStatusServices()}>
         <Image
           priority
           loading="eager"
@@ -162,7 +156,13 @@ export function ControlButtons({ service }: { service: Service }) {
         />
         <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
       </button>
-      <button rel="preload" onClick={() => {}}>
+      <button
+        rel="preload"
+        style={{
+          opacity: 0.3
+        }}
+        onClick={() => {}}
+      >
         <Image priority loading="eager" src={pinSvg} alt="close" width="50" height="50" />
         <p>Fixar</p>
       </button>

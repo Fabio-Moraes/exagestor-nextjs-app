@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const ListContainer = styled.div`
   margin-top: 20px;
   padding-bottom: 10px;
-  background-color: #dce6dc;
+  background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #3f795e;
@@ -29,16 +29,6 @@ export const ListContainer = styled.div`
       }
     }
   }
-
-  /*   > div:last-child {
-    display: flex;
-    padding: 10px;
-    background-color: #3f795e;
-    margin-top: 9px;
-
-    justify-content: space-between;
-    align-items: center;
-  } */
 `;
 
 export const SearchWrapper = styled.div`

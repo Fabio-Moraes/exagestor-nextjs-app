@@ -19,7 +19,7 @@ interface ListProps {
   description: string;
 }
 
-interface Service {
+interface ServiceData {
   id: number;
   employee_id: number;
   client_name: string;
@@ -33,7 +33,9 @@ interface Service {
   protocol: string;
 }
 
-export function List({ service, items }: { service: Service; items: ListProps[] }) {
+export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
+  const { serviceData, items } = props;
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,15 +56,15 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
 
   async function fetchConcludedMaterial() {
     const encryptSlug = encryptObject({
-      protocol: service?.protocol,
-      employeeId: service?.employee_id
+      protocol: serviceData?.protocol,
+      employeeId: serviceData?.employee_id
     });
-    router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`);
+    router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
   }
 
   const toggleItem = (item: string) => {
     setSelectMaterial((prevItems) => {
-      const protocolKey = String(service?.protocol);
+      const protocolKey = String(serviceData?.protocol);
 
       return {
         ...prevItems,
@@ -77,7 +79,7 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
   const toggleItemReset = (item: string) => {
     setSelectMaterial((prevItems) => {
       const updatedItems = { ...prevItems };
-      const protocolKey = String(service?.protocol);
+      const protocolKey = String(serviceData?.protocol);
       const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
 
       if (updatedItems[protocolKey].hasOwnProperty(item)) {
@@ -93,7 +95,7 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
   const selectServiceClean = () => {
     setSelectMaterial((prevItems) => {
       const updatedItems = { ...prevItems };
-      const protocolKey = String(service?.protocol);
+      const protocolKey = String(serviceData?.protocol);
 
       if (updatedItems.hasOwnProperty(protocolKey)) {
         delete updatedItems[protocolKey];
@@ -106,10 +108,10 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
   const filteredItems = items?.filter(
     (item) =>
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showSelected ? selectMaterial[String(service?.protocol)]?.[item.id] : true)
+      (showSelected ? selectMaterial[String(serviceData?.protocol)]?.[item.id] : true)
   );
 
-  const selectedItemKeys = Object.keys(selectMaterial[String(service?.protocol)] || {});
+  const selectedItemKeys = Object.keys(selectMaterial[String(serviceData?.protocol)] || {});
 
   const proportion = { width: 30, height: 30 };
 
@@ -153,7 +155,7 @@ export function List({ service, items }: { service: Service; items: ListProps[] 
             <ListItem
               key={item.description}
               item={item.description}
-              count={selectMaterial?.[String(service?.protocol)]?.[item.id]}
+              count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
               onSelect={() => toggleItem(item.id)}
               onReset={() => toggleItemReset(item.id)}
             />

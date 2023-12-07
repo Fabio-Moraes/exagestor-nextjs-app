@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #fff;
   text-align: center;
   padding: 20px;
 `;
@@ -12,6 +11,7 @@ export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
+  border-radius: 7px;
 
   @media (min-width: 550px) {
     height: 40px;
