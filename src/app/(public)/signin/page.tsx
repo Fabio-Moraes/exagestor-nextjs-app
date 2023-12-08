@@ -13,11 +13,6 @@ socket.on('ON_USERS', (update) => {
 export default function SignIn() {
   useEffect(() => {
     socket.on('connect', () => {});
-
-    socket.on('connect_error', () => {
-      // revert to classic upgrade
-      socket.io.opts.transports = ['polling', 'websocket'];
-    });
   }, []);
 
   return (
