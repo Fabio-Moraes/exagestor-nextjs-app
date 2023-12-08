@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
-export const socket = io(String(process.env.NEXT_PUBLIC_BACKEND_BASEURL), {
+export const socket = io('wss://exatelecom-server.vercel.app', {
   transports: ['websocket']
 });
