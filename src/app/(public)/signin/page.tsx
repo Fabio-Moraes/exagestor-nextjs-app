@@ -19,7 +19,7 @@ socket.on('error', (error) => {
 export default function SignIn() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const ws = new WebSocket('wss://exatelecom-server.vercel.app:3333');
+      const ws = new WebSocket('wss://exatelecom-server.vercel.app');
 
       ws.onopen = () => {
         console.log('Connected to server');
