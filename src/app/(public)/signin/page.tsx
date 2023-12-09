@@ -10,12 +10,18 @@ import { socket } from 'services';
 socket.on('ON_USERS', (update) => {
   console.log(JSON.parse(update));
 });
+
+socket.on('connect_error', (error) => {
+  console.error('Erro de conexão:', error);
+});
+
+socket.on('error', (error) => {
+  console.error('Erro no socket:', error);
+});
+
 export default function SignIn() {
   useEffect(() => {
     socket.on('connect', () => {});
-    socket.on('connect_error', (error) => {
-      console.error('Erro de conexão:', error);
-    });
   }, []);
 
   return (
