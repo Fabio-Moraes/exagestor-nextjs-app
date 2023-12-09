@@ -1,1 +1,2 @@
-export { socket } from './WebSocket';
+/* export { ws } from './WebSocket';
+ */

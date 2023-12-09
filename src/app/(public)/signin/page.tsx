@@ -5,23 +5,46 @@ import { Form } from './components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 
-import { socket } from 'services';
+/* import { ws } from 'services'; */
 
-socket.on('ON_USERS', (update) => {
-  console.log(JSON.parse(update));
-});
-
+/* 
 socket.on('connect_error', (error) => {
   console.error('Erro de conexão:', error);
 });
 
 socket.on('error', (error) => {
   console.error('Erro no socket:', error);
-});
+}); */
 
 export default function SignIn() {
   useEffect(() => {
-    socket.on('connect', () => {});
+    if (typeof window !== 'undefined') {
+      const ws = new WebSocket('ws://exatelecom-server.vercel.app:3333');
+
+      ws.onopen = () => {
+        console.log('Connected to server');
+        const messageObject = { message: 'Hello, server!' };
+        const messageString = JSON.stringify(messageObject);
+        ws.send(messageString);
+      };
+
+      ws.onmessage = (event) => {
+        if (typeof event.data === 'string') {
+          const data = JSON.parse(event.data);
+          if (data.event === 'ON_USERS') {
+            console.log(data.payload);
+          }
+        }
+      };
+
+      ws.onclose = () => {
+        console.log('Disconnected from server');
+      };
+
+      return () => {
+        ws.close();
+      };
+    }
   }, []);
 
   return (
