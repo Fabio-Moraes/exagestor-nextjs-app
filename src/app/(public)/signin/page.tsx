@@ -1,21 +1,30 @@
 'use client';
-
 import { useEffect } from 'react';
 
 import { Form } from './components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 
-const socket = new WebSocket('wss://exatelecom-server.vercel.app');
-
 export default function SignIn() {
   useEffect(() => {
+    const socket = new WebSocket('wss://exatelecom-server.vercel.app');
+
     socket.addEventListener('open', () => {
       console.log('Conectado ao servidor WebSocket.');
-
-      // Envie uma mensagem para o servidor quando a conexão for estabelecida
-      socket.send('Olá, servidor!');
     });
+
+    socket.addEventListener('message', (event) => {
+      const parsedMessage = JSON.parse(event.data);
+
+      if (parsedMessage.event === 'ON_USERS') {
+        console.log('Evento ON_USERS recebido:', parsedMessage.data);
+        // Faça algo com os dados recebidos, por exemplo, atualizar a interface do usuário
+      }
+    });
+
+    return () => {
+      socket.close();
+    };
   }, []);
 
   return (
