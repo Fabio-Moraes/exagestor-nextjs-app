@@ -13,6 +13,9 @@ socket.on('ON_USERS', (update) => {
 export default function SignIn() {
   useEffect(() => {
     socket.on('connect', () => {});
+    socket.on('connect_error', (error) => {
+      console.error('Erro de conexão:', error);
+    });
   }, []);
 
   return (
