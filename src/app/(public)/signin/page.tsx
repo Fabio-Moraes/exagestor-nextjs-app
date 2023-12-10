@@ -1,59 +1,33 @@
 'use client';
-
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { Form } from './components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 
+import io from 'socket.io-client';
+
 export default function SignIn() {
-  const socketRef = useRef<WebSocket | null>(null);
-
   useEffect(() => {
-    const setupWebSocket = () => {
-      try {
-        const newSocket = new WebSocket('wss://exatelecom-server.vercel.app');
+    console.log('Connecting to WebSocket server...');
+    const newSocket = io(String(process.env.NEXT_PUBLIC_BACKEND_BASEURL), {
+      transports: ['websocket']
+    });
 
-        newSocket.addEventListener('open', () => {
-          console.log('Conectado ao servidor WebSocket.');
-          socketRef.current = newSocket;
-        });
+    newSocket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
 
-        newSocket.addEventListener('message', (event) => {
-          const parsedMessage = JSON.parse(event.data);
+    newSocket.on('ON_USERS', (newMessage) => {
+      console.log(JSON.parse(newMessage));
+    });
 
-          if (parsedMessage.event === 'ON_USERS') {
-            console.log('Evento ON_USERS recebido:', parsedMessage.data);
-            // Faça algo com os dados recebidos, por exemplo, atualizar a interface do usuário
-          }
-        });
-
-        newSocket.addEventListener('close', (event) => {
-          console.log('Conexão fechada:', event);
-
-          // Lógica para lidar com a reconexão se necessário
-          // Por exemplo, você pode tentar reconectar após um curto período de tempo
-          setTimeout(() => {
-            console.log('Tentando reconectar...');
-            setupWebSocket();
-          }, 5000); // Tente reconectar após 5 segundos
-        });
-
-        newSocket.addEventListener('error', (error) => {
-          console.error('Erro na conexão WebSocket:', error);
-        });
-
-        return () => {
-          newSocket.close();
-        };
-      } catch (error) {
-        console.error('Erro ao configurar a conexão WebSocket:', error);
-      }
+    // Clean up the socket connection on unmount
+    return () => {
+      console.log('Disconnecting from WebSocket server...');
+      newSocket.disconnect();
     };
-
-    setupWebSocket();
   }, []);
-
   return (
     <Container>
       <Wrapper>
