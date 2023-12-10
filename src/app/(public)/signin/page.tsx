@@ -10,7 +10,7 @@ import io from 'socket.io-client';
 export default function SignIn() {
   useEffect(() => {
     console.log('Connecting to WebSocket server...');
-    const newSocket = io(String(process.env.NEXT_PUBLIC_BACKEND_BASEURL), {
+    const newSocket = io('wss://exatelecom-server.vercel.app', {
       transports: ['websocket']
     });
 
