@@ -5,27 +5,25 @@ import { Form } from './components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 export default function SignIn() {
   useEffect(() => {
     console.log('Connecting to WebSocket server...');
-    const newSocket = io('wss://exatelecom-server.vercel.app', {
-      transports: ['websocket']
-    });
+    const socket = io('https://exatelecom-server.vercel.app');
 
-    newSocket.on('connect', () => {
+    socket.on('connect', () => {
       console.log('Connected to WebSocket server');
     });
 
-    newSocket.on('ON_USERS', (newMessage) => {
+    socket.on('ON_USERS', (newMessage) => {
       console.log(JSON.parse(newMessage));
     });
 
     // Clean up the socket connection on unmount
     return () => {
       console.log('Disconnecting from WebSocket server...');
-      newSocket.disconnect();
+      socket.disconnect();
     };
   }, []);
   return (
