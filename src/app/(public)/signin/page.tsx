@@ -1,19 +1,20 @@
 'use client';
+
 import { useEffect } from 'react';
 
 import { Form } from './components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 
-import { socket } from 'services/websocket';
+import io from 'services/websocket';
 
 export default function SignIn() {
   useEffect(() => {
-    console.log('Connecting to WebSocket server...');
+    const socket = io();
 
-    /* socket.on('connect', () => {
+    socket.on('connect', () => {
       console.log('Connected to WebSocket server');
-    }); */
+    });
 
     socket.on('ON_USERS', (newMessage) => {
       console.log(JSON.parse(newMessage));
@@ -25,6 +26,7 @@ export default function SignIn() {
       socket.disconnect();
     };
   }, []);
+
   return (
     <Container>
       <Wrapper>
