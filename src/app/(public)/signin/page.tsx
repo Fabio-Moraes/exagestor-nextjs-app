@@ -5,18 +5,15 @@ import { Form } from './components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 
-import { io } from 'socket.io-client';
+import { socket } from 'services/websocket';
 
 export default function SignIn() {
   useEffect(() => {
     console.log('Connecting to WebSocket server...');
-    const socket = io('wss://exa-telecom-websocket.onrender.com/', {
-      transports: ['websocket']
-    });
 
-    socket.on('connect', () => {
+    /* socket.on('connect', () => {
       console.log('Connected to WebSocket server');
-    });
+    }); */
 
     socket.on('ON_USERS', (newMessage) => {
       console.log(JSON.parse(newMessage));
