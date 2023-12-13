@@ -12,8 +12,31 @@ import { Button, CheckboxButton, Container, FormContainer, Input, Title } from '
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
+import io from 'services/websocket';
 
 export default function NewRegister() {
+  useEffect(() => {
+    const socket = io();
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+
+    socket.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+
+    socket.on('ON_USERS', (newMessage) => {
+      console.log(JSON.parse(newMessage));
+    });
+
+    // Clean up the socket connection on unmount
+    return () => {
+      console.log('Disconnecting from WebSocket server...');
+      socket.disconnect();
+    };
+  }, []);
+
   const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
