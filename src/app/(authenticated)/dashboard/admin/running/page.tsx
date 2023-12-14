@@ -12,8 +12,13 @@ import { Container, ErrorContainer, ListContainer, ListItem, Title } from './sty
 import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
+import io from 'services/websocket';
 
-interface Service {
+interface Protocol {
+  [key: string]: { [key: string]: number };
+}
+
+interface RunningService {
   id: number;
   employee_id: number;
   client_name: string;
@@ -29,22 +34,18 @@ interface Service {
   name_tec: string;
 }
 
-interface Protocol {
-  [key: string]: { [key: string]: number };
-}
-
 export default function RunningService() {
-  //const [services, setServices] = useState<Service[]>([]);
+  const [runningService, setRunningService] = useState<RunningService[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const { setSelectService, setSelectMaterial, runningService, setRunningService } =
+  const { setSelectService, setSelectMaterial /* , runningService, setRunningService */ } =
     useContexState();
 
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
-  function filterSelectedOpenProtocols(services: Service[]) {
+  function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
     function filterProtocols(paramPrevItems: Protocol, paramServiceProtocols: string[]) {
@@ -77,7 +78,6 @@ export default function RunningService() {
         filterSelectedOpenProtocols(response.data);
 
         setRunningService(response.data);
-        //setServices(response.data);
         console.log('response', response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -88,7 +88,25 @@ export default function RunningService() {
   }
 
   useEffect(() => {
-    fetchServices();
+    const socket = io();
+
+    socket.on('connect', () => {
+      fetchServices();
+      console.log('Connected to WebSocket server');
+    });
+
+    socket.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+
+    socket.on(`RUNNING_UPDATE_ADMIN`, () => {
+      fetchServices();
+    });
+
+    return () => {
+      console.log('Disconnecting from WebSocket server...');
+      socket.disconnect();
+    };
   }, []);
 
   return (

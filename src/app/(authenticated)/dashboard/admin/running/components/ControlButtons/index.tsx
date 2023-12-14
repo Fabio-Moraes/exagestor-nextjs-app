@@ -13,7 +13,7 @@ import playSvg from './assets/svg/play.svg';
 import { Container } from './styles';
 
 import { encryptObject } from 'functions';
-import { useContexState } from 'hooks/useGlobalContext';
+//import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
@@ -34,7 +34,7 @@ interface Service {
 }
 
 export function ControlButtons({ service }: { service: Service }) {
-  const { setRunningService } = useContexState();
+  //const { setRunningService } = useContexState();
   const router = useRouter();
 
   /* eslint-disable */
@@ -45,7 +45,7 @@ export function ControlButtons({ service }: { service: Service }) {
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
-  async function fetchRunningServices() {
+  /*   async function fetchRunningServices() {
     setConnectionError(false);
 
     for (let count = 0; count < maxRetries; count++) {
@@ -67,7 +67,7 @@ export function ControlButtons({ service }: { service: Service }) {
       }
     }
     setIsPopupValue(null);
-  }
+  } */
 
   async function fetchStatusServices() {
     setConnectionError(false);
@@ -89,7 +89,7 @@ export function ControlButtons({ service }: { service: Service }) {
 
         count = maxRetries;
 
-        fetchRunningServices();
+        //fetchRunningServices();
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -115,7 +115,7 @@ export function ControlButtons({ service }: { service: Service }) {
         });
 
         count = maxRetries;
-        fetchRunningServices();
+        //fetchRunningServices();
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));

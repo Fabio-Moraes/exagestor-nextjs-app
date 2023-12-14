@@ -24,8 +24,8 @@ export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  background-color: #8bc9a8;
-  /*  background-image: linear-gradient(to top, #8bc9a8, #dce6dc); */
+  //background-color: #8bc9a8;
+  background-image: linear-gradient(to top, #8bc9a8, #dce6dc);
   border-radius: 7px;
   flex-direction: column;
   justify-content: center;
@@ -96,11 +96,11 @@ export const ProfileCompany = styled.div`
   display: flex;
   align-items: center;
   text-align: left;
-  background-color: #8bc9a8;
+  //background-color: #8bc9a8;
   display: flex;
   height: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  /*background-image: linear-gradient(to top, #8bc9a8, #dce6dc);*/
+  background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
   padding: 7px;
   padding-left: 11px;
   border-radius: 7px;

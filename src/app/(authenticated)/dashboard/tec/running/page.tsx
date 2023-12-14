@@ -10,12 +10,13 @@ import { Container, ErrorContainer, ListContainer, ListItem, Title } from './sty
 
 import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
+import jwtDecode from 'jwt-decode';
 import api from 'lib/api';
+import io from 'services/websocket';
 
-interface Service {
+interface RunningService {
   id: number;
-  name_tec: string;
-  name_admin: string;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
@@ -25,14 +26,24 @@ interface Service {
   status: string;
   created_at: string;
   protocol: string;
+  name_admin: string;
+  name_tec: string;
 }
 
 interface Protocol {
   [key: string]: { [key: string]: number };
 }
 
+interface Decoded {
+  user: {
+    id: number;
+    name: string;
+    role: string;
+  };
+}
+
 export default function RunningService() {
-  const [services, setServices] = useState<Service[]>([]);
+  const [runningService, setRunningService] = useState<RunningService[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -41,7 +52,19 @@ export default function RunningService() {
   const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
-  function filterSelectedOpenProtocols(services: Service[]) {
+  function handleTokenChange(token: string): Decoded | null {
+    const storedCookie = Cookie.get(token) || '';
+
+    if (storedCookie && storedCookie.trim() !== '') {
+      return jwtDecode(storedCookie) as Decoded;
+    } else {
+      return null;
+    }
+  }
+
+  const decoderToken = handleTokenChange('auth_token');
+
+  function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
     function filterProtocols(paramPrevItems: Protocol, paramServiceProtocols: string[]) {
@@ -72,7 +95,8 @@ export default function RunningService() {
         count = maxRetries;
 
         filterSelectedOpenProtocols(response.data);
-        setServices(response.data);
+
+        setRunningService(response.data);
         console.log('response', response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -83,7 +107,25 @@ export default function RunningService() {
   }
 
   useEffect(() => {
-    fetchServices();
+    const socket = io();
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+      fetchServices();
+    });
+
+    socket.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+
+    socket.on(`RUNNING_UPDATE_TEC:${decoderToken?.user.id}`, () => {
+      fetchServices();
+    });
+
+    return () => {
+      console.log('Disconnecting from WebSocket server...');
+      socket.disconnect();
+    };
   }, []);
 
   return (
@@ -100,7 +142,7 @@ export default function RunningService() {
         </ErrorContainer>
       ) : (
         <ListContainer>
-          {services.map((service) => (
+          {runningService.map((service) => (
             <ListItem key={service.id}>
               <div>{/* <p>{service?.name_tec.concat(' (TEC)')}</p> */}</div>
               <div>

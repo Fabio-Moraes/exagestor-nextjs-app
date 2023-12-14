@@ -1,21 +1,22 @@
 import { Container } from './styles';
 
-interface Service {
+interface RunningService {
   id: number;
-  name_tec: string;
-  name_admin: string;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
   nomenclature: string;
   classification: string;
-  status: string;
   update_count: number;
+  status: string;
   created_at: string;
   protocol: string;
+  name_admin: string;
+  name_tec: string;
 }
 
-export function Card({ service }: { service: Service }) {
+export function Card({ service }: { service: RunningService }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();

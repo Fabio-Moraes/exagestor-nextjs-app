@@ -16,20 +16,23 @@ import { encryptObject } from 'functions';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
-interface Service {
+interface RunningService {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
   nomenclature: string;
   classification: string;
-  status: string;
   update_count: number;
+  status: string;
   created_at: string;
   protocol: string;
+  name_admin: string;
+  name_tec: string;
 }
 
-export function ControlButtons({ service }: { service: Service }) {
+export function ControlButtons({ service }: { service: RunningService }) {
   const router = useRouter();
 
   /* eslint-disable */

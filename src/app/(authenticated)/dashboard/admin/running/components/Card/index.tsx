@@ -1,6 +1,6 @@
 import { Container } from './styles';
 
-interface Service {
+interface RunningService {
   id: number;
   employee_id: number;
   client_name: string;
@@ -16,7 +16,7 @@ interface Service {
   name_tec: string;
 }
 
-export function Card({ service }: { service: Service }) {
+export function Card({ service }: { service: RunningService }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();
