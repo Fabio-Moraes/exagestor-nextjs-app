@@ -12,7 +12,8 @@ import { Container, ErrorContainer, ListContainer, ListItem, Title } from './sty
 import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
-import io from 'services/websocket';
+//import io from 'services/websocket';
+import { io } from 'socket.io-client';
 
 interface Protocol {
   [key: string]: { [key: string]: number };
@@ -88,7 +89,13 @@ export default function RunningService() {
   }
 
   useEffect(() => {
-    const socket = io();
+    const socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+      auth: {
+        token: storedCookie
+      },
+      transports: ['websocket'],
+      withCredentials: true
+    });
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
