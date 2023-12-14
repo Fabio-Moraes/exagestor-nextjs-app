@@ -61,7 +61,6 @@ export function ControlButtons({ service }: { service: RunningService }) {
         );
 
         count = maxRetries;
-        location.reload();
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -83,7 +82,6 @@ export function ControlButtons({ service }: { service: RunningService }) {
         });
 
         count = maxRetries;
-        location.reload();
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
