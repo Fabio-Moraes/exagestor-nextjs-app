@@ -111,7 +111,6 @@ export default function RunningService() {
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
-      fetchServices();
     });
 
     socket.on('error', (error) => {
@@ -122,6 +121,7 @@ export default function RunningService() {
       fetchServices();
     });
 
+    fetchServices();
     return () => {
       console.log('Disconnecting from WebSocket server...');
       socket.disconnect();

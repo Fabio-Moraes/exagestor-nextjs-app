@@ -91,7 +91,6 @@ export default function RunningService() {
     const socket = io();
 
     socket.on('connect', () => {
-      fetchServices();
       console.log('Connected to WebSocket server');
     });
 
@@ -103,6 +102,7 @@ export default function RunningService() {
       fetchServices();
     });
 
+    fetchServices();
     return () => {
       console.log('Disconnecting from WebSocket server...');
       socket.disconnect();
