@@ -16,7 +16,7 @@ export const Container = styled.div<{ selected: boolean }>`
   justify-content: space-between;
   border: 2px solid #27a567;
   margin: 5px 10px 0 10px;
-  border-radius: 5px;
+  border-radius: 7px;
   padding: 5px;
   cursor: pointer;
 `;

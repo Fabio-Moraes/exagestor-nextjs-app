@@ -10,8 +10,8 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
-  color: #333;
   border-radius: 7px;
+  color: #333;
 
   @media (min-width: 550px) {
     height: 40px;
@@ -39,7 +39,7 @@ export const ErrorContainer = styled.div`
     padding: 10px;
     margin: 20px 20px;
     border: 1px solid #000000;
-    border-radius: 4px;
+    border-radius: 7px;
     font-size: 16px;
     color: #fff;
   }

@@ -10,6 +10,7 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
+  border-radius: 7px;
   color: #333;
 
   @media (min-width: 550px) {
@@ -25,7 +26,7 @@ export const FormContainer = styled.form`
   flex-direction: column;
   background-color: #fff;
   border: 2px solid #3f795e;
-  border-radius: 5px;
+  border-radius: 7px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding-top: 15px 0px;
 
