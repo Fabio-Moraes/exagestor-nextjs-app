@@ -10,15 +10,8 @@ import { decryptObject } from 'functions';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
-import {
-  Button,
-  Container,
-  Wrapper,
-  Observation,
-  Title,
-  Info,
-  ErrorContainer
-} from './styles';
+import { ErrorContainer } from './styles';
+import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
 
 interface Service {
   id: number;
