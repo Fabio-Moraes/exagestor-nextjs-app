@@ -50,9 +50,6 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
-  const storedCookie = Cookie.get('auth_token');
-  const maxRetries = 4;
-
   function handleTokenChange(token: string): Decoded | null {
     const storedCookie = Cookie.get(token) || '';
 
@@ -90,14 +87,17 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  const storedCookie = Cookie.get('auth_token');
+  const maxReconnectionAttempts = 4;
+
   async function fetchServices(): Promise<void> {
     setConnectionError(false);
 
-    let count = 0;
+    let retryCount = 0;
 
-    while (count < maxRetries) {
+    while (retryCount < maxReconnectionAttempts) {
       try {
-        setIsPopupValue(generateConnectingMessage(count));
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await api.get('/api/tec/running', {
           params: { token: storedCookie }
@@ -109,18 +109,17 @@ export default function RunningService() {
 
         break;
       } catch (error) {
-        await sleep(3000);
+        await sleep(5000);
         setConnectionError(true);
       } finally {
         setIsPopupValue(null);
       }
 
-      count++;
+      retryCount++;
     }
   }
 
   let socket: Socket | null = null;
-  const maxReconnectionAttempts: number = 5;
 
   const connectSocket = () => {
     return new Promise<void>((resolve, reject) => {
@@ -164,7 +163,6 @@ export default function RunningService() {
           console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
         }
 
-        // Aguarde um curto período antes de tentar novamente (por exemplo, 3 segundos)
         await sleep(3000);
       }
     }

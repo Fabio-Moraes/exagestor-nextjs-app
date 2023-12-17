@@ -40,9 +40,6 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
-  const storedCookie = Cookie.get('auth_token');
-  const maxRetries = 4;
-
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
@@ -68,14 +65,17 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  const storedCookie = Cookie.get('auth_token');
+  const maxReconnectionAttempts = 4;
+
   async function fetchServices(): Promise<void> {
     setConnectionError(false);
 
-    let count = 0;
+    let retryCount = 0;
 
-    while (count < maxRetries) {
+    while (retryCount < maxReconnectionAttempts) {
       try {
-        setIsPopupValue(generateConnectingMessage(count));
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await api.get('/api/admin/running', {
           params: { token: storedCookie }
@@ -87,18 +87,17 @@ export default function RunningService() {
 
         break;
       } catch (error) {
-        await sleep(3000);
+        await sleep(5000);
         setConnectionError(true);
       } finally {
         setIsPopupValue(null);
       }
 
-      count++;
+      retryCount++;
     }
   }
 
   let socket: Socket | null = null;
-  const maxReconnectionAttempts: number = 5;
 
   const connectSocket = () => {
     return new Promise<void>((resolve, reject) => {
@@ -132,7 +131,7 @@ export default function RunningService() {
     while (retryCount < maxReconnectionAttempts) {
       try {
         await connectSocket();
-        return;
+        break;
       } catch (connectError: unknown) {
         retryCount += 1;
 
@@ -145,8 +144,6 @@ export default function RunningService() {
         await sleep(3000);
       }
     }
-
-    console.log('Max reconnection attempts reached. Stopping reconnection attempts.');
   };
 
   useEffect(() => {
