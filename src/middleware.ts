@@ -15,9 +15,9 @@ export default async function middleware(request: NextRequest) {
   const TOKEN = request?.cookies.get('auth_token')?.value;
   const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';
 
-  try {
-    const { user }: Decoded = TOKEN ? jwtDecode(TOKEN) : {};
+  const { user }: Decoded = TOKEN ? await jwtDecode(TOKEN) : {};
 
+  try {
     await jwtVerify(TOKEN ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
 
     if (user?.role === 'admin' && request.nextUrl.pathname.includes('tec')) {
