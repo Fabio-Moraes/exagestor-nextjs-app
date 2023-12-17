@@ -89,12 +89,12 @@ export default function RunningService() {
   }
 
   useEffect(() => {
-    let socket = websocket(TOKEN ?? '');
+    let socket = websocket(TOKEN);
 
     (async () => {
       const connectSocket = async () => {
         return new Promise<void>((resolve) => {
-          socket = websocket(TOKEN ?? '');
+          socket = websocket(TOKEN);
           socket.on('connect', () => {
             console.log('Connected to WebSocket server');
             resolve();
