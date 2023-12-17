@@ -1,5 +1,3 @@
-'use client';
-
 import Cookie from 'js-cookie';
 import { io } from 'socket.io-client';
 

@@ -7,11 +7,11 @@ import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
-import websocket from 'services/websocket';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
-//import { io } from 'socket.io-client';
+//import io from 'services/websocket';
+import { io } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
@@ -43,8 +43,8 @@ export default function RunningService() {
   const { setSelectService, setSelectMaterial /* , runningService, setRunningService */ } =
     useContexState();
 
-  const TOKEN = Cookie.get('auth_token');
-  const MAX_RETRIES = 4;
+  const storedCookie = Cookie.get('auth_token');
+  const maxRetries = 4;
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -66,15 +66,15 @@ export default function RunningService() {
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let count = 0; count < MAX_RETRIES; count++) {
+    for (let count = 0; count < maxRetries; count++) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
         const response = await api.get('/api/admin/running', {
-          params: { token: TOKEN }
+          params: { token: storedCookie }
         });
 
-        count = MAX_RETRIES;
+        count = maxRetries;
 
         filterSelectedOpenProtocols(response.data);
 
@@ -89,35 +89,17 @@ export default function RunningService() {
   }
 
   useEffect(() => {
-    let socket = websocket();
+    const socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+      auth: {
+        token: storedCookie
+      },
+      transports: ['websocket'],
+      withCredentials: true
+    });
 
-    const connectSocket = () => {
-      return new Promise<void>((resolve) => {
-        socket = websocket();
-        socket.on('connect', () => {
-          console.log('Connected to WebSocket server');
-          resolve();
-        });
-      });
-    };
-
-    let retryCount = 0;
-    const maxRetries = 5;
-
-    while (retryCount < maxRetries) {
-      try {
-        connectSocket();
-        return;
-      } catch (connectError: unknown) {
-        retryCount += 1;
-
-        if (connectError instanceof Error) {
-          console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
-        } else {
-          console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
-        }
-      }
-    }
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
 
     socket.on('error', (error) => {
       console.error('WebSocket error:', error);
