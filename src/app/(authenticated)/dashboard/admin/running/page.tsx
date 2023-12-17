@@ -7,7 +7,7 @@ import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
-import { websocket } from 'services/websocket';
+import websocket from 'services/websocket';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
@@ -89,11 +89,11 @@ export default function RunningService() {
   }
 
   useEffect(() => {
-    let socket = websocket(TOKEN);
+    let socket = websocket();
 
     const connectSocket = () => {
       return new Promise<void>((resolve) => {
-        socket = websocket(TOKEN);
+        socket = websocket();
         socket.on('connect', () => {
           console.log('Connected to WebSocket server');
           resolve();
