@@ -91,35 +91,33 @@ export default function RunningService() {
   useEffect(() => {
     let socket = websocket(TOKEN);
 
-    (async () => {
-      const connectSocket = async () => {
-        return new Promise<void>((resolve) => {
-          socket = websocket(TOKEN);
-          socket.on('connect', () => {
-            console.log('Connected to WebSocket server');
-            resolve();
-          });
+    const connectSocket = () => {
+      return new Promise<void>((resolve) => {
+        socket = websocket(TOKEN);
+        socket.on('connect', () => {
+          console.log('Connected to WebSocket server');
+          resolve();
         });
-      };
+      });
+    };
 
-      let retryCount = 0;
-      const maxRetries = 5;
+    let retryCount = 0;
+    const maxRetries = 5;
 
-      while (retryCount < maxRetries) {
-        try {
-          await connectSocket();
-          return;
-        } catch (connectError: unknown) {
-          retryCount += 1;
+    while (retryCount < maxRetries) {
+      try {
+        connectSocket();
+        return;
+      } catch (connectError: unknown) {
+        retryCount += 1;
 
-          if (connectError instanceof Error) {
-            console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
-          } else {
-            console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
-          }
+        if (connectError instanceof Error) {
+          console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
+        } else {
+          console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
         }
       }
-    })();
+    }
 
     socket.on('error', (error) => {
       console.error('WebSocket error:', error);
