@@ -107,7 +107,6 @@ export default function RunningService() {
     while (retryCount < maxRetries) {
       try {
         connectSocket();
-        return;
       } catch (connectError: unknown) {
         retryCount += 1;
 
