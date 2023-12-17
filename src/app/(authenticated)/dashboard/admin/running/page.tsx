@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-//import { ControlButtons } from './components/ControlButtons';
 import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -10,7 +9,6 @@ import { useContexState } from 'hooks/useGlobalContext';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
-//import io from 'services/websocket';
 import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -62,29 +60,41 @@ export default function RunningService() {
     setSelectMaterial((prevItems) => filterProtocols(prevItems, serviceProtocols));
   }
 
-  async function fetchServices() {
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
+
+  function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async function fetchServices(): Promise<void> {
     setConnectionError(false);
 
-    for (let count = 0; count < maxRetries; count++) {
+    let count = 0;
+
+    while (count < maxRetries) {
       try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+        setIsPopupValue(generateConnectingMessage(count));
 
         const response = await api.get('/api/admin/running', {
           params: { token: storedCookie }
         });
 
-        count = maxRetries;
-
         filterSelectedOpenProtocols(response.data);
-
         setRunningService(response.data);
         console.log('response', response.data);
+
+        break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(3000);
         setConnectionError(true);
+      } finally {
+        setIsPopupValue(null);
       }
+
+      count++;
     }
-    setIsPopupValue(null);
   }
 
   let socket: Socket | null = null;
@@ -116,8 +126,6 @@ export default function RunningService() {
     });
   };
 
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const attemptReconnection = async () => {
     let retryCount = 0;
 
@@ -134,8 +142,7 @@ export default function RunningService() {
           console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
         }
 
-        // Aguarde um curto período antes de tentar novamente (por exemplo, 3 segundos)
-        await wait(3000);
+        await sleep(3000);
       }
     }
 
