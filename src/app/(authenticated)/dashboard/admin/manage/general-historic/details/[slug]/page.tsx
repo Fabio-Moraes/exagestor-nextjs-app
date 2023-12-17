@@ -5,13 +5,13 @@ import { Fragment, useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
-
-import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
-import { ErrorContainer } from './styles';
-
 import { decryptObject } from 'functions';
+
 import Cookie from 'js-cookie';
 import api from 'lib/api';
+
+import { ErrorContainer } from './styles';
+import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
 
 interface Service {
   id: number;

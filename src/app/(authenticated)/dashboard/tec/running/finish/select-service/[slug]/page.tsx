@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
-
-import { Container, ErrorContainer, Title } from './styles';
-
 import { decryptObject } from 'functions';
+
 import Cookie from 'js-cookie';
 import api from 'lib/api';
+
+import { Container, ErrorContainer, Title } from './styles';
 
 const data = [
   { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },

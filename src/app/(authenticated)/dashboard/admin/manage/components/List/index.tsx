@@ -7,8 +7,9 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 
 import ListItem from '../ListItem';
-//import infoSvg from './assets/svg/info.svg';
+
 import searchSvg from './assets/svg/search.svg';
+
 import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 interface Service {
@@ -55,7 +56,6 @@ export function List({ service }: { service: Service[] }) {
           />
         </SearchWrapper>
         <div>
-          {/* <Image priority src={infoSvg} alt="Add"  width="30" height="30" /> */}
           <Button
             rel="preload"
             onClick={() => router.push(`/dashboard/admin/manage/general-historic`)}
@@ -79,10 +79,6 @@ export function List({ service }: { service: Service[] }) {
             );
           })
         : filteredItems.map((item) => <ListItem key={String(item.id)} {...item} />)}
-      {/*   <div>
-        <Button onClick={() => {}}>Historico Geral</Button>
-        <Button onClick={() => {}}>Relatorio</Button>
-      </div> */}
     </ListContainer>
   );
 }

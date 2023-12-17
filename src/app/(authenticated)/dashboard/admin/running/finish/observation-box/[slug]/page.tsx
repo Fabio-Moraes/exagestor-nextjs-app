@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import { TextBox } from './components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
-
-import { Container, ErrorContainer, Title } from './styles';
-
 import { decryptObject } from 'functions';
+
 import Cookie from 'js-cookie';
 import api from 'lib/api';
+
+import { Container, ErrorContainer, Title } from './styles';
 
 interface SlugType {
   params: {

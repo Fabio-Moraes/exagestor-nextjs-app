@@ -4,17 +4,18 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import Image from 'components/Vercel/Image';
+import { encryptObject } from 'functions';
+
+import Cookie from 'js-cookie';
+import api from 'lib/api';
 
 import checkSvg from './assets/svg/check.svg';
 import closeSvg from './assets/svg/close.svg';
 import pauseSvg from './assets/svg/pause.svg';
 import pinSvg from './assets/svg/pin.svg';
 import playSvg from './assets/svg/play.svg';
-import { Container } from './styles';
 
-import { encryptObject } from 'functions';
-import Cookie from 'js-cookie';
-import api from 'lib/api';
+import { Container } from './styles';
 
 interface RunningService {
   id: number;

@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 
-import { Container, ItemContainer } from './styles';
-
 import { encryptObject } from 'functions';
+
+import { Container, ItemContainer } from './styles';
 
 interface ListItemProps {
   id: number;

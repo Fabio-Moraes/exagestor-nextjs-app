@@ -1,13 +1,9 @@
-import Cookie from 'js-cookie';
 import { io } from 'socket.io-client';
 
-const storedCookie = Cookie.get('auth_token');
-export default () => {
+export function websocket(token: string) {
   return io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
-    auth: {
-      token: storedCookie
-    },
+    auth: { token },
     transports: ['websocket'],
     withCredentials: true
   });
-};
+}

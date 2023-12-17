@@ -8,6 +8,7 @@ import add from './assets/svg/add.svg';
 import execution from './assets/svg/execution.svg';
 import menu from './assets/svg/menu.svg';
 import report from './assets/svg/report.svg';
+
 import { Button, Container, Wrapper } from './styles';
 
 export function RightMenu() {

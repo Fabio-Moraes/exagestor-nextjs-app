@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation';
 
-import { Container } from './styles';
-
 import { encryptObject } from 'functions';
+
+import { Container } from './styles';
 
 interface Service {
   id: number;

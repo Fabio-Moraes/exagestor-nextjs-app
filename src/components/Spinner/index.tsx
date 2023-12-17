@@ -1,7 +1,8 @@
 import * as animationData from './assets/lottie/animation.json';
-import { Container } from './styles';
 
 import { Player } from '@lottiefiles/react-lottie-player';
+
+import { Container } from './styles';
 
 export function Spinner({ active = true }: { active?: boolean }) {
   return (

@@ -4,6 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
+import { useContexState } from 'hooks/useGlobalContext';
+
+import Cookie from 'js-cookie';
+import api from 'lib/api';
 
 import {
   Button,
@@ -13,10 +17,6 @@ import {
   SkaletonInput,
   ContainerCounter
 } from './styles';
-
-import { useContexState } from 'hooks/useGlobalContext';
-import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 interface serviceData {
   id: number;

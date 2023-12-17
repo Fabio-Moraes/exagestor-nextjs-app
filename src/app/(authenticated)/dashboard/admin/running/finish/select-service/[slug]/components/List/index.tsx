@@ -5,14 +5,15 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-
-import { ListItem } from '../ListItem';
-import infoSvg from './assets/svg/info.svg';
-import searchSvg from './assets/svg/search.svg';
-import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
-
 import { encryptObject } from 'functions';
 import { useContexState } from 'hooks/useGlobalContext';
+
+import { ListItem } from '../ListItem';
+
+import infoSvg from './assets/svg/info.svg';
+import searchSvg from './assets/svg/search.svg';
+
+import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 interface ListProps {
   id: string;

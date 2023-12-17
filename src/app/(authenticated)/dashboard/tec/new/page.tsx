@@ -6,8 +6,12 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 
+import Cookie from 'js-cookie';
+import api from 'lib/api';
+
 import alertSvg from './assets/svg/alert.svg';
 import checkedSvg from './assets/svg/checked.svg';
+
 import {
   Button,
   CheckboxButton,
@@ -18,9 +22,6 @@ import {
   Select,
   Title
 } from './styles';
-
-import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 const cities = ['Curitiba', 'Paranaguá', 'Matinhos', 'Ponta Grossa'];
 

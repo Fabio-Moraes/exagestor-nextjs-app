@@ -7,10 +7,14 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
 
 //import { Footer } from '../Footer';
+import Cookie from 'js-cookie';
+import api from 'lib/api';
+
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
 import eyeClosed from './assets/svg/eye-closed-.svg';
 import eyeOpen from './assets/svg/eye-open.svg';
+
 import {
   Button,
   CheckboxButton,
@@ -22,9 +26,6 @@ import {
   PasswordInputContainer,
   TogglePasswordVisibilityButton
 } from './styles';
-
-import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 interface CustomError extends Error {
   response?: {

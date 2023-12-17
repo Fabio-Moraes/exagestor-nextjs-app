@@ -38,14 +38,17 @@
                 "newlinesBetween": "always",
                 "groups": [
                 ["/^react/", "/^next/", "/@next/"],
-                "/components/",
-                "/module/", 
-                "/^@shared/", 
-                "/absolute/", 
-                ["parent", "sibling", "index"]],
+                ["/components/", "/functions/", "/hooks/", "/services/"],
+                "/absolute/",
+                ["parent", "sibling", "index"],
+                "module",
+                "/^.*\\/*.(png|svg|jpg|gif)$/",
+                "/^\\.\\/styles/"
+              ],
                 "alphabetize": { "order": "asc", "ignoreCase": true }
             }
         ]
     },
     "root": true
+ 
 }

@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 
-import { Container, ErrorContainer, Title } from './styles';
-
 import Cookie from 'js-cookie';
 import api from 'lib/api';
+
+import { Container, ErrorContainer, Title } from './styles';
 
 interface Service {
   id: number;

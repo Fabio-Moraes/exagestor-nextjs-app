@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 
+import Cookie from 'js-cookie';
+import jwtDecode from 'jwt-decode';
+
 import iconExa from './assets/svg/exa_logo.svg';
 import iconUser from './assets/svg/user.svg';
-import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
-import { useDecodeToken } from 'hooks/useDecodeToken';
-import Cookie from 'js-cookie';
+import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
 interface Decoded {
   user: {
@@ -22,7 +23,8 @@ interface Decoded {
 }
 
 export function Header() {
-  const decoderToken = useDecodeToken<Decoded>('auth_token');
+  const token = Cookie.get('auth_token');
+  const decoderToken = jwtDecode(token ?? '') as Decoded;
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
