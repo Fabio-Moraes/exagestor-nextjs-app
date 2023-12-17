@@ -11,7 +11,7 @@ import Cookie from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import api from 'lib/api';
 //import io from 'services/websocket';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
@@ -107,8 +107,12 @@ export default function RunningService() {
     setIsPopupValue(null);
   }
 
-  useEffect(() => {
-    const socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+  let socket: Socket | null = null;
+  let reconnectionAttempts: number = 0;
+  const maxReconnectionAttempts: number = 5;
+
+  const connectSocket = () => {
+    socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
       auth: {
         token: storedCookie
       },
@@ -118,20 +122,51 @@ export default function RunningService() {
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
+      reconnectionAttempts = 0;
     });
 
     socket.on('error', (error) => {
       console.error('WebSocket error:', error);
+      attemptReconnection();
     });
 
     socket.on(`RUNNING_UPDATE_TEC:${decoderToken?.user.id}`, () => {
       fetchServices();
     });
+  };
 
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const attemptReconnection = async () => {
+    while (reconnectionAttempts < maxReconnectionAttempts) {
+      console.log(
+        `Reconnection attempt ${reconnectionAttempts + 1}/${maxReconnectionAttempts}`
+      );
+      reconnectionAttempts += 1;
+
+      connectSocket();
+
+      // Aguarde um curto período antes de verificar novamente (por exemplo, 5 segundos)
+      await wait(5000);
+
+      if (socket && socket.connected) {
+        // Reconexão bem-sucedida
+        return;
+      }
+    }
+
+    console.log('Max reconnection attempts reached. Stopping reconnection attempts.');
+  };
+
+  useEffect(() => {
+    connectSocket();
     fetchServices();
+
     return () => {
       console.log('Disconnecting from WebSocket server...');
-      socket.disconnect();
+      if (socket) {
+        socket.disconnect();
+      }
     };
   }, []);
 

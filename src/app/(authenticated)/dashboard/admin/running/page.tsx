@@ -141,6 +141,7 @@ export default function RunningService() {
 
   useEffect(() => {
     connectSocket();
+    fetchServices();
 
     return () => {
       console.log('Disconnecting from WebSocket server...');
