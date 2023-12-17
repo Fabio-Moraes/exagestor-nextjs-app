@@ -7,11 +7,11 @@ import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
-import { websocket } from 'services/websocket';
 
 import Cookie from 'js-cookie';
 import api from 'lib/api';
-//import { io } from 'socket.io-client';
+//import io from 'services/websocket';
+import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
@@ -88,48 +88,65 @@ export default function RunningService() {
     setIsPopupValue(null);
   }
 
-  let socket = websocket(storedCookie);
+  let socket: Socket | null = null;
+  let reconnectionAttempts: number = 0;
+  const maxReconnectionAttempts: number = 5;
 
-  const connectSocket = async () => {
-    return new Promise<void>((resolve) => {
-      socket = websocket(storedCookie);
-      socket.on('connect', () => {
-        console.log('Connected to WebSocket server');
-        resolve();
-      });
+  const connectSocket = () => {
+    socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+      auth: {
+        token: storedCookie
+      },
+      transports: ['websocket'],
+      withCredentials: true
     });
-  };
 
-  useEffect(() => {
-    let retryCount = 0;
-    const maxRetries = 5;
-
-    while (retryCount < maxRetries) {
-      try {
-        connectSocket();
-      } catch (connectError: unknown) {
-        retryCount += 1;
-
-        if (connectError instanceof Error) {
-          console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
-        } else {
-          console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
-        }
-      }
-    }
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+      reconnectionAttempts = 0;
+    });
 
     socket.on('error', (error) => {
       console.error('WebSocket error:', error);
+      attemptReconnection();
     });
 
     socket.on(`RUNNING_UPDATE_ADMIN`, () => {
       fetchServices();
     });
+  };
 
-    fetchServices();
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const attemptReconnection = async () => {
+    while (reconnectionAttempts < maxReconnectionAttempts) {
+      console.log(
+        `Reconnection attempt ${reconnectionAttempts + 1}/${maxReconnectionAttempts}`
+      );
+      reconnectionAttempts += 1;
+
+      connectSocket();
+
+      // Aguarde um curto período antes de verificar novamente (por exemplo, 5 segundos)
+      await wait(5000);
+
+      if (socket && socket.connected) {
+        // Reconexão bem-sucedida
+        return;
+      }
+    }
+
+    console.log('Max reconnection attempts reached. Stopping reconnection attempts.');
+  };
+
+  useEffect(() => {
+    connectSocket();
+
     return () => {
       console.log('Disconnecting from WebSocket server...');
-      socket.disconnect();
+      if (socket) {
+        socket.disconnect();
+      }
     };
   }, []);
 
