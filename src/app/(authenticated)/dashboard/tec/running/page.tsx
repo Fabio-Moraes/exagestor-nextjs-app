@@ -10,6 +10,7 @@ import { useContexState } from 'hooks/useGlobalContext';
 import Cookie from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import api from 'lib/api';
+//import io from 'services/websocket';
 import { io } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -49,10 +50,20 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
-  const TOKEN = Cookie.get('auth_token');
-  const MAX_RETRIES = 4;
+  const storedCookie = Cookie.get('auth_token');
+  const maxRetries = 4;
 
-  const decoderToken = jwtDecode(TOKEN ?? '') as Decoded;
+  function handleTokenChange(token: string): Decoded | null {
+    const storedCookie = Cookie.get(token) || '';
+
+    if (storedCookie && storedCookie.trim() !== '') {
+      return jwtDecode(storedCookie) as Decoded;
+    } else {
+      return null;
+    }
+  }
+
+  const decoderToken = handleTokenChange('auth_token');
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -74,15 +85,15 @@ export default function RunningService() {
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let count = 0; count < MAX_RETRIES; count++) {
+    for (let count = 0; count < maxRetries; count++) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
         const response = await api.get('/api/tec/running', {
-          params: { token: TOKEN }
+          params: { token: storedCookie }
         });
 
-        count = MAX_RETRIES;
+        count = maxRetries;
 
         filterSelectedOpenProtocols(response.data);
 
@@ -99,7 +110,7 @@ export default function RunningService() {
   useEffect(() => {
     const socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
       auth: {
-        token: TOKEN
+        token: storedCookie
       },
       transports: ['websocket'],
       withCredentials: true
