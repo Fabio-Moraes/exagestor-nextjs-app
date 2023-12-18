@@ -66,6 +66,7 @@ export function ControlButtons({ service }: { service: Service }) {
   async function fetchCancelServices() {
     for (let count = 0; count < maxRetries; count++) {
       try {
+        setRunningLoad(true);
         const response = await api.get('/api/admin/cancel', {
           params: {
             token: storedCookie,
@@ -75,7 +76,6 @@ export function ControlButtons({ service }: { service: Service }) {
         });
 
         count = maxRetries;
-        setRunningLoad(true);
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
