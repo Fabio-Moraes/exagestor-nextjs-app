@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { useContexState as useContexState2 } from '../hooks/useGlobalContext';
 import { Card } from './components/Card';
-import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
 
@@ -11,7 +11,7 @@ import Cookie from 'js-cookie';
 import api from 'lib/api';
 import { io, Socket } from 'socket.io-client';
 
-import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
+import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
 interface Protocol {
   [key: string]: { [key: string]: number };
@@ -39,6 +39,7 @@ export default function RunningService() {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
   const { setSelectService, setSelectMaterial } = useContexState();
+  const { setRunningLoad } = useContexState2();
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -84,13 +85,15 @@ export default function RunningService() {
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
         console.log('response', response.data);
-
         break;
       } catch (error) {
         await sleep(5000);
+        setRunningLoad(false);
         setConnectionError(true);
       } finally {
         setIsPopupValue(null);
+        await sleep(2000);
+        setRunningLoad(false);
       }
 
       retryCount++;
@@ -173,15 +176,7 @@ export default function RunningService() {
       ) : (
         <ListContainer>
           {runningService.map((service) => (
-            <ListItem key={service.id}>
-              <div>
-                <p>{service?.name_tec.concat(' (TEC)')}</p>
-              </div>
-              <div>
-                <Card service={service} />
-                <ControlButtons service={service} />
-              </div>
-            </ListItem>
+            <Card key={service.id} service={service} />
           ))}
         </ListContainer>
       )}

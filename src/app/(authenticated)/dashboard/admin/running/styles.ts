@@ -28,41 +28,6 @@ export const ListContainer = styled.ul`
   padding: 0;
 `;
 
-export const ListItem = styled.li`
-  display: flex;
-  flex-direction: column;
-  font-size: 18px;
-  margin-bottom: 30px;
-  overflow: hidden;
-
-  border-radius: 7px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-
-  > div:first-child {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 10px;
-    background-color: #3c7d5d;
-    color: #ffffff;
-
-    > p {
-      font-family: 'OpenSans-SemiBold';
-    }
-  }
-
-  > div:last-child {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-
-    @media (min-width: 550px) {
-      flex-direction: row;
-    }
-  }
-`;
-
 export const ErrorContainer = styled.div`
   display: flex;
   align-items: center;
