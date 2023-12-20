@@ -51,7 +51,7 @@ export default function RunningService() {
   const { setSelectService, setSelectMaterial } = useContexState();
 
   function handleTokenChange(token: string): Decoded | null {
-    const storedCookie = Cookie.get(token) || '';
+    const storedCookie = Cookie.get(token || '');
 
     if (storedCookie && storedCookie.trim() !== '') {
       return jwtDecode(storedCookie) as Decoded;

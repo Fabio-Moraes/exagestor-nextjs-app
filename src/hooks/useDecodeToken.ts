@@ -1,30 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Cookie from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 
-export function useDecodeToken<S>(token: string): S | null {
-  const [decoded, setDecoded] = useState<S | null>(null);
+interface Decoded {
+  user?: {
+    id: number;
+    name: string;
+    role: string;
+  };
+}
 
-  useEffect(() => {
-    function handleTokenChange() {
-      const storedCookie = Cookie.get(token) || '';
+export function useDecodeToken(token: string): Decoded | null {
+  const storedCookie = Cookie.get('auth_token') || '';
 
-      try {
-        if (storedCookie && storedCookie.trim() !== '') {
-          setDecoded(jwtDecode(storedCookie) as S);
-        } else {
-          setDecoded(null);
-        }
-      } catch {
-        setDecoded(null);
-      }
-    }
-
-    handleTokenChange();
-  }, []);
-
-  return decoded;
+  if (storedCookie && storedCookie.trim() !== '') {
+    return jwtDecode(storedCookie) as Decoded;
+  } else {
+    return null;
+  }
 }

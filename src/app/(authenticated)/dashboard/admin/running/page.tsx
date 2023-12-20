@@ -78,9 +78,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await api.get('/api/admin/running', {
-          params: { token: storedCookie }
-        });
+        const response = await api.get('/api/admin/running');
 
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);

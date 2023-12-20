@@ -6,7 +6,6 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
 
-//import { Footer } from '../Footer';
 import Cookie from 'js-cookie';
 import api from 'lib/api';
 
@@ -107,11 +106,9 @@ export const Form = () => {
           identification: identification,
           password
         });
-        const { token } = response.data;
 
         if (response.status === 200) {
           count = MAX_RETRIES;
-          Cookie.set('auth_token', token, { expires: 7, path: '/' });
           router.refresh();
         }
       } catch (error: unknown) {
