@@ -49,8 +49,6 @@ export const Form = () => {
   };
 
   useEffect(() => {
-    document.cookie = 'auth_token=seuToken; secure=true; SameSite=None';
-
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);
