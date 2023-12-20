@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-import { useDecodeToken } from 'hooks/useDecodeToken';
 
 import Cookie from 'js-cookie';
 
@@ -14,16 +13,7 @@ import iconUser from './assets/svg/user.svg';
 
 import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
-interface Decoded {
-  user: {
-    id: number;
-    name: string;
-    role: string;
-  };
-}
-
 export function Header() {
-  const decoderToken = useDecodeToken<Decoded>('auth_token');
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -53,11 +43,13 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {decoderToken?.user.name && !isLoading ? (
-          <span>{decoderToken?.user.name}</span>
-        ) : (
-          <LineSkaleton width="300px" />
-        )}
+        {
+          /* decoderToken?.user.name &&  */ !isLoading ? (
+            <span>{/* decoderToken?.user.name */} User Test</span>
+          ) : (
+            <LineSkaleton width="300px" />
+          )
+        }
         <div>
           <div>
             <Image

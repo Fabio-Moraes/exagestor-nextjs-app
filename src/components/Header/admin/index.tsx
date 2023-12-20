@@ -7,33 +7,13 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 
 import Cookie from 'js-cookie';
-import jwtDecode from 'jwt-decode';
 
 import iconExa from './assets/svg/exa_logo.svg';
 import iconUser from './assets/svg/user.svg';
 
 import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
-interface Decoded {
-  user: {
-    id: number;
-    name: string;
-    role: string;
-  };
-}
-
 export function Header() {
-  function handleTokenChange(token: string): Decoded | null {
-    const storedCookie = Cookie.get(token) || '';
-
-    if (storedCookie && storedCookie.trim() !== '') {
-      return jwtDecode(storedCookie) as Decoded;
-    } else {
-      return null;
-    }
-  }
-
-  const decoderToken = handleTokenChange('auth_token');
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -63,11 +43,13 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {decoderToken?.user.name && !isLoading ? (
-          <span>{decoderToken?.user.name}</span>
-        ) : (
-          <LineSkaleton width="300px" color="#b78e6a" />
-        )}
+        {
+          /* decoderToken?.user.name &&  */ !isLoading ? (
+            <span>{/* decoderToken?.user.name */}User Test</span>
+          ) : (
+            <LineSkaleton width="300px" color="#b78e6a" />
+          )
+        }
         <div>
           <div>
             <Image
