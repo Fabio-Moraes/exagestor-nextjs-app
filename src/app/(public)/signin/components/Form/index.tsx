@@ -6,7 +6,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
 
-import Cookie from 'js-cookie';
+//import Cookie from 'js-cookie';
 import api from 'lib/api';
 
 import alert from './assets/svg/alert.svg';
@@ -56,7 +56,7 @@ export const Form = () => {
   });
 
   const router = useRouter();
-  Cookie.remove('auth_token');
+  //Cookie.remove('auth_token');
 
   const handleChangeCnpj = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;

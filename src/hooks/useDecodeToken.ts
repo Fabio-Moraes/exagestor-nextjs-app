@@ -12,7 +12,7 @@ interface Decoded {
 }
 
 export function useDecodeToken(token: string): Decoded | null {
-  const storedCookie = Cookie.get('auth_token') || '';
+  const storedCookie = Cookie.get(token || '') || '';
 
   if (storedCookie && storedCookie.trim() !== '') {
     return jwtDecode(storedCookie) as Decoded;
