@@ -102,15 +102,13 @@ export const Form = () => {
     for (let count = 0; count < MAX_RETRIES; count++) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-        const response = await api.post('/api/auth/signin', {
+        await api.post('/api/auth/signin', {
           identification: identification,
           password
         });
 
-        if (response.status === 200) {
-          count = MAX_RETRIES;
-          router.refresh();
-        }
+        count = MAX_RETRIES;
+        router.refresh();
       } catch (error: unknown) {
         if (error instanceof Error) {
           const customError = error as CustomError;
