@@ -7,7 +7,6 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
 
 //import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
@@ -102,10 +101,18 @@ export const Form = () => {
     for (let count = 0; count < MAX_RETRIES; count++) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-        await api.post('/api/auth/signin', {
-          identification: identification,
-          password
+
+        const res = await fetch('http://192.168.0.9:3000/api/auth', {
+          method: 'POST',
+          body: JSON.stringify({
+            identification: identification,
+            password: password
+          })
         });
+
+        const data = await res.json();
+
+        console.log('!!!!AAAA', data);
 
         count = MAX_RETRIES;
         router.refresh();
