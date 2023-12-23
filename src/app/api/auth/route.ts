@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       secure: true,
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
-      sameSite: 'strict'
+      sameSite: 'none'
     });
 
     return response;

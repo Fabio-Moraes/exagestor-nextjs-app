@@ -102,7 +102,7 @@ export const Form = () => {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const res = await fetch('http://192.168.0.9:3000/api/auth', {
+        const res = await fetch('https://exatelecom.vercel.app/api/auth', {
           method: 'POST',
           body: JSON.stringify({
             identification: identification,
