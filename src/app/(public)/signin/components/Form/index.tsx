@@ -8,6 +8,8 @@ import Image from 'components/Vercel/Image';
 
 //import Cookie from 'js-cookie';
 
+import axios from 'axios';
+
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
 import eyeClosed from './assets/svg/eye-closed-.svg';
@@ -102,17 +104,10 @@ export const Form = () => {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const res = await fetch('https://exatelecom.vercel.app/api/auth', {
-          method: 'POST',
-          body: JSON.stringify({
-            identification: identification,
-            password: password
-          })
+        await axios.post('https://exatelecom.vercel.app/api/auth', {
+          identification: identification,
+          password: password
         });
-
-        const data = await res.json();
-
-        console.log('!!!!AAAA', data);
 
         count = MAX_RETRIES;
         router.refresh();
