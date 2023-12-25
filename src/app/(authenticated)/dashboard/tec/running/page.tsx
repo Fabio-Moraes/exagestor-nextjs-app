@@ -128,7 +128,9 @@ export default function RunningService() {
 
     while (retryCount < maxReconnectionAttempts) {
       try {
-        const { data } = await apiMiddleware.get('/api/auth/account-info');
+        const { data } = await apiMiddleware.get('/api/auth/account-info', {
+          withCredentials: true
+        });
         await connectSocket(data);
         break;
       } catch (connectError: unknown) {
