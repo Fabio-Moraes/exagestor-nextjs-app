@@ -7,9 +7,6 @@ import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
 
-import { type } from '../types';
-
-/* import Cookie from 'js-cookie'; */
 import api from 'lib/api';
 import { io, Socket } from 'socket.io-client';
 

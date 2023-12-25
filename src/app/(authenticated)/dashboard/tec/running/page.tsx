@@ -8,7 +8,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiMiddleware from 'services/apiMiddleware';
 
-import type { AccountInfo } from '../types/account-info';
+import { AccountInfo } from '../types/account-info';
 
 import api from 'lib/api';
 import { io, Socket } from 'socket.io-client';
