@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
 
     response.cookies.set({
       name: 'auth_token',
+      domain: process.env.NEXT_PUBLIC_FRONTEND_ORIGIN_BASEURL,
       value: token,
       path: '/',
       secure: appEnv,
