@@ -31,11 +31,11 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'auth_token',
       value: token,
-      path: '/',
+      //path: '/',
       maxAge: 60 * 60 * 24 * 7,
       secure: appEnv,
-      httpOnly: true,
-      ...(appEnv && { sameSite: 'lax' })
+      httpOnly: true
+      //...(appEnv && { sameSite: 'lax' })
     });
 
     return response;
