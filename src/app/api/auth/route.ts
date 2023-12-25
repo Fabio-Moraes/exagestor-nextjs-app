@@ -28,8 +28,10 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ success: true }, { status: 200 });
     const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
-    response.cookies.set('auth_token', token, {
-      path: '/',
+    response.cookies.set({
+      name: 'auth_token',
+      value: token,
+      //path: '/',
       secure: appEnv,
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
