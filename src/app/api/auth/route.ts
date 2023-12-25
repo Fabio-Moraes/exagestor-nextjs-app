@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       secure: appEnv,
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
-      ...(appEnv && { sameSite: 'none' })
+      ...(appEnv && { sameSite: 'strict' })
     });
 
     return response;
