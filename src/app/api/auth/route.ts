@@ -32,10 +32,10 @@ export async function POST(request: NextRequest) {
       name: 'auth_token',
       value: token,
       path: '/',
+      maxAge: 60 * 60 * 24 * 7,
       secure: appEnv,
       httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7,
-      ...(appEnv && { sameSite: 'none' })
+      ...(appEnv && { sameSite: 'lax' })
     });
 
     return response;
