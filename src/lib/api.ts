@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -11,5 +13,19 @@ const api = axios.create({
   },
   withCredentials: true
 });
+
+api.interceptors.request.use(
+  function (config) {
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 
 export default api;
