@@ -26,14 +26,14 @@ export async function POST(request: NextRequest) {
 
     const token = jwt.sign(contentJwt.data, JWT_SECRET_KEY, { expiresIn: '7d' });
     const response = NextResponse.json({ success: true }, { status: 200 });
-    const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
+    //const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
     response.cookies.set('auth_token', token, {
       path: '/',
-      secure: appEnv,
+      secure: true,
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
-      ...(appEnv && { sameSite: 'strict' })
+      sameSite: 'none'
     });
 
     return response;
