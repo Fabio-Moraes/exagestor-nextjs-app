@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { JWT_SECRET_KEY } from '../../../constants';
+
 import jwt from 'jsonwebtoken';
 import api from 'lib/api';
-
-const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';
 
 interface RequestType {
   identification: string;
@@ -19,7 +19,6 @@ interface CustomError extends Error {
 export async function POST(request: NextRequest) {
   try {
     const { identification, password }: RequestType = await request.json();
-
     const contentJwt = await api.post('/api/auth/signin', {
       identification,
       password
@@ -27,13 +26,14 @@ export async function POST(request: NextRequest) {
 
     const token = jwt.sign(contentJwt.data, JWT_SECRET_KEY, { expiresIn: '7d' });
     const response = NextResponse.json({ success: true }, { status: 200 });
+    const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
     response.cookies.set('auth_token', token, {
       path: '/',
-      secure: true,
+      secure: appEnv,
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
-      sameSite: 'none'
+      ...(appEnv && { sameSite: 'none' })
     });
 
     return response;

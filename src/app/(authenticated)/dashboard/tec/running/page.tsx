@@ -6,11 +6,11 @@ import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
+import apiMiddleware from 'services/apiMiddleware';
 
-import Cookie from 'js-cookie';
-import jwtDecode from 'jwt-decode';
+import type { AccountInfo } from '../types/account-info';
+
 import api from 'lib/api';
-//import io from 'services/websocket';
 import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -35,32 +35,12 @@ interface Protocol {
   [key: string]: { [key: string]: number };
 }
 
-interface Decoded {
-  user: {
-    id: number;
-    name: string;
-    role: string;
-  };
-}
-
 export default function RunningService() {
   const [runningService, setRunningService] = useState<RunningService[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
   const { setSelectService, setSelectMaterial } = useContexState();
-
-  function handleTokenChange(token: string): Decoded | null {
-    const storedCookie = Cookie.get(token || '');
-
-    if (storedCookie && storedCookie.trim() !== '') {
-      return jwtDecode(storedCookie) as Decoded;
-    } else {
-      return null;
-    }
-  }
-
-  const decoderToken = handleTokenChange('auth_token');
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -87,7 +67,6 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  const storedCookie = Cookie.get('auth_token');
   const maxReconnectionAttempts = 4;
 
   async function fetchServices(): Promise<void> {
@@ -99,9 +78,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await api.get('/api/tec/running', {
-          params: { token: storedCookie }
-        });
+        const response = await api.get('/api/tec/running');
 
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
@@ -121,12 +98,11 @@ export default function RunningService() {
 
   let socket: Socket | null = null;
 
-  const connectSocket = () => {
+  const connectSocket = async (data: AccountInfo) => {
+    const { user } = data;
+
     return new Promise<void>((resolve, reject) => {
       socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
-        auth: {
-          token: storedCookie
-        },
         transports: ['websocket'],
         withCredentials: true
       });
@@ -141,7 +117,7 @@ export default function RunningService() {
         reject(error);
       });
 
-      socket.on(`RUNNING_UPDATE_TEC:${decoderToken?.user.id}`, () => {
+      socket.on(`RUNNING_UPDATE_TEC:${user?.id}`, () => {
         fetchServices();
       });
     });
@@ -152,7 +128,8 @@ export default function RunningService() {
 
     while (retryCount < maxReconnectionAttempts) {
       try {
-        await connectSocket();
+        const { data } = await apiMiddleware.get('/api/auth/account-info');
+        await connectSocket(data);
         break;
       } catch (connectError: unknown) {
         retryCount += 1;

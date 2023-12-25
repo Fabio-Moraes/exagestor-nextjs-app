@@ -6,7 +6,6 @@ import { useContexState as useContexState2 } from '../../../../../hooks/useGloba
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 
-import Cookie from 'js-cookie';
 import api from 'lib/api';
 
 import checkSvg from './assets/svg/check.svg';
@@ -35,7 +34,6 @@ interface Service {
 
 export function ControlButtons({ service }: { service: Service }) {
   const router = useRouter();
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
   const { runningLoad, setRunningLoad } = useContexState2();
@@ -48,7 +46,6 @@ export function ControlButtons({ service }: { service: Service }) {
           `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
           {
             params: {
-              token: storedCookie,
               employeeId: String(service?.employee_id),
               protocol: service?.protocol
             }
@@ -69,7 +66,6 @@ export function ControlButtons({ service }: { service: Service }) {
       try {
         const response = await api.get('/api/admin/cancel', {
           params: {
-            token: storedCookie,
             employeeId: String(service?.employee_id),
             protocol: service?.protocol
           }

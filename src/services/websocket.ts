@@ -1,10 +1,7 @@
 import { io } from 'socket.io-client';
 
-export function websocket(token = '') {
+export function websocket() {
   return io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
-    auth: {
-      token: token
-    },
     transports: ['websocket'],
     withCredentials: true
   });

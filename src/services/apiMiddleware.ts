@@ -2,8 +2,8 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_ORIGIN_BASEURL,
+const apiMiddleware = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_FRONTEND_ORIGIN_BASEURL,
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
@@ -12,4 +12,4 @@ const api = axios.create({
   withCredentials: true
 });
 
-export default api;
+export default apiMiddleware;

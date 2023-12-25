@@ -7,7 +7,9 @@ import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
 
-import Cookie from 'js-cookie';
+import { type } from '../types';
+
+/* import Cookie from 'js-cookie'; */
 import api from 'lib/api';
 import { io, Socket } from 'socket.io-client';
 
@@ -66,7 +68,7 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  const storedCookie = Cookie.get('auth_token');
+  /* onst storedCookie = Cookie.get('auth_token'); */
   const maxReconnectionAttempts = 4;
 
   async function fetchServices(): Promise<void> {
@@ -103,9 +105,6 @@ export default function RunningService() {
   const connectSocket = () => {
     return new Promise<void>((resolve, reject) => {
       socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
-        auth: {
-          token: storedCookie
-        },
         transports: ['websocket'],
         withCredentials: true
       });

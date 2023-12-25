@@ -3,12 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 
+//import Cookie from 'js-cookie';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
-
-//import Cookie from 'js-cookie';
-
-import axios from 'axios';
+import apiMiddleware from 'services/apiMiddleware';
 
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
@@ -104,7 +102,7 @@ export const Form = () => {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        await axios.post('https://exatelecom.vercel.app/api/auth', {
+        await apiMiddleware.post('/api/auth', {
           identification: identification,
           password: password
         });
