@@ -14,7 +14,7 @@ interface CustomError extends Error {
 
 interface RequestType {
   baseURL: string;
-  token: string;
+  ['key']: string | number;
 }
 
 export async function POST(request: NextRequest) {
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
   try {
     await jwtVerify(token ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
 
-    const { data } = await api.post(baseURL, { token, res });
+    const { data } = await api.post(baseURL, { token, ...res });
 
     return NextResponse.json(data, { status: 200 });
   } catch (error: unknown) {

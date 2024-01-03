@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 //import Cookie from 'js-cookie';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
-import apiMiddleware from 'services/apiMiddleware';
+import apiRoute from 'services/apiRoute';
 
 import alert from './assets/svg/alert.svg';
 import exa from './assets/svg/exa_logo.svg';
@@ -103,7 +103,7 @@ export const Form = () => {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        await apiMiddleware.post('/api/auth', {
+        await apiRoute.post('/api/auth', {
           identification: identification,
           password: password
         });

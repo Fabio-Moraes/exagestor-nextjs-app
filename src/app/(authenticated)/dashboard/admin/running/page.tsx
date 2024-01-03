@@ -6,7 +6,7 @@ import { useContexState as useContexState2 } from '../hooks/useGlobalContext';
 import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
-import apiMiddleware from 'services/apiMiddleware';
+import apiRoute from 'services/apiRoute';
 
 import { io, Socket } from 'socket.io-client';
 
@@ -77,7 +77,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiMiddleware.post('/api/redirect', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/running'
         });
 

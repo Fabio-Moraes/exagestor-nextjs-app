@@ -6,7 +6,7 @@ import { Card } from './components/Card';
 import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
-import apiMiddleware from 'services/apiMiddleware';
+import apiRoute from 'services/apiRoute';
 
 import { AccountInfo } from '../types/account-info';
 
@@ -77,7 +77,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiMiddleware.post('/api/redirect', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/running'
         });
 
@@ -129,7 +129,7 @@ export default function RunningService() {
 
     while (retryCount < maxReconnectionAttempts) {
       try {
-        const { data } = await apiMiddleware.get('/api/auth/account', {
+        const { data } = await apiRoute.get('/api/auth/verify', {
           withCredentials: true
         });
         await connectSocket(data);

@@ -6,6 +6,7 @@ import { useContexState as useContexState2 } from '../../../../../hooks/useGloba
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import api from 'services/apiBackend';
+import apiRoute from 'services/apiRoute';
 
 import checkSvg from './assets/svg/check.svg';
 import closeSvg from './assets/svg/close.svg';
@@ -41,15 +42,11 @@ export function ControlButtons({ service }: { service: Service }) {
     setRunningLoad(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await api.get(
-          `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
-          {
-            params: {
-              employeeId: String(service?.employee_id),
-              protocol: service?.protocol
-            }
-          }
-        );
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
+          employeeId: String(service?.employee_id),
+          protocol: service?.protocol
+        });
 
         count = maxRetries;
         console.log(response.data);
