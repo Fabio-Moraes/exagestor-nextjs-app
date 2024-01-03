@@ -5,9 +5,9 @@ import { useState } from 'react';
 
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
+import api from 'services/apiBackend';
 
 import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 import checkSvg from './assets/svg/check.svg';
 import closeSvg from './assets/svg/close.svg';

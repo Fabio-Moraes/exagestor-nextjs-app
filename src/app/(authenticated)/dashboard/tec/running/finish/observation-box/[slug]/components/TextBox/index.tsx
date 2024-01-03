@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import { useContexState } from 'hooks/useGlobalContext';
+import api from 'services/apiBackend';
 
 import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 import {
   Button,

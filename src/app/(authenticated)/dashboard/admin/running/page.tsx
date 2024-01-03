@@ -6,8 +6,8 @@ import { useContexState as useContexState2 } from '../hooks/useGlobalContext';
 import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
+import apiMiddleware from 'services/apiMiddleware';
 
-import api from 'lib/api';
 import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
@@ -77,8 +77,8 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await api.get('/api/admin/running', {
-          withCredentials: true
+        const response = await apiMiddleware.post('/api/redirect', {
+          baseURL: '/api/admin/running'
         });
 
         filterSelectedOpenProtocols(response.data);

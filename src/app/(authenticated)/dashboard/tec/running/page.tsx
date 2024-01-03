@@ -10,7 +10,6 @@ import apiMiddleware from 'services/apiMiddleware';
 
 import { AccountInfo } from '../types/account-info';
 
-import api from 'lib/api';
 import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -78,7 +77,9 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await api.get('/api/tec/running');
+        const response = await apiMiddleware.post('/api/redirect', {
+          baseURL: '/api/tec/running'
+        });
 
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
@@ -128,7 +129,7 @@ export default function RunningService() {
 
     while (retryCount < maxReconnectionAttempts) {
       try {
-        const { data } = await apiMiddleware.get('/api/auth/account-info', {
+        const { data } = await apiMiddleware.get('/api/auth/account', {
           withCredentials: true
         });
         await connectSocket(data);

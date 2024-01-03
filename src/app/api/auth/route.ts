@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import api from 'services/apiBackend';
+
 import { JWT_SECRET_KEY } from '../../../constants';
 
 import jwt from 'jsonwebtoken';
-import api from 'lib/api';
 
 interface RequestType {
   identification: string;
@@ -31,11 +32,11 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'auth_token',
       value: token,
-      //path: '/',
+      path: '/',
       maxAge: 60 * 60 * 24 * 7,
       secure: appEnv,
-      httpOnly: true
-      //...(appEnv && { sameSite: 'lax' })
+      httpOnly: true,
+      ...(appEnv && { sameSite: 'none' })
     });
 
     return response;

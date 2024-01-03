@@ -6,9 +6,9 @@ import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
+import api from 'services/apiBackend';
 
 import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 import { Container, ErrorContainer, Title } from './styles';
 

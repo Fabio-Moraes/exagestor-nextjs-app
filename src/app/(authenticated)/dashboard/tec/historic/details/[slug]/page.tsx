@@ -6,9 +6,9 @@ import { Fragment, useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
+import api from 'services/apiBackend';
 
 import Cookie from 'js-cookie';
-import api from 'lib/api';
 
 import { ErrorContainer } from './styles';
 import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
