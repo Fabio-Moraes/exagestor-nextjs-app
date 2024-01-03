@@ -6,9 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import { ErrorContainer } from './styles';
 import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
@@ -42,7 +40,6 @@ export default function Details({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
 
   const { protocol, update_count } = decryptObject(params.slug);
-  const storedCookie = Cookie.get('auth_token');
 
   const router = useRouter();
 
@@ -55,8 +52,10 @@ export default function Details({ params }: SlugType) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/tec/historic/details', {
-          params: { token: storedCookie, protocol, update_count }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/tec/historic/details',
+          protocol,
+          update_count
         });
 
         count = maxRetries;

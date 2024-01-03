@@ -5,9 +5,7 @@ import { useState } from 'react';
 
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import checkSvg from './assets/svg/check.svg';
 import closeSvg from './assets/svg/close.svg';
@@ -41,7 +39,6 @@ export function ControlButtons({ service }: { service: RunningService }) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   /* eslint-enable */
 
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
   async function fetchStatusServices() {
@@ -51,15 +48,10 @@ export function ControlButtons({ service }: { service: RunningService }) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get(
-          `/api/tec/${service?.status === 'active' ? 'pause' : 'start'}`,
-          {
-            params: {
-              token: storedCookie,
-              protocol: service?.protocol
-            }
-          }
-        );
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: `/api/tec/${service?.status === 'active' ? 'pause' : 'start'}`,
+          protocol: service?.protocol
+        });
 
         count = maxRetries;
         console.log(response.data);
@@ -78,8 +70,9 @@ export function ControlButtons({ service }: { service: RunningService }) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/tec/cancel', {
-          params: { token: storedCookie, protocol: service?.protocol }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/tec/cancel',
+          protocol: service?.protocol
         });
 
         count = maxRetries;

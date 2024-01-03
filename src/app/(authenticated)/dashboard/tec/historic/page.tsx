@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
@@ -31,7 +29,6 @@ export default function HistoricService() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
   async function fetchServices() {
@@ -41,8 +38,8 @@ export default function HistoricService() {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/tec/historic', {
-          params: { token: storedCookie }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/tec/historic'
         });
 
         count = maxRetries;

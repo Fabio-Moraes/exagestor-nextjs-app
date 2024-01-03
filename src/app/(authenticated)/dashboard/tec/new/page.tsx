@@ -5,9 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
 import checkedSvg from './assets/svg/checked.svg';
@@ -130,8 +128,6 @@ export default function NewService() {
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
 
-          const storedCookie = Cookie.get('auth_token');
-
           const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
             const classificationArray = [];
 
@@ -152,13 +148,13 @@ export default function NewService() {
             classificationF
           });
 
-          const response = await api.post('/api/tec/new', {
+          const response = await apiRoute.post('/api/bridge', {
+            baseURL: '/api/tec/new',
             clientName: name,
             city: selectedCity,
             classification: classification,
             nomenclature: nomenclature,
-            address: address,
-            token: storedCookie
+            address: address
           });
 
           const { success } = response.data;

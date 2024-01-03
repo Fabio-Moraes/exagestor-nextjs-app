@@ -6,9 +6,7 @@ import { TextBox } from './components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -38,7 +36,6 @@ export default function FinishService({ params }: SlugType) {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
   async function fetchServices() {
@@ -47,11 +44,9 @@ export default function FinishService({ params }: SlugType) {
     for (let count = 0; count < maxRetries; count++) {
       setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
       try {
-        const response = await api.get('/api/tec/select-material', {
-          params: {
-            token: storedCookie,
-            protocol: decryptObject(params.slug).protocol
-          }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/tec/select-material',
+          protocol: decryptObject(params.slug).protocol
         });
 
         count = maxRetries;

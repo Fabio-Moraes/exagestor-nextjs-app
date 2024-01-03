@@ -6,9 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import { ErrorContainer } from './styles';
 import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
@@ -41,8 +39,6 @@ export default function Details({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const storedCookie = Cookie.get('auth_token');
-
   const router = useRouter();
 
   const maxRetries = 4;
@@ -55,13 +51,11 @@ export default function Details({ params }: SlugType) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/admin/manage/general-historic/details', {
-          params: {
-            token: storedCookie,
-            employeeId: decryptSlug.employeeId,
-            protocol: decryptSlug.protocol,
-            updateCount: decryptSlug.updateCount
-          }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/admin/manage/general-historic/details',
+          employeeId: decryptSlug.employeeId,
+          protocol: decryptSlug.protocol,
+          updateCount: decryptSlug.updateCount
         });
 
         count = maxRetries;

@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -25,7 +23,6 @@ export default function FinishService() {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   //const [isLoading, setIsLoading] = useState(true);
 
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
   async function fetchServices() {
@@ -35,10 +32,8 @@ export default function FinishService() {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/admin/manage', {
-          params: {
-            token: storedCookie
-          }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/admin/manage'
         });
 
         count = maxRetries;

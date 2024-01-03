@@ -6,9 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { decryptObject } from 'functions';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
 import checkedSvg from './assets/svg/checked.svg';
@@ -136,9 +134,6 @@ export default function NewService({ params }: SlugType) {
           setFullScreenLoadingValue(
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
-
-          const storedCookie = Cookie.get('auth_token');
-
           const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
             const classificationArray = [];
 
@@ -159,14 +154,14 @@ export default function NewService({ params }: SlugType) {
             classificationF
           });
 
-          const response = await api.post('/api/admin/manage/new', {
+          const response = await apiRoute.post('/api/bridge', {
+            baseURL: '/api/admin/manage/new',
             employeeId: decryptObject(params.slug).userId,
             clientName: name,
             city: selectedCity,
             classification: classification,
             nomenclature: nomenclature,
-            address: address,
-            token: storedCookie
+            address: address
           });
 
           const { success } = response.data;

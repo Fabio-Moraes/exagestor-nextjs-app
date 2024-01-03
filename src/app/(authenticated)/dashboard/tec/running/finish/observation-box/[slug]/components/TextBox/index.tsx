@@ -5,9 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import { useContexState } from 'hooks/useGlobalContext';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import {
   Button,
@@ -52,7 +50,6 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
     };
   }, []);
 
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
 
   const router = useRouter();
@@ -64,13 +61,11 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/tec/concluded', {
-          params: {
-            token: storedCookie,
-            protocol: serviceData?.protocol,
-            serviceIds: JSON.stringify('selectedItems'),
-            observation: String(observationBox[serviceData?.protocol])
-          }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/tec/concluded',
+          protocol: serviceData?.protocol,
+          serviceIds: JSON.stringify('selectedItems'),
+          observation: String(observationBox[serviceData?.protocol])
         });
 
         count = maxRetries;
