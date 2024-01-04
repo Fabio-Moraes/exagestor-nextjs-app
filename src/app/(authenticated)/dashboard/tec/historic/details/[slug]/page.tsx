@@ -39,7 +39,7 @@ export default function Details({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { protocol, update_count } = decryptObject(params.slug);
+  const decryptSlug = decryptObject(params.slug);
 
   const router = useRouter();
 
@@ -54,8 +54,9 @@ export default function Details({ params }: SlugType) {
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/historic/details',
-          protocol,
-          update_count
+          employeeId: decryptSlug.employeeId,
+          protocol: decryptSlug.protocol,
+          updateCount: decryptSlug.updateCount
         });
 
         count = maxRetries;
