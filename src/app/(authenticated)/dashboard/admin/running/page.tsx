@@ -65,7 +65,6 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  /* onst storedCookie = Cookie.get('auth_token'); */
   const maxReconnectionAttempts = 4;
 
   async function fetchServices(): Promise<void> {

@@ -6,9 +6,7 @@ import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -50,7 +48,6 @@ export default function FinishService({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const storedCookie = Cookie.get('auth_token');
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -61,12 +58,10 @@ export default function FinishService({ params }: SlugType) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await api.get('/api/admin/select-material', {
-          params: {
-            token: storedCookie,
-            protocol: decryptSlug.protocol,
-            employeeId: decryptSlug.employeeId
-          }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/admin/select-material',
+          protocol: decryptSlug.protocol,
+          employeeId: decryptSlug.employeeId
         });
 
         count = maxRetries;

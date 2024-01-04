@@ -5,9 +5,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
-import api from 'services/apiBackend';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
 import checkedSvg from './assets/svg/checked.svg';
@@ -114,17 +112,15 @@ export default function NewRegister() {
 
       while (retryCount < maxRetries) {
         try {
-          const storedCookie = Cookie.get('auth_token');
-
           setFullScreenLoadingValue(
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
 
-          const response = await api.post('/api/admin/register', {
+          const response = await apiRoute.post('/api/bridge', {
+            baseURL: '/api/admin/register',
             name: name,
             password: password,
-            identification: identification,
-            token: storedCookie
+            identification: identification
           });
 
           const { status } = response.data;
