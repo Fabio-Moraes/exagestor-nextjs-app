@@ -54,9 +54,9 @@ export default function Details({ params }: SlugType) {
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/historic/details',
-          employeeId: decryptSlug.employeeId,
-          protocol: decryptSlug.protocol,
-          updateCount: decryptSlug.updateCount
+          employeeId: String(decryptSlug.employeeId),
+          protocol: String(decryptSlug.protocol),
+          updateCount: String(decryptSlug.updateCount)
         });
 
         count = maxRetries;
