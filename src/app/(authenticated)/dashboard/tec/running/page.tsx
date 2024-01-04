@@ -129,7 +129,7 @@ export default function RunningService() {
 
     while (retryCount < maxReconnectionAttempts) {
       try {
-        const { data } = await apiRoute.get('/api/auth/verify', {
+        const { data } = await apiRoute.get('/api/login/verify', {
           withCredentials: true
         });
         await connectSocket(data);

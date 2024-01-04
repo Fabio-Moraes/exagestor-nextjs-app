@@ -56,7 +56,6 @@ export const Form = () => {
   });
 
   const router = useRouter();
-  //Cookie.remove('auth_token');
 
   const handleChangeCnpj = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -103,7 +102,7 @@ export const Form = () => {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        await apiRoute.post('/api/auth', {
+        await apiRoute.post('/api/login', {
           identification: identification,
           password: password
         });
