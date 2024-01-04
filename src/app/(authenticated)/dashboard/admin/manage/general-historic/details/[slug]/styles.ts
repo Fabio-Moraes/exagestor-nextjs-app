@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #fff;
   text-align: center;
   padding: 20px;
 `;
@@ -24,6 +23,7 @@ export const Title = styled.h1`
 
 export const Wrapper = styled.div`
   font-size: 18px;
+  background-color: #fff;
   margin-bottom: 30px;
   border: 2px solid #3f795e;
   border-radius: 5px;
@@ -57,9 +57,9 @@ export const Wrapper = styled.div`
 export const Info = styled.section`
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
   width: 100%;
   padding: 0 20px 0 20px;
+  margin-top: 10px;
 
   > p {
     margin-bottom: 10px;

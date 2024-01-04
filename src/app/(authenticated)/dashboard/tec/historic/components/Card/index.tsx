@@ -52,7 +52,7 @@ export function Card({ service }: { service: Service }) {
 
   const encryptSlug = encryptObject({
     protocol: service?.protocol,
-    update_count: service?.update_count
+    updateCount: service?.update_count
   });
 
   const router = useRouter();

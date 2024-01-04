@@ -39,11 +39,10 @@ export default function Details({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const decryptSlug = decryptObject(params.slug);
-
   const router = useRouter();
 
   const maxRetries = 4;
+  const decryptSlug = decryptObject(params.slug);
 
   async function fetchServices() {
     setConnectionError(false);
@@ -54,7 +53,6 @@ export default function Details({ params }: SlugType) {
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/historic/details',
-          employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
           updateCount: String(decryptSlug.updateCount)
         });
@@ -93,6 +91,7 @@ export default function Details({ params }: SlugType) {
 
   const status = {
     concluded: '✅ Finalizado',
+    analysis: '🔍 Em análise',
     active: '🚧 Em andamento',
     paused: '⏸️ Pausado',
     canceled: '❌ Cancelado'
