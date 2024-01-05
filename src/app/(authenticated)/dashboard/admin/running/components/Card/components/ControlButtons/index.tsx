@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-import { useContexState as useContexState2 } from '../../../../../hooks/useGlobalContext';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import apiRoute from 'services/apiRoute';
@@ -32,23 +32,22 @@ interface Service {
 }
 
 export function ControlButtons({ service }: { service: Service }) {
+  const [runningLoad, setRunningLoad] = useState(false);
+
   const router = useRouter();
   const maxRetries = 4;
-
-  const { runningLoad, setRunningLoad } = useContexState2();
 
   async function fetchStatusServices() {
     setRunningLoad(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiRoute.post('/api/bridge', {
+        await apiRoute.post('/api/bridge', {
           baseURL: `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
 
         count = maxRetries;
-        console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
@@ -59,14 +58,13 @@ export function ControlButtons({ service }: { service: Service }) {
     setRunningLoad(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiRoute.post('/api/bridge', {
+        await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/cancel',
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
 
         count = maxRetries;
-        console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }

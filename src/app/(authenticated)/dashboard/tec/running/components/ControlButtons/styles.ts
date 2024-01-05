@@ -1,13 +1,48 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
-export const Container = styled.div`
+import { lighten } from 'polished';
+
+const animation = keyframes`
+  from {
+    background-position: 135% 0%;
+  }
+  
+  to {
+    background-position: 0% 0%;
+  }
+`;
+
+export const Container = styled.div<{ $animation: boolean }>`
+  background-color: #8bc9a8;
+  ${({ $animation }) =>
+    $animation &&
+    css`
+      background: linear-gradient(
+        90deg,
+        ${'#8bc9a8'} 0%,
+        ${lighten(0.2, '#8bc9a8')} 50%,
+        ${'#8bc9a8'} 100%
+      );
+
+      > div {
+        width: 100%;
+        opacity: 0.3;
+      }
+    `}
+
+  background-size: 400% 400%;
+  animation: ${animation} 1.2s ease-in-out infinite;
+
+  position: relative;
+`;
+
+export const Wrapper = styled.div`
   white-space: nowrap;
   justify-content: center;
   display: flex;
   align-items: center;
-  background-color: #8bc9a8;
   border-width: 2px 0 0 0;
 
   @media (min-width: 550px) {

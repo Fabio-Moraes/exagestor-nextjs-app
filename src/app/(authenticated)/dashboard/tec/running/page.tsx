@@ -8,7 +8,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
-import { AccountInfo } from '../types/account-info';
+import { User } from '../types/account-user';
 
 import { io, Socket } from 'socket.io-client';
 
@@ -99,9 +99,7 @@ export default function RunningService() {
 
   let socket: Socket | null = null;
 
-  const connectSocket = async (data: AccountInfo) => {
-    const { user } = data;
-
+  const connectSocket = async (user: User) => {
     return new Promise<void>((resolve, reject) => {
       socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
         transports: ['websocket'],
@@ -129,9 +127,7 @@ export default function RunningService() {
 
     while (retryCount < maxReconnectionAttempts) {
       try {
-        const { data } = await apiRoute.get('/api/user', {
-          withCredentials: true
-        });
+        const { data } = await apiRoute.post('/api/user');
         await connectSocket(data);
         break;
       } catch (connectError: unknown) {
