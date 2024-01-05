@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-
-import Cookie from 'js-cookie';
+import apiRoute from 'services/apiRoute';
 
 import iconExa from './assets/svg/exa_logo.svg';
 import iconUser from './assets/svg/user.svg';
@@ -14,10 +13,42 @@ import iconUser from './assets/svg/user.svg';
 import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
 export function Header() {
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({} as { name: string });
+
+  const router = useRouter();
+  const maxRetries = 4;
+
+  async function fetchUser() {
+    for (let count = 0; count < maxRetries; count++) {
+      try {
+        const response = await apiRoute.post('/api/user');
+
+        count = maxRetries;
+        setUser(response.data);
+      } catch (error) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
+    }
+  }
+
+  async function fetchDeletedeToken() {
+    setIsLoading(true);
+    for (let count = 0; count < maxRetries; count++) {
+      try {
+        await apiRoute.post('/api/logout');
+        router.refresh();
+        count = maxRetries;
+      } catch (error) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        if (count === maxRetries) setIsLoading(false);
+      }
+    }
+  }
+
   useEffect(() => {
+    fetchUser();
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -43,13 +74,11 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {
-          /* decoderToken?.user.name &&  */ !isLoading ? (
-            <span>{/* decoderToken?.user.name */}User Test</span>
-          ) : (
-            <LineSkaleton width="300px" color="#b78e6a" />
-          )
-        }
+        {user.name && !isLoading ? (
+          <span>{user.name}</span>
+        ) : (
+          <LineSkaleton width="300px" color="#b78e6a" />
+        )}
         <div>
           <div>
             <Image
@@ -63,8 +92,7 @@ export function Header() {
           </div>
           <button
             onClick={() => {
-              Cookie.remove('auth_token');
-              router.refresh();
+              fetchDeletedeToken();
             }}
           >
             <h2>Sair</h2>

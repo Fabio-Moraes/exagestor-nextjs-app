@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
       ...(appEnv && { sameSite: 'strict' })
     });
 
+    //response.cookies.delete('auth_token');
+
     return response;
   } catch (error: unknown) {
     if (error instanceof Error) {

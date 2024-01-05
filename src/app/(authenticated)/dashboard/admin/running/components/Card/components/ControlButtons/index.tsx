@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useContexState as useContexState2 } from '../../../../../hooks/useGlobalContext';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
-import api from 'services/apiBackend';
 import apiRoute from 'services/apiRoute';
 
 import checkSvg from './assets/svg/check.svg';
@@ -60,11 +59,10 @@ export function ControlButtons({ service }: { service: Service }) {
     setRunningLoad(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await api.get('/api/admin/cancel', {
-          params: {
-            employeeId: String(service?.employee_id),
-            protocol: service?.protocol
-          }
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/admin/cancel',
+          employeeId: String(service?.employee_id),
+          protocol: service?.protocol
         });
 
         count = maxRetries;
