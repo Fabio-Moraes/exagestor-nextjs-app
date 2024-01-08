@@ -60,8 +60,8 @@ export default function FinishService({ params }: SlugType) {
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/select-material',
-          protocol: decryptSlug.protocol,
-          employeeId: decryptSlug.employeeId
+          protocol: decryptSlug.protocol?.toString(),
+          employeeId: decryptSlug.employeeId?.toString()
         });
 
         count = maxRetries;

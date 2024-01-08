@@ -59,7 +59,7 @@ export default function FinishService({ params }: SlugType) {
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/select-service',
-          protocol: decryptSlug.protocol
+          protocol: decryptSlug.protocol?.toString()
         });
 
         count = maxRetries;

@@ -63,7 +63,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/concluded',
           protocol: serviceData?.protocol,
-          employeeId: serviceData?.employee_id,
+          employeeId: String(serviceData?.employee_id),
           serviceIds: JSON.stringify('selectedItems'),
           observation: String(observationBox[serviceData?.protocol])
         });

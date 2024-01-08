@@ -48,6 +48,7 @@ export default function FinishService({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
 
   const maxRetries = 4;
+  const decryptSlug = decryptObject(params.slug);
 
   async function fetchServices() {
     setConnectionError(false);
@@ -58,7 +59,7 @@ export default function FinishService({ params }: SlugType) {
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/select-material',
-          protocol: decryptObject(params.slug).protocol
+          protocol: decryptSlug.protocol?.toString()
         });
 
         count = maxRetries;
