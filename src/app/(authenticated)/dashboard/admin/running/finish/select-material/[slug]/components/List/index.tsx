@@ -63,7 +63,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
     router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
   }
 
-  const toggleItem = (item: string) => {
+  const toggleItem = (item: string, count: number) => {
     setSelectMaterial((prevItems) => {
       const protocolKey = String(serviceData?.protocol);
 
@@ -71,7 +71,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
         ...prevItems,
         [protocolKey]: {
           ...(prevItems[protocolKey] || {}),
-          [item]: (prevItems[protocolKey]?.[item] || 0) + 1
+          [item]: count
         }
       };
     });
@@ -157,7 +157,10 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
               key={item.description}
               item={item.description}
               count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
-              onSelect={() => toggleItem(item.id)}
+              onSelect={({ count }) => {
+                console.log('PRINT :', `ID: ${item.id} - COUNT: ${count}`);
+                toggleItem(item.id, count);
+              }}
               onReset={() => toggleItemReset(item.id)}
             />
           ))}

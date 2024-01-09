@@ -3,7 +3,7 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div<{ selected: boolean }>`
-  background-color: #fff;
+  background-color: #dedede;
 
   ${(props) =>
     props.selected &&
@@ -44,5 +44,24 @@ export const ItemContainer = styled.div`
   > span {
     font-size: 30px;
     padding: 0px 15px;
+  }
+`;
+
+export const SearchBar = styled.input`
+  font-size: 30px;
+  padding: 0px 5px;
+  margin-right: 5px;
+  background-color: #fff;
+  //border: 2px solid #27a567;
+  border-radius: 5px;
+  //width: auto;
+  width: 80px;
+  outline: none;
+  text-align: center;
+  //position: absolute;
+  //text-indent: 30px;
+
+  &::placeholder {
+    color: #333;
   }
 `;

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
@@ -13,7 +14,8 @@ import {
   InputContainer,
   Input,
   SkaletonInput,
-  ContainerCounter
+  ContainerCounter,
+  ErrorContainer
 } from './styles';
 
 interface serviceData {
@@ -31,13 +33,10 @@ interface serviceData {
 }
 
 export function TextBox({ serviceData }: { serviceData: serviceData }) {
-  /* eslint-disable */
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-  const [description, setDescription] = useState('');
-  /* eslint-enable */
-
   const [isLoading, setIsLoading] = useState(true);
+
   const { setObservationBox, observationBox } = useContexState();
 
   useEffect(() => {
@@ -50,7 +49,6 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   }, []);
 
   const maxRetries = 4;
-
   const router = useRouter();
 
   async function fetchConcludedMaterial() {
@@ -154,38 +152,52 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   };
 
   return (
-    <ListContainer>
-      <InputContainer>
-        {isLoading || !serviceData?.protocol ? (
-          <SkaletonInput>
-            <LineSkaleton width="100%" />
-            <LineSkaleton width="100%" />
-            <LineSkaleton width="65%" />
-            <LineSkaleton width="85%" />
-            <LineSkaleton width="75%" />
-          </SkaletonInput>
-        ) : (
-          <Input
-            ref={textareaRef}
-            value={observationBox[serviceData?.protocol] ?? ''}
-            onChange={handleDescriptionChange}
-            onKeyDown={handleTextareaKeyDown}
-            placeholder="Escreva sua descrição aqui..."
-            contentEditable="true"
-          />
-        )}
-      </InputContainer>
-      <ContainerCounter>
-        {isLoading || !serviceData?.protocol ? (
-          <LineSkaleton width="30px" />
-        ) : (
-          <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
-        )}
-      </ContainerCounter>
-      <div>
-        <Button onClick={() => router.back()}>Voltar</Button>
-        <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
-      </div>
-    </ListContainer>
+    <>
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+      {connectionError ? (
+        <ErrorContainer>
+          <span>
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
+            favor, tente novamente.
+          </span>
+        </ErrorContainer>
+      ) : (
+        <>
+          <ListContainer>
+            <InputContainer>
+              {isLoading || !serviceData?.protocol ? (
+                <SkaletonInput>
+                  <LineSkaleton width="100%" />
+                  <LineSkaleton width="100%" />
+                  <LineSkaleton width="65%" />
+                  <LineSkaleton width="85%" />
+                  <LineSkaleton width="75%" />
+                </SkaletonInput>
+              ) : (
+                <Input
+                  ref={textareaRef}
+                  value={observationBox[serviceData?.protocol] ?? ''}
+                  onChange={handleDescriptionChange}
+                  onKeyDown={handleTextareaKeyDown}
+                  placeholder="Escreva sua descrição aqui..."
+                  contentEditable="true"
+                />
+              )}
+            </InputContainer>
+            <ContainerCounter>
+              {isLoading || !serviceData?.protocol ? (
+                <LineSkaleton width="30px" />
+              ) : (
+                <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
+              )}
+            </ContainerCounter>
+            <div>
+              <Button onClick={() => router.back()}>Voltar</Button>
+              <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
+            </div>
+          </ListContainer>
+        </>
+      )}
+    </>
   );
 }

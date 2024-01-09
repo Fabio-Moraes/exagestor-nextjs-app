@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const ListContainer = styled.div`
   margin-top: 20px;
   background-color: #dce6dc;
-  border-radius: 5px;
+  border-radius: 7px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #3f795e;
 
@@ -92,4 +92,28 @@ export const SkaletonInput = styled.div`
   resize: none;
   position: relative;
   overflow-y: auto;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  > span {
+    text-align: left;
+    font-size: 17px;
+    color: #333;
+  }
+
+  > button {
+    width: 150px;
+    background-color: #27a567;
+    padding: 10px;
+    margin: 20px 20px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #fff;
+  }
 `;

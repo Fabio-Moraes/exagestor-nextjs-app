@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const ListContainer = styled.div`
   margin-top: 20px;
   background-color: #dce6dc;
-  border-radius: 5px;
+  border-radius: 7px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #3f795e;
 

@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #fff;
   text-align: center;
   padding: 20px;
 `;
@@ -12,6 +11,7 @@ export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
+  border-radius: 7px;
 
   @media (min-width: 550px) {
     height: 40px;
@@ -24,8 +24,9 @@ export const Title = styled.h1`
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
+  background-color: #fff;
   border: 2px solid #3f795e;
-  border-radius: 5px;
+  border-radius: 7px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding-top: 15px 0px;
 
