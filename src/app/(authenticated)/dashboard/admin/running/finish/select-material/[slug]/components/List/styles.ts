@@ -9,6 +9,8 @@ export const ListContainer = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #3f795e;
 
+  overflow: hidden;
+
   > div:first-child {
     display: flex;
     padding: 10px;

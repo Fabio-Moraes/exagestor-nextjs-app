@@ -17,7 +17,6 @@ export const Container = styled.div<{ selected: boolean }>`
   border: 2px solid #27a567;
   margin: 5px 10px 0 10px;
   border-radius: 5px;
-  padding: 5px;
   cursor: pointer;
 `;
 
@@ -27,7 +26,7 @@ export const Reset = styled.div`
   justify-content: center;
   width: 40px;
   border-radius: 5px;
-  margin: 0 auto;
+  margin: 5px;
   padding-left: 10px;
 `;
 
@@ -35,6 +34,11 @@ export const ItemContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+  }
 
   > p {
     text-align: start;
@@ -50,18 +54,59 @@ export const ItemContainer = styled.div`
 export const SearchBar = styled.input`
   font-size: 30px;
   padding: 0px 5px;
-  margin-right: 5px;
+  margin: 0 5px;
   background-color: #fff;
-  //border: 2px solid #27a567;
   border-radius: 5px;
-  //width: auto;
   width: 80px;
   outline: none;
   text-align: center;
-  //position: absolute;
-  //text-indent: 30px;
-
   &::placeholder {
     color: #333;
   }
+`;
+
+export const IncrementButton = styled.button`
+  font-size: 20px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+
+  > span {
+    transform: rotate(-90deg);
+  }
+
+  font-weight: 900;
+
+  padding-bottom: 3px;
+
+  margin: 5px;
+
+  width: auto;
+  height: 30px;
+`;
+
+export const DecrementButton = styled.button`
+  font-size: 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  text-align: center;
+
+  font-weight: 900;
+
+  > span {
+    transform: rotate(-90deg);
+  }
+
+  padding-bottom: 3px;
+
+  margin: 5px;
+
+  width: auto;
+  height: 30px;
 `;
