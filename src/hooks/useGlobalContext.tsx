@@ -15,6 +15,9 @@ type StateContext = {
 
   observationBox: { [key: string]: string };
   setObservationBox: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+
+  connectionWebsocketCount: number;
+  setConnectionWebsocketCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type ProviderProps = {
@@ -25,6 +28,8 @@ export const Context = createContext({} as StateContext);
 
 export const ContextProvider = ({ children }: ProviderProps) => {
   const isClient = typeof window !== 'undefined';
+
+  const [connectionWebsocketCount, setConnectionWebsocketCount] = useState(0);
 
   const [selectService, setSelectService] = useState<{
     [key: string]: ServiceItem;
@@ -63,7 +68,9 @@ export const ContextProvider = ({ children }: ProviderProps) => {
           selectService,
           setSelectService,
           observationBox,
-          setObservationBox
+          setObservationBox,
+          connectionWebsocketCount,
+          setConnectionWebsocketCount
         } as StateContext
       }
     >

@@ -37,7 +37,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { setObservationBox, observationBox } = useContexState();
+  const { setObservationBox, observationBox, setConnectionWebsocketCount } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,6 +70,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
         router.push('/dashboard/admin/running');
         console.log(response.data);
       } catch (error) {
+        setConnectionWebsocketCount((prevCount) => prevCount++);
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
       }

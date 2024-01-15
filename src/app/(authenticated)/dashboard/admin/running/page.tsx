@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { useContexState as useContexState2 } from '../hooks/useGlobalContext';
 import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
@@ -37,8 +36,7 @@ export default function RunningService() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const { setSelectService, setSelectMaterial } = useContexState();
-  const { setRunningLoad } = useContexState2();
+  const { setSelectService, setSelectMaterial, connectionWebsocketCount } = useContexState();
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -86,12 +84,10 @@ export default function RunningService() {
         break;
       } catch (error) {
         await sleep(5000);
-        setRunningLoad(false);
         setConnectionError(true);
       } finally {
         setIsPopupValue(null);
         await sleep(2000);
-        setRunningLoad(false);
       }
 
       retryCount++;
@@ -154,7 +150,7 @@ export default function RunningService() {
         socket.disconnect();
       }
     };
-  }, []);
+  }, [connectionWebsocketCount]);
 
   return (
     <Container>
