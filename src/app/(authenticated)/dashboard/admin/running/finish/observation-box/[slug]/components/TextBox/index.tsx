@@ -70,9 +70,10 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
         router.push('/dashboard/admin/running');
         console.log(response.data);
       } catch (error) {
-        setConnectionWebsocketCount((prevCount) => prevCount++);
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
+      } finally {
+        setConnectionWebsocketCount((prevCount) => prevCount + 1);
       }
     }
     setIsPopupValue(null);

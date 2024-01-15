@@ -51,8 +51,9 @@ export function ControlButtons({ service }: { service: Service }) {
 
         count = maxRetries;
       } catch (error) {
-        setConnectionWebsocketCount((prevCount) => prevCount++);
         await new Promise((resolve) => setTimeout(resolve, 5000));
+      } finally {
+        setConnectionWebsocketCount((prevCount) => prevCount + 1);
       }
     }
   }
@@ -69,8 +70,9 @@ export function ControlButtons({ service }: { service: Service }) {
 
         count = maxRetries;
       } catch (error) {
-        setConnectionWebsocketCount((prevCount) => prevCount++);
         await new Promise((resolve) => setTimeout(resolve, 5000));
+      } finally {
+        setConnectionWebsocketCount((prevCount) => prevCount + 1);
       }
     }
   }

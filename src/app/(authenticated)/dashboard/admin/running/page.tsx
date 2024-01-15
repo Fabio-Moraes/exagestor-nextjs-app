@@ -36,7 +36,7 @@ export default function RunningService() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const { setSelectService, setSelectMaterial, connectionWebsocketCount } = useContexState();
+  const { setSelectService, setSelectMaterial } = useContexState();
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -140,17 +140,32 @@ export default function RunningService() {
     }
   };
 
+  const checkWebSocketConnection = async () => {
+    if (socket && socket.connected) {
+      console.log('WebSocket está conectado');
+    } else {
+      console.log('WebSocket não está conectado. Tentando reconexão...');
+      await attemptReconnection();
+      await fetchServices();
+    }
+  };
+
   useEffect(() => {
     attemptReconnection();
     fetchServices();
 
+    const intervalId = setInterval(() => {
+      checkWebSocketConnection();
+    }, 1000);
+
     return () => {
-      console.log('Disconnecting from WebSocket server...');
+      console.log('Desconectando do servidor WebSocket...');
+      clearInterval(intervalId);
       if (socket) {
         socket.disconnect();
       }
     };
-  }, [connectionWebsocketCount]);
+  }, []);
 
   return (
     <Container>
