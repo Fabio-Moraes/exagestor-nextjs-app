@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -41,8 +40,6 @@ export default function Details({ params }: SlugType) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const router = useRouter();
 
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
@@ -142,14 +139,14 @@ export default function Details({ params }: SlugType) {
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        pdf.save('captured_image.pdf');
+        pdf.save(`${services?.protocol.replace(/-/g, '')}.pdf`);
       });
     }
   };
 
   return (
-    <Container ref={elementRef}>
-      <Title>Detalhes</Title>
+    <Container>
+      <Title>Relatório</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
@@ -160,7 +157,7 @@ export default function Details({ params }: SlugType) {
         </ErrorContainer>
       ) : (
         <Wrapper>
-          <Info>
+          <Info ref={elementRef}>
             {isLoading || !services ? (
               <>
                 <LineSkaleton width="180px" />
@@ -194,11 +191,12 @@ export default function Details({ params }: SlugType) {
                     <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
                   </Observation>
                 )}
-                <button onClick={captureImageAndSaveAsPdf}>Capturar e Salvar como PDF</button>
               </>
             )}
           </Info>
-          <Button onClick={() => router.back()}>Voltar</Button>
+          {!isLoading && services && (
+            <Button onClick={captureImageAndSaveAsPdf}>Salvar relatório como PDF</Button>
+          )}
         </Wrapper>
       )}
     </Container>

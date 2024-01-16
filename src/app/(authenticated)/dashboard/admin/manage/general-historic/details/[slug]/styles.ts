@@ -24,7 +24,7 @@ export const Title = styled.h1`
 export const Wrapper = styled.div`
   font-size: 18px;
   background-color: #fff;
-  margin-bottom: 30px;
+  padding-bottom: 5px;
   border: 2px solid #3f795e;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -109,8 +109,9 @@ export const List = styled.div`
 export const Button = styled.button`
   display: flex;
   height: 30px;
-  width: 100px;
-  margin: 10px;
+  width: auto;
+  margin: 20px 30px 15px 30px;
+  padding: 20px 15px;
   background-color: #3c7d5d;
   align-items: center;
   justify-content: center;
