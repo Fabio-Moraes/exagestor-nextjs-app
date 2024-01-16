@@ -1,12 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
 import apiRoute from 'services/apiRoute';
+
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 import { ErrorContainer } from './styles';
 import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
@@ -126,8 +129,26 @@ export default function Details({ params }: SlugType) {
     }
   };
 
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const captureImageAndSaveAsPdf = () => {
+    const element = elementRef.current;
+
+    if (element) {
+      html2canvas(element).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save('captured_image.pdf');
+      });
+    }
+  };
+
   return (
-    <Container>
+    <Container ref={elementRef}>
       <Title>Detalhes</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
@@ -173,6 +194,7 @@ export default function Details({ params }: SlugType) {
                     <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
                   </Observation>
                 )}
+                <button onClick={captureImageAndSaveAsPdf}>Capturar e Salvar como PDF</button>
               </>
             )}
           </Info>
