@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
+import { encryptObject } from 'functions';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -51,6 +52,22 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   const maxRetries = 4;
   const router = useRouter();
 
+  interface ServiceData {
+    data: {
+      id: number;
+      employee_id: number;
+      client_name: string;
+      city: string;
+      address: string;
+      nomenclature: string;
+      classification: string;
+      status: string;
+      update_count: number;
+      created_at: string;
+      protocol: string;
+    }[];
+  }
+
   async function fetchConcludedMaterial() {
     setConnectionError(false);
 
@@ -58,7 +75,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response = await apiRoute.post('/api/bridge', {
+        const response: ServiceData = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/concluded',
           protocol: serviceData?.protocol,
           employeeId: String(serviceData?.employee_id),
@@ -66,9 +83,15 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
           observation: String(observationBox[serviceData?.protocol])
         });
 
+        const encryptSlug = encryptObject({
+          protocol: serviceData?.protocol,
+          employeeId: serviceData?.employee_id,
+          updateCount: serviceData?.update_count + 1
+        });
+
         count = maxRetries;
-        router.push('/dashboard/admin/running');
         console.log(response.data);
+        router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);

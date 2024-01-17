@@ -1,5 +1,6 @@
 'use client';
 
+//import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { List } from './components/List';
@@ -51,6 +52,8 @@ export default function FinishService({ params }: SlugType) {
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
+  //const router = useRouter();
+
   async function fetchServices() {
     setConnectionError(false);
 
@@ -83,6 +86,25 @@ export default function FinishService({ params }: SlugType) {
       clearTimeout(timer);
     };
   }, []);
+
+  /* useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, '', window.location.href);
+    };
+  }, []); */
+
+  /* useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () {
+      console.log('Botão clicado!');
+      window.history.pushState(null, '', window.location.href);
+    };
+
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []); */
 
   return (
     <Container>

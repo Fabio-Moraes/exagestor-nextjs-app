@@ -4,14 +4,26 @@ import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
+import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import apiRoute from 'services/apiRoute';
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import { ErrorContainer } from './styles';
-import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
+import iconExa from './assets/svg/exa_logo.svg';
+
+import {
+  ErrorContainer,
+  Button,
+  Container,
+  Wrapper,
+  Observation,
+  Title,
+  Info,
+  ProfileCompany,
+  ProfileInfoCompany
+} from './styles';
 
 interface Service {
   id: number;
@@ -70,6 +82,12 @@ export default function Details({ params }: SlugType) {
 
   useEffect(() => {
     fetchServices();
+
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, '', window.location.href);
+    };
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -172,6 +190,19 @@ export default function Details({ params }: SlugType) {
               </>
             ) : (
               <>
+                <ProfileCompany>
+                  <Image
+                    src={iconExa}
+                    priority
+                    loading="eager"
+                    alt="Axa"
+                    style={{ width: '34px', height: 'auto' }}
+                  />
+                  <ProfileInfoCompany>
+                    <h1>EXA TELECOM</h1>
+                    <span>Telecomunicações</span>
+                  </ProfileInfoCompany>
+                </ProfileCompany>
                 <p>Endereço: {services?.address}</p>
                 <p>Cidade: {services?.city}</p>
                 <p>Classificação: {services?.classification}</p>
