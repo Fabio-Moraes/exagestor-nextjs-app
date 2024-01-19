@@ -106,7 +106,7 @@ export default function FinishService({ params }: SlugType) {
           </span>
         </ErrorContainer>
       ) : (
-        <List items={data} ServiceData={ServiceData[0]} />
+        <List items={data} serviceData={ServiceData[0]} />
       )}
     </Container>
   );
