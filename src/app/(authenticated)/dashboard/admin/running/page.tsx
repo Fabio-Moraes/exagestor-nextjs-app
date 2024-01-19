@@ -35,8 +35,9 @@ export default function RunningService() {
   const [runningService, setRunningService] = useState<RunningService[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-
   const { setSelectService, setSelectMaterial } = useContexState();
+
+  let socket: Socket | null = null;
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -59,18 +60,18 @@ export default function RunningService() {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   }
 
-  function sleep(ms: number): Promise<void> {
+  const sleep = async (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  };
 
   const maxReconnectionAttempts = 4;
+  const reconnectDelay = 3000;
+  const connectionCheckInterval = 3000;
 
-  async function fetchServices(): Promise<void> {
+  const fetchServices = async () => {
     setConnectionError(false);
 
-    let retryCount = 0;
-
-    while (retryCount < maxReconnectionAttempts) {
+    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
@@ -81,22 +82,19 @@ export default function RunningService() {
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
         console.log('response', response.data);
-        break;
+        return;
       } catch (error) {
-        await sleep(5000);
+        console.error('Error fetching services:', error);
         setConnectionError(true);
+        await sleep(reconnectDelay);
       } finally {
         setIsPopupValue(null);
-        await sleep(2000);
+        await sleep(reconnectDelay);
       }
-
-      retryCount++;
     }
-  }
+  };
 
-  let socket: Socket | null = null;
-
-  const connectSocket = () => {
+  const connectSocket = async () => {
     return new Promise<void>((resolve, reject) => {
       socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
         transports: ['websocket'],
@@ -113,16 +111,14 @@ export default function RunningService() {
         reject(error);
       });
 
-      socket.on(`RUNNING_UPDATE_ADMIN`, () => {
-        fetchServices();
+      socket.on(`RUNNING_UPDATE_ADMIN`, async () => {
+        await fetchServices();
       });
     });
   };
 
   const attemptReconnection = async () => {
-    let retryCount = 0;
-
-    while (retryCount < maxReconnectionAttempts) {
+    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
       try {
         await connectSocket();
         break;
@@ -130,37 +126,34 @@ export default function RunningService() {
         retryCount += 1;
 
         if (connectError instanceof Error) {
-          console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
+          console.log(`Reconnection attempt ${retryCount} failed: ${connectError.message}`);
         } else {
-          console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
+          console.log(`Reconnection attempt ${retryCount} failed with unknown error`);
         }
 
-        await sleep(3000);
+        await sleep(reconnectDelay);
       }
     }
   };
 
-  const checkWebSocketConnection = async () => {
-    if (socket && socket.connected) {
-      console.log('WebSocket está conectado');
-    } else {
-      console.log('WebSocket não está conectado. Tentando reconexão...');
+  useEffect(() => {
+    const initialize = async () => {
       await attemptReconnection();
       await fetchServices();
-    }
-  };
+    };
 
-  useEffect(() => {
-    attemptReconnection();
-    fetchServices();
+    initialize();
 
-    const intervalId = setInterval(() => {
-      checkWebSocketConnection();
-    }, 1000);
+    const connectionCheckIntervalId = setInterval(async () => {
+      if (!socket || socket.disconnected) {
+        console.log('Reconnecting due to inactive connection...');
+        await attemptReconnection();
+      }
+    }, connectionCheckInterval);
 
     return () => {
-      console.log('Desconectando do servidor WebSocket...');
-      clearInterval(intervalId);
+      console.log('Disconnecting from WebSocket server...');
+      clearInterval(connectionCheckIntervalId);
       if (socket) {
         socket.disconnect();
       }
