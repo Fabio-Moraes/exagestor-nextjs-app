@@ -10,6 +10,8 @@ import { useContexState } from 'hooks/useGlobalContext';
 
 import { ListItem } from '../ListItem';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
 
@@ -34,18 +36,14 @@ interface ServiceData {
   protocol: string;
 }
 
-export function List({
-  ServiceData,
-  items
-}: {
-  ServiceData: ServiceData;
-  items: ListProps[];
-}) {
-  const { selectService, setSelectService } = useContexState();
+export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
+  const { serviceData, items } = props;
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { selectService, setSelectService } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,21 +59,21 @@ export function List({
 
   async function fetchConcludedServices() {
     const encryptSlug = encryptObject({
-      protocol: ServiceData?.protocol,
-      employeeId: ServiceData?.employee_id
+      protocol: serviceData?.protocol,
+      employeeId: serviceData?.employee_id
     });
     router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`);
   }
 
-  const toggleItem = (item: string) => {
+  const toggleItem = (item: string, count: number) => {
     setSelectService((prevItems) => {
-      const protocolKey = String(ServiceData?.protocol);
+      const protocolKey = String(serviceData?.protocol);
 
       return {
         ...prevItems,
         [protocolKey]: {
           ...(prevItems[protocolKey] || {}),
-          [item]: (prevItems[protocolKey]?.[item] || 0) + 1
+          [item]: count
         }
       };
     });
@@ -84,13 +82,16 @@ export function List({
   const toggleItemReset = (item: string) => {
     setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
-      const protocolKey = String(ServiceData?.protocol);
-      const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
+      const protocolKey = String(serviceData?.protocol);
 
-      if (updatedItems[protocolKey].hasOwnProperty(item)) {
-        selectedItemsCount > 1
-          ? delete updatedItems[protocolKey][item]
-          : delete updatedItems[protocolKey];
+      if (updatedItems[protocolKey] && updatedItems[protocolKey].hasOwnProperty(item)) {
+        const selectedItemsCount = Object.keys(updatedItems[protocolKey]).length;
+
+        if (selectedItemsCount > 1) {
+          delete updatedItems[protocolKey][item];
+        } else {
+          delete updatedItems[protocolKey];
+        }
       }
 
       return updatedItems;
@@ -100,7 +101,7 @@ export function List({
   const selectServiceClean = () => {
     setSelectService((prevItems) => {
       const updatedItems = { ...prevItems };
-      const protocolKey = String(ServiceData?.protocol);
+      const protocolKey = String(serviceData?.protocol);
 
       if (updatedItems.hasOwnProperty(protocolKey)) {
         delete updatedItems[protocolKey];
@@ -113,57 +114,68 @@ export function List({
   const filteredItems = items?.filter(
     (item) =>
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (showSelected ? selectService[String(ServiceData?.protocol)]?.[item.id] : true)
+      (showSelected ? selectService[String(serviceData?.protocol)]?.[item.id] : true)
   );
 
-  const selectedItemKeys = Object.keys(selectService[String(ServiceData?.protocol)] || {});
+  const selectedItemKeys = Object.keys(selectService[String(serviceData?.protocol)] || {});
   const proportion = { width: 30, height: 30 };
 
   return (
     <ListContainer>
-      <div>
-        <SearchWrapper>
-          <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-          <SearchBar
-            type="text"
-            placeholder="Pesquisar serviço..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchWrapper>
+      <AnimatePresence>
         <div>
-          <div>
-            <Button onClick={() => setShowSelected(!showSelected)}>
-              {showSelected
-                ? 'Mostrar Todos'
-                : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
-                    selectedItemKeys.length
-                  })`}
-            </Button>
-
-            <Button onClick={selectServiceClean}>Limpar</Button>
-          </div>
-          <Image priority src={infoSvg} alt="Add" {...proportion} />
-        </div>
-      </div>
-      {isLoading
-        ? [...Array(8)].map((_, index) => {
-            return (
-              <ItemsSkeleton key={String(index)}>
-                <LineSkaleton height="30px" width="35px" />
-                <LineSkaleton height="30px" />
-              </ItemsSkeleton>
-            );
-          })
-        : filteredItems.map((item) => (
-            <ListItem
-              key={item.description}
-              item={item.description}
-              count={selectService?.[String(ServiceData?.protocol)]?.[item.id]}
-              onSelect={() => toggleItem(item.id)}
-              onReset={() => toggleItemReset(item.id)}
+          <SearchWrapper>
+            <Image priority src={searchSvg} alt="Book" width={25} height={25} />
+            <SearchBar
+              type="text"
+              placeholder="Pesquisar serviço..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-          ))}
+          </SearchWrapper>
+          <div>
+            <div>
+              <Button onClick={() => setShowSelected(!showSelected)}>
+                {showSelected
+                  ? 'Mostrar Todos'
+                  : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
+                      selectedItemKeys.length
+                    })`}
+              </Button>
+
+              <Button onClick={selectServiceClean}>Limpar</Button>
+            </div>
+            <Image priority src={infoSvg} alt="Add" {...proportion} />
+          </div>
+        </div>
+        {isLoading
+          ? [...Array(8)].map((_, index) => {
+              return (
+                <ItemsSkeleton key={String(index)}>
+                  <LineSkaleton height="30px" width="35px" />
+                  <LineSkaleton height="30px" />
+                </ItemsSkeleton>
+              );
+            })
+          : filteredItems.map((item) => (
+              <motion.ul
+                key={item.description}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <ListItem
+                  key={item.description}
+                  item={item.description}
+                  count={selectService?.[String(serviceData?.protocol)]?.[item.id]}
+                  onSelect={({ count }) => {
+                    toggleItem(item.id, count);
+                  }}
+                  onReset={() => toggleItemReset(item.id)}
+                />
+              </motion.ul>
+            ))}
+      </AnimatePresence>
       <div>
         <Button rel="preload" onClick={() => router.back()}>
           Voltar

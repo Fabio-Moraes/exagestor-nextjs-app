@@ -41,6 +41,8 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
+  let socket: Socket | null = null;
+
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
@@ -67,13 +69,13 @@ export default function RunningService() {
   }
 
   const maxReconnectionAttempts = 4;
+  const reconnectDelay = 3000;
+  const connectionCheckInterval = 3000;
 
-  async function fetchServices(): Promise<void> {
+  const fetchServices = async () => {
     setConnectionError(false);
 
-    let retryCount = 0;
-
-    while (retryCount < maxReconnectionAttempts) {
+    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
@@ -84,20 +86,17 @@ export default function RunningService() {
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
         console.log('response', response.data);
-
-        break;
+        return;
       } catch (error) {
-        await sleep(5000);
+        console.error('Error fetching services:', error);
         setConnectionError(true);
+        await sleep(reconnectDelay);
       } finally {
         setIsPopupValue(null);
+        await sleep(reconnectDelay);
       }
-
-      retryCount++;
     }
-  }
-
-  let socket: Socket | null = null;
+  };
 
   const connectSocket = async (user: User) => {
     return new Promise<void>((resolve, reject) => {
@@ -116,16 +115,14 @@ export default function RunningService() {
         reject(error);
       });
 
-      socket.on(`RUNNING_UPDATE_TEC:${user?.id}`, () => {
-        fetchServices();
+      socket.on(`RUNNING_UPDATE_TEC:${user?.id}`, async () => {
+        await fetchServices();
       });
     });
   };
 
   const attemptReconnection = async () => {
-    let retryCount = 0;
-
-    while (retryCount < maxReconnectionAttempts) {
+    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
       try {
         const { data } = await apiRoute.post('/api/user');
         await connectSocket(data);
@@ -139,19 +136,29 @@ export default function RunningService() {
           console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
         }
 
-        await sleep(3000);
+        await sleep(reconnectDelay);
       }
     }
-
-    console.log('Max reconnection attempts reached. Stopping reconnection attempts.');
   };
 
   useEffect(() => {
-    attemptReconnection();
-    fetchServices();
+    const initialize = async () => {
+      await attemptReconnection();
+      await fetchServices();
+    };
+
+    initialize();
+
+    const connectionCheckIntervalId = setInterval(async () => {
+      if (!socket || socket.disconnected) {
+        console.log('Reconnecting due to inactive connection...');
+        await attemptReconnection();
+      }
+    }, connectionCheckInterval);
 
     return () => {
       console.log('Disconnecting from WebSocket server...');
+      clearInterval(connectionCheckIntervalId);
       if (socket) {
         socket.disconnect();
       }

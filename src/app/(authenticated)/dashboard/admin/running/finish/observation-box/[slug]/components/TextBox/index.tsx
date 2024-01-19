@@ -38,7 +38,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { setObservationBox, observationBox, setConnectionWebsocketCount } = useContexState();
+  const { setObservationBox, observationBox } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,8 +95,6 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
-      } finally {
-        setConnectionWebsocketCount((prevCount) => prevCount + 1);
       }
     }
     setIsPopupValue(null);

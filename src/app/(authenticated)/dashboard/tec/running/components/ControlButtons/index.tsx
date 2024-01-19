@@ -35,12 +35,6 @@ export function ControlButtons({ service }: { service: RunningService }) {
   const [runningLoad, setRunningLoad] = useState(false);
 
   const router = useRouter();
-
-  /* eslint-disable */
-  const [connectionError, setConnectionError] = useState(false);
-  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-  /* eslint-enable */
-
   const maxRetries = 4;
 
   async function fetchStatusServices() {
@@ -71,10 +65,8 @@ export function ControlButtons({ service }: { service: RunningService }) {
         count = maxRetries;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
-        setConnectionError(true);
       }
     }
-    setRunningLoad(false);
   }
 
   const encryptSlug = encryptObject({
@@ -92,7 +84,7 @@ export function ControlButtons({ service }: { service: RunningService }) {
           onClick={() =>
             service?.status !== 'analysis' &&
             service?.status !== 'paused' &&
-            router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`)
+            router.push(`/dashboard/tec/running/finish/select-material/${encryptSlug}`)
           }
         >
           <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />

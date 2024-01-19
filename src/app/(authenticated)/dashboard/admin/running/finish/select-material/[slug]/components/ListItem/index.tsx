@@ -17,7 +17,7 @@ interface ListItemProps {
   onReset: () => void;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, onReset }) => {
+export const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, onReset }) => {
   const [pointer, setPointer] = useState<'auto' | 'none'>('auto');
 
   const handleDragStart = () => {
@@ -75,7 +75,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, onReset 
       dragTransition={{ bounceStiffness: 600, bounceDamping: 40 }}
       dragMomentum={false}
       dragElastic={{ left: 0.5, right: 0 }}
-      style={{ pointerEvents: pointer }}
+      style={{ pointerEvents: pointer, listStyle: 'none' }}
     >
       <Container selected={count > 0}>
         <ItemContainer>
@@ -90,5 +90,3 @@ const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, onReset 
     </motion.li>
   );
 };
-
-export default ListItem;

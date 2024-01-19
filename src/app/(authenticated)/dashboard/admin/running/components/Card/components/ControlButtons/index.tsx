@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
-import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
 import checkSvg from './assets/svg/check.svg';
@@ -33,7 +32,6 @@ interface Service {
 }
 
 export function ControlButtons({ service }: { service: Service }) {
-  const { setConnectionWebsocketCount } = useContexState();
   const [runningLoad, setRunningLoad] = useState(false);
 
   const router = useRouter();
@@ -52,8 +50,6 @@ export function ControlButtons({ service }: { service: Service }) {
         count = maxRetries;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
-      } finally {
-        setConnectionWebsocketCount((prevCount) => prevCount + 1);
       }
     }
   }
@@ -71,8 +67,6 @@ export function ControlButtons({ service }: { service: Service }) {
         count = maxRetries;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
-      } finally {
-        setConnectionWebsocketCount((prevCount) => prevCount + 1);
       }
     }
   }

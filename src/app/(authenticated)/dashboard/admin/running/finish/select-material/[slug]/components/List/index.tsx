@@ -8,7 +8,7 @@ import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import { useContexState } from 'hooks/useGlobalContext';
 
-import ListItem from '../ListItem';
+import { ListItem } from '../ListItem';
 
 import { motion, AnimatePresence } from 'framer-motion';
 

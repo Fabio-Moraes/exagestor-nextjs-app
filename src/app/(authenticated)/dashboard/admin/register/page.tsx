@@ -5,7 +5,6 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
-import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
@@ -25,8 +24,6 @@ export default function NewRegister() {
   const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
-
-  const { setConnectionWebsocketCount } = useContexState();
 
   const router = useRouter();
 
@@ -151,7 +148,6 @@ export default function NewRegister() {
         }
 
         retryCount++;
-        setConnectionWebsocketCount((prevCount) => prevCount++);
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
 

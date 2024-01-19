@@ -8,7 +8,9 @@ import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import { useContexState } from 'hooks/useGlobalContext';
 
-import ListItem from '../ListItem';
+import { ListItem } from '../ListItem';
+
+import { motion, AnimatePresence } from 'framer-motion';
 
 import infoSvg from './assets/svg/info.svg';
 import searchSvg from './assets/svg/search.svg';
@@ -45,10 +47,10 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); // Defina o tempo de atraso em milissegundos (neste exemplo, 2 segundos)
+    }, 1000);
 
     return () => {
-      clearTimeout(timer); // Limpar o temporizador se o componente for desmontado antes do tempo limite
+      clearTimeout(timer);
     };
   }, []);
 
@@ -56,10 +58,10 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
   async function fetchConcludedMaterial() {
     const encryptSlug = encryptObject({ protocol: serviceData?.protocol });
-    router.push(`/dashboard/tec/running/finish/observation-box/${encryptSlug}`);
+    router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`);
   }
 
-  const toggleItem = (item: string) => {
+  const toggleItem = (item: string, count: number) => {
     setSelectMaterial((prevItems) => {
       const protocolKey = String(serviceData?.protocol);
 
@@ -67,7 +69,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
         ...prevItems,
         [protocolKey]: {
           ...(prevItems[protocolKey] || {}),
-          [item]: (prevItems[protocolKey]?.[item] || 0) + 1
+          [item]: count
         }
       };
     });
@@ -77,12 +79,15 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
     setSelectMaterial((prevItems) => {
       const updatedItems = { ...prevItems };
       const protocolKey = String(serviceData?.protocol);
-      const selectedItemsCount = Object.keys(updatedItems[protocolKey] || {}).length;
 
-      if (updatedItems[protocolKey].hasOwnProperty(item)) {
-        selectedItemsCount > 1
-          ? delete updatedItems[protocolKey][item]
-          : delete updatedItems[protocolKey];
+      if (updatedItems[protocolKey] && updatedItems[protocolKey].hasOwnProperty(item)) {
+        const selectedItemsCount = Object.keys(updatedItems[protocolKey]).length;
+
+        if (selectedItemsCount > 1) {
+          delete updatedItems[protocolKey][item];
+        } else {
+          delete updatedItems[protocolKey];
+        }
       }
 
       return updatedItems;
@@ -114,49 +119,60 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
   return (
     <ListContainer>
-      <div>
-        <SearchWrapper>
-          <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-          <SearchBar
-            type="text"
-            placeholder="Pesquisar serviço..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchWrapper>
+      <AnimatePresence>
         <div>
-          <div>
-            <Button onClick={() => setShowSelected(!showSelected)}>
-              {showSelected
-                ? 'Mostrar Todos'
-                : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
-                    selectedItemKeys.length
-                  })`}
-            </Button>
-
-            <Button onClick={selectServiceClean}>Limpar</Button>
-          </div>
-          <Image priority src={infoSvg} alt="Add" {...proportion} />
-        </div>
-      </div>
-      {isLoading
-        ? [...Array(8)].map((_, index) => {
-            return (
-              <ItemsSkeleton key={String(index)}>
-                <LineSkaleton height="30px" width="35px" />
-                <LineSkaleton height="30px" />
-              </ItemsSkeleton>
-            );
-          })
-        : filteredItems.map((item) => (
-            <ListItem
-              key={item.description}
-              item={item.description}
-              count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
-              onSelect={() => toggleItem(item.id)}
-              onReset={() => toggleItemReset(item.id)}
+          <SearchWrapper>
+            <Image priority src={searchSvg} alt="Book" width={25} height={25} />
+            <SearchBar
+              type="text"
+              placeholder="Pesquisar serviço..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-          ))}
+          </SearchWrapper>
+          <div>
+            <div>
+              <Button onClick={() => setShowSelected(!showSelected)}>
+                {showSelected
+                  ? 'Mostrar Todos'
+                  : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
+                      selectedItemKeys.length
+                    })`}
+              </Button>
+
+              <Button onClick={selectServiceClean}>Limpar</Button>
+            </div>
+            <Image priority src={infoSvg} alt="Add" {...proportion} />
+          </div>
+        </div>
+        {isLoading
+          ? [...Array(8)].map((_, index) => {
+              return (
+                <ItemsSkeleton key={String(index)}>
+                  <LineSkaleton height="30px" width="35px" />
+                  <LineSkaleton height="30px" />
+                </ItemsSkeleton>
+              );
+            })
+          : filteredItems.map((item) => (
+              <motion.ul
+                key={item.description}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <ListItem
+                  key={item.description}
+                  item={item.description}
+                  count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
+                  onSelect={({ count }) => {
+                    toggleItem(item.id, count);
+                  }}
+                  onReset={() => toggleItemReset(item.id)}
+                />
+              </motion.ul>
+            ))}
+      </AnimatePresence>
       <div>
         <Button onClick={() => router.back()}>Voltar</Button>
         <Button onClick={() => fetchConcludedMaterial()}>Avançar</Button>

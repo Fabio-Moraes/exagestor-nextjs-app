@@ -87,25 +87,6 @@ export default function FinishService({ params }: SlugType) {
     };
   }, []);
 
-  /* useEffect(() => {
-    window.history.pushState(null, '', window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, '', window.location.href);
-    };
-  }, []); */
-
-  /* useEffect(() => {
-    window.history.pushState(null, '', window.location.href);
-    window.onpopstate = function () {
-      console.log('Botão clicado!');
-      window.history.pushState(null, '', window.location.href);
-    };
-
-    return () => {
-      window.onpopstate = null;
-    };
-  }, []); */
-
   return (
     <Container>
       <Title>
