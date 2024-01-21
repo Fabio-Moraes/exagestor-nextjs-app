@@ -89,7 +89,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
         const encryptSlug = encryptObject({
           protocol: serviceData?.protocol,
           employeeId: serviceData?.employee_id,
-          updateCount: serviceData?.update_count + 1
+          updateCount: Number(serviceData?.update_count) + 1
         });
 
         count = maxRetries;
