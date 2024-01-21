@@ -6,6 +6,7 @@ import { TextBox } from './components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
+import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
@@ -36,6 +37,8 @@ export default function FinishService({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { selectMaterial } = useContexState();
+
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -62,6 +65,7 @@ export default function FinishService({ params }: SlugType) {
   }
 
   useEffect(() => {
+    console.log(JSON.stringify(selectMaterial[decryptSlug.protocol?.toString() ?? '']));
     fetchServices();
     const timer = setTimeout(() => {
       setIsLoading(false);

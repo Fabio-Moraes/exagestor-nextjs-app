@@ -38,7 +38,8 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { setObservationBox, observationBox } = useContexState();
+  const { setObservationBox, observationBox, selectMaterial, selectService } =
+    useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,7 +81,9 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
           protocol: serviceData?.protocol,
           employeeId: String(serviceData?.employee_id),
           serviceIds: JSON.stringify('selectedItems'),
-          observation: String(observationBox[serviceData?.protocol])
+          observation: String(observationBox[serviceData?.protocol]),
+          listService: JSON.stringify(selectService[serviceData?.protocol]),
+          listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
         });
 
         const encryptSlug = encryptObject({

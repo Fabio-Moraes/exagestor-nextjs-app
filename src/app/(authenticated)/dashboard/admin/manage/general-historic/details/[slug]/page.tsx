@@ -37,6 +37,8 @@ interface Service {
   created_at: string;
   modification_at: string;
   finished_at: string;
+  list_material: string;
+  list_service: string;
   observation: string;
   protocol: string;
 }
@@ -48,6 +50,30 @@ interface SlugType {
 }
 
 export default function Details({ params }: SlugType) {
+  const dataListService = [
+    { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
+    { id: '1', description: 'READQ DE POSTES (EQPTOS MEC NO POSTE)' },
+    { id: '2', description: 'LANÇ DE CORD' },
+    { id: '3', description: 'RETENC CORD/ CBS' },
+    { id: '4', description: 'RET CORD DO POSTE' },
+    { id: '5', description: 'MANUT PODA DE GALHOS COM REMOCAO-F' },
+    { id: '6', description: 'MANUT CAPINA LIMPZ SOBRE TAMP DE C' },
+    { id: '7', description: 'MANUT CAPINA DE POSTE RAIO = 2,0M-' },
+    { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
+  ];
+
+  const dataListMaterial = [
+    { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
+    { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
+    { id: '2', description: 'TUBOS DE PVC DE 3 POLEGADAS' },
+    { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
+    { id: '4', description: 'FIBRAS DE VIDRO PARA ISOLAMENTO' },
+    { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
+    { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
+    { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
+    { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
+  ];
+
   const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
@@ -72,6 +98,7 @@ export default function Details({ params }: SlugType) {
 
         count = maxRetries;
         setServices(response.data[0]);
+        console.log('data', response.data[0]);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
@@ -156,11 +183,17 @@ export default function Details({ params }: SlugType) {
         const imgWidth = 210;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+        // Configurar a altura do documento PDF
+        pdf.internal.pageSize.height = imgHeight;
+
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
         pdf.save(`${services?.protocol.replace(/-/g, '')}.pdf`);
       });
     }
   };
+
+  const objListMaterial = JSON.parse(services?.list_material || '{}');
+  const objListService = JSON.parse(services?.list_service || '{}');
 
   return (
     <Container>
@@ -216,6 +249,32 @@ export default function Details({ params }: SlugType) {
                 <p>Protocolo: {services?.protocol}</p>
                 <p>Serviço: {status[services?.status]}</p>
                 <p>Contador de Atualização: {services?.update_count}</p>
+                {services?.list_material && (
+                  <Observation>
+                    <p>Materiais</p>
+                    {objListMaterial &&
+                      Object.keys(objListMaterial).map((key: string) => (
+                        <p key={key}>
+                          {dataListMaterial.find((item) => item.id === key)?.description}
+                          {`: ${objListMaterial[key]}`}
+                        </p>
+                      ))}
+                  </Observation>
+                )}
+                <p />
+                {services?.list_service && (
+                  <Observation>
+                    <p>Serviços</p>
+                    {objListService &&
+                      Object.keys(objListService).map((key: string) => (
+                        <p key={key}>
+                          {dataListService.find((item) => item.id === key)?.description}
+                          {`: ${objListService[key]}`}
+                        </p>
+                      ))}
+                  </Observation>
+                )}
+                <p />
                 {services?.observation && (
                   <Observation>
                     <p>Observação</p>

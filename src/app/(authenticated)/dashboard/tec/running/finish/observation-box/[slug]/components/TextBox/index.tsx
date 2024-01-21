@@ -30,13 +30,6 @@ interface ServiceData {
 }
 
 export function TextBox({ serviceData }: { serviceData: ServiceData }) {
-  /* eslint-disable */
-  const [connectionError, setConnectionError] = useState(false);
-  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-
-  const [description, setDescription] = useState('');
-  /* eslint-enable */
-
   const [isLoading, setIsLoading] = useState(true);
 
   const { setObservationBox, observationBox } = useContexState();
@@ -55,12 +48,8 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const router = useRouter();
 
   async function fetchConcludedMaterial() {
-    setConnectionError(false);
-
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/concluded',
           protocol: serviceData?.protocol,
@@ -73,10 +62,8 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
         console.log(response.data);
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
-        setConnectionError(true);
       }
     }
-    setIsPopupValue(null);
   }
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
