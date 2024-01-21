@@ -82,8 +82,7 @@ export default function RunningService() {
 
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
-        console.log('response', response.data);
-        return;
+        break;
       } catch (error) {
         console.error('Error fetching services:', error);
         setConnectionError(true);
@@ -124,8 +123,6 @@ export default function RunningService() {
         await connectSocket();
         break;
       } catch (connectError: unknown) {
-        retryCount += 1;
-
         if (connectError instanceof Error) {
           console.log(`Reconnection attempt ${retryCount} failed: ${connectError.message}`);
         } else {
