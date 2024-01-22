@@ -19,7 +19,7 @@ import {
   ErrorContainer
 } from './styles';
 
-interface serviceData {
+interface ServiceData {
   id: number;
   employee_id: number;
   client_name: string;
@@ -33,7 +33,7 @@ interface serviceData {
   protocol: string;
 }
 
-export function TextBox({ serviceData }: { serviceData: serviceData }) {
+export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,22 +53,6 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
   const maxRetries = 4;
   const router = useRouter();
 
-  interface ServiceData {
-    data: {
-      id: number;
-      employee_id: number;
-      client_name: string;
-      city: string;
-      address: string;
-      nomenclature: string;
-      classification: string;
-      status: string;
-      update_count: number;
-      created_at: string;
-      protocol: string;
-    }[];
-  }
-
   async function fetchConcludedMaterial() {
     setConnectionError(false);
 
@@ -76,7 +60,7 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
-        const response: ServiceData = await apiRoute.post('/api/bridge', {
+        await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/concluded',
           protocol: serviceData?.protocol,
           employeeId: String(serviceData?.employee_id),
@@ -92,9 +76,8 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
           updateCount: Number(serviceData?.update_count) + 1
         });
 
-        count = maxRetries;
-        console.log(response.data);
         router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);
@@ -188,41 +171,39 @@ export function TextBox({ serviceData }: { serviceData: serviceData }) {
           </span>
         </ErrorContainer>
       ) : (
-        <>
-          <ListContainer>
-            <InputContainer>
-              {isLoading || !serviceData?.protocol ? (
-                <SkaletonInput>
-                  <LineSkaleton width="100%" />
-                  <LineSkaleton width="100%" />
-                  <LineSkaleton width="65%" />
-                  <LineSkaleton width="85%" />
-                  <LineSkaleton width="75%" />
-                </SkaletonInput>
-              ) : (
-                <Input
-                  ref={textareaRef}
-                  value={observationBox[serviceData?.protocol] ?? ''}
-                  onChange={handleDescriptionChange}
-                  onKeyDown={handleTextareaKeyDown}
-                  placeholder="Escreva sua descrição aqui..."
-                  contentEditable="true"
-                />
-              )}
-            </InputContainer>
-            <ContainerCounter>
-              {isLoading || !serviceData?.protocol ? (
-                <LineSkaleton width="30px" />
-              ) : (
-                <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
-              )}
-            </ContainerCounter>
-            <div>
-              <Button onClick={() => router.back()}>Voltar</Button>
-              <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
-            </div>
-          </ListContainer>
-        </>
+        <ListContainer>
+          <InputContainer>
+            {isLoading || !serviceData?.protocol ? (
+              <SkaletonInput>
+                <LineSkaleton width="100%" />
+                <LineSkaleton width="100%" />
+                <LineSkaleton width="65%" />
+                <LineSkaleton width="85%" />
+                <LineSkaleton width="75%" />
+              </SkaletonInput>
+            ) : (
+              <Input
+                ref={textareaRef}
+                value={observationBox[serviceData?.protocol] ?? ''}
+                onChange={handleDescriptionChange}
+                onKeyDown={handleTextareaKeyDown}
+                placeholder="Escreva sua descrição aqui..."
+                contentEditable="true"
+              />
+            )}
+          </InputContainer>
+          <ContainerCounter>
+            {isLoading || !serviceData?.protocol ? (
+              <LineSkaleton width="30px" />
+            ) : (
+              <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
+            )}
+          </ContainerCounter>
+          <div>
+            <Button onClick={() => router.back()}>Voltar</Button>
+            <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
+          </div>
+        </ListContainer>
       )}
     </>
   );

@@ -1,15 +1,27 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
+import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import apiRoute from 'services/apiRoute';
 
-import { ErrorContainer } from './styles';
-import { Button, Container, Wrapper, Observation, Title, Info } from './styles';
+import iconExa from './assets/svg/exa_logo.svg';
+
+import {
+  ErrorContainer,
+  Button,
+  Container,
+  Wrapper,
+  Observation,
+  Title,
+  Info,
+  ProfileCompany,
+  ProfileInfoCompany
+} from './styles';
 
 interface Service {
   id: number;
@@ -23,6 +35,8 @@ interface Service {
   created_at: string;
   modification_at: string;
   finished_at: string;
+  list_material: string;
+  list_service: string;
   observation: string;
   protocol: string;
 }
@@ -34,6 +48,30 @@ interface SlugType {
 }
 
 export default function Details({ params }: SlugType) {
+  const dataListService = [
+    { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
+    { id: '1', description: 'READQ DE POSTES (EQPTOS MEC NO POSTE)' },
+    { id: '2', description: 'LANÇ DE CORD' },
+    { id: '3', description: 'RETENC CORD/ CBS' },
+    { id: '4', description: 'RET CORD DO POSTE' },
+    { id: '5', description: 'MANUT PODA DE GALHOS COM REMOCAO-F' },
+    { id: '6', description: 'MANUT CAPINA LIMPZ SOBRE TAMP DE C' },
+    { id: '7', description: 'MANUT CAPINA DE POSTE RAIO = 2,0M-' },
+    { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
+  ];
+
+  const dataListMaterial = [
+    { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
+    { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
+    { id: '2', description: 'TUBOS DE PVC DE 3 POLEGADAS' },
+    { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
+    { id: '4', description: 'FIBRAS DE VIDRO PARA ISOLAMENTO' },
+    { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
+    { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
+    { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
+    { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
+  ];
+
   const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
@@ -69,6 +107,13 @@ export default function Details({ params }: SlugType) {
 
   useEffect(() => {
     fetchServices();
+
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, '', window.location.href);
+      router.push(`/dashboard/tec/historic`);
+    };
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -125,6 +170,27 @@ export default function Details({ params }: SlugType) {
     }
   };
 
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const captureImageAndSaveAsPdf = () => {
+    const element = elementRef.current;
+
+    if (element) {
+      import('html2pdf.js').then(({ default: html2pdf }) => {
+        html2pdf(element, {
+          margin: 10,
+          filename: 'file.pdf',
+          image: { type: 'png', quality: 1 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'p' }
+        });
+      });
+    }
+  };
+
+  const objListMaterial = JSON.parse(services?.list_material || '{}');
+  const objListService = JSON.parse(services?.list_service || '{}');
+
   return (
     <Container>
       <Title>Detalhes</Title>
@@ -138,7 +204,7 @@ export default function Details({ params }: SlugType) {
         </ErrorContainer>
       ) : (
         <Wrapper>
-          <Info>
+          <Info ref={elementRef}>
             {isLoading || !services ? (
               <>
                 <LineSkaleton width="180px" />
@@ -153,6 +219,19 @@ export default function Details({ params }: SlugType) {
               </>
             ) : (
               <>
+                <ProfileCompany>
+                  <Image
+                    src={iconExa}
+                    priority
+                    loading="eager"
+                    alt="Axa"
+                    style={{ width: '34px', height: 'auto' }}
+                  />
+                  <ProfileInfoCompany>
+                    <h1>EXA TELECOM</h1>
+                    <span>Telecomunicações</span>
+                  </ProfileInfoCompany>
+                </ProfileCompany>
                 <p>Endereço: {services?.address}</p>
                 <p>Cidade: {services?.city}</p>
                 <p>Classificação: {services?.classification}</p>
@@ -166,6 +245,32 @@ export default function Details({ params }: SlugType) {
                 <p>Protocolo: {services?.protocol}</p>
                 <p>Serviço: {status[services?.status]}</p>
                 <p>Contador de Atualização: {services?.update_count}</p>
+                {services?.list_material && (
+                  <Observation>
+                    <p>Materiais</p>
+                    {objListMaterial &&
+                      Object.keys(objListMaterial).map((key: string) => (
+                        <p key={key}>
+                          {dataListMaterial.find((item) => item.id === key)?.description}
+                          {`: ${objListMaterial[key]}`}
+                        </p>
+                      ))}
+                  </Observation>
+                )}
+                <p />
+                {services?.list_service && (
+                  <Observation>
+                    <p>Serviços</p>
+                    {objListService &&
+                      Object.keys(objListService).map((key: string) => (
+                        <p key={key}>
+                          {dataListService.find((item) => item.id === key)?.description}
+                          {`: ${objListService[key]}`}
+                        </p>
+                      ))}
+                  </Observation>
+                )}
+                <p />
                 {services?.observation && (
                   <Observation>
                     <p>Observação</p>
@@ -175,7 +280,9 @@ export default function Details({ params }: SlugType) {
               </>
             )}
           </Info>
-          <Button onClick={() => router.back()}>Voltar</Button>
+          {!isLoading && services && (
+            <Button onClick={captureImageAndSaveAsPdf}>Salvar relatório como PDF</Button>
+          )}
         </Wrapper>
       )}
     </Container>

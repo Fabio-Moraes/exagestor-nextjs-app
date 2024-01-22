@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -7,9 +8,6 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import apiRoute from 'services/apiRoute';
-
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 import iconExa from './assets/svg/exa_logo.svg';
 
@@ -79,6 +77,8 @@ export default function Details({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const router = useRouter();
+
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -113,6 +113,7 @@ export default function Details({ params }: SlugType) {
     window.history.pushState(null, '', window.location.href);
     window.onpopstate = function () {
       window.history.pushState(null, '', window.location.href);
+      router.push(`/dashboard/admin/manage/general-historic`);
     };
 
     const timer = setTimeout(() => {
@@ -177,17 +178,14 @@ export default function Details({ params }: SlugType) {
     const element = elementRef.current;
 
     if (element) {
-      html2canvas(element).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        const imgWidth = 210;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        // Configurar a altura do documento PDF
-        pdf.internal.pageSize.height = imgHeight;
-
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        pdf.save(`${services?.protocol.replace(/-/g, '')}.pdf`);
+      import('html2pdf.js').then(({ default: html2pdf }) => {
+        html2pdf(element, {
+          margin: 10,
+          filename: 'file.pdf',
+          image: { type: 'png', quality: 1 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'p' }
+        });
       });
     }
   };

@@ -93,3 +93,27 @@ export const SkaletonInput = styled.div`
   position: relative;
   overflow-y: auto;
 `;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  > span {
+    text-align: left;
+    font-size: 17px;
+    color: #333;
+  }
+
+  > button {
+    width: 150px;
+    background-color: #27a567;
+    padding: 10px;
+    margin: 20px 20px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #fff;
+  }
+`;

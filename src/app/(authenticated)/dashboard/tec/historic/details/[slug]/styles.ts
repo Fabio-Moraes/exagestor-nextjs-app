@@ -24,8 +24,8 @@ export const Title = styled.h1`
 export const Wrapper = styled.div`
   font-size: 18px;
   background-color: #fff;
-  margin-bottom: 30px;
-  border: 2px solid #3f795e;
+  padding-bottom: 5px;
+  //border: 2px solid #3f795e;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   align-items: center;
@@ -58,13 +58,15 @@ export const Info = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 20px 0 20px;
+  padding: 0 12px;
   margin-top: 10px;
 
   > p {
+    padding: 0 7px;
+    font-family: 'OpenSans-Medium';
     margin-bottom: 10px;
     text-align: start;
-    font-size: 15px;
+    font-size: 12px;
   }
 
   > p:last-child {
@@ -77,25 +79,21 @@ export const Observation = styled.div`
   border-radius: 5px;
   padding-bottom: 10px;
 
-  > h2 {
-    font-size: 20px;
-    padding-bottom: 10px;
-  }
-
   > p:first-child {
-    padding: 5px;
+    padding: 3px;
+    font-family: 'OpenSans-Medium';
     border-bottom: 2px solid #3f795e;
     background-image: radial-gradient(350px at center, #ffffff 15%, #27a567);
     margin-bottom: 10px;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
   }
 
   > p {
-    padding: 0 20px;
+    padding: 0 10px;
     margin-bottom: 0px;
     text-align: start;
-    font-size: 15px;
+    font-size: 13px;
   }
   > div {
     min-height: 10px;
@@ -109,8 +107,9 @@ export const List = styled.div`
 export const Button = styled.button`
   display: flex;
   height: 30px;
-  width: 100px;
-  margin: 10px;
+  width: auto;
+  margin: 20px 30px 15px 30px;
+  padding: 20px 15px;
   background-color: #3c7d5d;
   align-items: center;
   justify-content: center;
@@ -141,5 +140,41 @@ export const ErrorContainer = styled.div`
     border-radius: 4px;
     font-size: 16px;
     color: #fff;
+  }
+`;
+
+export const ProfileCompany = styled.div`
+  border: 2px solid #3f795e;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  display: flex;
+  height: 100%;
+  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background-image: radial-gradient(350px at center, #ffffff 15%, #27a567);
+  padding: 7px;
+  padding-left: 11px;
+  border-radius: 5px;
+  height: 60px;
+  margin-bottom: 10px;
+`;
+
+export const ProfileInfoCompany = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  margin-right: 5px;
+  width: 100%;
+
+  > h1 {
+    font-family: 'OpenSans-Bold';
+    color: #000;
+    font-size: 14px;
+  }
+
+  > span {
+    font-family: 'OpenSans-Medium';
+    font-size: 10.7px;
+    color: #000;
   }
 `;

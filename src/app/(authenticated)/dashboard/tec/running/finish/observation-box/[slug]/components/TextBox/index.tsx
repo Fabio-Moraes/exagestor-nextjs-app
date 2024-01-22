@@ -3,7 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
+import { encryptObject } from 'functions';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -13,7 +15,8 @@ import {
   InputContainer,
   Input,
   SkaletonInput,
-  ContainerCounter
+  ContainerCounter,
+  ErrorContainer
 } from './styles';
 
 interface ServiceData {
@@ -30,9 +33,12 @@ interface ServiceData {
 }
 
 export function TextBox({ serviceData }: { serviceData: ServiceData }) {
+  const [connectionError, setConnectionError] = useState(false);
+  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { setObservationBox, observationBox } = useContexState();
+  const { setObservationBox, observationBox, selectMaterial, selectService } =
+    useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,26 +50,37 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   }, []);
 
   const maxRetries = 4;
-
   const router = useRouter();
 
   async function fetchConcludedMaterial() {
+    setConnectionError(false);
+
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiRoute.post('/api/bridge', {
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+
+        await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/concluded',
           protocol: serviceData?.protocol,
           serviceIds: JSON.stringify('selectedItems'),
-          observation: String(observationBox[serviceData?.protocol])
+          observation: String(observationBox[serviceData?.protocol]),
+          listService: JSON.stringify(selectService[serviceData?.protocol]),
+          listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
         });
 
-        count = maxRetries;
-        router.push('/dashboard/tec/new');
-        console.log(response.data);
+        const encryptSlug = encryptObject({
+          protocol: serviceData?.protocol,
+          updateCount: Number(serviceData?.update_count) + 1
+        });
+
+        router.push(`/dashboard/tec/historic/details/${encryptSlug}`);
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
+        setConnectionError(true);
       }
     }
+    setIsPopupValue(null);
   }
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -116,7 +133,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
     if (textareaRef.current) {
       setTimeout(() => {
         textareaRef.current?.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
-        textareaRef.current?.focus(); // Foca no elemento para que o cursor seja movido
+        textareaRef.current?.focus();
       }, 0);
     }
   };
@@ -141,38 +158,50 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   };
 
   return (
-    <ListContainer>
-      <InputContainer>
-        {isLoading || !serviceData?.protocol ? (
-          <SkaletonInput>
-            <LineSkaleton width="100%" />
-            <LineSkaleton width="100%" />
-            <LineSkaleton width="65%" />
-            <LineSkaleton width="85%" />
-            <LineSkaleton width="75%" />
-          </SkaletonInput>
-        ) : (
-          <Input
-            ref={textareaRef}
-            value={observationBox[serviceData?.protocol] ?? ''}
-            onChange={handleDescriptionChange}
-            onKeyDown={handleTextareaKeyDown}
-            placeholder="Escreva sua descrição aqui..."
-            contentEditable="true"
-          />
-        )}
-      </InputContainer>
-      <ContainerCounter>
-        {isLoading || !serviceData?.protocol ? (
-          <LineSkaleton width="30px" />
-        ) : (
-          <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
-        )}
-      </ContainerCounter>
-      <div>
-        <Button onClick={() => router.back()}>Voltar</Button>
-        <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
-      </div>
-    </ListContainer>
+    <>
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+      {connectionError ? (
+        <ErrorContainer>
+          <span>
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
+            favor, tente novamente.
+          </span>
+        </ErrorContainer>
+      ) : (
+        <ListContainer>
+          <InputContainer>
+            {isLoading || !serviceData?.protocol ? (
+              <SkaletonInput>
+                <LineSkaleton width="100%" />
+                <LineSkaleton width="100%" />
+                <LineSkaleton width="65%" />
+                <LineSkaleton width="85%" />
+                <LineSkaleton width="75%" />
+              </SkaletonInput>
+            ) : (
+              <Input
+                ref={textareaRef}
+                value={observationBox[serviceData?.protocol] ?? ''}
+                onChange={handleDescriptionChange}
+                onKeyDown={handleTextareaKeyDown}
+                placeholder="Escreva sua descrição aqui..."
+                contentEditable="true"
+              />
+            )}
+          </InputContainer>
+          <ContainerCounter>
+            {isLoading || !serviceData?.protocol ? (
+              <LineSkaleton width="30px" />
+            ) : (
+              <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
+            )}
+          </ContainerCounter>
+          <div>
+            <Button onClick={() => router.back()}>Voltar</Button>
+            <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
+          </div>
+        </ListContainer>
+      )}
+    </>
   );
 }
