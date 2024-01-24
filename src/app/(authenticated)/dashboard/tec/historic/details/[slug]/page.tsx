@@ -17,6 +17,7 @@ import {
   Container,
   Wrapper,
   Observation,
+  Table,
   Title,
   Info,
   ProfileCompany,
@@ -246,35 +247,75 @@ export default function Details({ params }: SlugType) {
                 <p>Serviço: {status[services?.status]}</p>
                 <p>Contador de Atualização: {services?.update_count}</p>
                 {services?.list_material && (
-                  <Observation>
-                    <p>Materiais</p>
+                  <Table>
+                    <div>
+                      <div>
+                        <span>Materiais</span>
+                      </div>
+                      <div>
+                        <span>Qtd</span>
+                      </div>
+                      <div>
+                        <span>Tipo</span>
+                      </div>
+                    </div>
                     {objListMaterial &&
                       Object.keys(objListMaterial).map((key: string) => (
-                        <p key={key}>
-                          {dataListMaterial.find((item) => item.id === key)?.description}
-                          {`: ${objListMaterial[key]}`}
-                        </p>
+                        <div key={key}>
+                          <div>
+                            <span>
+                              {dataListMaterial.find((item) => item.id === key)?.description}
+                              {dataListMaterial.find((item) => item.id === key)?.description}
+                            </span>
+                          </div>
+                          <div>
+                            <span>{objListMaterial[key]}</span>
+                          </div>
+                          <div>
+                            <span>Unid.</span>
+                          </div>
+                        </div>
                       ))}
-                  </Observation>
+                  </Table>
                 )}
                 <p />
                 {services?.list_service && (
-                  <Observation>
-                    <p>Serviços</p>
+                  <Table>
+                    <div>
+                      <div>
+                        <span>Serviços</span>
+                      </div>
+                      <div>
+                        <span>Qtd</span>
+                      </div>
+                      <div>
+                        <span>Tipo</span>
+                      </div>
+                    </div>
                     {objListService &&
                       Object.keys(objListService).map((key: string) => (
-                        <p key={key}>
-                          {dataListService.find((item) => item.id === key)?.description}
-                          {`: ${objListService[key]}`}
-                        </p>
+                        <div key={key}>
+                          <div>
+                            <span>
+                              {dataListService.find((item) => item.id === key)?.description}
+                              {dataListService.find((item) => item.id === key)?.description}
+                            </span>
+                          </div>
+                          <div>
+                            <span>{objListService[key]}</span>
+                          </div>
+                          <div>
+                            <span>Unid.</span>
+                          </div>
+                        </div>
                       ))}
-                  </Observation>
+                  </Table>
                 )}
                 <p />
                 {services?.observation && (
                   <Observation>
                     <p>Observação</p>
-                    <>{renderTextWithLineBreaks(services?.observation ?? '')}</>
+                    <p>{renderTextWithLineBreaks(services?.observation ?? '')}</p>
                   </Observation>
                 )}
               </>

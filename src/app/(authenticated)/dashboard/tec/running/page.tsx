@@ -86,7 +86,7 @@ export default function RunningService() {
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
         console.log('response', response.data);
-        return;
+        break;
       } catch (error) {
         console.error('Error fetching services:', error);
         setConnectionError(true);

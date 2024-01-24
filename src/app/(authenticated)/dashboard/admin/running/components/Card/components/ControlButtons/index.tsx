@@ -12,6 +12,7 @@ import closeSvg from './assets/svg/close.svg';
 import pauseSvg from './assets/svg/pause.svg';
 import pinSvg from './assets/svg/pin.svg';
 import playSvg from './assets/svg/play.svg';
+import verifySvg from './assets/svg/verify.svg';
 
 import { Container, Wrapper } from './styles';
 
@@ -73,25 +74,43 @@ export function ControlButtons({ service }: { service: Service }) {
 
   const encryptSlug = encryptObject({
     protocol: service?.protocol,
-    employeeId: service?.employee_id
+    employeeId: service?.employee_id,
+    updateCount: String(Number(service?.update_count || 0) + 1)
   });
+
+  const buttonConcluded =
+    service?.status === 'analysis' ? (
+      <button
+        rel="preload"
+        style={{ opacity: runningLoad ? 0.3 : 1 }}
+        onClick={() =>
+          service?.status === 'analysis' &&
+          router.push(`/dashboard/admin/running/verify/${encryptSlug}`)
+        }
+      >
+        <Image priority loading="eager" src={verifySvg} alt="close" width="50" height="50" />
+        <p>Verificado</p>
+      </button>
+    ) : (
+      <button
+        style={{
+          opacity: runningLoad || service?.status === 'paused' ? 0.3 : 1
+        }}
+        rel="preload"
+        onClick={() =>
+          service?.status === 'active' &&
+          router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`)
+        }
+      >
+        <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
+        <p>Finalizar</p>
+      </button>
+    );
 
   return (
     <Container $animation={runningLoad}>
       <Wrapper>
-        <button
-          style={{
-            opacity: runningLoad ? 1 : service?.status === 'paused' ? 0.3 : 1
-          }}
-          rel="preload"
-          onClick={() =>
-            (service?.status === 'active' || service?.status !== 'paused') &&
-            router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`)
-          }
-        >
-          <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
-          <p>Finalizar</p>
-        </button>
+        {buttonConcluded}
         <button rel="preload" onClick={() => fetchStatusServices()}>
           <Image
             priority
@@ -108,10 +127,13 @@ export function ControlButtons({ service }: { service: Service }) {
           style={{
             opacity: runningLoad ? 1 : 0.3
           }}
-          onClick={() => {}}
+          onClick={() =>
+            service?.status === 'analysis' &&
+            router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`)
+          }
         >
           <Image priority loading="eager" src={pinSvg} alt="close" width="50" height="50" />
-          <p>Fixar</p>
+          <p>Verificado</p>
         </button>
         <button rel="preload" onClick={() => fetchCancelServices()}>
           <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />

@@ -64,7 +64,6 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
           baseURL: '/api/admin/concluded',
           protocol: serviceData?.protocol,
           employeeId: String(serviceData?.employee_id),
-          serviceIds: JSON.stringify('selectedItems'),
           observation: String(observationBox[serviceData?.protocol]),
           listService: JSON.stringify(selectService[serviceData?.protocol]),
           listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
