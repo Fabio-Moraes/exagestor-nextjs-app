@@ -12,6 +12,7 @@ import closeSvg from './assets/svg/close.svg';
 import pauseSvg from './assets/svg/pause.svg';
 import pinSvg from './assets/svg/pin.svg';
 import playSvg from './assets/svg/play.svg';
+import refreshSvg from './assets/svg/refresh.svg';
 import verifySvg from './assets/svg/verify.svg';
 
 import { Container, Wrapper } from './styles';
@@ -44,6 +45,23 @@ export function ControlButtons({ service }: { service: Service }) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
+          employeeId: String(service?.employee_id),
+          protocol: service?.protocol
+        });
+
+        count = maxRetries;
+      } catch (error) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
+    }
+  }
+
+  async function fetchRefreshServices() {
+    setRunningLoad(true);
+    for (let count = 0; count < maxRetries; count++) {
+      try {
+        await apiRoute.post('/api/bridge', {
+          baseURL: '/api/admin/start',
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
@@ -107,33 +125,46 @@ export function ControlButtons({ service }: { service: Service }) {
       </button>
     );
 
+  const buttonState =
+    service?.status === 'analysis' ? (
+      <button
+        style={{
+          opacity: runningLoad ? 0.3 : 1
+        }}
+        rel="preload"
+        onClick={() => fetchRefreshServices()}
+      >
+        <Image priority loading="eager" src={refreshSvg} alt="play" width="50" height="50" />
+        <p>{'Reiniciar'}</p>
+      </button>
+    ) : (
+      <button rel="preload" onClick={() => fetchStatusServices()}>
+        <Image
+          priority
+          loading="eager"
+          src={service?.status !== 'active' ? playSvg : pauseSvg}
+          alt="play"
+          width="50"
+          height="50"
+        />
+        <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
+      </button>
+    );
+
   return (
     <Container $animation={runningLoad}>
       <Wrapper>
         {buttonConcluded}
-        <button rel="preload" onClick={() => fetchStatusServices()}>
-          <Image
-            priority
-            loading="eager"
-            src={service?.status !== 'active' ? playSvg : pauseSvg}
-            alt="play"
-            width="50"
-            height="50"
-          />
-          <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
-        </button>
+        {buttonState}
         <button
-          rel="preload"
           style={{
-            opacity: runningLoad ? 1 : 0.3
+            opacity: 0.3
           }}
-          onClick={() =>
-            service?.status === 'analysis' &&
-            router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`)
-          }
+          rel="preload"
+          onClick={() => {}}
         >
-          <Image priority loading="eager" src={pinSvg} alt="close" width="50" height="50" />
-          <p>Verificado</p>
+          <Image priority loading="eager" src={pinSvg} alt="play" width="50" height="50" />
+          <p>{'Fixar'}</p>
         </button>
         <button rel="preload" onClick={() => fetchCancelServices()}>
           <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />

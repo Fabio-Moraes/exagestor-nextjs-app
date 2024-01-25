@@ -228,7 +228,6 @@ export const ProfileCompany = styled.div`
   text-align: left;
   display: flex;
   height: 100%;
-  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   background-image: radial-gradient(350px at center, #ffffff 15%, #27a567);
   padding: 7px;
   padding-left: 11px;
