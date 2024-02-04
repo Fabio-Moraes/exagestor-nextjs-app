@@ -13,7 +13,6 @@ import pauseSvg from './assets/svg/pause.svg';
 import pinSvg from './assets/svg/pin.svg';
 import playSvg from './assets/svg/play.svg';
 import refreshSvg from './assets/svg/refresh.svg';
-import verifySvg from './assets/svg/verify.svg';
 
 import { Container, Wrapper } from './styles';
 
@@ -41,7 +40,7 @@ export function ControlButtons({ service }: { service: Service }) {
 
   async function fetchStatusServices() {
     setRunningLoad(true);
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
@@ -49,7 +48,7 @@ export function ControlButtons({ service }: { service: Service }) {
           protocol: service?.protocol
         });
 
-        count = maxRetries;
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
@@ -58,7 +57,7 @@ export function ControlButtons({ service }: { service: Service }) {
 
   async function fetchRefreshServices() {
     setRunningLoad(true);
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/start',
@@ -66,7 +65,7 @@ export function ControlButtons({ service }: { service: Service }) {
           protocol: service?.protocol
         });
 
-        count = maxRetries;
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
@@ -75,7 +74,7 @@ export function ControlButtons({ service }: { service: Service }) {
 
   async function fetchCancelServices() {
     setRunningLoad(true);
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/cancel',
@@ -83,7 +82,7 @@ export function ControlButtons({ service }: { service: Service }) {
           protocol: service?.protocol
         });
 
-        count = maxRetries;
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
@@ -95,35 +94,6 @@ export function ControlButtons({ service }: { service: Service }) {
     employeeId: service?.employee_id,
     updateCount: String(Number(service?.update_count || 0) + 1)
   });
-
-  const buttonConcluded =
-    service?.status === 'analysis' ? (
-      <button
-        rel="preload"
-        style={{ opacity: runningLoad ? 0.3 : 1 }}
-        onClick={() =>
-          service?.status === 'analysis' &&
-          router.push(`/dashboard/admin/running/verify/${encryptSlug}`)
-        }
-      >
-        <Image priority loading="eager" src={verifySvg} alt="close" width="50" height="50" />
-        <p>Verificado</p>
-      </button>
-    ) : (
-      <button
-        style={{
-          opacity: runningLoad || service?.status === 'paused' ? 0.3 : 1
-        }}
-        rel="preload"
-        onClick={() =>
-          service?.status === 'active' &&
-          router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`)
-        }
-      >
-        <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
-        <p>Finalizar</p>
-      </button>
-    );
 
   const buttonState =
     service?.status === 'analysis' ? (
@@ -152,9 +122,21 @@ export function ControlButtons({ service }: { service: Service }) {
     );
 
   return (
-    <Container $animation={runningLoad}>
+    <Container $animation={runningLoad} $color={'#8bc9a8'}>
       <Wrapper>
-        {buttonConcluded}
+        <button
+          style={{
+            opacity: runningLoad || service?.status === 'paused' ? 0.3 : 1
+          }}
+          rel="preload"
+          onClick={() =>
+            service?.status === 'active' &&
+            router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`)
+          }
+        >
+          <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
+          <p>Finalizar</p>
+        </button>
         {buttonState}
         <button
           style={{

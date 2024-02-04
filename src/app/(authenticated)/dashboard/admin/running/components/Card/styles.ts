@@ -12,18 +12,27 @@ export const Container = styled.li`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-export const Title = styled.div`
+export const Title = styled.div<{ $path: string }>`
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
+  flex-direction: column;
   width: 100%;
-  padding: 10px;
-  font-size: 18px;
-  background-color: #3c7d5d;
-  color: #ffffff;
+  padding: 4px 2px;
+  background-color: ${({ $path }) => $path};
 
   > p {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 3px;
+    padding: 5px;
     font-family: 'OpenSans-SemiBold';
+    color: #000;
+    margin: 3px 5px;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
   }
 `;
 

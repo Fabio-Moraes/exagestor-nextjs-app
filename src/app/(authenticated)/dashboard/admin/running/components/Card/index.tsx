@@ -19,11 +19,18 @@ interface RunningService {
   name_tec: string;
 }
 
+const status = {
+  analysis: '🔍 EM ANÁLISE',
+  active: '🚧 EM ANDAMENTO',
+  paused: '⏸️ PAUSADO'
+} as { [key: string]: string };
+
 export function Card({ service }: { service: RunningService }) {
   return (
     <Container>
-      <Title>
-        <p>{service?.name_tec.concat(' (TEC)')}</p>
+      <Title $path={service?.status === 'analysis' ? '#e9c80f' : ' #3c7d5d'}>
+        <p>TÉCNICO: 👤 {service?.name_tec.toLocaleUpperCase()}</p>
+        <p>SERVIÇO: {status[service?.status]}</p>
       </Title>
       <Wrapper>
         <Info service={service} />

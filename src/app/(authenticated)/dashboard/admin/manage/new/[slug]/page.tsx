@@ -127,13 +127,13 @@ export default function NewService({ params }: SlugType) {
       }
 
       const maxRetries = 4;
-      let retryCount = 0;
 
-      while (retryCount < maxRetries) {
+      for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
           setFullScreenLoadingValue(
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
+
           const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
             const classificationArray = [];
 
@@ -182,7 +182,6 @@ export default function NewService({ params }: SlugType) {
           console.error('Erro na requisição POST:', error);
         }
 
-        retryCount++;
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
 

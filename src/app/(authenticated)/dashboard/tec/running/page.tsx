@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import { Card } from './components/Card';
-import { ControlButtons } from './components/ControlButtons';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
@@ -12,7 +11,7 @@ import { User } from '../types/account-user';
 
 import { io, Socket } from 'socket.io-client';
 
-import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
+import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
 interface RunningService {
   id: number;
@@ -68,14 +67,14 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  const maxReconnectionAttempts = 4;
+  const maxRetries = 4;
   const reconnectDelay = 3000;
   const connectionCheckInterval = 3000;
 
   const fetchServices = async () => {
     setConnectionError(false);
 
-    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
@@ -122,14 +121,12 @@ export default function RunningService() {
   };
 
   const attemptReconnection = async () => {
-    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         const { data } = await apiRoute.post('/api/user');
         await connectSocket(data);
         break;
       } catch (connectError: unknown) {
-        retryCount += 1;
-
         if (connectError instanceof Error) {
           console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
         } else {
@@ -180,13 +177,7 @@ export default function RunningService() {
       ) : (
         <ListContainer>
           {runningService.map((service) => (
-            <ListItem key={service.id}>
-              <div>{/* <p>{service?.name_tec.concat(' (TEC)')}</p> */}</div>
-              <div>
-                <Card service={service} />
-                <ControlButtons service={service} />
-              </div>
-            </ListItem>
+            <Card key={service.id} service={service} />
           ))}
         </ListContainer>
       )}

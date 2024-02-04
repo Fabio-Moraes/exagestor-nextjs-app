@@ -31,6 +31,11 @@ export default function GeneralHistoric() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
+  const sleep = async (ms: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  const reconnectDelay = 5000;
   const maxRetries = 4;
 
   async function fetchServices() {
@@ -44,10 +49,10 @@ export default function GeneralHistoric() {
           baseURL: '/api/admin/manage/general-historic'
         });
 
-        count = maxRetries;
         setServices(response.data);
+        break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(reconnectDelay);
         setConnectionError(true);
       }
     }

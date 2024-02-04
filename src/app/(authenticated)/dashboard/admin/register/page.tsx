@@ -107,10 +107,14 @@ export default function NewRegister() {
         return;
       }
 
-      const maxRetries = 4;
-      let retryCount = 0;
+      const sleep = async (ms: number): Promise<void> => {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      };
 
-      while (retryCount < maxRetries) {
+      const maxRetries = 4;
+      const reconnectDelay = 3000;
+
+      for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
           setFullScreenLoadingValue(
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
@@ -147,8 +151,7 @@ export default function NewRegister() {
           console.error('Erro na requisição POST:', error);
         }
 
-        retryCount++;
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(reconnectDelay);
       }
 
       setModalValue('Não foi possível registrar o funcionário(a) após várias tentativas.');

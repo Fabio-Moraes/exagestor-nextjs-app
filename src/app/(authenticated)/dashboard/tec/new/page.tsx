@@ -119,10 +119,14 @@ export default function NewService() {
         return;
       }
 
-      const maxRetries = 4;
-      let retryCount = 0;
+      const sleep = async (ms: number): Promise<void> => {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      };
 
-      while (retryCount < maxRetries) {
+      const reconnectDelay = 5000;
+      const maxRetries = 4;
+
+      for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
           setFullScreenLoadingValue(
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
@@ -167,7 +171,7 @@ export default function NewService() {
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push('/dashboard/tec/running');
-            return;
+            break;
           } else {
             console.error('Erro:', response.data.error);
           }
@@ -175,8 +179,7 @@ export default function NewService() {
           console.error('Erro na requisição POST:', error);
         }
 
-        retryCount++;
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(reconnectDelay);
       }
 
       setModalValue('Não foi possível iniciar o serviço após várias tentativas.');

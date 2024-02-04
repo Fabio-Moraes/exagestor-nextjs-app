@@ -21,25 +21,31 @@ export default function FinishService() {
   const [services, setServices] = useState<Service[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-  //const [isLoading, setIsLoading] = useState(true);
 
+  const sleep = async (ms: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  const reconnectDelay = 5000;
   const maxRetries = 4;
 
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+        setIsPopupValue(
+          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+        );
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/manage'
         });
 
-        count = maxRetries;
         setServices(response.data);
+        break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(reconnectDelay);
         setConnectionError(true);
       }
     }
@@ -48,12 +54,6 @@ export default function FinishService() {
 
   useEffect(() => {
     fetchServices();
-    const timer = setTimeout(() => {
-      //setIsLoading(false);
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
   }, []);
 
   return (

@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
-//import Cookie from 'js-cookie';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
 import apiRoute from 'services/apiRoute';
@@ -32,7 +31,8 @@ interface CustomError extends Error {
   };
 }
 
-const MAX_RETRIES = 6;
+const maxRetries = 4;
+const reconnectDelay = 3000;
 
 export const Form = () => {
   const [identification, setIdentification] = useState('');
@@ -98,17 +98,23 @@ export const Form = () => {
       return;
     }
 
-    for (let count = 0; count < MAX_RETRIES; count++) {
+    function sleep(ms: number): Promise<void> {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+        setIsPopupValue(
+          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+        );
 
         await apiRoute.post('/api/login', {
           identification: identification,
           password: password
         });
 
-        count = MAX_RETRIES;
         router.refresh();
+        break;
       } catch (error: unknown) {
         if (error instanceof Error) {
           const customError = error as CustomError;
@@ -116,17 +122,16 @@ export const Form = () => {
             const statusCode = customError.response.status;
             console.log('Erro ao fazer login. Código de status:', statusCode);
             if (statusCode === 401) {
-              count = MAX_RETRIES;
               setIsPopupValue(null);
               setInvalidCredentials('Credenciais inválidas');
-              return;
+              break;
             }
           } else {
             console.error('Erro desconhecido:', error);
           }
-          await new Promise((resolve) => setTimeout(resolve, 5000));
+          await sleep(reconnectDelay);
         }
-        if (count + 1 === MAX_RETRIES) {
+        if (retryCount + 1 === maxRetries) {
           setIsPopupValue(null);
           setInvalidCredentials('Conexão perdida. Por favor, tente novamente.');
         }

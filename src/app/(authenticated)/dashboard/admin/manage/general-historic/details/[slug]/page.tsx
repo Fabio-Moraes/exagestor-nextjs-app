@@ -78,8 +78,12 @@ export default function Details({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const router = useRouter();
+  const sleep = async (ms: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
+  const router = useRouter();
+  const reconnectDelay = 5000;
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -101,7 +105,7 @@ export default function Details({ params }: SlugType) {
         setServices(response.data[0]);
         console.log('data', response.data[0]);
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(reconnectDelay);
         setConnectionError(true);
       }
     }

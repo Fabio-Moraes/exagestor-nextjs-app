@@ -14,16 +14,16 @@ const animation = keyframes`
   }
 `;
 
-export const Container = styled.div<{ $animation: boolean }>`
-  background-color: #8bc9a8;
-  ${({ $animation }) =>
+export const Container = styled.div<{ $animation: boolean; $color: string }>`
+  background-color: ${({ $color }) => $color};
+  ${({ $animation, $color }) =>
     $animation &&
     css`
       background: linear-gradient(
         90deg,
-        ${'#8bc9a8'} 0%,
-        ${lighten(0.2, '#8bc9a8')} 50%,
-        ${'#8bc9a8'} 100%
+        ${'$color'} 0%,
+        ${lighten(0.2, $color)} 50%,
+        ${$color} 100%
       );
 
       > div {

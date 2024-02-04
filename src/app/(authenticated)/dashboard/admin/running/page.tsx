@@ -65,14 +65,14 @@ export default function RunningService() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
-  const maxReconnectionAttempts = 4;
+  const maxRetries = 4;
   const reconnectDelay = 3000;
   const connectionCheckInterval = 3000;
 
   const fetchServices = async () => {
     setConnectionError(false);
 
-    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
@@ -118,7 +118,7 @@ export default function RunningService() {
   };
 
   const attemptReconnection = async () => {
-    for (let retryCount = 0; retryCount < maxReconnectionAttempts; retryCount++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await connectSocket();
         break;

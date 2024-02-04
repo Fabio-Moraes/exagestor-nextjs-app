@@ -10,13 +10,16 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
+  border-radius: 7px;
+  font-family: 'OpenSans-SemiBold';
   color: #333;
 
   @media (min-width: 550px) {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     height: 40px;
     line-height: 40px;
-    background-color: #3c7d5d;
-    color: #fff;
+    background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
+    color: #000;
   }
 `;
 

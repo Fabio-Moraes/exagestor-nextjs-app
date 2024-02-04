@@ -39,14 +39,14 @@ export function ControlButtons({ service }: { service: RunningService }) {
 
   async function fetchStatusServices() {
     setRunningLoad(true);
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: `/api/tec/${service?.status === 'active' ? 'pause' : 'start'}`,
           protocol: service?.protocol
         });
 
-        count = maxRetries;
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
@@ -55,14 +55,14 @@ export function ControlButtons({ service }: { service: RunningService }) {
 
   async function fetchCancelServices() {
     setRunningLoad(true);
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/cancel',
           protocol: service?.protocol
         });
 
-        count = maxRetries;
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }

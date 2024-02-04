@@ -2,29 +2,46 @@
 
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.li`
   display: flex;
-  white-space: nowrap;
-  width: 100%;
-  background-color: #ffffff;
-
   flex-direction: column;
-  justify-content: space-between;
+  margin-bottom: 30px;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 7px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+`;
 
+export const Title = styled.div<{ $path: string }>`
+  display: flex;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px;
+  font-size: 18px;
+  background-color: ${({ $path }) => $path};
+  color: #ffffff;
 
-  > div:last-child {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    > p {
-      margin-bottom: 10px;
-      text-align: start;
-      font-size: 15px;
-    }
+  > p {
+    background-color: rgba(255, 255, 255, 0.7);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 80%;
+    border-radius: 7px;
+    padding: 2px 10px;
+    font-family: 'OpenSans-SemiBold';
+    color: #000;
+  }
+`;
 
-    > p:last-child {
-      margin-bottom: 0px;
-    }
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  @media (min-width: 550px) {
+    flex-direction: row;
   }
 `;

@@ -34,16 +34,18 @@ export default function HistoricService() {
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+        setIsPopupValue(
+          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+        );
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/historic'
         });
 
-        count = maxRetries;
         setServices(response.data);
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         setConnectionError(true);

@@ -33,27 +33,33 @@ export default function FinishService({ params }: SlugType) {
   const [servicesData, setServicesData] = useState<ServiceData[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-
   const [isLoading, setIsLoading] = useState(true);
 
+  const sleep = async (ms: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  const reconnectDelay = 5000;
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let count = 0; count < maxRetries; count++) {
-      setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+      setIsPopupValue(
+        retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+      );
       try {
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/select-material',
           protocol: decryptSlug.protocol?.toString()
         });
 
-        count = maxRetries;
         setServicesData(response.data);
+        break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await sleep(reconnectDelay);
         setConnectionError(true);
       }
     }
