@@ -13,9 +13,9 @@ import { Container, ErrorContainer, Title } from './styles';
 const data = [
   { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
   { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
-  { id: '2', description: 'TUBOS DE PVC DE 3 POLEGADAS' },
+  { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
   { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
-  { id: '4', description: 'FIBRAS DE VIDRO PARA ISOLAMENTO' },
+  { id: '2', description: 'Barra de PAD 1/4' }, //<<<<<<< 2
   { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
   { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
   { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },

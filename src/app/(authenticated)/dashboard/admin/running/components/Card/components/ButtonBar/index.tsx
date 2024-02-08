@@ -133,7 +133,7 @@ export function ButtonBar({ service }: { service: Service }) {
             if (service?.status === 'active') {
               setRunningLoad(true);
               await new Promise((resolve) => setTimeout(resolve, 1000));
-              router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`);
+              router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
             }
           }}
         >

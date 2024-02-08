@@ -43,7 +43,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectService, setSelectService } = useContexState();
+  const { selectService, setSelectService, setSelectMaterial } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,12 +62,28 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
       protocol: serviceData?.protocol,
       employeeId: serviceData?.employee_id
     });
-    router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`);
+    router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`);
   }
 
   const toggleItem = (item: string, count: number) => {
     setSelectService((prevItems) => {
       const protocolKey = String(serviceData?.protocol);
+
+      if (item === '2') {
+        console.log('TEST-SELECT-MATERIAL', item);
+        setSelectMaterial((prevItems) => {
+          const protocolKey = String(serviceData?.protocol);
+
+          return {
+            ...prevItems,
+            [protocolKey]: {
+              ...(prevItems[protocolKey] || {}),
+              ['4']: count * 3,
+              ['2']: count * 2
+            }
+          };
+        });
+      }
 
       return {
         ...prevItems,

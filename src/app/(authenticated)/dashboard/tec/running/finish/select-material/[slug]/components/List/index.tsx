@@ -58,7 +58,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
   async function fetchConcludedMaterial() {
     const encryptSlug = encryptObject({ protocol: serviceData?.protocol });
-    router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`);
+    router.push(`/dashboard/tec/running/finish/observation-box/${encryptSlug}`);
   }
 
   const toggleItem = (item: string, count: number) => {

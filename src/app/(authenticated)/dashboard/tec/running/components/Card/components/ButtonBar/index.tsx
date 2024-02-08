@@ -84,7 +84,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
           onClick={() =>
             service?.status !== 'analysis' &&
             service?.status !== 'paused' &&
-            router.push(`/dashboard/tec/running/finish/select-material/${encryptSlug}`)
+            router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`)
           }
         >
           <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
