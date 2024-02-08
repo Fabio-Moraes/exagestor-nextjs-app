@@ -13,7 +13,7 @@ import { Container, ErrorContainer, Title } from './styles';
 const data = [
   { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
   { id: '1', description: 'READQ DE POSTES (EQPTOS MEC NO POSTE)' },
-  { id: '2', description: 'LANÇ DE CORD' },
+  { id: '2', description: 'INSTALAÇÃO DE PADS PARA PROTEÇÃO DE REDE' }, //<<<<<
   { id: '3', description: 'RETENC CORD/ CBS' },
   { id: '4', description: 'RET CORD DO POSTE' },
   { id: '5', description: 'MANUT PODA DE GALHOS COM REMOCAO-F' },
