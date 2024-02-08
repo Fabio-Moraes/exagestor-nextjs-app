@@ -34,7 +34,6 @@ export const ListItem = styled.li`
   font-size: 18px;
   margin-bottom: 30px;
   overflow: hidden;
-
   border-radius: 7px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 

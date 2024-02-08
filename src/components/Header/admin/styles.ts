@@ -40,12 +40,12 @@ export const ProfileUser = styled.div`
     outline: 0;
     text-align: start;
     white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 15px;
     margin-bottom: 5px;
     font-family: 'OpenSans-SemiBold';
     color: #111111;
     overflow: hidden;
-    text-overflow: ellipsis;
     height: 20px;
     width: 100%;
   }

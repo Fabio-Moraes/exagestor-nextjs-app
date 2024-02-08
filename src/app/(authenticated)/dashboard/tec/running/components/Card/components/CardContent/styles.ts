@@ -23,12 +23,8 @@ export const Container = styled.div<{ $color: string }>`
       text-align: start;
       font-size: 15px;
       white-space: normal;
-
       font-family: 'OpenSans-SemiBold';
-
-      //background-color: #fbf4cf;
       background-color: ${({ $color }) => $color};
-      //border-bottom: 2px solid #000;
       border-radius: 3px;
     }
 

@@ -12,7 +12,7 @@ export const Container = styled.li`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-export const Title = styled.div<{ $path: string }>`
+export const CardHeader = styled.div<{ $path: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@ export const Title = styled.div<{ $path: string }>`
   color: #ffffff;
 
   > p {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: #ffffff;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

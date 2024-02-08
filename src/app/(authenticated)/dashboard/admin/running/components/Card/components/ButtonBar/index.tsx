@@ -9,8 +9,8 @@ import apiRoute from 'services/apiRoute';
 
 import checkSvg from './assets/svg/check.svg';
 import closeSvg from './assets/svg/close.svg';
+import docSvg from './assets/svg/doc.svg';
 import pauseSvg from './assets/svg/pause.svg';
-import pinSvg from './assets/svg/pin.svg';
 import playSvg from './assets/svg/play.svg';
 import refreshSvg from './assets/svg/refresh.svg';
 
@@ -32,11 +32,11 @@ interface Service {
   name_tec: string;
 }
 
-export function ControlButtons({ service }: { service: Service }) {
+export function ButtonBar({ service }: { service: Service }) {
   const [runningLoad, setRunningLoad] = useState(false);
 
   const router = useRouter();
-  const maxRetries = 4;
+  const maxRetries = 5;
 
   async function fetchStatusServices() {
     setRunningLoad(true);
@@ -129,10 +129,13 @@ export function ControlButtons({ service }: { service: Service }) {
             opacity: runningLoad || service?.status === 'paused' ? 0.3 : 1
           }}
           rel="preload"
-          onClick={() =>
-            service?.status === 'active' &&
-            router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`)
-          }
+          onClick={async () => {
+            if (service?.status === 'active') {
+              setRunningLoad(true);
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+              router.push(`/dashboard/admin/running/finish/select-material/${encryptSlug}`);
+            }
+          }}
         >
           <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
           <p>Finalizar</p>
@@ -140,13 +143,13 @@ export function ControlButtons({ service }: { service: Service }) {
         {buttonState}
         <button
           style={{
-            opacity: 0.3
+            opacity: 1
           }}
           rel="preload"
           onClick={() => {}}
         >
-          <Image priority loading="eager" src={pinSvg} alt="play" width="50" height="50" />
-          <p>{'Fixar'}</p>
+          <Image priority loading="eager" src={docSvg} alt="play" width="50" height="50" />
+          <p>Pdf</p>
         </button>
         <button rel="preload" onClick={() => fetchCancelServices()}>
           <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />

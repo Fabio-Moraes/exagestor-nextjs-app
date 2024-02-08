@@ -21,7 +21,7 @@ export const Container = styled.div<{ $animation: boolean; $color: string }>`
     css`
       background: linear-gradient(
         90deg,
-        ${'$color'} 0%,
+        ${$color} 0%,
         ${lighten(0.2, $color)} 50%,
         ${$color} 100%
       );

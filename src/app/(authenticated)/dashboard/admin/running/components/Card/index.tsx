@@ -1,7 +1,8 @@
-import { ControlButtons } from './components/ControlButtons';
-import { Info } from './components/Info';
+import { ButtonBar } from './components/ButtonBar';
+import { CardContent } from './components/CardContent';
+import { CardHeader } from './components/CardHeader';
 
-import { Wrapper, Container, Title } from './styles';
+import { Wrapper, Container } from './styles';
 
 interface RunningService {
   id: number;
@@ -19,22 +20,13 @@ interface RunningService {
   name_tec: string;
 }
 
-const status = {
-  analysis: '🔍 EM ANÁLISE',
-  active: '🚧 EM ANDAMENTO',
-  paused: '⏸️ PAUSADO'
-} as { [key: string]: string };
-
 export function Card({ service }: { service: RunningService }) {
   return (
     <Container>
-      <Title $path={service?.status === 'analysis' ? '#e9c80f' : ' #3c7d5d'}>
-        <p>TÉCNICO: 👤 {service?.name_tec.toLocaleUpperCase()}</p>
-        <p>SERVIÇO: {status[service?.status]}</p>
-      </Title>
+      <CardHeader service={service} />
       <Wrapper>
-        <Info service={service} />
-        <ControlButtons service={service} />
+        <CardContent service={service} />
+        <ButtonBar service={service} />
       </Wrapper>
     </Container>
   );

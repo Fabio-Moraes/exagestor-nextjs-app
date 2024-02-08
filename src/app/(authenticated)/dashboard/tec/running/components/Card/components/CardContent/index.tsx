@@ -16,7 +16,7 @@ interface RunningService {
   name_tec: string;
 }
 
-export function Info({ service }: { service: RunningService }) {
+export function CardContent({ service }: { service: RunningService }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();

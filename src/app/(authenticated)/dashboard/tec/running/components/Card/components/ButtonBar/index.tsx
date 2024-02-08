@@ -31,7 +31,7 @@ interface RunningService {
   name_tec: string;
 }
 
-export function ControlButtons({ service }: { service: RunningService }) {
+export function ButtonBar({ service }: { service: RunningService }) {
   const [runningLoad, setRunningLoad] = useState(false);
 
   const router = useRouter();

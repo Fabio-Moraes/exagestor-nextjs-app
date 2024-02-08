@@ -24,7 +24,6 @@ export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  //background-color: #8bc9a8;
   background-image: linear-gradient(to top, #8bc9a8, #dce6dc);
   border-radius: 7px;
   flex-direction: column;

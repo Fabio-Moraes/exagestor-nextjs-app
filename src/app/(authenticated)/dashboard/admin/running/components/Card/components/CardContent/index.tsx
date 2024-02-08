@@ -16,7 +16,7 @@ interface RunningService {
   name_tec: string;
 }
 
-export function Info({ service }: { service: RunningService }) {
+export function CardContent({ service }: { service: RunningService }) {
   function formatDate(date: string) {
     const now = new Date(date);
     const year = now.getFullYear();
@@ -29,32 +29,25 @@ export function Info({ service }: { service: RunningService }) {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
-  const status = {
-    analysis: '🔍 Em análise',
-    active: '🚧 Em andamento',
-    paused: '⏸️ Pausado'
-  } as { [key: string]: string };
-
   const createdAt = formatDate(service.created_at);
 
   return (
-    <Container>
+    <Container $color={service?.status === 'analysis' ? '#fbf4cf' : '#D8E5DF'}>
       <div>
-        <p>Solicitante: {service?.client_name}</p>
-        <p>Cidade: {service?.city}</p>
-        <p>Endereço de origem do serviço: {service?.address}</p>
-        <p>Nomenclatura de caixa ou cabo: {service?.nomenclature}</p>
-        <p>Classe: {service?.classification}</p>
-        <p>Protocolo: {service?.protocol}</p>
-        <p>Início: {createdAt}</p>
+        <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
+        <p>CIDADE: {service?.city.toUpperCase()}</p>
+        <p>ENDEREÇO DE ORIGEM DO SERVIÇO: {service?.address.toUpperCase()}</p>
+        <p>NOMENCLATURA DE CAIXA OU CABO: {service?.nomenclature.toUpperCase()}</p>
+        <p>CLASSE: {service?.classification}</p>
+        <p>PROTOCOLO: {service?.protocol}</p>
+        <p>INICIADO EM: {createdAt}</p>
         <p>
-          Iniciado por:
+          INICIADO POR:
           {service?.name_admin
-            ? ` ${service?.name_admin.concat(' (ADMIN)')}`
-            : ` ${service?.name_tec.concat(' (TEC)')}`}
+            ? ` ${service?.name_admin.toUpperCase().concat(' (ADMIN)')}`
+            : ` ${service?.name_tec.toUpperCase().concat(' (TEC)')}`}
         </p>
-        <p>Status do serviço: {status[service?.status]}</p>
-        <p>Atualização de status: {service?.update_count}</p>
+        <p>ATUALIZAÇÃO DE STATUS: {service?.update_count}</p>
       </div>
     </Container>
   );

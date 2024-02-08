@@ -12,7 +12,7 @@ export const Container = styled.li`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-export const Title = styled.div<{ $path: string }>`
+export const CardHeader = styled.div<{ $path: string }>`
   display: flex;
   align-items: start;
   justify-content: center;
@@ -22,7 +22,7 @@ export const Title = styled.div<{ $path: string }>`
   background-color: ${({ $path }) => $path};
 
   > p {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #fff;
     border-radius: 3px;
     padding: 5px;
     font-family: 'OpenSans-SemiBold';
