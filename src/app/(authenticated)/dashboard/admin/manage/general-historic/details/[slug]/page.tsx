@@ -52,7 +52,7 @@ export default function Details({ params }: SlugType) {
   const dataListService = [
     { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
     { id: '1', description: 'READQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '2', description: 'LANÇ DE CORD' },
+    { id: '2', description: 'INSTALAÇÃO DE PADS PARA PROTEÇÃO DE REDE' }, //<<<<<
     { id: '3', description: 'RETENC CORD/ CBS' },
     { id: '4', description: 'RET CORD DO POSTE' },
     { id: '5', description: 'MANUT PODA DE GALHOS COM REMOCAO-F' },
@@ -64,9 +64,9 @@ export default function Details({ params }: SlugType) {
   const dataListMaterial = [
     { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
     { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
-    { id: '2', description: 'TUBOS DE PVC DE 3 POLEGADAS' },
+    { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
     { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
-    { id: '4', description: 'FIBRAS DE VIDRO PARA ISOLAMENTO' },
+    { id: '2', description: 'Barra de PAD 1/4' }, //<<<<<<< 2
     { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
     { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
     { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
