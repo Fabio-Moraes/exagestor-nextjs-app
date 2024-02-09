@@ -271,7 +271,6 @@ export default function Details({ params }: SlugType) {
                           <div>
                             <span>
                               {dataListMaterial.find((item) => item.id === key)?.description}
-                              {dataListMaterial.find((item) => item.id === key)?.description}
                             </span>
                           </div>
                           <div>
@@ -303,7 +302,6 @@ export default function Details({ params }: SlugType) {
                         <div key={key}>
                           <div>
                             <span>
-                              {dataListService.find((item) => item.id === key)?.description}
                               {dataListService.find((item) => item.id === key)?.description}
                             </span>
                           </div>

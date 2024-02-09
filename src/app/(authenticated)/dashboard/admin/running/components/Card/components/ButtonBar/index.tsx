@@ -130,7 +130,7 @@ export function ButtonBar({ service }: { service: Service }) {
           }}
           rel="preload"
           onClick={async () => {
-            if (service?.status === 'active') {
+            if (service?.status !== 'paused') {
               setRunningLoad(true);
               await new Promise((resolve) => setTimeout(resolve, 1000));
               router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
