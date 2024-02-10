@@ -7,7 +7,7 @@ interface Decoded {
   user?: {
     id: number;
     name: string;
-    role: string;
+    role: 'admin' | 'tec' | 'almox';
   };
 }
 
@@ -17,25 +17,21 @@ export default async function middleware(request: NextRequest) {
 
   const { user }: Decoded = TOKEN ? await jwtDecode(TOKEN) : {};
 
+  const redirect = {
+    admin: '/dashboard/admin/running',
+    tec: '/dashboard/tec/new',
+    almox: '/dashboard/almox/stock'
+  };
+
   try {
     await jwtVerify(TOKEN ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
 
-    if (user?.role === 'admin' && request.nextUrl.pathname.includes('tec')) {
-      return NextResponse.redirect(new URL('/dashboard/admin/running', request.url));
+    if (user && !request.nextUrl.pathname.includes(user.role)) {
+      return NextResponse.redirect(new URL(redirect[user.role], request.url));
     }
 
-    if (user?.role === 'tec' && request.nextUrl.pathname.includes('admin')) {
-      return NextResponse.redirect(new URL('/dashboard/tec/new', request.url));
-    }
-
-    if (['/', '/signin'].includes(request.nextUrl.pathname)) {
-      if (user?.role === 'admin') {
-        return NextResponse.redirect(new URL('/dashboard/admin/running', request.url));
-      }
-
-      if (user?.role === 'tec') {
-        return NextResponse.redirect(new URL('/dashboard/tec/new', request.url));
-      }
+    if (user && ['/', '/signin'].includes(request.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL(redirect[user.role], request.url));
     }
 
     return NextResponse.next();

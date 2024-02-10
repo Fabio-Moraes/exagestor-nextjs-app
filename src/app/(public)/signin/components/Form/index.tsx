@@ -104,6 +104,7 @@ export const Form = () => {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
+        console.log('LOG: RETRY');
         setIsPopupValue(
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );

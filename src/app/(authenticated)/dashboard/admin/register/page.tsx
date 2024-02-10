@@ -18,6 +18,7 @@ export default function NewRegister() {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [cpfOrCnpj, setCpfOrCnpj] = useState('CNPJ');
   const [name, setName] = useState('');
+  const [accountType, setAccountType] = useState('TEC');
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
@@ -124,7 +125,8 @@ export default function NewRegister() {
             baseURL: '/api/admin/register',
             name: name,
             password: password,
-            identification: identification
+            identification: identification,
+            accountType: accountType
           });
 
           const { status } = response.data;
@@ -223,22 +225,46 @@ export default function NewRegister() {
         />
 
         <div>
-          <CheckboxButton type="button" $checked={true} onClick={() => {}}>
+          <CheckboxButton
+            type="button"
+            $checked={accountType === 'TEC'}
+            onClick={() => {
+              setAccountType('TEC');
+            }}
+          >
             <div />
             <span>TEC</span>
           </CheckboxButton>
 
-          <CheckboxButton type="button" $checked={false} onClick={() => {}}>
+          <CheckboxButton
+            type="button"
+            $checked={accountType === 'DIR'}
+            onClick={() => {
+              setAccountType('DIR');
+            }}
+          >
             <div />
             <span>DIR</span>
           </CheckboxButton>
 
-          <CheckboxButton type="button" $checked={false} onClick={() => {}}>
+          <CheckboxButton
+            type="button"
+            $checked={accountType === 'ALMOX'}
+            onClick={() => {
+              setAccountType('ALMOX');
+            }}
+          >
             <div />
             <span>ALMOX</span>
           </CheckboxButton>
 
-          <CheckboxButton type="button" $checked={false} onClick={() => {}}>
+          <CheckboxButton
+            type="button"
+            $checked={accountType === 'COP'}
+            onClick={() => {
+              setAccountType('COP');
+            }}
+          >
             <div />
             <span>COP</span>
           </CheckboxButton>
