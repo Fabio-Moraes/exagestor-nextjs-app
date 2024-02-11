@@ -84,7 +84,7 @@ export default function NewStock() {
             materials.map((item, index) => (
               <div key={index}>
                 <div>
-                  <span>{item.product_name}</span>
+                  <span>{item.product_name.toLocaleUpperCase()}</span>
                 </div>
                 <div>
                   <span>{item.quantity_value}</span>
