@@ -18,22 +18,22 @@ export function TopMenu() {
   return (
     <Container>
       <Button
-        $path={['/dashboard/admin/running'].includes(pathname)}
+        $path={['/dashboard/almox/stock'].includes(pathname)}
         rel="preload"
-        onClick={() => router.push(`/dashboard/admin/running`)}
+        onClick={() => router.push(`/dashboard/almox/stock`)}
       >
         <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
         <span>
-          Em
+          Gerenciar
           <br />
-          Execução
+          Estoque
         </span>
       </Button>
 
       <Button
-        $path={['/dashboard/admin/register', '/'].includes(pathname)}
+        $path={['/dashboard/almox/register', '/'].includes(pathname)}
         rel="preload"
-        onClick={() => router.push(`/dashboard/admin/register`)}
+        onClick={() => router.push(`/dashboard/almox/register`)}
       >
         <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
         <span>
@@ -44,9 +44,10 @@ export function TopMenu() {
       </Button>
 
       <Button
+        style={{ opacity: 0 }}
         $path={['/dashboard/admin/manage'].includes(pathname)}
         rel="preload"
-        onClick={() => router.push(`/dashboard/admin/manage`)}
+        onClick={() => {}}
       >
         <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
         <span>
@@ -54,7 +55,7 @@ export function TopMenu() {
         </span>
       </Button>
 
-      <Button rel="preload" onClick={() => router.push('/')}>
+      <Button style={{ opacity: 0 }} rel="preload" onClick={() => {}}>
         <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
         <span>
           Mais

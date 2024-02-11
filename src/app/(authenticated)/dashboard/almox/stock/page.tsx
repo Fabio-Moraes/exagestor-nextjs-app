@@ -1,89 +1,125 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {
-  AddButton,
-  Container,
-  Form,
-  Input,
-  InputLabel,
-  ItemList,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
-  Title
-} from './styles';
+import { FullScreenLoading } from 'components/FullScreenLoading';
+import apiRoute from 'services/apiRoute';
 
-type Item = {
-  name: string;
-  quantity: number;
-  type: string;
-};
+import { Container, Table, Title, ErrorContainer } from './styles';
+
+interface Materials {
+  id: number;
+  product_name: string;
+  unit_type: string;
+  quantity_value: string;
+  created_at: string;
+}
 
 export default function NewStock() {
-  const [items, setItems] = useState<Item[]>([]);
-  const [productName, setProductName] = useState<string>('');
-  const [quantity, setQuantity] = useState<number>(0);
-  const [type, setType] = useState<string>('');
+  const [materials, setMaterials] = useState<Materials[]>([]);
+  const [connectionError, setConnectionError] = useState(false);
+  const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const addItem = () => {
-    if (productName && quantity > 0 && type) {
-      const newItem: Item = {
-        name: productName,
-        quantity: quantity,
-        type: type
-      };
-      setItems([...items, newItem]);
-      setProductName('');
-      setQuantity(0);
-      setType('');
-    } else {
-      alert('Por favor, preencha todos os campos');
-    }
+  const sleep = async (ms: number): Promise<void> => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   };
+
+  const reconnectDelay = 5000;
+  const maxRetries = 4;
+
+  async function fetchServices() {
+    setConnectionError(false);
+
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+      try {
+        setIsPopupValue(
+          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+        );
+
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/almox/stock'
+        });
+
+        setMaterials(response.data);
+        break;
+      } catch (error) {
+        await sleep(reconnectDelay);
+        setConnectionError(true);
+      }
+    }
+    setIsPopupValue(null);
+  }
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   return (
     <Container>
       <Title>Gerenciamento de Almoxarifado</Title>
-      <Form>
-        <InputLabel>Nome do Produto</InputLabel>
-        <Input
-          type="text"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-        />
-        <InputLabel>Quantidade</InputLabel>
-        <Input
-          type="number"
-          value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
-        />
-        <InputLabel>Tipo</InputLabel>
-        <Input type="text" value={type} onChange={(e) => setType(e.target.value)} />
-        <AddButton onClick={addItem}>Adicionar Item</AddButton>
-      </Form>
-      <ItemList>
-        <Title>Itens no Almoxarifado</Title>
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+      {connectionError ? (
+        <ErrorContainer>
+          <span>
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
+            favor, tente novamente.
+          </span>
+        </ErrorContainer>
+      ) : (
         <Table>
-          <thead>
-            <TableRow>
-              <TableHeader>Nome</TableHeader>
-              <TableHeader>Quantidade</TableHeader>
-              <TableHeader>Tipo</TableHeader>
-            </TableRow>
-          </thead>
-          <tbody>
-            {items.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>{item.type}</TableCell>
-              </TableRow>
+          <div>
+            <div>
+              <span>Materiais</span>
+            </div>
+            <div>
+              <span>Qtd</span>
+            </div>
+            <div>
+              <span>Tipo</span>
+            </div>
+            <div>
+              <span>Código</span>
+            </div>
+          </div>
+          {materials &&
+            materials.map((item, index) => (
+              <div key={index}>
+                <div>
+                  <span>{item.product_name}</span>
+                </div>
+                <div>
+                  <span>{item.quantity_value}</span>
+                </div>
+                <div>
+                  <span>{item.unit_type}</span>
+                </div>
+                <div>
+                  <span>{item.id}</span>
+                </div>
+              </div>
             ))}
-          </tbody>
         </Table>
-      </ItemList>
+      )}
     </Container>
   );
 }
+
+/* 
+<Table>
+  <thead>
+    <TableRow>
+      <TableHeader>Nome</TableHeader>
+      <TableHeader>Quantidade</TableHeader>
+      <TableHeader>Tipo</TableHeader>
+    </TableRow>
+  </thead>
+  <tbody>
+    {items.map((item, index) => (
+      <TableRow key={index}>
+        <TableCell>{item.name}</TableCell>
+        <TableCell>{item.quantity}</TableCell>
+        <TableCell>{item.type}</TableCell>
+      </TableRow>
+    ))}
+  </tbody>
+</Table>
+*/

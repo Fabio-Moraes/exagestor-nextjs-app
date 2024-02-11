@@ -100,7 +100,7 @@ export const Table = styled.div`
     }
 
     > div {
-      min-width: 55px;
+      min-width: 63px;
       padding: 10px;
       border-left: 2px solid #000;
       background-color: #8bc9a8;
@@ -133,7 +133,7 @@ export const Table = styled.div`
     }
 
     div {
-      min-width: 55px;
+      min-width: 63px;
       border-left: 2px solid #000;
       display: flex;
       justify-content: center;

@@ -264,6 +264,9 @@ export default function Details({ params }: SlugType) {
                       <div>
                         <span>Tipo</span>
                       </div>
+                      <div>
+                        <span>Código</span>
+                      </div>
                     </div>
                     {objListMaterial &&
                       Object.keys(objListMaterial).map((key: string) => (
@@ -279,6 +282,9 @@ export default function Details({ params }: SlugType) {
                           <div>
                             <span>Unid.</span>
                           </div>
+                          <div>
+                            <span>00000</span>
+                          </div>
                         </div>
                       ))}
                   </Table>
@@ -293,9 +299,6 @@ export default function Details({ params }: SlugType) {
                       <div>
                         <span>Qtd</span>
                       </div>
-                      <div>
-                        <span>Tipo</span>
-                      </div>
                     </div>
                     {objListService &&
                       Object.keys(objListService).map((key: string) => (
@@ -307,9 +310,6 @@ export default function Details({ params }: SlugType) {
                           </div>
                           <div>
                             <span>{objListService[key]}</span>
-                          </div>
-                          <div>
-                            <span>Unid.</span>
                           </div>
                         </div>
                       ))}

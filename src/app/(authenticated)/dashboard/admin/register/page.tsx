@@ -240,7 +240,7 @@ export default function NewRegister() {
             type="button"
             $checked={accountType === 'DIR'}
             onClick={() => {
-              setAccountType('DIR');
+              //setAccountType('DIR');
             }}
           >
             <div />
@@ -262,7 +262,7 @@ export default function NewRegister() {
             type="button"
             $checked={accountType === 'COP'}
             onClick={() => {
-              setAccountType('COP');
+              //setAccountType('COP');
             }}
           >
             <div />

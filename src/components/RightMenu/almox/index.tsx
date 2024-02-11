@@ -4,10 +4,8 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import Image from 'components/Vercel/Image';
 
-import add from './assets/svg/add.svg';
+import home from './assets/svg/add.svg';
 import execution from './assets/svg/execution.svg';
-import manage from './assets/svg/manage.svg';
-import menu from './assets/svg/menu.svg';
 
 import { Button, Container, Wrapper } from './styles';
 
@@ -20,8 +18,8 @@ export function RightMenu() {
       <Wrapper>
         <div>
           <Button
-            $path={['/dashboard/admin/running'].includes(pathname)}
-            onClick={() => router.push('/dashboard/admin/running')}
+            $path={['/dashboard/almox/stock'].includes(pathname)}
+            onClick={() => router.push('/dashboard/almox/stock')}
             rel="preload"
           >
             <Image
@@ -32,43 +30,18 @@ export function RightMenu() {
               width="25"
               height="25"
             />
-            <span>Em Execução</span>
+            <span>Gerenciar Estoque</span>
           </Button>
         </div>
 
         <div>
           <Button
-            $path={['/dashboard/admin/register', '/'].includes(pathname)}
-            onClick={() => router.push('/dashboard/admin/register')}
+            $path={['/dashboard/almox/register', '/'].includes(pathname)}
+            onClick={() => router.push('/dashboard/almox/register')}
             rel="preload"
           >
-            <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
+            <Image priority loading="eager" src={home} alt="Add" width="25" height="25" />
             <span>Novo Resgistro</span>
-          </Button>
-        </div>
-
-        <div>
-          <Button
-            $path={['/dashboard/admin/manage'].includes(pathname)}
-            onClick={() => router.push('/dashboard/admin/manage')}
-            rel="preload"
-          >
-            <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
-            <span>Gerenciar Equipe</span>
-          </Button>
-        </div>
-
-        <div>
-          <Button>
-            <Image
-              priority
-              loading="eager"
-              src={menu}
-              alt="Clipboard"
-              width="25"
-              height="25"
-            />
-            <span>Materiais Utilizados</span>
           </Button>
         </div>
       </Wrapper>
