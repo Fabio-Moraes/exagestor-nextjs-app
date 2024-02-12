@@ -15,6 +15,7 @@ import { Button, CheckboxButton, Container, FormContainer, Input, Title } from '
 export default function NewRegister() {
   const [productName, setProductName] = useState('');
   const [productCode, setProductCode] = useState('');
+  const [productBatch, setProductBatch] = useState('');
   const [quantityValue, setQuantityValue] = useState('');
   const [unitType, setUnitType] = useState('UNID');
 
@@ -71,9 +72,10 @@ export default function NewRegister() {
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/register',
             productName: productName,
+            productCode: productCode,
+            productBatch: productBatch,
             quantityValue: quantityValue,
-            unitType: unitType,
-            productCode: productCode
+            unitType: unitType
           });
 
           const { status } = response.data;
@@ -106,24 +108,26 @@ export default function NewRegister() {
     }
   };
 
-  const handleQuantityValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+  const handleQuantityValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
 
-    if (/^\d*$/.test(inputValue) && inputValue.length <= 9) {
+    if (/^\d*$/.test(inputValue) && inputValue.length <= 10) {
       setQuantityValue(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
-    } else {
-      console.error('Por favor, insira apenas números inteiros ou zero.');
     }
   };
 
-  const handleProductCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
+  const handleProductCode = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
 
-    if (/^\d*$/.test(inputValue) && inputValue.length <= 9) {
+    if (/^\d*$/.test(inputValue) && inputValue.length <= 10) {
       setProductCode(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
-    } else {
-      console.error('Por favor, insira apenas números inteiros ou zero.');
     }
+  };
+
+  const handleProductBatch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value.replace(/\s/g, '');
+
+    if (inputValue.length <= 10) setProductBatch(inputValue);
   };
 
   return (
@@ -140,7 +144,13 @@ export default function NewRegister() {
         />
 
         <label htmlFor="Lote">Lote:</label>
-        <Input type="text" id="Nome" placeholder="Lote" value={''} onChange={() => {}} />
+        <Input
+          type="text"
+          id="Nome"
+          placeholder="Lote"
+          value={productBatch}
+          onChange={handleProductBatch}
+        />
 
         <label htmlFor="Código">Código:</label>
         <Input
