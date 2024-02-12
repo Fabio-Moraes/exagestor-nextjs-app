@@ -111,7 +111,7 @@ export default function NewRegister() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
-    if (/^\d*$/.test(inputValue) && inputValue.length <= 6) {
+    if (/^\d*$/.test(inputValue) && inputValue.length <= 9) {
       setQuantityValue(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
     } else {
       console.error('Por favor, insira apenas números inteiros ou zero.');
@@ -164,24 +164,25 @@ export default function NewRegister() {
 
           <CheckboxButton
             type="button"
-            $checked={unitType === 'PAC'}
-            onClick={() => {
-              setUnitType('PAC');
-            }}
-          >
-            <div />
-            <span>Pac.</span>
-          </CheckboxButton>
-
-          <CheckboxButton
-            type="button"
             $checked={unitType === 'M'}
             onClick={() => {
               setUnitType('M');
             }}
           >
             <div />
-            <span>m.</span>
+            <span>Metro</span>
+          </CheckboxButton>
+
+          <CheckboxButton
+            style={{ opacity: 0 }}
+            type="button"
+            $checked={unitType === 'PAC'}
+            onClick={() => {
+              //setUnitType('PAC');
+            }}
+          >
+            <div />
+            <span>.....</span>
           </CheckboxButton>
         </div>
 
