@@ -14,7 +14,7 @@ import { Button, CheckboxButton, Container, FormContainer, Input, Title } from '
 
 export default function NewRegister() {
   const [productName, setProductName] = useState('');
-  const [productBatch, setProductBatch] = useState('');
+  //const [productBatch, setProductBatch] = useState('');
   const [quantityValue, setQuantityValue] = useState('');
   const [unitType, setUnitType] = useState('UNID');
 
@@ -133,22 +133,10 @@ export default function NewRegister() {
         />
 
         <label htmlFor="Lote">Lote:</label>
-        <Input
-          type="text"
-          id="Nome"
-          placeholder="Lote"
-          value={productBatch}
-          onChange={() => {}}
-        />
+        <Input type="text" id="Nome" placeholder="Lote" value={''} onChange={() => {}} />
 
         <label htmlFor="Código">Código:</label>
-        <Input
-          type="text"
-          id="Nome"
-          placeholder="Código"
-          value={productBatch}
-          onChange={() => {}}
-        />
+        <Input type="text" id="Nome" placeholder="Código" value={''} onChange={() => {}} />
 
         <label htmlFor="Quantidade">Quantidade:</label>
         <Input
