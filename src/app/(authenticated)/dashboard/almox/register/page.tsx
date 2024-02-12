@@ -116,6 +116,16 @@ export default function NewRegister() {
     }
   };
 
+  const handleProductCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    if (/^\d*$/.test(inputValue) && inputValue.length <= 9) {
+      setProductCode(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
+    } else {
+      console.error('Por favor, insira apenas números inteiros ou zero.');
+    }
+  };
+
   return (
     <Container>
       <Title>Novo Produto</Title>
@@ -138,7 +148,7 @@ export default function NewRegister() {
           id="Nome"
           placeholder="Código"
           value={productCode}
-          onChange={(e) => setProductCode(e.target.value)}
+          onChange={handleProductCode}
         />
 
         <label htmlFor="Quantidade">Quantidade:</label>
