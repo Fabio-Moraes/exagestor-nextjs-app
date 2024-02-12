@@ -10,6 +10,7 @@ interface Materials {
   id: number;
   product_name: string;
   unit_type: string;
+  product_code: string;
   quantity_value: string;
   created_at: string;
 }
@@ -93,7 +94,7 @@ export default function NewStock() {
                   <span>{item.unit_type}</span>
                 </div>
                 <div>
-                  <span>{item.id}</span>
+                  <span>{item.product_code}</span>
                 </div>
               </div>
             ))}
