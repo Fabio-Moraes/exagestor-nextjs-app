@@ -14,7 +14,7 @@ import { Button, CheckboxButton, Container, FormContainer, Input, Title } from '
 
 export default function NewRegister() {
   const [productName, setProductName] = useState('');
-  //const [productBatch, setProductBatch] = useState('');
+  const [productCode, setProductCode] = useState('');
   const [quantityValue, setQuantityValue] = useState('');
   const [unitType, setUnitType] = useState('UNID');
 
@@ -38,10 +38,6 @@ export default function NewRegister() {
       document.removeEventListener('click', handleClickOutside);
     };
   });
-
-  const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductName(e.target.value);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +72,8 @@ export default function NewRegister() {
             baseURL: '/api/almox/register',
             productName: productName,
             quantityValue: quantityValue,
-            unitType: unitType
+            unitType: unitType,
+            productCode: productCode
           });
 
           const { status } = response.data;
@@ -109,7 +106,7 @@ export default function NewRegister() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQuantityValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
     if (/^\d*$/.test(inputValue) && inputValue.length <= 9) {
@@ -129,21 +126,27 @@ export default function NewRegister() {
           id="Nome"
           placeholder="Nome do Produto"
           value={productName}
-          onChange={handleName}
+          onChange={(e) => setProductName(e.target.value)}
         />
 
         <label htmlFor="Lote">Lote:</label>
         <Input type="text" id="Nome" placeholder="Lote" value={''} onChange={() => {}} />
 
         <label htmlFor="Código">Código:</label>
-        <Input type="text" id="Nome" placeholder="Código" value={''} onChange={() => {}} />
+        <Input
+          type="text"
+          id="Nome"
+          placeholder="Código"
+          value={productCode}
+          onChange={(e) => setProductCode(e.target.value)}
+        />
 
         <label htmlFor="Quantidade">Quantidade:</label>
         <Input
           type="text"
           placeholder="Quantidade"
           value={quantityValue || 0}
-          onChange={handleInputChange}
+          onChange={handleQuantityValue}
         />
 
         <div>
