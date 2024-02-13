@@ -4,7 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import apiRoute from 'services/apiRoute';
 
-import { Container, Table, Title, ErrorContainer } from './styles';
+import {
+  Container,
+  Table,
+  TableHeader,
+  TableRow,
+  Title,
+  CheckboxButton,
+  ErrorContainer
+} from './styles';
 
 interface Materials {
   id: number;
@@ -17,8 +25,10 @@ interface Materials {
 
 export default function NewStock() {
   const [materials, setMaterials] = useState<Materials[]>([]);
+  const [selectedTableRows, setSelectedTableRows] = useState<number[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  const [checkbox, setCheckbox] = useState('manageStock');
 
   const sleep = async (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -54,9 +64,17 @@ export default function NewStock() {
     fetchServices();
   }, []);
 
+  const toggleRowSelection = (id: number) => {
+    if (selectedTableRows.includes(id)) {
+      setSelectedTableRows(selectedTableRows.filter((rowId) => rowId !== id));
+    } else {
+      setSelectedTableRows([...selectedTableRows, id]);
+    }
+  };
+
   return (
     <Container>
-      <Title>Gerenciamento de Almoxarifado</Title>
+      <Title>Almoxarifado</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
@@ -66,39 +84,68 @@ export default function NewStock() {
           </span>
         </ErrorContainer>
       ) : (
-        <Table>
-          <div>
-            <div>
-              <span>Materiais</span>
-            </div>
-            <div>
-              <span>Qtd</span>
-            </div>
-            <div>
-              <span>Tipo</span>
-            </div>
-            <div>
-              <span>Código</span>
-            </div>
-          </div>
-          {materials &&
-            materials.map((item, index) => (
-              <div key={index}>
-                <div>
-                  <span>{item.product_name.toLocaleUpperCase()}</span>
-                </div>
-                <div>
-                  <span>{item.quantity_value}</span>
-                </div>
-                <div>
-                  <span>{item.unit_type}</span>
-                </div>
-                <div>
-                  <span>{item.product_code}</span>
-                </div>
+        <>
+          <CheckboxButton
+            type="button"
+            $checked={checkbox === 'selectMaterial'}
+            onClick={() => {
+              setCheckbox('selectMaterial');
+            }}
+          >
+            <div />
+            <span>Selecionar Carga</span>
+          </CheckboxButton>
+
+          <CheckboxButton
+            type="button"
+            $checked={checkbox === 'manageStock'}
+            onClick={() => {
+              setCheckbox('manageStock');
+            }}
+          >
+            <div />
+            <span>Gerenciar Estoque</span>
+          </CheckboxButton>
+          <Table>
+            <TableHeader>
+              <div>
+                <span>MATERIAIS</span>
               </div>
-            ))}
-        </Table>
+              <div>
+                <span>QTD</span>
+              </div>
+              <div>
+                <span>TIPO</span>
+              </div>
+              <div>
+                <span>CÓDIGO</span>
+              </div>
+            </TableHeader>
+            {materials &&
+              materials.map((item, index) => (
+                <TableRow
+                  isSelected={
+                    checkbox === 'selectMaterial' && selectedTableRows.includes(item.id)
+                  } // Assuming each item has a unique id
+                  onClick={() => checkbox === 'selectMaterial' && toggleRowSelection(item.id)}
+                  key={index}
+                >
+                  <div>
+                    <span>{item.product_name.toUpperCase()}</span>
+                  </div>
+                  <div>
+                    <span>{item.quantity_value}</span>
+                  </div>
+                  <div>
+                    <span>{item.unit_type}</span>
+                  </div>
+                  <div>
+                    <span>{item.product_code}</span>
+                  </div>
+                </TableRow>
+              ))}
+          </Table>
+        </>
       )}
     </Container>
   );

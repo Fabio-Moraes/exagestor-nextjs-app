@@ -55,7 +55,85 @@ export const AddButton = styled.button`
   }
 `;
 
-export const ItemList = styled.div``;
+export const CheckboxButton = styled.button<{ $checked: boolean }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0px 10px 10px 20px;
+
+  > div {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #27a567;
+    background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
+    border-radius: 10px;
+  }
+  > span {
+    margin-left: 5px;
+    font-size: 14px;
+  }
+`;
+
+export const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid #000;
+  background-color: #8bc9a8;
+  padding: 10px 0;
+  width: 100%;
+
+  div {
+    min-width: 67px;
+    border-left: 2px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    > span {
+      width: 100%;
+      font-family: 'OpenSans-Bold';
+      font-size: 13px;
+    }
+  }
+
+  > div:first-child {
+    width: 100%;
+    padding: 5px 10px;
+    border-left: 0;
+    text-align: start;
+  }
+`;
+
+export const TableRow = styled.div<{ isSelected: boolean }>`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid #000;
+  background-color: ${({ isSelected }) => (isSelected ? '#e9c80f' : '#ffffff')};
+  padding: 10px 0;
+  width: 100%;
+
+  > div {
+    min-width: 67px;
+    border-left: 2px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > span {
+      width: 100%;
+      font-family: 'OpenSans-SemiBold';
+      font-size: 13px;
+    }
+  }
+
+  > div:first-child {
+    width: 100%;
+    padding: 5px 10px;
+    border-left: 0;
+    text-align: start;
+  }
+`;
 
 export const Table = styled.div`
   border: 2px solid #000;
@@ -64,87 +142,9 @@ export const Table = styled.div`
   justify-content: center;
   overflow: hidden;
 
-  > div:first-child {
-    display: flex;
-    flex-direction: row;
-    border-bottom: 2px solid #000;
-
-    > div:first-child {
-      width: 100%;
-      background-color: #8bc9a8;
-      border-left: 0;
-      align-items: center;
-      text-align: center;
-      padding: 10px;
-
-      > span {
-        font-family: 'OpenSans-SemiBold';
-        font-size: 15px;
-      }
-    }
-
-    > div {
-      min-width: 63px;
-      padding: 10px;
-      border-left: 2px solid #000;
-      background-color: #8bc9a8;
-      text-align: center;
-
-      > span {
-        font-family: 'OpenSans-SemiBold';
-        font-size: 15px;
-      }
-    }
-  }
-
-  > div {
-    display: flex;
-    flex-direction: row;
-    border-bottom: 2px solid #000;
-
-    > div:first-child {
-      font-family: 'OpenSans-SemiBold';
-      width: 100%;
-      padding: 5px;
-      text-align: start;
-      font-size: 13px;
-      border-left: 0;
-
-      > span {
-        text-align: start;
-        font-size: 13px;
-      }
-    }
-
-    div {
-      min-width: 63px;
-      border-left: 2px solid #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      > span {
-        font-family: 'OpenSans-SemiBold';
-        font-size: 13px;
-      }
-    }
-  }
-
   > div:last-child {
     border-bottom: 0;
   }
-`;
-
-export const TableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-`;
-
-export const TableHeader = styled.th`
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
 `;
 
 export const TableCell = styled.td`

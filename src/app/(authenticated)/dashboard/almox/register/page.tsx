@@ -20,7 +20,7 @@ export default function NewRegister() {
   const [unitType, setUnitType] = useState('UNID');
 
   const [modalValue, setModalValue] = useState('');
-  const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
+  const [iconSvgModal, setIconSvgModal] = useState('');
   const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
@@ -56,6 +56,11 @@ export default function NewRegister() {
         return;
       }
 
+      if (productCode.trim() === '') {
+        setModalValue('Informe o código do produto');
+        return;
+      }
+
       const sleep = async (ms: number): Promise<void> => {
         return new Promise((resolve) => setTimeout(resolve, ms));
       };
@@ -72,7 +77,7 @@ export default function NewRegister() {
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/register',
             productName: productName,
-            productCode: productCode,
+            productCode: productCode || '00000',
             productBatch: productBatch,
             quantityValue: quantityValue,
             unitType: unitType
@@ -82,7 +87,8 @@ export default function NewRegister() {
 
           if (status === 'already registered') {
             setFullScreenLoadingValue('');
-            setModalValue(`já existente.`);
+            setIconSvgModal(alertSvg);
+            setModalValue(`Produto já existente.`);
             return;
           }
 
@@ -103,6 +109,7 @@ export default function NewRegister() {
         await sleep(reconnectDelay);
       }
 
+      setIconSvgModal(alertSvg);
       setModalValue('Não foi possível registrar o produto após várias tentativas.');
       setFullScreenLoadingValue('');
     }
@@ -111,7 +118,7 @@ export default function NewRegister() {
   const handleQuantityValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
 
-    if (/^\d*$/.test(inputValue) && inputValue.length <= 10) {
+    if (/^\d*$/.test(inputValue) && inputValue.length <= 8) {
       setQuantityValue(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
     }
   };
@@ -119,7 +126,7 @@ export default function NewRegister() {
   const handleProductCode = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
 
-    if (/^\d*$/.test(inputValue) && inputValue.length <= 10) {
+    if (/^\d*$/.test(inputValue) && inputValue.length <= 8) {
       setProductCode(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
     }
   };
@@ -194,9 +201,9 @@ export default function NewRegister() {
 
           <CheckboxButton
             type="button"
-            $checked={unitType === 'M'}
+            $checked={unitType === 'METRO'}
             onClick={() => {
-              setUnitType('M');
+              setUnitType('METRO');
             }}
           >
             <div />
