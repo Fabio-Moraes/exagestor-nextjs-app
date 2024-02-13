@@ -105,11 +105,11 @@ export const TableHeader = styled.div`
   }
 `;
 
-export const TableRow = styled.div<{ isSelected: boolean }>`
+export const TableRow = styled.div<{ $isSelected: boolean }>`
   display: flex;
   flex-direction: row;
   border-bottom: 2px solid #000;
-  background-color: ${({ isSelected }) => (isSelected ? '#e9c80f' : '#ffffff')};
+  background-color: ${({ $isSelected }) => ($isSelected ? '#e9c80f' : '#ffffff')};
   padding: 10px 0;
   width: 100%;
 
@@ -147,9 +147,15 @@ export const Table = styled.div`
   }
 `;
 
-export const TableCell = styled.td`
+export const Button = styled.button`
+  width: 150px;
+  background-color: #27a567;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  margin: 20px 20px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #fff;
 `;
 
 export const ErrorContainer = styled.div`

@@ -1,7 +1,9 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { encryptObject } from 'functions';
 import apiRoute from 'services/apiRoute';
 
 import {
@@ -9,6 +11,7 @@ import {
   Table,
   TableHeader,
   TableRow,
+  Button,
   Title,
   CheckboxButton,
   ErrorContainer
@@ -29,6 +32,8 @@ export default function NewStock() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [checkbox, setCheckbox] = useState('manageStock');
+
+  const router = useRouter();
 
   const sleep = async (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -71,6 +76,12 @@ export default function NewStock() {
       setSelectedTableRows([...selectedTableRows, id]);
     }
   };
+
+  const selectedMaterials = materials.filter(function (objeto: Materials) {
+    return selectedTableRows.includes(objeto.id);
+  });
+
+  const encryptSlug = encryptObject({ selectedMaterials });
 
   return (
     <Container>
@@ -124,7 +135,7 @@ export default function NewStock() {
             {materials &&
               materials.map((item, index) => (
                 <TableRow
-                  isSelected={
+                  $isSelected={
                     checkbox === 'selectMaterial' && selectedTableRows.includes(item.id)
                   } // Assuming each item has a unique id
                   onClick={() => checkbox === 'selectMaterial' && toggleRowSelection(item.id)}
@@ -145,29 +156,17 @@ export default function NewStock() {
                 </TableRow>
               ))}
           </Table>
+          {selectedTableRows.length > 0 && checkbox === 'selectMaterial' && (
+            <Button
+              onClick={() => {
+                router.push(`/dashboard/almox/stock/select-material/${encryptSlug}`);
+              }}
+            >
+              Enviar Carga ({selectedTableRows.length})
+            </Button>
+          )}
         </>
       )}
     </Container>
   );
 }
-
-/* 
-<Table>
-  <thead>
-    <TableRow>
-      <TableHeader>Nome</TableHeader>
-      <TableHeader>Quantidade</TableHeader>
-      <TableHeader>Tipo</TableHeader>
-    </TableRow>
-  </thead>
-  <tbody>
-    {items.map((item, index) => (
-      <TableRow key={index}>
-        <TableCell>{item.name}</TableCell>
-        <TableCell>{item.quantity}</TableCell>
-        <TableCell>{item.type}</TableCell>
-      </TableRow>
-    ))}
-  </tbody>
-</Table>
-*/
