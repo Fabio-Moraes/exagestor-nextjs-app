@@ -95,14 +95,14 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
           if (status === 'already registered') {
             setFullScreenLoadingValue('');
             setIconSvgModal(alertSvg);
-            setModalValue(`Produto já existente.`);
+            setModalValue(`carga já existente.`);
           }
 
           if (status === 'success') {
             setSuccessfullyCompleted(true);
             setFullScreenLoadingValue('');
             setIconSvgModal(checkedSvg);
-            setModalValue('Novo produto registrado com sucesso.');
+            setModalValue('Carga distribuída com sucesso.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push('/dashboard/almox/stock');
@@ -117,7 +117,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
       }
 
       setIconSvgModal(alertSvg);
-      setModalValue('Não foi possível registrar o produto após várias tentativas.');
+      setModalValue('Não foi possível distribuir a carga após várias tentativas.');
       setFullScreenLoadingValue('');
     }
   };
