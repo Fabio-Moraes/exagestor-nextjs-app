@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
@@ -12,12 +12,19 @@ import checkedSvg from './assets/svg/checked.svg';
 
 import { Button, CheckboxButton, Container, FormContainer, Input, Title } from './styles';
 
+function Asd() {
+  console.log('AAAAAAAAAAAAA');
+  return <></>;
+}
+
 export default function NewRegister() {
-  const [productName, setProductName] = useState('');
+  //const [productName, setProductName] = useState('');
   const [productCode, setProductCode] = useState('');
   const [productBatch, setProductBatch] = useState('');
   const [quantityValue, setQuantityValue] = useState('');
   const [unitType, setUnitType] = useState('UNID');
+
+  const productName = useRef<HTMLInputElement | null>(null);
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState('');
@@ -46,7 +53,7 @@ export default function NewRegister() {
     if (!successfullyCompleted) {
       setIconSvgModal(iconSvgModal);
 
-      if (productName.trim() === '') {
+      if (!productName.current?.value || productName.current?.value.trim() === '') {
         setModalValue('Informe o nome do produto.');
         return;
       }
@@ -76,8 +83,8 @@ export default function NewRegister() {
 
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/register',
-            productName: productName,
-            productCode: productCode || '00000',
+            productName: productName.current?.value.trim(),
+            productCode: productCode,
             productBatch: productBatch,
             quantityValue: quantityValue,
             unitType: unitType
@@ -141,14 +148,9 @@ export default function NewRegister() {
     <Container>
       <Title>Novo Produto</Title>
       <FormContainer onSubmit={handleSubmit}>
+        <Asd />
         <label htmlFor="Nome do Produto">Nome do Produto:</label>
-        <Input
-          type="text"
-          id="Nome"
-          placeholder="Nome do Produto"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-        />
+        <Input type="text" id="Nome" placeholder="Nome do Produto" ref={productName} />
 
         <label htmlFor="Lote">Lote:</label>
         <Input

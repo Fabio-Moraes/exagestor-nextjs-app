@@ -104,7 +104,7 @@ export default function NewStock() {
             }}
           >
             <div />
-            <span>Selecionar Carga</span>
+            <span>Montar Carga</span>
           </CheckboxButton>
 
           <CheckboxButton
@@ -162,7 +162,7 @@ export default function NewStock() {
                 router.push(`/dashboard/almox/stock/select-material/${encryptSlug}`);
               }}
             >
-              Enviar Carga ({selectedTableRows.length})
+              Selecionar Quantidade ({selectedTableRows.length})
             </Button>
           )}
         </>

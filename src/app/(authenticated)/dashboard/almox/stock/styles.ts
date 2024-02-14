@@ -148,7 +148,7 @@ export const Table = styled.div`
 `;
 
 export const Button = styled.button`
-  width: 150px;
+  width: 300px;
   background-color: #27a567;
   padding: 10px;
   margin: 20px 20px;
