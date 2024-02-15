@@ -45,9 +45,20 @@ export const FormContainer = styled.form`
 
   > label {
     overflow-wrap: break-word;
+    font-family: 'OpenSans-Medium';
     margin: 0px 20px 5px 20px;
     text-align: start;
   }
+
+  > span:last-child {
+    font-family: 'OpenSans-Medium';
+    font-size: 13px;
+    padding: 15px 0 5px 0;
+  }
+`;
+
+export const Asterisk = styled.strong`
+  color: red;
 `;
 
 export const Input = styled.input`
@@ -67,60 +78,6 @@ export const Input = styled.input`
   }
 `;
 
-export const PasswordInputContainer = styled.div`
-  position: relative;
-  width: 80%;
-  // margin: 15px 20px 0px 20px;
-`;
-
-export const PasswordInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  overflow-wrap: break-word;
-  text-align: start;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: #777;
-  }
-`;
-
-export const TogglePasswordVisibilityButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const Select = styled.select`
-  padding: 10px;
-  margin: 0px 20px 15px 20px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #fff;
-  color: #777;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const Option = styled.option`
-  background-color: #fff;
-  color: #777;
-`;
-
 export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
@@ -135,16 +92,52 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
     border-radius: 10px;
   }
   > span {
+    font-family: 'OpenSans-Medium';
     margin-left: 5px;
     font-size: 14px;
   }
+`;
+
+export const ContainerCounter = styled.div`
+  display: flex;
+  padding-right: 5px;
+  width: 100%;
+  justify-content: flex-end;
+
+  > p {
+    font-family: 'OpenSans-Medium';
+    text-align: end;
+    margin-bottom: 7px;
+  }
+`;
+
+export const ContainerObservation = styled.div`
+  padding: 0 20px;
+  flex-direction: column;
+`;
+
+export const Observation = styled.textarea`
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  resize: none;
+
+  border-radius: 4px;
+  border: 1px solid #000000;
+
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: black; /* Cor do texto */
+  position: relative;
+  outline: none;
+  overflow-y: auto;
 `;
 
 export const Button = styled.button`
   width: 150px;
   background-color: #27a567;
   padding: 10px;
-  margin: 20px 20px;
+  margin: 0px 20px;
   border: 1px solid #000000;
   border-radius: 4px;
   font-size: 16px;
