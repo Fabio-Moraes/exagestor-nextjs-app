@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-
 import { List } from './components/List';
 import { decryptObject } from 'functions';
 
@@ -23,23 +21,11 @@ interface Materials {
 }
 
 export default function FinishService({ params }: SlugType) {
-  /*
-    const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-  */
-
   const decryptSlug = decryptObject(params.slug) as { selectedMaterials: Materials[] };
-
-  useEffect(() => {
-    console.log(decryptSlug);
-  }, []);
 
   return (
     <Container>
-      <Title>
-        <h1>Definir Carga</h1>
-      </Title>
+      <Title>Definir Carga</Title>
       <List materials={decryptSlug.selectedMaterials} />
     </Container>
   );

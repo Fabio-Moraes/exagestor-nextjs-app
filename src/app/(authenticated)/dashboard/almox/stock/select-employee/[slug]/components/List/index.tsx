@@ -45,7 +45,7 @@ interface Materials {
 export function List({ employee, slug }: { employee: Employee[]; slug: string }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedTableRows, setSelectedTableRows] = useState<number[]>([]);
+  const [employeeId, setEmployeeId] = useState<number | null>(null);
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState('');
@@ -87,6 +87,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
 
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/stock/select-employee/insert-material',
+            employee_id: employeeId,
             insert: decryptSlug.selectedMaterials
           });
 
@@ -139,13 +140,13 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
     };
   }, []);
 
-  const toggleRowSelection = (id: number) => {
+  /* const toggleRowSelection = (id: number) => {
     if (selectedTableRows.includes(id)) {
       setSelectedTableRows(selectedTableRows.filter((rowId) => rowId !== id));
     } else {
       setSelectedTableRows([...selectedTableRows, id]);
     }
-  };
+  }; */
 
   return (
     <>
@@ -174,13 +175,13 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
             })
           : filteredItems.map((item) => (
               <ListItem
-                isSelected={selectedTableRows.includes(item.id)}
-                onClick={() => toggleRowSelection(item.id)}
+                isSelected={employeeId === item.id}
+                onClick={() => setEmployeeId(item.id)}
                 key={String(item.id)}
                 {...item}
               />
             ))}
-        <ContainerButton $isSelected={selectedTableRows.length > 0}>
+        <ContainerButton $isSelected={Boolean(employeeId)}>
           <Button
             onClick={() => {
               router.push(`/dashboard/almox/stock`);
@@ -188,9 +189,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
           >
             Voltar
           </Button>
-          <Button onClick={() => selectedTableRows.length > 0 && handleSubmit()}>
-            Enviar Carga
-          </Button>
+          <Button onClick={() => employeeId && handleSubmit()}>Enviar Carga</Button>
         </ContainerButton>
       </ListContainer>
       {modalValue && !fullScreenLoadingValue && (

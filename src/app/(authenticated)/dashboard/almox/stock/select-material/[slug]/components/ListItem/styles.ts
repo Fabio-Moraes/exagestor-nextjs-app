@@ -9,6 +9,7 @@ export const Container = styled.div`
   border: 2px solid #27a567;
   margin: 5px 10px 0 10px;
   border-radius: 5px;
+  overflow: hidden;
   cursor: pointer;
 `;
 

@@ -41,7 +41,7 @@ export function RightMenu() {
             rel="preload"
           >
             <Image priority loading="eager" src={home} alt="Add" width="25" height="25" />
-            <span>Novo Resgistro</span>
+            <span>Novo Produto</span>
           </Button>
         </div>
       </Wrapper>

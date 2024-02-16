@@ -53,7 +53,7 @@ export const FormContainer = styled.form`
   > span:last-child {
     font-family: 'OpenSans-Medium';
     font-size: 13px;
-    padding: 15px 0 5px 0;
+    padding: 12px 0 10px 0;
   }
 `;
 
@@ -82,7 +82,7 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0px 10px 10px 20px;
+  margin: 0px 10px 13px 20px;
 
   > div {
     width: 20px;
@@ -91,6 +91,7 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
     background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
     border-radius: 10px;
   }
+
   > span {
     font-family: 'OpenSans-Medium';
     margin-left: 5px;
@@ -107,7 +108,6 @@ export const ContainerCounter = styled.div`
   > p {
     font-family: 'OpenSans-Medium';
     text-align: end;
-    margin-bottom: 7px;
   }
 `;
 

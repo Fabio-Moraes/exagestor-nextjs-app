@@ -39,7 +39,7 @@ export function TopMenu() {
         <span>
           Novo
           <br />
-          Registro
+          Produto
         </span>
       </Button>
 

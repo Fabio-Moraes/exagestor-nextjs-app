@@ -1,13 +1,21 @@
 'use client';
 
-import Image from 'components/Vercel/Image';
-
-import code from './assets/svg/code.svg';
-import coffee from './assets/svg/coffee.svg';
-
 import { Container, Wrapper } from './styles';
 
 export function Footer() {
+  return (
+    <Container>
+      <Wrapper>
+        <div>
+          <h1>© COPYRIGHT 2024 - EXACODE </h1>
+        </div>
+        <span>TODOS OS DIREITOS RESERVADOS.</span>
+      </Wrapper>
+    </Container>
+  );
+}
+
+/* export function Footer() {
   return (
     <Container>
       <Wrapper>
@@ -22,4 +30,4 @@ export function Footer() {
       </Wrapper>
     </Container>
   );
-}
+} */
