@@ -15,7 +15,7 @@ const data = [
   { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
   { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
   { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
-  { id: '2', description: 'Barra de PAD 1/4' }, //<<<<<<< 2
+  { id: '2', description: 'BARRA DE PAD 1/4' }, //<<<<<<< 2
   { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
   { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
   { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },

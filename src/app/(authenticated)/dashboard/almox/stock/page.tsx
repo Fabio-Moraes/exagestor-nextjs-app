@@ -138,7 +138,11 @@ export default function NewStock() {
                   $isSelected={
                     checkbox === 'selectMaterial' && selectedTableRows.includes(item.id)
                   } // Assuming each item has a unique id
-                  onClick={() => checkbox === 'selectMaterial' && toggleRowSelection(item.id)}
+                  onClick={() => {
+                    if (checkbox === 'selectMaterial' && Number(item.quantity_value) > 0) {
+                      toggleRowSelection(item.id);
+                    }
+                  }}
                   key={index}
                 >
                   <div>

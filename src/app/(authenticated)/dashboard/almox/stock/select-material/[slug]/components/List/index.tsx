@@ -34,21 +34,16 @@ export function List({ materials }: { materials: Materials[] }) {
 
   const router = useRouter();
 
-  function maxControllerValue(item: Materials) {
+  function counterItems(item: Materials, count: number) {
     const maxCouter = Number(materials.find((obj) => obj.id === item.id)?.quantity_value);
-    if (quantityItems[item.id] > maxCouter) return maxCouter;
 
-    return quantityItems[item.id];
-  }
-
-  const counterItems = (item: number, count: number) => {
     setQuantityItems((prevItems) => {
       return {
         ...prevItems,
-        [String(item)]: count
+        [String(item.id)]: count > maxCouter ? maxCouter : count
       };
     });
-  };
+  }
 
   const resetItems = (item: number) => {
     setQuantityItems((prevItems) => {
@@ -134,9 +129,9 @@ export function List({ materials }: { materials: Materials[] }) {
               <ListItem
                 key={item.id}
                 item={item}
-                count={maxControllerValue(item)}
+                count={quantityItems[item.id]}
                 onSelect={({ count }) => {
-                  counterItems(item.id, count);
+                  counterItems(item, count);
                 }}
                 onReset={() => {
                   resetItems(item.id);
