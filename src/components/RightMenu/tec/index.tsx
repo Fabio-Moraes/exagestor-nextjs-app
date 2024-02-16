@@ -54,9 +54,13 @@ export function RightMenu() {
         </div>
 
         <div>
-          <Button>
+          <Button
+            $path={['/dashboard/tec/stock'].includes(pathname)}
+            onClick={() => router.push('/dashboard/tec/stock')}
+            rel="preload"
+          >
             <Image priority loading="eager" src={menu} alt="Clipboard" {...proportion} />
-            <span>Materiais Utilizados</span>
+            <span>Visualizar Carga</span>
           </Button>
         </div>
       </Wrapper>

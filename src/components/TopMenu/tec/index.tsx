@@ -56,12 +56,16 @@ export function TopMenu() {
         </span>
       </Button>
 
-      <Button rel="preload" onClick={() => router.push('/')}>
+      <Button
+        $path={['/dashboard/tec/stock'].includes(pathname)}
+        rel="preload"
+        onClick={() => router.push(`/dashboard/tec/stock`)}
+      >
         <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
         <span>
-          Mais
+          Visualizar
           <br />
-          Opções
+          Carga
         </span>
       </Button>
     </Container>
