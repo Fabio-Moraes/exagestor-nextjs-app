@@ -42,6 +42,15 @@ interface Service {
   protocol: string;
 }
 
+interface Materials {
+  id: number;
+  product_name: string;
+  unit_type: string;
+  product_code: string;
+  quantity_value: string;
+  created_at: string;
+}
+
 interface SlugType {
   params: {
     slug: string;
@@ -61,22 +70,11 @@ export default function Details({ params }: SlugType) {
     { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
   ];
 
-  const dataListMaterial = [
-    { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
-    { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
-    { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
-    { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
-    { id: '2', description: 'Barra de PAD 1/4' }, //<<<<<<< 2
-    { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
-    { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
-    { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
-    { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
-  ];
-
   const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [materials, setMaterials] = useState<Materials[]>([]);
 
   const router = useRouter();
 
@@ -92,13 +90,24 @@ export default function Details({ params }: SlugType) {
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );
 
-        const response = await apiRoute.post('/api/bridge', {
+        const responseDataUser = await apiRoute.post('/api/user');
+
+        const paramDataDetails = {
           baseURL: '/api/tec/historic/details',
           protocol: String(decryptSlug.protocol),
           updateCount: String(decryptSlug.updateCount)
-        });
+        };
 
-        setServices(response.data[0]);
+        const paramDataStock = {
+          baseURL: '/api/tec/stock',
+          employee_id: responseDataUser.data.id
+        };
+
+        const responseDataDetails = await apiRoute.post('/api/bridge', paramDataDetails);
+        const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
+
+        setMaterials(responseDataStock.data);
+        setServices(responseDataDetails.data[0]);
         break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -260,21 +269,30 @@ export default function Details({ params }: SlugType) {
                       <div>
                         <span>Tipo</span>
                       </div>
+                      <div>
+                        <span>Código</span>
+                      </div>
                     </div>
                     {objListMaterial &&
                       Object.keys(objListMaterial).map((key: string) => (
                         <div key={key}>
                           <div>
                             <span>
-                              {dataListMaterial.find((item) => item.id === key)?.description}
-                              {dataListMaterial.find((item) => item.id === key)?.description}
+                              {materials.find((item) => String(item.id) === key)?.product_name}
                             </span>
                           </div>
                           <div>
                             <span>{objListMaterial[key]}</span>
                           </div>
                           <div>
-                            <span>Unid.</span>
+                            <span>
+                              {materials.find((item) => String(item.id) === key)?.unit_type}
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              {materials.find((item) => String(item.id) === key)?.product_code}
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -290,9 +308,6 @@ export default function Details({ params }: SlugType) {
                       <div>
                         <span>Qtd</span>
                       </div>
-                      <div>
-                        <span>Tipo</span>
-                      </div>
                     </div>
                     {objListService &&
                       Object.keys(objListService).map((key: string) => (
@@ -300,14 +315,10 @@ export default function Details({ params }: SlugType) {
                           <div>
                             <span>
                               {dataListService.find((item) => item.id === key)?.description}
-                              {dataListService.find((item) => item.id === key)?.description}
                             </span>
                           </div>
                           <div>
                             <span>{objListService[key]}</span>
-                          </div>
-                          <div>
-                            <span>Unid.</span>
                           </div>
                         </div>
                       ))}

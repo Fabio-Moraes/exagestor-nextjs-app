@@ -2,21 +2,14 @@
 
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div<{ selected: boolean }>`
-  background-color: #dedede;
-
-  ${(props) =>
-    props.selected &&
-    css`
-      background-color: #8bc9a8;
-    `};
-
+export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 2px solid #27a567;
   margin: 5px 10px 0 10px;
   border-radius: 5px;
+  overflow: hidden;
   cursor: pointer;
 `;
 
@@ -30,10 +23,23 @@ export const Reset = styled.div`
   padding-left: 10px;
 `;
 
-export const ItemContainer = styled.div`
+export const ItemContainer = styled.div<{ selected: boolean }>`
+  background-color: #f2f2f2;
+
+  > div {
+    height: 100%;
+    background-color: #dedede;
+    ${(props) =>
+      props.selected &&
+      css`
+        background-color: #8bc9a8;
+      `};
+  }
+
   display: flex;
   width: 100%;
   align-items: center;
+  height: 150px;
 
   > div {
     display: flex;
@@ -45,8 +51,12 @@ export const ItemContainer = styled.div`
     width: 100%;
   }
 
+  min-height: 100%;
+
   > span {
-    font-size: 30px;
+    text-align: start;
+    min-height: 100%;
+    font-size: 18px;
     padding: 0px 15px;
   }
 `;

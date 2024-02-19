@@ -42,6 +42,15 @@ interface Service {
   protocol: string;
 }
 
+interface Materials {
+  id: number;
+  product_name: string;
+  unit_type: string;
+  product_code: string;
+  quantity_value: string;
+  created_at: string;
+}
+
 interface SlugType {
   params: {
     slug: string;
@@ -61,7 +70,7 @@ export default function Details({ params }: SlugType) {
     { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
   ];
 
-  const dataListMaterial = [
+  /*   const dataListMaterial = [
     { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
     { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
     { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
@@ -71,12 +80,13 @@ export default function Details({ params }: SlugType) {
     { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
     { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
     { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
-  ];
+  ]; */
 
   const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [materials, setMaterials] = useState<Materials[]>([]);
 
   const sleep = async (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -94,6 +104,13 @@ export default function Details({ params }: SlugType) {
       try {
         setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
 
+        const paramDataStock = {
+          baseURL: '/api/tec/stock',
+          employee_id: Number(decryptSlug.employeeId)
+        };
+
+        const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
+
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/manage/general-historic/details',
           employeeId: String(decryptSlug.employeeId),
@@ -102,6 +119,8 @@ export default function Details({ params }: SlugType) {
         });
 
         count = maxRetries;
+
+        setMaterials(responseDataStock.data);
         setServices(response.data[0]);
         console.log('data', response.data[0]);
       } catch (error) {
@@ -273,17 +292,21 @@ export default function Details({ params }: SlugType) {
                         <div key={key}>
                           <div>
                             <span>
-                              {dataListMaterial.find((item) => item.id === key)?.description}
+                              {materials.find((item) => String(item.id) === key)?.product_name}
                             </span>
                           </div>
                           <div>
                             <span>{objListMaterial[key]}</span>
                           </div>
                           <div>
-                            <span>Unid.</span>
+                            <span>
+                              {materials.find((item) => String(item.id) === key)?.unit_type}
+                            </span>
                           </div>
                           <div>
-                            <span>00000</span>
+                            <span>
+                              {materials.find((item) => String(item.id) === key)?.product_code}
+                            </span>
                           </div>
                         </div>
                       ))}

@@ -91,9 +91,9 @@ export default function NewRegister() {
 
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/register',
-            productName: productName.current?.value.trim(),
+            productName: productName.current?.value,
             productCode: productCode,
-            productBatch: productBatch,
+            productBatch: productBatch || null,
             quantityValue: quantityValue,
             unitType: unitType,
             observation: observationBox || null

@@ -10,8 +10,17 @@ import {
   IncrementButton
 } from './styles';
 
+interface Materials {
+  id: number;
+  product_name: string;
+  unit_type: string;
+  product_code: string;
+  quantity_value: string;
+  created_at: string;
+}
+
 interface ListItemProps {
-  item: string;
+  item: Materials;
   count: number;
   onSelect: ({ count }: { count: number }) => void;
   onReset: () => void;
@@ -77,14 +86,15 @@ export const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, o
       dragElastic={{ left: 0.5, right: 0 }}
       style={{ pointerEvents: pointer, listStyle: 'none' }}
     >
-      <Container selected={count > 0}>
-        <ItemContainer>
+      <Container>
+        <ItemContainer selected={count > 0}>
           <div>
+            <p>{item.unit_type}</p>
             <IncrementButton onClick={handleIncrement}>+</IncrementButton>
             <SearchBar type="text" value={String(count)} onChange={handleInputChange} />
             <DecrementButton onClick={handleDecrement}>-</DecrementButton>
           </div>
-          <p>{item}</p>
+          <span>{item.product_name.toUpperCase()}</span>
         </ItemContainer>
       </Container>
     </motion.li>

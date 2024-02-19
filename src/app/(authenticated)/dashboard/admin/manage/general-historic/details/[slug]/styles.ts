@@ -91,7 +91,7 @@ export const Table = styled.div`
       border-left: 0;
       align-items: center;
       text-align: center;
-      padding: 10px;
+      padding: 0 5px;
 
       > span {
         font-family: 'OpenSans-SemiBold';
@@ -100,8 +100,8 @@ export const Table = styled.div`
     }
 
     > div {
-      min-width: 63px;
-      padding: 10px;
+      min-width: 65px;
+      padding: 0 10px;
       border-left: 2px solid #000;
       background-color: #8bc9a8;
       text-align: center;
@@ -122,18 +122,18 @@ export const Table = styled.div`
       font-family: 'OpenSans-SemiBold';
       width: 100%;
       padding: 5px;
-      text-align: start;
       font-size: 13px;
       border-left: 0;
 
       > span {
         text-align: start;
+        width: 100%;
         font-size: 13px;
       }
     }
 
     div {
-      min-width: 63px;
+      min-width: 65px;
       border-left: 2px solid #000;
       display: flex;
       justify-content: center;
