@@ -48,8 +48,8 @@ interface Materials {
   created_at: string;
 }
 
-export function List(props: { serviceData: ServiceData /* ; items: ListProps[] */ }) {
-  const { serviceData /* , items */ } = props;
+export function List(props: { serviceData: ServiceData }) {
+  const { serviceData } = props;
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);

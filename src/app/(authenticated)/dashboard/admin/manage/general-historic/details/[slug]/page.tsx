@@ -70,18 +70,6 @@ export default function Details({ params }: SlugType) {
     { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
   ];
 
-  /*   const dataListMaterial = [
-    { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
-    { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
-    { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
-    { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
-    { id: '2', description: 'Barra de PAD 1/4' }, //<<<<<<< 2
-    { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
-    { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
-    { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
-    { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
-  ]; */
-
   const [services, setServices] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
