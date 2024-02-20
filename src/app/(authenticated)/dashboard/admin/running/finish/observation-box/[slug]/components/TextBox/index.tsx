@@ -37,6 +37,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [requestInProcess, setRequestInProcess] = useState(false);
 
   const { setObservationBox, observationBox, selectMaterial, selectService } =
     useContexState();
@@ -54,35 +55,39 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const router = useRouter();
 
   async function fetchConcludedMaterial() {
-    setConnectionError(false);
+    if (!requestInProcess) {
+      setRequestInProcess(true);
+      setConnectionError(false);
 
-    for (let count = 0; count < maxRetries; count++) {
-      try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+      for (let count = 0; count < maxRetries; count++) {
+        try {
+          await apiRoute.post('/api/bridge', {
+            baseURL: '/api/admin/concluded',
+            protocol: serviceData?.protocol,
+            employeeId: String(serviceData?.employee_id),
+            observation: String(observationBox[serviceData?.protocol]),
+            listService: JSON.stringify(selectService[serviceData?.protocol]),
+            listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
+          });
 
-        await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/concluded',
-          protocol: serviceData?.protocol,
-          employeeId: String(serviceData?.employee_id),
-          observation: String(observationBox[serviceData?.protocol]),
-          listService: JSON.stringify(selectService[serviceData?.protocol]),
-          listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
-        });
+          const encryptSlug = encryptObject({
+            protocol: serviceData?.protocol,
+            employeeId: serviceData?.employee_id,
+            updateCount: Number(serviceData?.update_count) + 1
+          });
 
-        const encryptSlug = encryptObject({
-          protocol: serviceData?.protocol,
-          employeeId: serviceData?.employee_id,
-          updateCount: Number(serviceData?.update_count) + 1
-        });
-
-        router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);
-        break;
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        setConnectionError(true);
+          router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);
+          break;
+        } catch (error) {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          setIsPopupValue(count > 1 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+          setConnectionError(true);
+        }
       }
+
+      setRequestInProcess(false);
+      setIsPopupValue(null);
     }
-    setIsPopupValue(null);
   }
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);

@@ -168,8 +168,6 @@ export function List(props: { serviceData: ServiceData }) {
 
   const selectedItemKeys = Object.keys(selectMaterial[String(serviceData?.protocol)] || {});
 
-  const proportion = { width: 30, height: 30 };
-
   return (
     <>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
@@ -205,7 +203,7 @@ export function List(props: { serviceData: ServiceData }) {
 
                   <Button onClick={selectServiceClean}>Limpar</Button>
                 </div>
-                <Image priority src={infoSvg} alt="Add" {...proportion} />
+                <Image priority src={infoSvg} alt="Add" width={30} height={30} />
               </div>
             </div>
             {isLoading

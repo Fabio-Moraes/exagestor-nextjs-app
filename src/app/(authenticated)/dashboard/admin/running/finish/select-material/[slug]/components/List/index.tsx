@@ -17,15 +17,10 @@ import searchSvg from './assets/svg/search.svg';
 
 import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
 
-interface ListProps {
-  id: string;
-  description: string;
-}
-
 interface ServiceData {
   id: number;
-  employee_id: number;
   client_name: string;
+  employee_id: string;
   city: string;
   address: string;
   nomenclature: string;
@@ -33,10 +28,24 @@ interface ServiceData {
   status: string;
   update_count: number;
   created_at: string;
+  modification_at: string;
+  finished_at: string;
+  list_material: string;
+  list_service: string;
+  observation: string;
   protocol: string;
 }
 
-export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
+interface Materials {
+  id: number;
+  product_name: string;
+  unit_type: string;
+  product_code: string;
+  quantity_value: string;
+  created_at: string;
+}
+
+export function List(props: { serviceData: ServiceData; items: Materials[] }) {
   const { serviceData, items } = props;
 
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -44,16 +53,6 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const { selectMaterial, setSelectMaterial } = useContexState();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   const router = useRouter();
 
@@ -65,7 +64,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
     router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`);
   }
 
-  const toggleItem = (item: string, count: number) => {
+  const toggleItem = (key: string, count: number, maxCouter: number) => {
     setSelectMaterial((prevItems) => {
       const protocolKey = String(serviceData?.protocol);
 
@@ -73,7 +72,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
         ...prevItems,
         [protocolKey]: {
           ...(prevItems[protocolKey] || {}),
-          [item]: count
+          [key]: count > maxCouter ? maxCouter : count
         }
       };
     });
@@ -113,13 +112,35 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
   const filteredItems = items?.filter(
     (item) =>
-      item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      item.product_name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (showSelected ? selectMaterial[String(serviceData?.protocol)]?.[item.id] : true)
   );
 
-  const selectedItemKeys = Object.keys(selectMaterial[String(serviceData?.protocol)] || {});
+  const objListMaterial = JSON.parse(serviceData?.list_material || '{}');
+  const protocolKey = String(serviceData?.protocol);
 
-  const proportion = { width: 30, height: 30 };
+  useEffect(() => {
+    if (Object.keys(objListMaterial).length !== 0) {
+      setSelectMaterial((prevItems) => {
+        return {
+          ...prevItems,
+          [protocolKey]: objListMaterial
+        };
+      });
+    }
+  }, [protocolKey]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const selectedItemKeys = Object.keys(selectMaterial[String(serviceData?.protocol)] || {});
 
   return (
     <ListContainer>
@@ -146,7 +167,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
               <Button onClick={selectServiceClean}>Limpar</Button>
             </div>
-            <Image priority src={infoSvg} alt="Add" {...proportion} />
+            <Image priority src={infoSvg} alt="Add" width={30} height={30} />
           </div>
         </div>
         {isLoading
@@ -160,19 +181,19 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
             })
           : filteredItems.map((item) => (
               <motion.ul
-                key={item.description}
+                key={item.product_code}
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5 }}
               >
                 <ListItem
-                  key={item.description}
-                  item={item.description}
+                  key={item.product_code}
+                  item={item.product_name}
                   count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
                   onSelect={({ count }) => {
-                    toggleItem(item.id, count);
+                    toggleItem(String(item.id), count, Number(item.quantity_value));
                   }}
-                  onReset={() => toggleItemReset(item.id)}
+                  onReset={() => toggleItemReset(String(item.id))}
                 />
               </motion.ul>
             ))}

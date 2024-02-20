@@ -90,8 +90,6 @@ export default function Details({ params }: SlugType) {
 
     for (let count = 0; count < maxRetries; count++) {
       try {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-
         const paramDataStock = {
           baseURL: '/api/tec/stock',
           employee_id: Number(decryptSlug.employeeId)
@@ -114,6 +112,8 @@ export default function Details({ params }: SlugType) {
       } catch (error) {
         await sleep(reconnectDelay);
         setConnectionError(true);
+      } finally {
+        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
       }
     }
     setIsPopupValue(null);

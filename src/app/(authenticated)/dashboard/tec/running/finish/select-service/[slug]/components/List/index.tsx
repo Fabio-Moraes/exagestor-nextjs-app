@@ -73,9 +73,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
           return {
             ...prevItems,
             [protocolKey]: {
-              ...(prevItems[protocolKey] || {}),
-              ['4']: count * 3,
-              ['2']: count * 2
+              ...(prevItems[protocolKey] || {}) //, ['4']: count * 3, ['2']: count * 2
             }
           };
         });

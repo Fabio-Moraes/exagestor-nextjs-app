@@ -24,8 +24,8 @@ interface ListProps {
 
 interface ServiceData {
   id: number;
-  employee_id: number;
   client_name: string;
+  employee_id: string;
   city: string;
   address: string;
   nomenclature: string;
@@ -33,6 +33,11 @@ interface ServiceData {
   status: string;
   update_count: number;
   created_at: string;
+  modification_at: string;
+  finished_at: string;
+  list_material: string;
+  list_service: string;
+  observation: string;
   protocol: string;
 }
 
@@ -77,9 +82,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
           return {
             ...prevItems,
             [protocolKey]: {
-              ...(prevItems[protocolKey] || {}),
-              ['4']: count * 3,
-              ['2']: count * 2
+              ...(prevItems[protocolKey] || {}) //, ['4']: count * 3, ['2']: count * 2
             }
           };
         });
@@ -133,8 +136,21 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
       (showSelected ? selectService[String(serviceData?.protocol)]?.[item.id] : true)
   );
 
+  const objListService = JSON.parse(serviceData?.list_service || '{}');
+  const protocolKey = String(serviceData?.protocol);
+
+  useEffect(() => {
+    if (Object.keys(objListService).length !== 0) {
+      setSelectService((prevItems) => {
+        return {
+          ...prevItems,
+          [protocolKey]: objListService
+        };
+      });
+    }
+  }, [protocolKey]);
+
   const selectedItemKeys = Object.keys(selectService[String(serviceData?.protocol)] || {});
-  const proportion = { width: 30, height: 30 };
 
   return (
     <ListContainer>
@@ -161,7 +177,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
               <Button onClick={selectServiceClean}>Limpar</Button>
             </div>
-            <Image priority src={infoSvg} alt="Add" {...proportion} />
+            <Image priority src={infoSvg} alt="Add" width={30} height={30} />
           </div>
         </div>
         {isLoading

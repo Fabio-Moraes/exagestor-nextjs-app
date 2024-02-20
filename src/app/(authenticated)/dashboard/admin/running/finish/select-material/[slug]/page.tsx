@@ -10,7 +10,7 @@ import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
 
-const data = [
+/* const data = [
   { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
   { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
   { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
@@ -20,7 +20,7 @@ const data = [
   { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
   { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
   { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
-];
+]; */
 
 interface SlugType {
   params: {
@@ -30,8 +30,8 @@ interface SlugType {
 
 interface ServiceData {
   id: number;
-  employee_id: number;
   client_name: string;
+  employee_id: string;
   city: string;
   address: string;
   nomenclature: string;
@@ -39,7 +39,21 @@ interface ServiceData {
   status: string;
   update_count: number;
   created_at: string;
+  modification_at: string;
+  finished_at: string;
+  list_material: string;
+  list_service: string;
+  observation: string;
   protocol: string;
+}
+
+interface Materials {
+  id: number;
+  product_name: string;
+  unit_type: string;
+  product_code: string;
+  quantity_value: string;
+  created_at: string;
 }
 
 export default function FinishService({ params }: SlugType) {
@@ -47,6 +61,7 @@ export default function FinishService({ params }: SlugType) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [materials, setMaterials] = useState<Materials[]>([]);
 
   const sleep = async (ms: number): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -65,12 +80,20 @@ export default function FinishService({ params }: SlugType) {
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );
 
+        const paramDataStock = {
+          baseURL: '/api/tec/stock',
+          employee_id: Number(decryptSlug.employeeId)
+        };
+
+        const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
+
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/select-material',
           protocol: decryptSlug.protocol?.toString(),
           employeeId: decryptSlug.employeeId?.toString()
         });
 
+        setMaterials(responseDataStock.data);
         setServiceData(response.data);
         break;
       } catch (error) {
@@ -110,7 +133,7 @@ export default function FinishService({ params }: SlugType) {
           </span>
         </ErrorContainer>
       ) : (
-        <List items={data} serviceData={serviceData[0]} />
+        <List items={materials} serviceData={serviceData[0]} />
       )}
     </Container>
   );
