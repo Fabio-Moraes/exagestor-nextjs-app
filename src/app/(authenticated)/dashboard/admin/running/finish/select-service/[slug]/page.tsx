@@ -30,8 +30,8 @@ interface SlugType {
 
 interface ServiceData {
   id: number;
-  employee_id: number;
   client_name: string;
+  employee_id: string;
   city: string;
   address: string;
   nomenclature: string;
@@ -39,6 +39,11 @@ interface ServiceData {
   status: string;
   update_count: number;
   created_at: string;
+  modification_at: string;
+  finished_at: string;
+  list_material: string;
+  list_service: string;
+  observation: string;
   protocol: string;
 }
 
