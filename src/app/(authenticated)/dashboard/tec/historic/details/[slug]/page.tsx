@@ -274,28 +274,36 @@ export default function Details({ params }: SlugType) {
                       </div>
                     </div>
                     {objListMaterial &&
-                      Object.keys(objListMaterial).map((key: string) => (
-                        <div key={key}>
-                          <div>
-                            <span>
-                              {materials.find((item) => String(item.id) === key)?.product_name}
-                            </span>
+                      Object.keys(objListMaterial)
+                        .map((key: string) => (
+                          <div key={key}>
+                            <div>
+                              <span>
+                                {
+                                  materials.find((item) => String(item.id) === key)
+                                    ?.product_name
+                                }
+                              </span>
+                            </div>
+                            <div>
+                              <span>{objListMaterial[key]}</span>
+                            </div>
+                            <div>
+                              <span>
+                                {materials.find((item) => String(item.id) === key)?.unit_type}
+                              </span>
+                            </div>
+                            <div>
+                              <span>
+                                {
+                                  materials.find((item) => String(item.id) === key)
+                                    ?.product_code
+                                }
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <span>{objListMaterial[key]}</span>
-                          </div>
-                          <div>
-                            <span>
-                              {materials.find((item) => String(item.id) === key)?.unit_type}
-                            </span>
-                          </div>
-                          <div>
-                            <span>
-                              {materials.find((item) => String(item.id) === key)?.product_code}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
+                        ))
+                        .filter((item) => objListMaterial[String(item.key)] > 0)}
                   </Table>
                 )}
                 <p />
@@ -310,25 +318,27 @@ export default function Details({ params }: SlugType) {
                       </div>
                     </div>
                     {objListService &&
-                      Object.keys(objListService).map((key: string) => (
-                        <div key={key}>
-                          <div>
-                            <span>
-                              {dataListService.find((item) => item.id === key)?.description}
-                            </span>
+                      Object.keys(objListService)
+                        .map((key: string) => (
+                          <div key={key}>
+                            <div>
+                              <span>
+                                {dataListService.find((item) => item.id === key)?.description}
+                              </span>
+                            </div>
+                            <div>
+                              <span>{objListService[key]}</span>
+                            </div>
                           </div>
-                          <div>
-                            <span>{objListService[key]}</span>
-                          </div>
-                        </div>
-                      ))}
+                        ))
+                        .filter((item) => objListService[String(item.key)] > 0)}
                   </Table>
                 )}
                 <p />
                 {services?.observation && (
                   <Observation>
                     <p>Observação</p>
-                    <p>{renderTextWithLineBreaks(services?.observation ?? '')}</p>
+                    {renderTextWithLineBreaks(services?.observation ?? '')}
                   </Observation>
                 )}
               </>

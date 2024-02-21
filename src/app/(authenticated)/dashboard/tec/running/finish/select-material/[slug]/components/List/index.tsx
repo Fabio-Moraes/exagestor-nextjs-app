@@ -73,6 +73,10 @@ export function List(props: { serviceData: ServiceData }) {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
+        setIsPopupValue(
+          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+        );
+
         const responseDataUser = await apiRoute.post('/api/user');
         const responseDataStock = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/stock',
@@ -84,10 +88,6 @@ export function List(props: { serviceData: ServiceData }) {
       } catch (error) {
         await sleep(reconnectDelay);
         setConnectionError(true);
-      } finally {
-        setIsPopupValue(
-          retryCount > 1 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
       }
     }
     setIsPopupValue(null);

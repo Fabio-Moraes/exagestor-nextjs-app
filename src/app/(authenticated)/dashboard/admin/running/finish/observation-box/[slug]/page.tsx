@@ -51,10 +51,11 @@ export default function FinishService({ params }: SlugType) {
     setConnectionError(false);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
-      setIsPopupValue(
-        retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-      );
       try {
+        setIsPopupValue(
+          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
+        );
+
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/select-material',
           protocol: decryptSlug.protocol?.toString(),
