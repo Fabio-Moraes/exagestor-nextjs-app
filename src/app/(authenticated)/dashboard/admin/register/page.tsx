@@ -5,6 +5,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
@@ -22,7 +23,7 @@ export default function NewRegister() {
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
-  const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
+  const [isPopupValue, setIsPopupValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
@@ -30,7 +31,7 @@ export default function NewRegister() {
 
   const handleClickOutside = () => {
     if (modalValue !== '') {
-      !fullScreenLoadingValue && setModalValue('');
+      !isPopupValue && setModalValue('');
     }
   };
 
@@ -67,6 +68,12 @@ export default function NewRegister() {
       .slice(0, 14);
     setIdentification(formattedCpf.trim());
   };
+
+  const maxRetries = 4;
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,18 +115,9 @@ export default function NewRegister() {
         return;
       }
 
-      const sleep = async (ms: number): Promise<void> => {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      };
-
-      const maxRetries = 4;
-      const reconnectDelay = 3000;
-
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setFullScreenLoadingValue(
-            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-          );
+          setIsPopupValue(generateConnectingMessage(retryCount));
 
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/admin/register',
@@ -132,32 +130,44 @@ export default function NewRegister() {
           const { status } = response.data;
 
           if (status === 'already registered') {
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setModalValue(
               `Funcionário(a) do <br>${cpfOrCnpj} ${identification} já existente.`
             );
-            return;
+            break;
           }
 
           if (status === 'success') {
             setSuccessfullyCompleted(true);
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(checkedSvg);
             setModalValue('Novo funcionário(a) registrado com sucesso.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push('/dashboard/admin/running');
-            return;
+            break;
           }
-        } catch (error) {
-          console.error('Erro na requisição POST:', error);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                break;
+              }
+
+              if (retryCount === maxRetries) {
+                setModalValue(
+                  'Não foi possível registrar o funcionário(a) após várias tentativas.'
+                );
+                setIsPopupValue('');
+              } else {
+                await TimedWait(3000);
+              }
+            }
+          }
         }
-
-        await sleep(reconnectDelay);
       }
-
-      setModalValue('Não foi possível registrar o funcionário(a) após várias tentativas.');
-      setFullScreenLoadingValue('');
     }
   };
 
@@ -273,10 +283,8 @@ export default function NewRegister() {
         <Button type="submit">Registrar</Button>
       </FormContainer>
 
-      {modalValue && !fullScreenLoadingValue && (
-        <Modal icon={iconSvgModal} message={modalValue} />
-      )}
-      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
+      {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </Container>
   );
 }

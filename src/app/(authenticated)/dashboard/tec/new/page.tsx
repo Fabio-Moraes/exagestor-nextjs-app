@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
@@ -33,7 +34,7 @@ export default function NewService() {
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
-  const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
+  const [isPopupValuesetIsPopupValue, setIsPopupValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
@@ -41,7 +42,7 @@ export default function NewService() {
 
   const handleClickOutside = () => {
     if (modalValue !== '') {
-      !fullScreenLoadingValue && setModalValue('');
+      !isPopupValuesetIsPopupValue && setModalValue('');
     }
   };
 
@@ -78,6 +79,10 @@ export default function NewService() {
   const handleBoxOrCableNomenclatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNomenclature(e.target.value);
   };
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,18 +124,11 @@ export default function NewService() {
         return;
       }
 
-      const sleep = async (ms: number): Promise<void> => {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      };
-
-      const reconnectDelay = 5000;
       const maxRetries = 4;
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setFullScreenLoadingValue(
-            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-          );
+          setIsPopupValue(generateConnectingMessage(retryCount));
 
           const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
             const classificationArray = [];
@@ -165,25 +163,35 @@ export default function NewService() {
 
           if (success) {
             setSuccessfullyCompleted(true);
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(checkedSvg);
             setModalValue('Novo serviço iniciado com êxito.');
 
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await TimedWait(3000);
             router.push('/dashboard/tec/running');
             break;
           } else {
             console.error('Erro:', response.data.error);
           }
-        } catch (error) {
-          console.error('Erro na requisição POST:', error);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                break;
+              }
+
+              if (retryCount === maxRetries) {
+                setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
+                setIsPopupValue('');
+              } else {
+                await TimedWait(3000);
+              }
+            }
+          }
         }
-
-        await sleep(reconnectDelay);
       }
-
-      setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
-      setFullScreenLoadingValue('');
     }
   };
 
@@ -251,10 +259,12 @@ export default function NewService() {
         <Button type="submit">Iniciar Serviço</Button>
       </FormContainer>
 
-      {modalValue && !fullScreenLoadingValue && (
+      {modalValue && !isPopupValuesetIsPopupValue && (
         <Modal icon={iconSvgModal} message={modalValue} />
       )}
-      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
+      {isPopupValuesetIsPopupValue && (
+        <FullScreenLoading message={isPopupValuesetIsPopupValue} />
+      )}
     </Container>
   );
 }

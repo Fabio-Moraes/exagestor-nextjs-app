@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { encryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import {
@@ -35,34 +36,45 @@ export default function NewStock() {
 
   const router = useRouter();
 
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const reconnectDelay = 5000;
   const maxRetries = 4;
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   async function fetchServices() {
     setConnectionError(false);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/almox/stock'
         });
 
+        setIsPopupValue(null);
         setMaterials(response.data);
         break;
-      } catch (error) {
-        await sleep(reconnectDelay);
-        setConnectionError(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
-    setIsPopupValue(null);
   }
 
   useEffect(() => {

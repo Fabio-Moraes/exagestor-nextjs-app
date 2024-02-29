@@ -101,7 +101,7 @@ export default function Details({ params }: SlugType) {
           baseURL: '/api/admin/manage/general-historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
-          updateCount: String(decryptSlug.updateCount)
+          updateCount: String(Number(decryptSlug.updateCount) + 1)
         });
 
         count = maxRetries;
@@ -206,7 +206,7 @@ export default function Details({ params }: SlugType) {
 
   return (
     <Container>
-      <Title>Relatório</Title>
+      <Title>Relatório sdfsdf {decryptSlug.employeeId?.toString()}</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>

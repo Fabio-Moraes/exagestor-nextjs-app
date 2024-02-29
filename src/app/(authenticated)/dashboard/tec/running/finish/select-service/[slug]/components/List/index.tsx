@@ -42,7 +42,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectService, setSelectService, setSelectMaterial } = useContexState();
+  const { selectService, setSelectService } = useContexState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -65,8 +65,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
     setSelectService((prevItems) => {
       const protocolKey = String(serviceData?.protocol);
 
-      if (item === '2') {
-        console.log('TEST-SELECT-MATERIAL', item);
+      /* if (item === '2') {
         setSelectMaterial((prevItems) => {
           const protocolKey = String(serviceData?.protocol);
 
@@ -77,7 +76,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
             }
           };
         });
-      }
+      } */
 
       return {
         ...prevItems,

@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import checkSvg from './assets/svg/check.svg';
@@ -45,10 +46,20 @@ export function ButtonBar({ service }: { service: RunningService }) {
           baseURL: `/api/tec/${service?.status === 'active' ? 'pause' : 'start'}`,
           protocol: service?.protocol
         });
-
+        setRunningLoad(false);
         break;
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
   }
@@ -61,10 +72,20 @@ export function ButtonBar({ service }: { service: RunningService }) {
           baseURL: '/api/tec/cancel',
           protocol: service?.protocol
         });
-
+        setRunningLoad(false);
         break;
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
@@ -24,7 +25,6 @@ import {
 } from './styles';
 
 export default function NewRegister() {
-  //const [productName, setProductName] = useState('');
   const [productCode, setProductCode] = useState('');
   const [productBatch, setProductBatch] = useState('');
   const [quantityValue, setQuantityValue] = useState('');
@@ -36,7 +36,7 @@ export default function NewRegister() {
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState('');
-  const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
+  const [isPopupValue, setIsPopupValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
@@ -44,7 +44,7 @@ export default function NewRegister() {
 
   const handleClickOutside = () => {
     if (modalValue !== '') {
-      !fullScreenLoadingValue && setModalValue('');
+      !isPopupValue && setModalValue('');
     }
   };
 
@@ -54,6 +54,10 @@ export default function NewRegister() {
       document.removeEventListener('click', handleClickOutside);
     };
   });
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,18 +80,11 @@ export default function NewRegister() {
         return;
       }
 
-      const sleep = async (ms: number): Promise<void> => {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      };
-
       const maxRetries = 4;
-      const reconnectDelay = 3000;
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setFullScreenLoadingValue(
-            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-          );
+          setIsPopupValue(generateConnectingMessage(retryCount));
 
           const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/register',
@@ -102,7 +99,7 @@ export default function NewRegister() {
           const { status } = response.data;
 
           if (status === 'already registered') {
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(alertSvg);
             setModalValue(`Produto já existente.`);
             return;
@@ -110,7 +107,7 @@ export default function NewRegister() {
 
           if (status === 'success') {
             setSuccessfullyCompleted(true);
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(checkedSvg);
             setModalValue('Novo produto registrado com sucesso.');
 
@@ -118,16 +115,26 @@ export default function NewRegister() {
             router.push('/dashboard/almox/stock');
             return;
           }
-        } catch (error) {
-          console.error('Erro na requisição POST:', error);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                await TimedWait(10000);
+              } else {
+                await TimedWait(3000);
+              }
+
+              if (retryCount === maxRetries) {
+                setIconSvgModal(alertSvg);
+                setModalValue('Não foi possível registrar o produto após várias tentativas.');
+                setIsPopupValue('');
+              }
+            }
+          }
         }
-
-        await sleep(reconnectDelay);
       }
-
-      setIconSvgModal(alertSvg);
-      setModalValue('Não foi possível registrar o produto após várias tentativas.');
-      setFullScreenLoadingValue('');
     }
   };
 
@@ -304,10 +311,8 @@ export default function NewRegister() {
         </span>
       </FormContainer>
 
-      {modalValue && !fullScreenLoadingValue && (
-        <Modal icon={iconSvgModal} message={modalValue} />
-      )}
-      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
+      {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </Container>
   );
 }

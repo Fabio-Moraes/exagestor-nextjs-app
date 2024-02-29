@@ -8,6 +8,7 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import ListItem from '../ListItem';
@@ -50,7 +51,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState('');
 
-  const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
+  const [isPopupValue, setIsPopupValue] = useState('');
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
   const decryptSlug = decryptObject(slug) as { selectedMaterials: Materials[] };
@@ -72,16 +73,11 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
 
   const handleSubmit = async () => {
     if (!successfullyCompleted) {
-      const sleep = async (ms: number): Promise<void> => {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      };
-
       const maxRetries = 4;
-      const reconnectDelay = 3000;
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setFullScreenLoadingValue(
+          setIsPopupValue(
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
 
@@ -94,14 +90,14 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
           const { status } = response.data;
 
           if (status === 'already registered') {
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(alertSvg);
             setModalValue(`carga já existente.`);
           }
 
           if (status === 'success') {
             setSuccessfullyCompleted(true);
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(checkedSvg);
             setModalValue('Carga distribuída com sucesso.');
 
@@ -110,16 +106,26 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
           }
 
           return;
-        } catch (error) {
-          console.error('Erro na requisição POST:', error);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                await TimedWait(10000);
+              } else {
+                await TimedWait(3000);
+              }
+
+              if (retryCount === maxRetries) {
+                setIconSvgModal(alertSvg);
+                setModalValue('Não foi possível distribuir a carga após várias tentativas.');
+                setIsPopupValue('');
+              }
+            }
+          }
         }
-
-        await sleep(reconnectDelay);
       }
-
-      setIconSvgModal(alertSvg);
-      setModalValue('Não foi possível distribuir a carga após várias tentativas.');
-      setFullScreenLoadingValue('');
     }
   };
 
@@ -139,14 +145,6 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
       clearTimeout(timer);
     };
   }, []);
-
-  /* const toggleRowSelection = (id: number) => {
-    if (selectedTableRows.includes(id)) {
-      setSelectedTableRows(selectedTableRows.filter((rowId) => rowId !== id));
-    } else {
-      setSelectedTableRows([...selectedTableRows, id]);
-    }
-  }; */
 
   return (
     <>
@@ -192,10 +190,8 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
           <Button onClick={() => employeeId && handleSubmit()}>Enviar Carga</Button>
         </ContainerButton>
       </ListContainer>
-      {modalValue && !fullScreenLoadingValue && (
-        <Modal icon={iconSvgModal} message={modalValue} />
-      )}
-      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
+      {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </>
   );
 }

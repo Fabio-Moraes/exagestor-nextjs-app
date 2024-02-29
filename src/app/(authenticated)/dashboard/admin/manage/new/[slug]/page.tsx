@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { decryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import alertSvg from './assets/svg/alert.svg';
@@ -40,7 +41,7 @@ export default function NewService({ params }: SlugType) {
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
-  const [fullScreenLoadingValue, setFullScreenLoadingValue] = useState('');
+  const [isPopupValue, setIsPopupValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
@@ -48,7 +49,7 @@ export default function NewService({ params }: SlugType) {
 
   const handleClickOutside = () => {
     if (modalValue !== '') {
-      !fullScreenLoadingValue && setModalValue('');
+      !isPopupValue && setModalValue('');
     }
   };
 
@@ -85,6 +86,10 @@ export default function NewService({ params }: SlugType) {
   const handleBoxOrCableNomenclatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNomenclature(e.target.value);
   };
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,9 +135,7 @@ export default function NewService({ params }: SlugType) {
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setFullScreenLoadingValue(
-            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-          );
+          setIsPopupValue(generateConnectingMessage(retryCount));
 
           const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
             const classificationArray = [];
@@ -168,7 +171,7 @@ export default function NewService({ params }: SlugType) {
 
           if (success) {
             setSuccessfullyCompleted(true);
-            setFullScreenLoadingValue('');
+            setIsPopupValue('');
             setIconSvgModal(checkedSvg);
             setModalValue('Novo serviço iniciado com êxito.');
 
@@ -178,15 +181,25 @@ export default function NewService({ params }: SlugType) {
           } else {
             console.error('Erro:', response.data.error);
           }
-        } catch (error) {
-          console.error('Erro na requisição POST:', error);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                await TimedWait(10000);
+              } else {
+                await TimedWait(3000);
+              }
+
+              if (retryCount === maxRetries) {
+                setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
+                setIsPopupValue('');
+              }
+            }
+          }
         }
-
-        await new Promise((resolve) => setTimeout(resolve, 5000));
       }
-
-      setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
-      setFullScreenLoadingValue('');
     }
   };
 
@@ -254,10 +267,8 @@ export default function NewService({ params }: SlugType) {
         <Button type="submit">Iniciar Serviço</Button>
       </FormContainer>
 
-      {modalValue && !fullScreenLoadingValue && (
-        <Modal icon={iconSvgModal} message={modalValue} />
-      )}
-      {fullScreenLoadingValue && <FullScreenLoading message={fullScreenLoadingValue} />}
+      {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </Container>
   );
 }

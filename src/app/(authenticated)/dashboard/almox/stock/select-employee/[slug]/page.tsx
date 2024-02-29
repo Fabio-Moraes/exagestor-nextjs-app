@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
@@ -28,34 +29,45 @@ export default function SelectEmployee({ params }: SlugType) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const reconnectDelay = 5000;
   const maxRetries = 4;
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   async function fetchServices() {
     setConnectionError(false);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/almox/stock/select-employee'
         });
 
         setEmployee(response.data);
+        setIsPopupValue(null);
         break;
-      } catch (error) {
-        await sleep(reconnectDelay);
-        setConnectionError(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
-    setIsPopupValue(null);
   }
 
   useEffect(() => {

@@ -30,6 +30,7 @@ export function CardContent({ service }: { service: RunningService }) {
   }
 
   const createdAt = formatDate(service.created_at);
+  const patternProtocol = /(\d{1})(\d{4})(\d{4})(\d{4})(\d{4})/;
 
   return (
     <Container $color={service?.status === 'analysis' ? '#fbf4cf' : '#D8E5DF'}>
@@ -39,7 +40,7 @@ export function CardContent({ service }: { service: RunningService }) {
         <p>ENDEREÇO DE ORIGEM DO SERVIÇO: {service?.address.toUpperCase()}</p>
         <p>NOMENCLATURA DE CAIXA OU CABO: {service?.nomenclature.toUpperCase()}</p>
         <p>CLASSE: {service?.classification}</p>
-        <p>PROTOCOLO: {service?.protocol}</p>
+        <p>PROTOCOLO: {service?.protocol.replace(patternProtocol, '$1-$2-$3-$4-$5')}</p>
         <p>INICIADO EM: {createdAt}</p>
         <p>
           INICIADO POR:

@@ -6,21 +6,10 @@ import { List } from './components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
-
-/* const data = [
-  { id: '0', description: 'PARAFUSOS DE AÇO INOXIDÁVEL' },
-  { id: '1', description: 'FIOS DE COBRE ESMALTADOS' },
-  { id: '4', description: 'BRAÇADEIRA DE AÇO 1P' }, //<<<<<<< 3
-  { id: '3', description: 'CONECTORES DE METAL GALVANIZADO' },
-  { id: '2', description: 'BARRA DE PAD 1/4' }, //<<<<<<< 2
-  { id: '5', description: 'LÂMPADAS LED DE ALTA EFICIÊNCIA' },
-  { id: '6', description: 'PLACAS DE CIRCUITOS ELETRÔNICOS' },
-  { id: '7', description: 'TINTAS EPÓXI ANTICORROSIVAS' },
-  { id: '8', description: 'ISOLADORES DE PORCELANA PARA ALTA TENSÃO' }
-]; */
 
 interface SlugType {
   params: {
@@ -63,22 +52,19 @@ export default function FinishService({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
 
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const reconnectDelay = 5000;
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
+
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
   async function fetchServices() {
     setConnectionError(false);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const paramDataStock = {
           baseURL: '/api/tec/stock',
@@ -94,14 +80,28 @@ export default function FinishService({ params }: SlugType) {
         });
 
         setMaterials(responseDataStock.data);
+        setIsPopupValue(null);
         setServiceData(response.data);
         break;
-      } catch (error) {
-        await sleep(reconnectDelay);
-        setConnectionError(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
-    setIsPopupValue(null);
   }
 
   useEffect(() => {

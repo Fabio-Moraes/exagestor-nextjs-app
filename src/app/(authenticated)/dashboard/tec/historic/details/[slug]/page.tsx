@@ -7,6 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import iconExa from './assets/svg/exa_logo.svg';
@@ -57,6 +58,12 @@ interface SlugType {
   };
 }
 
+interface CustomError extends Error {
+  response?: {
+    status: number;
+  };
+}
+
 export default function Details({ params }: SlugType) {
   const dataListService = [
     { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
@@ -78,6 +85,10 @@ export default function Details({ params }: SlugType) {
 
   const router = useRouter();
 
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
+
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -86,9 +97,7 @@ export default function Details({ params }: SlugType) {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const responseDataUser = await apiRoute.post('/api/user');
 
@@ -108,13 +117,27 @@ export default function Details({ params }: SlugType) {
 
         setMaterials(responseDataStock.data);
         setServices(responseDataDetails.data[0]);
+        setIsPopupValue(null);
         break;
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        setConnectionError(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
-    setIsPopupValue(null);
   }
 
   useEffect(() => {
@@ -203,6 +226,8 @@ export default function Details({ params }: SlugType) {
   const objListMaterial = JSON.parse(services?.list_material || '{}');
   const objListService = JSON.parse(services?.list_service || '{}');
 
+  const patternProtocol = /(\d{1})(\d{4})(\d{4})(\d{4})(\d{4})/;
+
   return (
     <Container>
       <Title>Detalhes</Title>
@@ -254,7 +279,9 @@ export default function Details({ params }: SlugType) {
                 )}
                 {services?.modification_at && modificationFilter()}
                 <p>Nomenclatura: {services?.nomenclature}</p>
-                <p>Protocolo: {services?.protocol}</p>
+                <p>
+                  Protocolo: {services?.protocol.replace(patternProtocol, '$1-$2-$3-$4-$5')}
+                </p>
                 <p>Serviço: {status[services?.status]}</p>
                 <p>Contador de Atualização: {services?.update_count}</p>
                 {services?.list_material && (

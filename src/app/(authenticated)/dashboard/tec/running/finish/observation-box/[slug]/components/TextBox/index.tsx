@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { encryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -58,7 +59,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
       setRequestInProcess(true);
       setConnectionError(false);
 
-      for (let count = 0; count < maxRetries; count++) {
+      for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
           await apiRoute.post('/api/bridge', {
             baseURL: '/api/tec/concluded',
@@ -78,10 +79,23 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
 
           router.push(`/dashboard/tec/historic/details/${encryptSlug}`);
           break;
-        } catch (error) {
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-          setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-          setConnectionError(true);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                await TimedWait(10000);
+              } else {
+                await TimedWait(3000);
+              }
+
+              if (retryCount === maxRetries) {
+                setConnectionError(true);
+                setIsPopupValue(null);
+              }
+            }
+          }
         }
       }
 

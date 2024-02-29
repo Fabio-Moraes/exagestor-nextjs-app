@@ -8,4 +8,10 @@ declare module '*.json' {
   export default content;
 }
 
+interface CustomError extends Error {
+  response?: {
+    status: number;
+  };
+}
+
 declare module '*.ttf';

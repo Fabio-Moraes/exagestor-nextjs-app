@@ -48,6 +48,7 @@ export function ButtonBar({ service }: { service: Service }) {
           protocol: service?.protocol
         });
 
+        setRunningLoad(false);
         break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -65,6 +66,7 @@ export function ButtonBar({ service }: { service: Service }) {
           protocol: service?.protocol
         });
 
+        setRunningLoad(false);
         break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -81,7 +83,7 @@ export function ButtonBar({ service }: { service: Service }) {
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
-
+        setRunningLoad(false);
         break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));

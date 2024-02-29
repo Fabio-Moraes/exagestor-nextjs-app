@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { Container, Table, TableHeader, TableRow, Title, ErrorContainer } from './styles';
@@ -20,53 +21,52 @@ export default function NewStock() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const reconnectDelay = 5000;
   const maxRetries = 4;
 
-  async function fetchServices(id: string) {
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
+
+  async function fetchServices() {
     setConnectionError(false);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiRoute.post('/api/bridge', {
+        const responseUser = await apiRoute.post('/api/user');
+
+        const responseStock = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/stock',
-          employee_id: Number(id)
+          employee_id: Number(responseUser.data.id)
         });
 
-        setMaterials(response.data);
+        setMaterials(responseStock.data);
+        setIsPopupValue(null);
         break;
-      } catch (error) {
-        await sleep(reconnectDelay);
-        setConnectionError(true);
-      }
-    }
-    setIsPopupValue(null);
-  }
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
 
-  async function fetchUser() {
-    for (let count = 0; count < maxRetries; count++) {
-      try {
-        const response = await apiRoute.post('/api/user');
-
-        count = maxRetries;
-
-        fetchServices(response.data.id);
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
   }
 
   useEffect(() => {
-    fetchUser();
+    fetchServices();
   }, []);
 
   return (

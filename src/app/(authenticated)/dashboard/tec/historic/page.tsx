@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
@@ -29,6 +30,10 @@ export default function HistoricService() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
+
   const maxRetries = 4;
 
   async function fetchServices() {
@@ -36,9 +41,7 @@ export default function HistoricService() {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/historic'
@@ -46,12 +49,25 @@ export default function HistoricService() {
 
         setServices(response.data);
         break;
-      } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        setConnectionError(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
-    setIsPopupValue(null);
   }
 
   useEffect(() => {

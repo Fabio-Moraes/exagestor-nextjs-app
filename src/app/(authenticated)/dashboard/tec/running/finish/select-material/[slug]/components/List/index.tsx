@@ -7,6 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -61,11 +62,10 @@ export function List(props: { serviceData: ServiceData }) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
 
-  const reconnectDelay = 5000;
   const maxRetries = 4;
 
   async function fetchMaterials() {
@@ -73,24 +73,36 @@ export function List(props: { serviceData: ServiceData }) {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(generateConnectingMessage(retryCount));
 
         const responseDataUser = await apiRoute.post('/api/user');
         const responseDataStock = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/stock',
-          employee_id: responseDataUser.data.id
+          employee_id: Number(responseDataUser.data.id)
         });
 
+        setIsPopupValue(null);
         setMaterials(responseDataStock.data);
         break;
-      } catch (error) {
-        await sleep(reconnectDelay);
-        setConnectionError(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
-    setIsPopupValue(null);
   }
 
   useEffect(() => {

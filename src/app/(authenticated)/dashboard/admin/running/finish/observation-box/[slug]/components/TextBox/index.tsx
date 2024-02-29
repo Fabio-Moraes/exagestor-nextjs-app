@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { encryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -54,13 +55,19 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const maxRetries = 4;
   const router = useRouter();
 
+  function generateConnectingMessage(count: number): string {
+    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  }
+
   async function fetchConcludedMaterial() {
     if (!requestInProcess) {
       setRequestInProcess(true);
       setConnectionError(false);
 
-      for (let count = 0; count < maxRetries; count++) {
+      for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
+          setIsPopupValue(generateConnectingMessage(retryCount));
+
           await apiRoute.post('/api/bridge', {
             baseURL: '/api/admin/concluded',
             protocol: serviceData?.protocol,
@@ -73,20 +80,31 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
           const encryptSlug = encryptObject({
             protocol: serviceData?.protocol,
             employeeId: serviceData?.employee_id,
-            updateCount: Number(serviceData?.update_count) + 1
+            updateCount: serviceData?.update_count
           });
 
           router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);
           break;
-        } catch (error) {
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-          setIsPopupValue(count > 1 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
-          setConnectionError(true);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            const customError = error as CustomError;
+            if (customError.response) {
+              const statusCode = customError.response.status;
+              if (statusCode === 409) {
+                await TimedWait(10000);
+              } else {
+                await TimedWait(3000);
+              }
+
+              if (retryCount === maxRetries) {
+                setConnectionError(true);
+                setIsPopupValue(null);
+              }
+            }
+          }
         }
       }
-
       setRequestInProcess(false);
-      setIsPopupValue(null);
     }
   }
 
