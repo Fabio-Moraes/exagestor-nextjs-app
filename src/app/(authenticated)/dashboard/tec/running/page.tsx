@@ -146,8 +146,8 @@ export default function RunningService() {
 
   useEffect(() => {
     const initialize = async () => {
-      await attemptReconnection();
       await fetchServices();
+      await attemptReconnection();
     };
 
     initialize();
