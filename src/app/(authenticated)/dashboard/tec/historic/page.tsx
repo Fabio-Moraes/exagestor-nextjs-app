@@ -48,6 +48,7 @@ export default function HistoricService() {
         });
 
         setServices(response.data);
+        setIsPopupValue(null);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
