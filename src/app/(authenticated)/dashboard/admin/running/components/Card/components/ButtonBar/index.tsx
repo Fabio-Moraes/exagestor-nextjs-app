@@ -43,7 +43,7 @@ export function ButtonBar({ service }: { service: Service }) {
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: `/api/admin/${service?.status === 'active' ? 'pause' : 'start'}`,
+          baseURL: `/api/admin/running/${service?.status === 'active' ? 'pause' : 'start'}`,
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
@@ -61,7 +61,7 @@ export function ButtonBar({ service }: { service: Service }) {
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/start',
+          baseURL: '/api/admin/running/start',
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
@@ -79,7 +79,7 @@ export function ButtonBar({ service }: { service: Service }) {
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/cancel',
+          baseURL: '/api/admin/running/cancel',
           employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });

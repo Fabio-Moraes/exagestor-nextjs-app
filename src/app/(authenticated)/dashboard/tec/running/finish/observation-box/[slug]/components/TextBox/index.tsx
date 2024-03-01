@@ -62,7 +62,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
           await apiRoute.post('/api/bridge', {
-            baseURL: '/api/tec/concluded',
+            baseURL: '/api/tec/running/finish/concluded',
             protocol: serviceData?.protocol,
             serviceIds: JSON.stringify('selectedItems'),
             observation: String(observationBox[serviceData?.protocol]),
@@ -72,7 +72,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
 
           const encryptSlug = encryptObject({
             protocol: serviceData?.protocol,
-            updateCount: Number(serviceData?.update_count) + 1
+            updateCount: serviceData?.update_count + 1
           });
 
           console.log(encryptSlug);
@@ -86,13 +86,13 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
               const statusCode = customError.response.status;
               if (statusCode === 409) {
                 await TimedWait(10000);
-              } else {
-                await TimedWait(3000);
               }
 
               if (retryCount === maxRetries) {
                 setConnectionError(true);
                 setIsPopupValue(null);
+              } else {
+                await TimedWait(3000);
               }
             }
           }

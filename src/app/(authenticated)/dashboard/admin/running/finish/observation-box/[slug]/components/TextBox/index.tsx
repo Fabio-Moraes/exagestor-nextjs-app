@@ -80,7 +80,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
           const encryptSlug = encryptObject({
             protocol: serviceData?.protocol,
             employeeId: serviceData?.employee_id,
-            updateCount: serviceData?.update_count
+            updateCount: serviceData?.update_count + 1
           });
 
           router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);

@@ -6,6 +6,7 @@ import { Container } from './styles';
 
 interface Service {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
@@ -52,7 +53,8 @@ export function Card({ service }: { service: Service }) {
 
   const encryptSlug = encryptObject({
     protocol: service?.protocol,
-    updateCount: service?.update_count
+    updateCount: service?.update_count,
+    employeeId: service?.employee_id
   });
 
   const router = useRouter();

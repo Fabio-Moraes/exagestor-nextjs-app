@@ -7,6 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import iconExa from './assets/svg/exa_logo.svg';
@@ -76,19 +77,14 @@ export default function Details({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
 
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
   const router = useRouter();
-  const reconnectDelay = 5000;
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let count = 0; count < maxRetries; count++) {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         const paramDataStock = {
           baseURL: '/api/tec/stock',
@@ -101,18 +97,31 @@ export default function Details({ params }: SlugType) {
           baseURL: '/api/admin/manage/general-historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
-          updateCount: String(Number(decryptSlug.updateCount) + 1)
+          updateCount: String(decryptSlug.updateCount)
         });
-
-        count = maxRetries;
 
         setMaterials(responseDataStock.data);
         setServices(response.data[0]);
-      } catch (error) {
-        await sleep(reconnectDelay);
-        setConnectionError(true);
-      } finally {
-        setIsPopupValue(count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando');
+        setIsPopupValue(null);
+
+        break;
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
     setIsPopupValue(null);
@@ -206,7 +215,7 @@ export default function Details({ params }: SlugType) {
 
   return (
     <Container>
-      <Title>Relatório sdfsdf {decryptSlug.employeeId?.toString()}</Title>
+      <Title>Relatório</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>

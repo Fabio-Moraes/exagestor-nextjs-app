@@ -43,7 +43,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: `/api/tec/${service?.status === 'active' ? 'pause' : 'start'}`,
+          baseURL: `/api/tec/running/${service?.status === 'active' ? 'pause' : 'start'}`,
           protocol: service?.protocol
         });
         setRunningLoad(false);
@@ -69,7 +69,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: '/api/tec/cancel',
+          baseURL: '/api/tec/running/cancel',
           protocol: service?.protocol
         });
         setRunningLoad(false);

@@ -62,7 +62,7 @@ export default function FinishService({ params }: SlugType) {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
-          baseURL: '/api/tec/select-service',
+          baseURL: '/api/tec/running/finish/select-service',
           protocol: decryptSlug.protocol?.toString()
         });
 

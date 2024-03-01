@@ -149,20 +149,22 @@ export default function RunningService() {
 
     initialize();
 
-    const connectionCheckIntervalId = setInterval(async () => {
+    const checkConnectionIntervalId = setInterval(async () => {
       if (!socket || socket.disconnected) {
         console.log('Reconnecting due to inactive connection...');
         await attemptReconnection();
       }
     }, connectionCheckInterval);
 
-    return () => {
+    const cleanup = () => {
       console.log('Disconnecting from WebSocket server...');
-      clearInterval(connectionCheckIntervalId);
+      clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
       }
     };
+
+    return cleanup;
   }, []);
 
   return (

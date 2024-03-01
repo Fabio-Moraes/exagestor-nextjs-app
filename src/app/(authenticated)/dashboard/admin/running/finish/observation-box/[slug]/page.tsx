@@ -55,7 +55,7 @@ export default function FinishService({ params }: SlugType) {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/select-material',
+          baseURL: '/api/admin/running/finish/select-material',
           protocol: decryptSlug.protocol?.toString(),
           employeeId: decryptSlug.employeeId?.toString()
         });

@@ -85,39 +85,33 @@ export default function Details({ params }: SlugType) {
 
   const router = useRouter();
 
-  function generateConnectingMessage(count: number): string {
-    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
-  }
-
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
   async function fetchServices() {
     setConnectionError(false);
+    console.log(decryptSlug);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(generateConnectingMessage(retryCount));
-
-        const responseDataUser = await apiRoute.post('/api/user');
-
-        const paramDataDetails = {
-          baseURL: '/api/tec/historic/details',
-          protocol: String(decryptSlug.protocol),
-          updateCount: String(decryptSlug.updateCount)
-        };
-
         const paramDataStock = {
           baseURL: '/api/tec/stock',
-          employee_id: responseDataUser.data.id
+          employee_id: Number(decryptSlug.employeeId)
         };
 
-        const responseDataDetails = await apiRoute.post('/api/bridge', paramDataDetails);
         const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
 
+        const response = await apiRoute.post('/api/bridge', {
+          baseURL: '/api/admin/historic/details',
+          employeeId: String(decryptSlug.employeeId),
+          protocol: String(decryptSlug.protocol),
+          updateCount: String(Number(decryptSlug.updateCount) + 1)
+        });
+
         setMaterials(responseDataStock.data);
-        setServices(responseDataDetails.data[0]);
+        setServices(response.data[0]);
         setIsPopupValue(null);
+
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -138,6 +132,7 @@ export default function Details({ params }: SlugType) {
         }
       }
     }
+    setIsPopupValue(null);
   }
 
   useEffect(() => {

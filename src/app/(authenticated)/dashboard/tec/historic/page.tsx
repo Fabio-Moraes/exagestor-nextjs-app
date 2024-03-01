@@ -11,6 +11,7 @@ import { Container, ErrorContainer, ListContainer, ListItem, Title } from './sty
 
 interface Service {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
