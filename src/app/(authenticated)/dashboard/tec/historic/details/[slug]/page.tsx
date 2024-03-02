@@ -58,12 +58,6 @@ interface SlugType {
   };
 }
 
-interface CustomError extends Error {
-  response?: {
-    status: number;
-  };
-}
-
 export default function Details({ params }: SlugType) {
   const dataListService = [
     { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
@@ -84,13 +78,11 @@ export default function Details({ params }: SlugType) {
   const [materials, setMaterials] = useState<Materials[]>([]);
 
   const router = useRouter();
-
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
   async function fetchServices() {
     setConnectionError(false);
-    console.log(decryptSlug);
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
@@ -102,10 +94,10 @@ export default function Details({ params }: SlugType) {
         const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
 
         const response = await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/historic/details',
+          baseURL: '/api/tec/historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
-          updateCount: String(Number(decryptSlug.updateCount) + 1)
+          updateCount: String(decryptSlug.updateCount)
         });
 
         setMaterials(responseDataStock.data);
@@ -221,11 +213,9 @@ export default function Details({ params }: SlugType) {
   const objListMaterial = JSON.parse(services?.list_material || '{}');
   const objListService = JSON.parse(services?.list_service || '{}');
 
-  const patternProtocol = /(\d{1})(\d{4})(\d{4})(\d{4})(\d{4})/;
-
   return (
     <Container>
-      <Title>Detalhes</Title>
+      <Title>Relatório</Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <ErrorContainer>
@@ -274,9 +264,7 @@ export default function Details({ params }: SlugType) {
                 )}
                 {services?.modification_at && modificationFilter()}
                 <p>Nomenclatura: {services?.nomenclature}</p>
-                <p>
-                  Protocolo: {services?.protocol.replace(patternProtocol, '$1-$2-$3-$4-$5')}
-                </p>
+                <p>Protocolo: {services?.protocol}</p>
                 <p>Serviço: {status[services?.status]}</p>
                 <p>Contador de Atualização: {services?.update_count}</p>
                 {services?.list_material && (

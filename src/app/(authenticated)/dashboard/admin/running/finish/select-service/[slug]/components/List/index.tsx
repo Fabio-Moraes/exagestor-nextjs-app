@@ -201,9 +201,11 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
                   item={item.description}
                   count={selectService?.[String(serviceData?.protocol)]?.[item.id]}
                   onSelect={({ count }) => {
-                    toggleItem(item.id, count);
+                    serviceData?.status !== 'analysis' && toggleItem(item.id, count);
                   }}
-                  onReset={() => toggleItemReset(item.id)}
+                  onReset={() =>
+                    serviceData?.status !== 'analysis' && toggleItemReset(item.id)
+                  }
                 />
               </motion.ul>
             ))}

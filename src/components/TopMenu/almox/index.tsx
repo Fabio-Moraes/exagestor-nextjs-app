@@ -44,14 +44,14 @@ export function TopMenu() {
       </Button>
 
       <Button
-        style={{ opacity: 0 }}
-        $path={['/dashboard/admin/manage'].includes(pathname)}
+        //style={{ opacity: 0 }}
+        $path={['/dashboard/admin/historic'].includes(pathname)}
         rel="preload"
-        onClick={() => {}}
+        onClick={() => router.push(`/dashboard/almox/historic`)}
       >
         <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
         <span>
-          Gerenciar <br /> Equipe
+          Histórico <br /> GeraL
         </span>
       </Button>
 

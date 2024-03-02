@@ -110,8 +110,7 @@ export default function NewRegister() {
             setIsPopupValue('');
             setIconSvgModal(checkedSvg);
             setModalValue('Novo produto registrado com sucesso.');
-
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await TimedWait(1000);
             router.push('/dashboard/almox/stock');
             return;
           }
@@ -121,15 +120,15 @@ export default function NewRegister() {
             if (customError.response) {
               const statusCode = customError.response.status;
               if (statusCode === 409) {
-                await TimedWait(10000);
-              } else {
-                await TimedWait(3000);
+                break;
               }
 
               if (retryCount === maxRetries) {
                 setIconSvgModal(alertSvg);
                 setModalValue('Não foi possível registrar o produto após várias tentativas.');
                 setIsPopupValue('');
+              } else {
+                await TimedWait(3000);
               }
             }
           }

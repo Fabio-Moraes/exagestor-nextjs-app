@@ -22,6 +22,7 @@ import {
 
 interface ServiceData {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;
@@ -72,10 +73,9 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
 
           const encryptSlug = encryptObject({
             protocol: serviceData?.protocol,
+            employeeId: serviceData?.employee_id,
             updateCount: serviceData?.update_count + 1
           });
-
-          console.log(encryptSlug);
 
           router.push(`/dashboard/tec/historic/details/${encryptSlug}`);
           break;

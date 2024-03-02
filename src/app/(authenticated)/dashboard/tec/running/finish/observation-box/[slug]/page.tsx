@@ -19,6 +19,7 @@ interface SlugType {
 
 interface ServiceData {
   id: number;
+  employee_id: number;
   client_name: string;
   city: string;
   address: string;

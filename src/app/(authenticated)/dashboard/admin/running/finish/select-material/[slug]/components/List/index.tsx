@@ -191,9 +191,12 @@ export function List(props: { serviceData: ServiceData; items: Materials[] }) {
                   item={item.product_name}
                   count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
                   onSelect={({ count }) => {
-                    toggleItem(String(item.id), count, Number(item.quantity_value));
+                    serviceData?.status !== 'analysis' &&
+                      toggleItem(String(item.id), count, Number(item.quantity_value));
                   }}
-                  onReset={() => toggleItemReset(String(item.id))}
+                  onReset={() =>
+                    serviceData?.status !== 'analysis' && toggleItemReset(String(item.id))
+                  }
                 />
               </motion.ul>
             ))}

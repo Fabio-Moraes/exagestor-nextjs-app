@@ -18,8 +18,8 @@ export function RightMenu() {
       <Wrapper>
         <div>
           <Button
-            $path={['/dashboard/almox/stock'].includes(pathname)}
-            onClick={() => router.push('/dashboard/almox/stock')}
+            $path={['/dashboard/almox/historic'].includes(pathname)}
+            onClick={() => router.push(`/dashboard/almox/historic`)}
             rel="preload"
           >
             <Image
@@ -30,7 +30,7 @@ export function RightMenu() {
               width="25"
               height="25"
             />
-            <span>Gerenciar Estoque</span>
+            <span>Histórico GeraL</span>
           </Button>
         </div>
 
