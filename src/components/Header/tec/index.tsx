@@ -66,7 +66,7 @@ export function Header() {
           priority
           loading="eager"
           alt="Axa"
-          style={{ width: '54px', height: 'auto' }}
+          style={{ width: '5.4rem', height: 'auto' }}
         />
         <ProfileInfoCompany>
           <h1>EXA TELECOM</h1>
@@ -74,7 +74,7 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {user.name && !isLoading ? <span>{user.name}</span> : <LineSkaleton width="300px" />}
+        {user.name && !isLoading ? <span>{user.name}</span> : <LineSkaleton width="30rem" />}
         <div>
           <div>
             <Image
@@ -82,7 +82,7 @@ export function Header() {
               priority
               loading="eager"
               alt="Axa"
-              style={{ width: '23px', height: 'auto' }}
+              style={{ width: '2.3rem', height: 'auto' }}
             />
             <span>TEC</span>
           </div>

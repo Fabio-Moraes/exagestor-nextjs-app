@@ -13,7 +13,7 @@ const animation = keyframes`
 `;
 
 export const Skeleton = styled.div<{ $width: string; $height: string; $color: string }>`
-  border-radius: 5px;
+  border-radius: 0.5rem;
   ${({ $width, $height }) =>
     $width &&
     css`
@@ -21,7 +21,7 @@ export const Skeleton = styled.div<{ $width: string; $height: string; $color: st
       height: ${$height};
     `};
 
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 
   ${({ $color }) => css`
     background: linear-gradient(

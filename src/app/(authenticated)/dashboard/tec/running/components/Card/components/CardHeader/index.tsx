@@ -33,7 +33,7 @@ const StatusOptions = {
         priority
         loading="eager"
         alt="Axa"
-        style={{ width: '20px', height: 'auto' }}
+        style={{ width: '2rem', height: 'auto' }}
       />
       <p>EM ANÁLISE</p>
     </>
@@ -45,7 +45,7 @@ const StatusOptions = {
         priority
         loading="eager"
         alt="Axa"
-        style={{ width: '20px', height: 'auto' }}
+        style={{ width: '2rem', height: 'auto' }}
       />
       <p>EM ANDAMENTO</p>
     </>
@@ -57,7 +57,7 @@ const StatusOptions = {
         priority
         loading="eager"
         alt="Axa"
-        style={{ width: '20px', height: 'auto' }}
+        style={{ width: '2rem', height: 'auto' }}
       />
       <p>PAUSADO</p>
     </>
@@ -78,7 +78,7 @@ export function CardHeader({ service }: { service: RunningService }) {
             priority
             loading="eager"
             alt="Axa"
-            style={{ width: '20px', height: 'auto' }}
+            style={{ width: '2rem', height: 'auto' }}
           />
         </button>
       </div>

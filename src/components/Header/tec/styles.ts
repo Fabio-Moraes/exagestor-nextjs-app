@@ -8,44 +8,44 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px 9px 15px;
+  padding: 0.8rem 1.2rem 0.9rem 1.5rem;
 
-  @media (max-width: 550px) {
+  @media (max-width: 55rem) {
     background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
   }
 
   @media (min-width: 550px) {
-    margin-left: 6px;
-    margin-right: 10px;
+    margin-left: 0.6rem;
+    margin-right: 1rem;
   }
 `;
 
 export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
   background-image: linear-gradient(to top, #8bc9a8, #dce6dc);
-  border-radius: 7px;
+  border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
-  width: 120px;
-  height: 70px;
+  width: 12rem;
+  height: 7rem;
   align-items: end;
-  padding: 0 6px 3px 4px;
+  padding: 0 0.6rem 0.3rem 0.4rem;
 
   > span {
-    margin-right: 1px;
-    padding-left: 5px;
+    margin-right: 0.1rem;
+    padding-left: 0.5rem;
     outline: 0;
     text-align: start;
     white-space: nowrap;
-    font-size: 15px;
-    margin-bottom: 5px;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
     font-family: 'OpenSans-SemiBold';
     color: #111111;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 20px;
+    height: 2rem;
     width: 100%;
   }
 
@@ -54,20 +54,20 @@ export const ProfileUser = styled.div`
     width: 100%;
 
     > button {
-      border: 2px solid #27a567;
+      border: 0.2rem solid #27a567;
       background: #27a567;
-      box-shadow: -12px 0px 0px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: -1.2rem 0 0 0 rgba(0, 0, 0, 0.5);
       background-color: #fff;
-      border-radius: 5px;
-      padding: 2px 7px 2px 7px;
+      border-radius: 0.5rem;
+      padding: 0.2rem 0.7rem 0.2rem 0.7rem;
       cursor: pointer;
       margin-left: auto;
-      margin-top: 1px;
+      margin-top: 0.1rem;
 
       &:hover {
         @media (min-width: 550px) {
-          border: 2px solid #27a567;
-          background-image: radial-gradient(60px at center, #27a567, #dce6dc);
+          border: 0.2rem solid #27a567;
+          background-image: radial-gradient(6rem at center, #27a567, #dce6dc);
         }
       }
     }
@@ -80,13 +80,13 @@ export const ProfileUser = styled.div`
       > span {
         font-family: 'OpenSans-SemiBold';
         color: #000;
-        font-size: 12px;
+        font-size: 1.2rem;
       }
     }
 
     > button h2 {
       font-family: 'OpenSans-SemiBold';
-      font-size: 12px;
+      font-size: 1.2rem;
     }
   }
 `;
@@ -98,30 +98,30 @@ export const ProfileCompany = styled.div`
   //background-color: #8bc9a8;
   display: flex;
   height: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
   background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
-  padding: 7px;
-  padding-left: 11px;
-  border-radius: 7px;
-  height: 70px;
+  padding: 0.7rem;
+  padding-left: 1.1rem;
+  border-radius: 0.7rem;
+  height: 7rem;
 `;
 
 export const ProfileInfoCompany = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 10px;
-  margin-right: 5px;
+  padding-left: 1rem;
+  margin-right: 0.5rem;
   width: 100%;
 
   > h1 {
     font-family: 'OpenSans-Bold';
     color: #000;
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 
   > span {
     font-family: 'OpenSans-Medium';
-    font-size: 13.8px;
+    font-size: 1.38rem;
     color: #000;
   }
 `;

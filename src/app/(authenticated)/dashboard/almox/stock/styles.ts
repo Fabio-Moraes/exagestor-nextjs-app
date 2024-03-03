@@ -4,50 +4,50 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   text-align: center;
-  padding: 20px;
+  padding: 2rem;
 `;
 
 export const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
-  border-radius: 7px;
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  border-radius: 0.7rem;
   font-family: 'OpenSans-SemiBold';
   color: #333;
 
   @media (min-width: 550px) {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    height: 40px;
-    line-height: 40px;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+    height: 4rem;
+    line-height: 4rem;
     background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
     color: #000;
   }
 `;
 
 export const Form = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 `;
 
 export const InputLabel = styled.label`
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
   font-weight: bold;
 `;
 
 export const Input = styled.input`
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.4rem;
 `;
 
 export const AddButton = styled.button`
   width: 100%;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   cursor: pointer;
   transition: background-color 0.3s;
   &:hover {
@@ -59,32 +59,32 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0px 10px 10px 20px;
+  margin: 0 1rem 1rem 2rem;
 
   > div {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #27a567;
+    width: 2rem;
+    height: 2rem;
+    border: 0.2rem solid #27a567;
     background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
-    border-radius: 10px;
+    border-radius: 1rem;
   }
   > span {
-    margin-left: 5px;
-    font-size: 14px;
+    margin-left: 0.5rem;
+    font-size: 1.4rem;
   }
 `;
 
 export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 2px solid #000;
+  border-bottom: 0.2rem solid #000;
   background-color: #8bc9a8;
-  padding: 10px 0;
+  padding: 1rem 0;
   width: 100%;
 
   div {
-    min-width: 67px;
-    border-left: 2px solid #000;
+    min-width: 6.7rem;
+    border-left: 0.2rem solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -93,13 +93,13 @@ export const TableHeader = styled.div`
     > span {
       width: 100%;
       font-family: 'OpenSans-Bold';
-      font-size: 13px;
+      font-size: 1.3rem;
     }
   }
 
   > div:first-child {
     width: 100%;
-    padding: 5px 10px;
+    padding: 0.5rem 1rem;
     border-left: 0;
     text-align: start;
   }
@@ -108,14 +108,14 @@ export const TableHeader = styled.div`
 export const TableRow = styled.div<{ $isSelected: boolean }>`
   display: flex;
   flex-direction: row;
-  border-bottom: 2px solid #000;
+  border-bottom: 0.2rem solid #000;
   background-color: ${({ $isSelected }) => ($isSelected ? '#e9c80f' : '#ffffff')};
-  padding: 10px 0;
+  padding: 1rem 0;
   width: 100%;
 
   > div {
-    min-width: 67px;
-    border-left: 2px solid #000;
+    min-width: 6.7rem;
+    border-left: 0.2rem solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,21 +123,21 @@ export const TableRow = styled.div<{ $isSelected: boolean }>`
     > span {
       width: 100%;
       font-family: 'OpenSans-SemiBold';
-      font-size: 13px;
+      font-size: 1.3rem;
     }
   }
 
   > div:first-child {
     width: 100%;
-    padding: 5px 10px;
+    padding: 0.5rem 1rem;
     border-left: 0;
     text-align: start;
   }
 `;
 
 export const Table = styled.div`
-  border: 2px solid #000;
-  border-radius: 5px;
+  border: 0.2rem solid #000;
+  border-radius: 0.5rem;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -148,13 +148,13 @@ export const Table = styled.div`
 `;
 
 export const Button = styled.button`
-  width: 300px;
+  width: 30rem;
   background-color: #27a567;
-  padding: 10px;
-  margin: 20px 20px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 1rem;
+  margin: 2rem 2rem;
+  border: 0.1rem solid #000000;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
   color: #fff;
 `;
 
@@ -166,18 +166,18 @@ export const ErrorContainer = styled.div`
 
   > span {
     text-align: left;
-    font-size: 17px;
+    font-size: 1.7rem;
     color: #333;
   }
 
   > button {
-    width: 150px;
+    width: 15rem;
     background-color: #27a567;
-    padding: 10px;
-    margin: 20px 20px;
-    border: 1px solid #000000;
-    border-radius: 7px;
-    font-size: 16px;
+    padding: 1rem;
+    margin: 2rem 2rem;
+    border: 0.1rem solid #000000;
+    border-radius: 0.7rem;
+    font-size: 1.6rem;
     color: #fff;
   }
 `;

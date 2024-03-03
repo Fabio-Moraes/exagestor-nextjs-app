@@ -212,7 +212,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
           </InputContainer>
           <ContainerCounter>
             {isLoading || !serviceData?.protocol ? (
-              <LineSkaleton width="30px" />
+              <LineSkaleton width="3rem" />
             ) : (
               <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
             )}

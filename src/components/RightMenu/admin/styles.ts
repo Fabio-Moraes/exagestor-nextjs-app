@@ -15,19 +15,19 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px;
+  padding: 0.8rem;
   background-color: #8bc9a8;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  border-radius: 7px;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+  border-radius: 0.7rem;
   position: sticky;
-  top: 40px;
+  top: 4rem;
 
   > div {
     width: 100%;
   }
 
   > div:not(:last-child) {
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
   }
 
   @media (min-width: 1065px) {
@@ -38,8 +38,8 @@ export const Wrapper = styled.div`
 export const Button = styled.button<{ $path?: boolean }>`
   align-items: center;
   flex-shrink: 0;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 1rem;
+  border-radius: 0.5rem;
 
   display: flex;
   outline: 0;
@@ -50,8 +50,8 @@ export const Button = styled.button<{ $path?: boolean }>`
     display: inline;
     text-align: start;
     font-family: 'OpenSans-SemiBold';
-    font-size: 12px;
-    margin-left: 5px;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
   }
 
   @media (max-width: 1065px) {
@@ -73,7 +73,7 @@ export const Button = styled.button<{ $path?: boolean }>`
       background-color: #fff;
       &:hover {
         background-image: radial-gradient(circle, #27a567, #dce6dc);
-        box-shadow: 0px 5px 10px 0px rgba(39, 165, 103, 0.5);
+        box-shadow: 0 0.5rem 1rem 0 rgba(39, 165, 103, 0.5);
       }
     `;
 

@@ -15,7 +15,7 @@ export function Spinner({ active = true }: { active?: boolean }) {
               loop
               autoplay
               speed={1.5}
-              style={{ height: '100px', width: '100px' }}
+              style={{ height: '10rem', width: '10rem' }}
             />
           )}
         </div>

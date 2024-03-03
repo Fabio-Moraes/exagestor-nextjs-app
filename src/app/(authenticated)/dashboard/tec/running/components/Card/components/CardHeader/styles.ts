@@ -8,22 +8,22 @@ export const Container = styled.div<{ $path: string }>`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 4px 2px;
+  padding: 0.4rem 0.2rem;
   background-color: ${({ $path }) => $path};
 
   > div {
     display: flex;
-    margin: 3px 5px;
+    margin: 0.3rem 0.5rem;
     background-color: #fff;
-    border-radius: 3px;
-    padding: 5px;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
     flex-direction: row;
-    max-height: 30px;
+    max-height: 3rem;
 
     > p {
       font-family: 'OpenSans-SemiBold';
       color: #000;
-      font-size: 15px;
+      font-size: 1.5rem;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -31,11 +31,11 @@ export const Container = styled.div<{ $path: string }>`
     }
 
     > p:first-child {
-      margin-right: 3px;
+      margin-right: 0.3rem;
     }
 
     > p:last-child {
-      margin-left: 2px;
+      margin-left: 0.2rem;
     }
   }
 
@@ -43,8 +43,8 @@ export const Container = styled.div<{ $path: string }>`
     background-color: transparent;
     margin: 0;
     > button {
-      padding: 3px;
-      max-height: 30px;
+      padding: 0.3rem;
+      max-height: 3rem;
     }
   }
 `;

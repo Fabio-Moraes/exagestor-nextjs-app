@@ -16,22 +16,22 @@ export const ErrorSpan = styled.span`
   background-image: linear-gradient(to top, #ffebe8, rgba(255, 235, 232, 0.9));
   position: absolute;
   text-align: center;
-  border: 2px solid #dd3c10;
-  border-radius: 10px;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  border: 0.2rem solid #dd3c10;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   animation: ${fadeIn} 0.3s ease-in-out;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 
   > div {
-    padding-top: 10px;
+    padding-top: 1rem;
   }
 
   > span {
     white-space: nowrap;
     color: #000;
-    padding: 0px 10px 10px 10px;
+    padding: 0 1rem 1rem 1rem;
     font-weight: 400;
   }
 `;
@@ -50,9 +50,8 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  //min-height: 300px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
   overflow: hidden;
 
   > div {
@@ -66,8 +65,8 @@ export const Container = styled.div`
     left: 0;
     top: 0;
     z-index: 2;
-    padding-bottom: 70px;
-    border-radius: 10px;
+    padding-bottom: 7rem;
+    border-radius: 1rem;
     > div {
       animation: ${rotateAnimation} 1s linear infinite;
     }
@@ -80,22 +79,22 @@ export const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 10px;
+  padding-top: 1rem;
   background-color: #ffffff;
 
   > div:nth-child(1) {
     display: flex;
     align-items: center;
-    margin: 5px 7px 10px 0px;
+    margin: 0.5rem 0.7rem 1rem 0;
     > strong {
-      font-size: 22px;
+      font-size: 2.2rem;
     }
   }
 
   > div:nth-child(2) {
     //justify-content: center;
-    //padding: 10px;
-    padding: 0px 30px;
+    //padding: 1rem;
+    padding: 0 3rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -108,28 +107,28 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-right: 15px;
+  margin-right: 1.5rem;
 
   > div {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #27a567;
+    width: 2rem;
+    height: 2rem;
+    border: 0.2rem solid #27a567;
     background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
-    border-radius: 10px;
+    border-radius: 1rem;
   }
 
   > span {
-    margin-left: 5px;
-    font-size: 14px;
+    margin-left: 0.5rem;
+    font-size: 1.4rem;
   }
 `;
 
 export const Input = styled.input`
-  padding: 10px;
-  margin: 15px 20px 0px 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 1rem;
+  margin: 1.5rem 2rem 0 2rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1.6rem;
   overflow-wrap: break-word;
   text-align: start;
   width: 80%;
@@ -146,14 +145,14 @@ export const Input = styled.input`
 export const PasswordInputContainer = styled.div`
   position: relative;
   width: 80%;
-  margin: 15px 20px 0px 20px;
+  margin: 1.5rem 2rem 0 2rem;
 `;
 
 export const PasswordInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 1rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1.6rem;
   overflow-wrap: break-word;
   text-align: start;
   width: 100%;
@@ -170,7 +169,7 @@ export const PasswordInput = styled.input`
 export const TogglePasswordVisibilityButton = styled.button`
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 1rem;
   transform: translateY(-50%);
   cursor: pointer;
   &:focus {
@@ -181,10 +180,10 @@ export const TogglePasswordVisibilityButton = styled.button`
 export const Button = styled.button`
   width: 80%;
   background-color: #27a567;
-  padding: 10px;
-  margin: 20px 20px;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 1rem;
+  margin: 2rem 2rem;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
   color: #fff;
   transition: background-color 0.3s ease;
 
@@ -201,18 +200,18 @@ export const ErrorContainer = styled.div`
 
   > span {
     text-align: left;
-    font-size: 17px;
+    font-size: 1.7rem;
     color: #333;
   }
 
   > button {
-    width: 150px;
+    width: 15rem;
     background-color: #27a567;
-    padding: 10px;
-    margin: 20px 20px;
-    border: 1px solid #000000;
-    border-radius: 4px;
-    font-size: 16px;
+    padding: 1rem;
+    margin: 2rem 2rem;
+    border: 0.1rem solid #000000;
+    border-radius: 0.4rem;
+    font-size: 1.6rem;
     color: #fff;
   }
 `;

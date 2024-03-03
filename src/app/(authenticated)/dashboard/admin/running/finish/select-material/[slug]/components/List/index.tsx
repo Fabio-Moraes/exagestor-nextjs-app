@@ -174,8 +174,8 @@ export function List(props: { serviceData: ServiceData; items: Materials[] }) {
           ? [...Array(8)].map((_, index) => {
               return (
                 <ItemsSkeleton key={String(index)}>
-                  <LineSkaleton height="30px" width="35px" />
-                  <LineSkaleton height="30px" />
+                  <LineSkaleton height="3rem" width="3.5rem" />
+                  <LineSkaleton height="3rem" />
                 </ItemsSkeleton>
               );
             })

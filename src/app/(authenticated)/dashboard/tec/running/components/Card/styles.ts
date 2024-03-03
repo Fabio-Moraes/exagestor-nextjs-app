@@ -5,11 +5,11 @@ import styled from 'styled-components';
 export const Container = styled.li`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
   overflow: hidden;
   width: 100%;
-  border-radius: 7px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 0.7rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
 `;
 
 export const CardHeader = styled.div<{ $path: string }>`
@@ -18,8 +18,8 @@ export const CardHeader = styled.div<{ $path: string }>`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 5px;
-  font-size: 18px;
+  padding: 0.5rem;
+  font-size: 1.8rem;
   background-color: ${({ $path }) => $path};
   color: #ffffff;
 
@@ -29,8 +29,8 @@ export const CardHeader = styled.div<{ $path: string }>`
     white-space: nowrap;
     overflow: hidden;
     max-width: 80%;
-    border-radius: 7px;
-    padding: 2px 10px;
+    border-radius: 0.7rem;
+    padding: 0.2rem 1rem;
     font-family: 'OpenSans-SemiBold';
     color: #000;
   }

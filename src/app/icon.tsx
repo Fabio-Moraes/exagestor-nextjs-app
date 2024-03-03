@@ -15,14 +15,14 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: '20px'
+          borderRadius: '2rem'
         }}
       >
         <div
           style={{
             position: 'absolute',
             width: '100%',
-            height: '9px',
+            height: '0.9rem',
             background: '#27A567',
             transform: 'rotate(50deg)'
           }}
@@ -31,7 +31,7 @@ export default function Icon() {
           style={{
             position: 'absolute',
             width: '100%',
-            height: '9px',
+            height: '0.9rem',
             background: '#27A567',
             transform: 'rotate(-50deg)'
           }}

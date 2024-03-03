@@ -14,9 +14,9 @@ export const Container = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 2px solid #27a567;
-  margin: 5px 10px 0 10px;
-  border-radius: 5px;
+  border: 0.2rem solid #27a567;
+  margin: 0.5rem 1rem 0 1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 `;
 
@@ -24,10 +24,10 @@ export const Reset = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  border-radius: 5px;
-  margin: 5px;
-  padding-left: 10px;
+  width: 4rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem;
+  padding-left: 1rem;
 `;
 
 export const ItemContainer = styled.div`
@@ -46,18 +46,18 @@ export const ItemContainer = styled.div`
   }
 
   > span {
-    font-size: 30px;
-    padding: 0px 15px;
+    font-size: 3rem;
+    padding: 0 1.5rem;
   }
 `;
 
 export const SearchBar = styled.input`
-  font-size: 30px;
-  padding: 0px 5px;
-  margin: 0 5px;
+  font-size: 3rem;
+  padding: 0 0.5rem;
+  margin: 0 0.5rem;
   background-color: #fff;
-  border-radius: 5px;
-  width: 80px;
+  border-radius: 0.5rem;
+  width: 8rem;
   outline: none;
   text-align: center;
   &::placeholder {
@@ -66,10 +66,10 @@ export const SearchBar = styled.input`
 `;
 
 export const IncrementButton = styled.button`
-  font-size: 20px;
+  font-size: 2rem;
   background-color: #333;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   cursor: pointer;
   text-align: center;
 
@@ -79,20 +79,20 @@ export const IncrementButton = styled.button`
 
   font-weight: 900;
 
-  padding-bottom: 3px;
+  padding-bottom: 0.3rem;
 
-  margin: 5px;
+  margin: 0.5rem;
 
   width: auto;
-  height: 30px;
+  height: 3rem;
 `;
 
 export const DecrementButton = styled.button`
-  font-size: 20px;
+  font-size: 2rem;
   background-color: #333;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   cursor: pointer;
 
   text-align: center;
@@ -103,10 +103,10 @@ export const DecrementButton = styled.button`
     transform: rotate(-90deg);
   }
 
-  padding-bottom: 3px;
+  padding-bottom: 0.3rem;
 
-  margin: 5px;
+  margin: 0.5rem;
 
   width: auto;
-  height: 30px;
+  height: 3rem;
 `;

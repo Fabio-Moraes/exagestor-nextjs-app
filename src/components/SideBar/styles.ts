@@ -5,10 +5,10 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: none;
 
-  @media (min-width: 900px) {
+  @media (min-width: 1065px) {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    width: min(180px, 100%);
+    width: min(18rem, 100%);
   }
 `;

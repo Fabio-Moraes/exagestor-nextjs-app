@@ -41,9 +41,9 @@ export const Wrapper = styled.span`
 
   > span {
     color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: 0.2rem 0.2rem 0.4rem rgba(0, 0, 0, 0.7);
     white-space: nowrap;
-    padding: 0px 10px 10px 10px;
+    padding: 0 1rem 1rem 1rem;
     font-weight: 400;
   }
 `;

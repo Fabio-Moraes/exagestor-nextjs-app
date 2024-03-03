@@ -94,7 +94,7 @@ export default function FinishService({ params }: SlugType) {
       <Title>
         <h1>Selecionar Material</h1>
         {isLoading || !serviceData[0]?.protocol ? (
-          <LineSkaleton width="300px" />
+          <LineSkaleton width="30rem" />
         ) : (
           <span>PROTOCOLO: {serviceData[0]?.protocol}</span>
         )}

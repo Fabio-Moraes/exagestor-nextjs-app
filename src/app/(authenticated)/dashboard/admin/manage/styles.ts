@@ -4,20 +4,20 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   text-align: center;
-  padding: 20px;
+  padding: 2rem;
 `;
 
 export const Title = styled.h1`
-  font-size: 24px;
-  margin-bottom: 20px;
-  border-radius: 7px;
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  border-radius: 0.7rem;
   font-family: 'OpenSans-SemiBold';
   color: #333;
 
   @media (min-width: 550px) {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    height: 40px;
-    line-height: 40px;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+    height: 4rem;
+    line-height: 4rem;
     background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
     color: #000;
   }
@@ -31,18 +31,18 @@ export const ErrorContainer = styled.div`
 
   > span {
     text-align: left;
-    font-size: 17px;
+    font-size: 1.7rem;
     color: #333;
   }
 
   > button {
-    width: 150px;
+    width: 15rem;
     background-color: #27a567;
-    padding: 10px;
-    margin: 20px 20px;
-    border: 1px solid #000000;
-    border-radius: 7px;
-    font-size: 16px;
+    padding: 1rem;
+    margin: 2rem 2rem;
+    border: 0.1rem solid #000000;
+    border-radius: 0.7rem;
+    font-size: 1.6rem;
     color: #fff;
   }
 `;

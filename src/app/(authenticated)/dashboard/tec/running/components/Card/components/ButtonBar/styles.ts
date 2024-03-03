@@ -43,18 +43,18 @@ export const Wrapper = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  border-width: 2px 0 0 0;
+  border-width: 0.2rem 0 0 0;
 
   @media (min-width: 550px) {
-    right: 30px;
+    right: 3rem;
     flex-direction: column;
   }
 
   > button {
-    padding-top: 2px;
-    margin: 5px 20px;
+    padding-top: 0.2rem;
+    margin: 0.5rem 2rem;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 1.5rem;
 
     @media (min-width: 550px) {
       &:hover {
@@ -64,13 +64,13 @@ export const Wrapper = styled.div`
 
     > p {
       color: #000;
-      margin-top: -5px;
+      margin-top: -0.5rem;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 1.2rem;
     }
 
     @media (min-width: 550px) {
-      margin: 10px 10px;
+      margin: 1rem;
     }
   }
 `;

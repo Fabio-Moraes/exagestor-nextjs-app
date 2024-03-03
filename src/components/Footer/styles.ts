@@ -7,19 +7,19 @@ export const Container = styled.footer`
   margin-top: auto;
   position: relative;
   @media (min-width: 550px) {
-    padding: 0 20px 0 20px;
+    padding: 0 2rem 0 2rem;
   }
 `;
 
 export const Wrapper = styled.div`
   background-image: linear-gradient(to left, #3f795e, #3f7971, #3f795e);
-  width: min(601px, 100%);
-  padding-top: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  width: min(60.1rem, 100%);
+  padding-top: 1rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
   bottom: 0;
 
   @media (min-width: 550px) {
-    border-radius: 7px 7px 0px 0px;
+    border-radius: 0.7rem 0.7rem 0 0;
   }
 
   > div {
@@ -31,17 +31,17 @@ export const Wrapper = styled.div`
 
   > div h1 {
     color: #fff;
-    font-size: 13px;
+    font-size: 1.3rem;
     text-align: center;
-    margin: 7px;
-    margin-bottom: 10px;
+    margin: 0.7rem;
+    margin-bottom: 1rem;
   }
 
   > span {
     color: #fff;
     display: block;
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 2rem;
   }
 `;

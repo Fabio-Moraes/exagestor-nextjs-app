@@ -164,10 +164,10 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
           ? [...Array(4)].map((_, index) => {
               return (
                 <ItemsSkeleton key={String(index)}>
-                  <LineSkaleton width="140px" />
-                  <LineSkaleton width="190px" />
-                  <LineSkaleton width="250px" />
-                  <LineSkaleton width="100px" />
+                  <LineSkaleton width="14rem" />
+                  <LineSkaleton width="19rem" />
+                  <LineSkaleton width="25rem" />
+                  <LineSkaleton width="10rem" />
                 </ItemsSkeleton>
               );
             })

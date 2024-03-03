@@ -95,7 +95,7 @@ export default function FinishService({ params }: SlugType) {
       <Title>
         <h1>Campo de Observação</h1>
         {isLoading || !servicesData[0]?.protocol ? (
-          <LineSkaleton width="300px" />
+          <LineSkaleton width="30rem" />
         ) : (
           <span>PROTOCOLO: {servicesData[0]?.protocol}</span>
         )}

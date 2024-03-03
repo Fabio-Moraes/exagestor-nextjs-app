@@ -3,12 +3,12 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-  border: 2px solid #3f795e;
+  border: 0.2rem solid #3f795e;
   position: sticky;
   display: flex;
-  padding: 3px min(20px, max(10vw, 10px));
+  padding: 0.3rem min(2rem, max(10vw, 1rem));
   background-image: radial-gradient(
-    350px at center,
+    35rem at center,
     rgba(255, 255, 255, 0.96) 20%,
     rgba(39, 165, 103, 0.7)
   );
@@ -32,20 +32,20 @@ export const Button = styled.button<{ $path?: boolean }>`
   justify-content: center;
   user-select: none;
   outline: 0;
-  border-radius: 5px;
-  padding: 5px 10px 5px 10px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   cursor: pointer;
 
   > span {
     text-align: center;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 1.2rem;
     overflow-wrap: break-word;
   }
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
-      border: 2px solid #000000;
+      border: 0.2rem solid #000000;
       background-color: #27a567;
       > span {
         color: #fff;

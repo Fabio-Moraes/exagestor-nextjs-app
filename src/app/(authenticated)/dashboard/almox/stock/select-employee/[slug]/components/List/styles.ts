@@ -3,19 +3,19 @@
 import styled, { css } from 'styled-components';
 
 export const ListContainer = styled.div`
-  margin-top: 20px;
+  margin-top: 2rem;
   background-color: #ffffff;
-  border-radius: 7px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 2px solid #3f795e;
+  border-radius: 0.7rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  border: 0.2rem solid #3f795e;
 
   > div:first-child {
     display: flex;
-    padding: 10px;
+    padding: 1rem;
     background-color: #3f795e;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 9px;
+    margin-bottom: 0.9rem;
 
     > div {
       display: flex;
@@ -24,7 +24,7 @@ export const ListContainer = styled.div`
       justify-content: space-between;
 
       > button {
-        min-width: 20px;
+        min-width: 2rem;
       }
     }
   }
@@ -36,21 +36,21 @@ export const SearchWrapper = styled.div`
   align-items: center;
   flex-direction: row;
   background-color: #fff;
-  padding-left: 5px;
-  border-radius: 50px;
+  padding-left: 0.5rem;
+  border-radius: 5rem;
   width: 100%;
-  height: 35px;
-  margin-bottom: 10px;
+  height: 3.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const SearchBar = styled.input`
-  font-size: 16px;
+  font-size: 1.6rem;
   background-color: transparent;
-  border-radius: 20px;
+  border-radius: 2rem;
   width: 100%;
   outline: none;
   position: absolute;
-  text-indent: 30px;
+  text-indent: 3rem;
 
   &::placeholder {
     color: #333;
@@ -61,10 +61,10 @@ export const ContainerButton = styled.div<{ $isSelected: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px;
+  padding: 1rem;
   background-color: #3f795e;
   align-items: center;
-  margin-top: 9px;
+  margin-top: 0.9rem;
 
   > button:last-child {
     opacity: 0.5;
@@ -81,11 +81,11 @@ export const Button = styled.button`
   display: block;
   align-items: center;
   flex-shrink: 0;
-  padding: 10px;
-  border-radius: 5px;
-  width: 120px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 12rem;
   background-color: #fff;
-  border: 2px solid #27a567;
+  border: 0.2rem solid #27a567;
   cursor: pointer;
 `;
 
@@ -95,13 +95,13 @@ export const ItemsSkeleton = styled.div`
   justify-content: space-between;
   flex-direction: column;
   background-color: #fff;
-  border: 2px solid #27a567;
-  margin: 5px 10px 0 10px;
-  padding: 5px;
-  border-radius: 5px;
+  border: 0.2rem solid #27a567;
+  margin: 0.5rem 1rem 0 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   cursor: progress;
 
   > div:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 `;

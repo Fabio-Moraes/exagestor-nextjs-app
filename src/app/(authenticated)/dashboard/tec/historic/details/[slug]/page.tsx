@@ -229,15 +229,15 @@ export default function Details({ params }: SlugType) {
           <Info ref={elementRef}>
             {isLoading || !services ? (
               <>
-                <LineSkaleton width="180px" />
-                <LineSkaleton width="120px" />
-                <LineSkaleton width="100px" />
-                <LineSkaleton width="250px" />
-                <LineSkaleton width="230px" />
-                <LineSkaleton width="150px" />
-                <LineSkaleton width="250px" />
-                <LineSkaleton width="200px" />
-                <LineSkaleton width="210px" />
+                <LineSkaleton width="18rem" />
+                <LineSkaleton width="12rem" />
+                <LineSkaleton width="10rem" />
+                <LineSkaleton width="25rem" />
+                <LineSkaleton width="23rem" />
+                <LineSkaleton width="15rem" />
+                <LineSkaleton width="25rem" />
+                <LineSkaleton width="20rem" />
+                <LineSkaleton width="21rem" />
               </>
             ) : (
               <>
@@ -247,7 +247,7 @@ export default function Details({ params }: SlugType) {
                     priority
                     loading="eager"
                     alt="Axa"
-                    style={{ width: '34px', height: 'auto' }}
+                    style={{ width: '3.4rem', height: 'auto' }}
                   />
                   <ProfileInfoCompany>
                     <h1>EXA TELECOM</h1>

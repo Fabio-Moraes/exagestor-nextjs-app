@@ -17,9 +17,9 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 90px;
-  min-width: 200px;
-  border-radius: 10px;
+  min-height: 9rem;
+  min-width: 20rem;
+  border-radius: 1rem;
   overflow: hidden;
 
   > div {
@@ -32,8 +32,8 @@ export const Container = styled.div`
     left: 0;
     top: 0;
     z-index: 2;
-    padding-bottom: 70px;
-    border-radius: 10px;
+    padding-bottom: 7rem;
+    border-radius: 1rem;
     > div {
       animation: ${rotateAnimation} 1s linear infinite;
     }

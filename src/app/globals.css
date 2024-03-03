@@ -3,22 +3,23 @@
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
-  letter-spacing: .5px;
+  letter-spacing: 0.05rem;
 }
 
-html,
-body,
-#root {
+:root {
   max-height: 100vh;
   max-width: 100vw;
   width: 100%;
   height: 100%;
+  font-size: 62.5%;
+}
 
+body {
   background-color: #f2f2f2;
+  font-size: 1.6rem;
 }
 
 *,
-bottom,
 input {
   border: 0;
   outline: none;
