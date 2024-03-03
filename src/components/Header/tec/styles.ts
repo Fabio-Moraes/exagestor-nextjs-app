@@ -10,7 +10,7 @@ export const Container = styled.div`
   justify-content: space-between;
   padding: 0.8rem 1.2rem 0.9rem 1.5rem;
 
-  @media (max-width: 55rem) {
+  @media (max-width: 550px) {
     background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
   }
 
