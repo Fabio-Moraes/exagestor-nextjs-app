@@ -8,7 +8,9 @@ import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
-import { useWebSocket } from '../../../../_contexts/WebSocketContext';
+import { User } from '../types/account-user';
+
+import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
@@ -39,8 +41,7 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
-  // let socket: Socket | null = null;
-  const socket = useWebSocket();
+  let socket: Socket | null = null;
 
   function filterSelectedOpenProtocols(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -60,7 +61,7 @@ export default function RunningService() {
   }
 
   const maxRetries = 6;
-  // const connectionCheckInterval = 3000;
+  const connectionCheckInterval = 3000;
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
@@ -102,16 +103,72 @@ export default function RunningService() {
     }
   };
 
-  useEffect(() => {
-    fetchServices();
-    if (socket) {
-      apiRoute.post('/api/user').then((props) => {
-        socket.on(`RUNNING_UPDATE_TEC:${props.data?.id}`, async () => {
-          await fetchServices();
-        });
+  const connectSocket = async (user: User) => {
+    return new Promise<void>((resolve, reject) => {
+      socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+        transports: ['websocket'],
+        withCredentials: true
       });
+
+      socket.on('connect', () => {
+        console.log('Connected to WebSocket server');
+        resolve();
+      });
+
+      socket.on('error', (error) => {
+        console.error('WebSocket error:', error);
+        reject(error);
+      });
+
+      socket.on(`RUNNING_UPDATE_TEC:${user?.id}`, async () => {
+        await fetchServices();
+      });
+    });
+  };
+
+  const attemptReconnection = async () => {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+      try {
+        const { data } = await apiRoute.post('/api/user');
+        await connectSocket(data);
+        break;
+      } catch (connectError: unknown) {
+        if (connectError instanceof Error) {
+          console.log(`Tentativa ${retryCount} de conexão falhou: ${connectError.message}`);
+        } else {
+          console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
+        }
+
+        await TimedWait(3000);
+      }
     }
-  }, [socket]);
+  };
+
+  useEffect(() => {
+    const initialize = async () => {
+      await fetchServices();
+      await attemptReconnection();
+    };
+
+    initialize();
+
+    const checkConnectionIntervalId = setInterval(async () => {
+      if (!socket || socket.disconnected) {
+        console.log('Reconnecting due to inactive connection...');
+        await attemptReconnection();
+      }
+    }, connectionCheckInterval);
+
+    const cleanup = () => {
+      console.log('Disconnecting from WebSocket server...');
+      clearInterval(checkConnectionIntervalId);
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+
+    return cleanup;
+  }, []);
 
   return (
     <Container>

@@ -8,8 +8,7 @@ import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
-import { useWebSocket } from '../../../../_contexts/WebSocketContext';
-//import { io, Socket } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
@@ -40,8 +39,6 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
-  const socket = useWebSocket();
-
   function removePropertyLocalStorage(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
@@ -60,7 +57,7 @@ export default function RunningService() {
   }
 
   const maxRetries = 4;
-  //const connectionCheckInterval = 3000;
+  const connectionCheckInterval = 3000;
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
@@ -102,21 +99,57 @@ export default function RunningService() {
     }
   };
 
+  let socket: Socket | null = null;
+
+  const connectSocket = async () => {
+    return new Promise<void>((resolve, reject) => {
+      socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+        transports: ['websocket'],
+        withCredentials: true
+      });
+
+      socket.on('connect', () => {
+        console.log('Connected to WebSocket server');
+        resolve();
+      });
+
+      socket.on('error', (error) => {
+        console.error('WebSocket error:', error);
+        reject(error);
+      });
+
+      socket.on(`RUNNING_UPDATE_ADMIN`, async () => {
+        await fetchServices();
+      });
+    });
+  };
+
+  const attemptReconnection = async () => {
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+      try {
+        await connectSocket();
+        break;
+      } catch (connectError: unknown) {
+        if (connectError instanceof Error) {
+          console.log(`Reconnection attempt ${retryCount} failed: ${connectError.message}`);
+        } else {
+          console.log(`Reconnection attempt ${retryCount} failed with unknown error`);
+        }
+
+        await TimedWait(3000);
+      }
+    }
+  };
+
   useEffect(() => {
     const initialize = async () => {
       await fetchServices();
-
-      // Adicione um ouvinte para atualizações do WebSocket
-      if (socket) {
-        socket.on(`RUNNING_UPDATE_ADMIN`, async () => {
-          await fetchServices();
-        });
-      }
+      await attemptReconnection();
     };
 
     initialize();
 
-    /*     const checkConnectionIntervalId = setInterval(async () => {
+    const checkConnectionIntervalId = setInterval(async () => {
       if (!socket || socket.disconnected) {
         console.log('Reconnecting due to inactive connection...');
         await attemptReconnection();
@@ -131,8 +164,8 @@ export default function RunningService() {
       }
     };
 
-    return cleanup; */
-  }, [socket]);
+    return cleanup;
+  }, []);
 
   return (
     <Container>
