@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -38,9 +39,7 @@ export default function RunningService() {
 
   const { setSelectService, setSelectMaterial } = useContexState();
 
-  let socket: Socket | null = null;
-
-  function filterSelectedOpenProtocols(services: RunningService[]) {
+  function removePropertyLocalStorage(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
 
     function filterProtocols(paramPrevItems: Protocol, paramServiceProtocols: string[]) {
@@ -57,17 +56,12 @@ export default function RunningService() {
     setSelectMaterial((prevItems) => filterProtocols(prevItems, serviceProtocols));
   }
 
+  const maxRetries = 4;
+  const connectionCheckInterval = 3000;
+
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   }
-
-  const sleep = async (ms: number): Promise<void> => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const maxRetries = 4;
-  const reconnectDelay = 3000;
-  const connectionCheckInterval = 3000;
 
   const fetchServices = async () => {
     setConnectionError(false);
@@ -80,19 +74,32 @@ export default function RunningService() {
           baseURL: '/api/admin/running'
         });
 
-        filterSelectedOpenProtocols(response.data);
+        removePropertyLocalStorage(response.data);
         setRunningService(response.data);
-        break;
-      } catch (error) {
-        console.error('Error fetching services:', error);
-        setConnectionError(true);
-        await sleep(reconnectDelay);
-      } finally {
         setIsPopupValue(null);
-        await sleep(reconnectDelay);
+        break;
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            }
+
+            if (retryCount === maxRetries) {
+              setConnectionError(true);
+              setIsPopupValue(null);
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
       }
     }
   };
+
+  let socket: Socket | null = null;
 
   const connectSocket = async () => {
     return new Promise<void>((resolve, reject) => {
@@ -129,33 +136,35 @@ export default function RunningService() {
           console.log(`Reconnection attempt ${retryCount} failed with unknown error`);
         }
 
-        await sleep(reconnectDelay);
+        await TimedWait(3000);
       }
     }
   };
 
   useEffect(() => {
     const initialize = async () => {
-      await attemptReconnection();
       await fetchServices();
+      await attemptReconnection();
     };
 
     initialize();
 
-    const connectionCheckIntervalId = setInterval(async () => {
+    const checkConnectionIntervalId = setInterval(async () => {
       if (!socket || socket.disconnected) {
         console.log('Reconnecting due to inactive connection...');
         await attemptReconnection();
       }
     }, connectionCheckInterval);
 
-    return () => {
+    const cleanup = () => {
       console.log('Disconnecting from WebSocket server...');
-      clearInterval(connectionCheckIntervalId);
+      clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
       }
     };
+
+    return cleanup;
   }, []);
 
   return (
@@ -172,8 +181,10 @@ export default function RunningService() {
         </ErrorContainer>
       ) : (
         <ListContainer>
-          {runningService.map((service) => (
-            <Card key={service.id} service={service} />
+          {runningService.map((service, index) => (
+            <div key={String(index)}>
+              <Card service={service} />
+            </div>
           ))}
         </ListContainer>
       )}
