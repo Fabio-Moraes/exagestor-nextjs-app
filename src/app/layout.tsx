@@ -1,6 +1,8 @@
 import { ContextProvider } from '../hooks/useGlobalContext';
 
-import { WebSocketProvider } from 'contexts/WebSocketContext';
+import { WebSocketProvider } from './_contexts/WebSocketContext';
+
+// import { WebSocketProvider } from 'contexts/WebSocketContext';
 import StyledComponentsRegistry from 'lib/registry';
 
 import './globals.css';
@@ -17,9 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html>
       <body>
         <StyledComponentsRegistry>
-          <WebSocketProvider>
-            <ContextProvider>{children}</ContextProvider>
-          </WebSocketProvider>
+          <ContextProvider>
+            <WebSocketProvider>{children}</WebSocketProvider>
+          </ContextProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

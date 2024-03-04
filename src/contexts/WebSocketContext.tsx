@@ -31,25 +31,29 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
 
   // Efeito para conectar ao WebSocket e lidar com desconexões
   useEffect(() => {
-    const connectSocket = async () => {
-      return new Promise<void>((resolve, reject) => {
-        const socket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
+    const connectSocket = async (): Promise<void> => {
+      try {
+        const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
           transports: ['websocket'],
           withCredentials: true
         });
 
-        socket.on('connect', () => {
+        newSocket.on('connect', () => {
           console.log('Connected to WebSocket server');
-          resolve();
         });
 
-        socket.on('error', (error) => {
+        newSocket.on('error', (error) => {
           console.error('WebSocket error:', error);
-          reject(error);
         });
 
-        setSocket(socket);
-      });
+        newSocket.on('disconnect', () => {
+          console.log('Disconnected from WebSocket server');
+        });
+
+        setSocket(newSocket);
+      } catch (error) {
+        console.error('Error connecting to WebSocket:', error);
+      }
     };
 
     // Função para tentar reconectar

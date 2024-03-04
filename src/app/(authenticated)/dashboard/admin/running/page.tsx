@@ -8,7 +8,8 @@ import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
-import { useWebSocket } from 'contexts/WebSocketContext';
+import { useWebSocket } from '../../../../_contexts/WebSocketContext';
+//import { io, Socket } from 'socket.io-client';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
@@ -59,6 +60,7 @@ export default function RunningService() {
   }
 
   const maxRetries = 4;
+  //const connectionCheckInterval = 3000;
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
@@ -104,6 +106,7 @@ export default function RunningService() {
     const initialize = async () => {
       await fetchServices();
 
+      // Adicione um ouvinte para atualizações do WebSocket
       if (socket) {
         socket.on(`RUNNING_UPDATE_ADMIN`, async () => {
           await fetchServices();
@@ -112,6 +115,23 @@ export default function RunningService() {
     };
 
     initialize();
+
+    /*     const checkConnectionIntervalId = setInterval(async () => {
+      if (!socket || socket.disconnected) {
+        console.log('Reconnecting due to inactive connection...');
+        await attemptReconnection();
+      }
+    }, connectionCheckInterval);
+
+    const cleanup = () => {
+      console.log('Disconnecting from WebSocket server...');
+      clearInterval(checkConnectionIntervalId);
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+
+    return cleanup; */
   }, [socket]);
 
   return (

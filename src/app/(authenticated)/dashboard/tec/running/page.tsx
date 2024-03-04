@@ -8,7 +8,7 @@ import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
-import { useWebSocket } from 'contexts/WebSocketContext';
+import { useWebSocket } from '../../../../_contexts/WebSocketContext';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
