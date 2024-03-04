@@ -1,4 +1,4 @@
-import { Form } from './components/Form';
+import { Form } from './_components/Form';
 
 import { Container, Main, Wrapper } from './styles';
 

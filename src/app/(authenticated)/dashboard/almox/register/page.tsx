@@ -8,8 +8,8 @@ import { Modal } from 'components/Modal';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
-import alertSvg from './assets/svg/alert.svg';
-import checkedSvg from './assets/svg/checked.svg';
+import alertSvg from './_assets/svg/alert.svg';
+import checkedSvg from './_assets/svg/checked.svg';
 
 import {
   Button,

@@ -10,7 +10,7 @@ import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
-import iconExa from './assets/svg/exa_logo.svg';
+import iconExa from './_assets/svg/exa_logo.svg';
 
 import {
   ErrorContainer,

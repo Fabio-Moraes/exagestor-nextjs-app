@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { Header } from './_components/Header';
+import { LeftSidebar } from './_components/LeftSidebar';
+import { RightSidebar } from './_components/RightSidebar';
+import { Toolbar } from './_components/Toolbar';
 import { Footer } from 'components/Footer';
-import { Header } from 'components/Header/almox';
-import { RightMenu } from 'components/RightMenu/almox';
-import { SideBar } from 'components/SideBar';
-import { TopMenu } from 'components/TopMenu/almox';
 
 import { Container, Main, Wrapper } from '../styles';
 
@@ -12,14 +12,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <Container>
       <Wrapper>
-        <RightMenu />
+        <LeftSidebar />
         <Main>
           <Header />
-          <TopMenu />
+          <Toolbar />
           {children}
           <Footer />
         </Main>
-        <SideBar />
+        <RightSidebar />
       </Wrapper>
     </Container>
   );

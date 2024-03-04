@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Card } from './components/Card';
+import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';

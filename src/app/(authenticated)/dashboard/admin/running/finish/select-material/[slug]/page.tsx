@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { List } from './components/List';
+import { List } from './_components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Card } from './components/Card';
+import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
@@ -13,6 +13,7 @@ interface Material {
   id: number;
   product_name: string;
   name_tec: string;
+  name_role: string;
   unit_type: string;
   product_code: string;
   quantity_value: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { List } from './components/List';
+import { List } from './_components/List';
 import { decryptObject } from 'functions';
 
 import { Container, Title } from './styles';

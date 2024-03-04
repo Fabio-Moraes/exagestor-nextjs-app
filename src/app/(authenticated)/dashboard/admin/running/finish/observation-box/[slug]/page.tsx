@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { TextBox } from './components/TextBox';
+import { TextBox } from './_components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';

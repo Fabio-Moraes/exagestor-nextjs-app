@@ -1,4 +1,4 @@
-import * as animationData from './assets/lottie/animation.json';
+import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 
