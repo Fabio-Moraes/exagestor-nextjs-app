@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import { TimedWait } from 'functions/TimedWait';
 import { useContexState } from 'hooks/useGlobalContext';
 import apiRoute from 'services/apiRoute';
 
@@ -60,12 +59,17 @@ export default function RunningService() {
     setSelectMaterial((prevItems) => filterProtocols(prevItems, serviceProtocols));
   }
 
-  const maxRetries = 6;
-  const connectionCheckInterval = 3000;
-
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   }
+
+  function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  const maxRetries = 4;
+  const reconnectDelay = 3000;
+  const connectionCheckInterval = 3000;
 
   const fetchServices = async () => {
     setConnectionError(false);
@@ -80,25 +84,15 @@ export default function RunningService() {
 
         filterSelectedOpenProtocols(response.data);
         setRunningService(response.data);
-        setIsPopupValue(null);
+        console.log('response', response.data);
         break;
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          const customError = error as CustomError;
-          if (customError.response) {
-            const statusCode = customError.response.status;
-            if (statusCode === 409) {
-              break;
-            }
-
-            if (retryCount === maxRetries) {
-              setConnectionError(true);
-              setIsPopupValue(null);
-            } else {
-              await TimedWait(3000);
-            }
-          }
-        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        setConnectionError(true);
+        await sleep(reconnectDelay);
+      } finally {
+        setIsPopupValue(null);
+        await sleep(reconnectDelay);
       }
     }
   };
@@ -139,35 +133,33 @@ export default function RunningService() {
           console.log(`Tentativa ${retryCount} de conexão falhou com erro desconhecido`);
         }
 
-        await TimedWait(3000);
+        await sleep(reconnectDelay);
       }
     }
   };
 
   useEffect(() => {
     const initialize = async () => {
-      await fetchServices();
       await attemptReconnection();
+      await fetchServices();
     };
 
     initialize();
 
-    const checkConnectionIntervalId = setInterval(async () => {
+    const connectionCheckIntervalId = setInterval(async () => {
       if (!socket || socket.disconnected) {
         console.log('Reconnecting due to inactive connection...');
         await attemptReconnection();
       }
     }, connectionCheckInterval);
 
-    const cleanup = () => {
+    return () => {
       console.log('Disconnecting from WebSocket server...');
-      clearInterval(checkConnectionIntervalId);
+      clearInterval(connectionCheckIntervalId);
       if (socket) {
         socket.disconnect();
       }
     };
-
-    return cleanup;
   }, []);
 
   return (
@@ -184,10 +176,8 @@ export default function RunningService() {
         </ErrorContainer>
       ) : (
         <ListContainer>
-          {runningService.map((service, index) => (
-            <div key={String(index)}>
-              <Card service={service} />
-            </div>
+          {runningService.map((service) => (
+            <Card key={service.id} service={service} />
           ))}
         </ListContainer>
       )}
