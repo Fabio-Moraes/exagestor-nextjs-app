@@ -103,17 +103,14 @@ export default function RunningService() {
   };
 
   useEffect(() => {
-    const initialize = async () => {
-      await fetchServices();
-      if (socket) {
-        const { data } = await apiRoute.post('/api/user');
-        socket.on(`RUNNING_UPDATE_TEC:${data?.id}`, async () => {
+    fetchServices();
+    if (socket) {
+      apiRoute.post('/api/user').then((props) => {
+        socket.on(`RUNNING_UPDATE_TEC:${props.data?.id}`, async () => {
           await fetchServices();
         });
-      }
-    };
-
-    initialize();
+      });
+    }
   }, [socket]);
 
   return (
