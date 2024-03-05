@@ -105,7 +105,7 @@ export default function RunningService() {
       await fetchServices();
       if (socket) {
         await apiRoute.post('/api/user').then((res) => {
-          socket.on(`RUNNING_UPDATE_TEC:${res.data?.id}`, async () => {
+          socket.on(`RUNNING_REFRESH_TEC:${res.data?.id}`, async () => {
             await fetchServices();
           });
         });

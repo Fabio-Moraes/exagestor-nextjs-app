@@ -105,7 +105,7 @@ export default function RunningService() {
       await fetchServices();
 
       if (socket) {
-        socket.on(`RUNNING_UPDATE_ADMIN`, async () => {
+        socket.on(`RUNNING_REFRESH_ADMIN`, async () => {
           await fetchServices();
         });
       }
