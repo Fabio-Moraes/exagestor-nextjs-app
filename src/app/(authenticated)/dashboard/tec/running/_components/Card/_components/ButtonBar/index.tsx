@@ -10,13 +10,14 @@ import apiRoute from 'services/apiRoute';
 
 import checkSvg from './_assets/svg/check.svg';
 import closeSvg from './_assets/svg/close.svg';
+import docSvg from './_assets/svg/doc.svg';
 import pauseSvg from './_assets/svg/pause.svg';
-import pinSvg from './_assets/svg/pin.svg';
 import playSvg from './_assets/svg/play.svg';
+import refreshSvg from './_assets/svg/refresh.svg';
 
 import { Container, Wrapper } from './styles';
 
-interface RunningService {
+interface Service {
   id: number;
   employee_id: number;
   client_name: string;
@@ -32,11 +33,11 @@ interface RunningService {
   name_tec: string;
 }
 
-export function ButtonBar({ service }: { service: RunningService }) {
+export function ButtonBar({ service }: { service: Service }) {
   const [runningLoad, setRunningLoad] = useState(false);
 
   const router = useRouter();
-  const maxRetries = 4;
+  const maxRetries = 5;
 
   async function fetchStatusServices() {
     setRunningLoad(true);
@@ -44,6 +45,35 @@ export function ButtonBar({ service }: { service: RunningService }) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: `/api/tec/running/${service?.status === 'active' ? 'pause' : 'start'}`,
+          employeeId: String(service?.employee_id),
+          protocol: service?.protocol
+        });
+
+        setRunningLoad(false);
+        break;
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const customError = error as CustomError;
+          if (customError.response) {
+            const statusCode = customError.response.status;
+            if (statusCode === 409) {
+              break;
+            } else {
+              await TimedWait(3000);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  async function fetchRefreshServices() {
+    setRunningLoad(true);
+    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+      try {
+        await apiRoute.post('/api/bridge', {
+          baseURL: '/api/tec/running/start',
+          employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
 
@@ -71,6 +101,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/running/cancel',
+          employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
         setRunningLoad(false);
@@ -92,60 +123,68 @@ export function ButtonBar({ service }: { service: RunningService }) {
   }
 
   const encryptSlug = encryptObject({
-    protocol: service?.protocol
+    protocol: service?.protocol,
+    employeeId: service?.employee_id,
+    updateCount: String(Number(service?.update_count || 0) + 1)
   });
+
+  const buttonState =
+    service?.status === 'analysis' ? (
+      <button
+        style={{
+          opacity: runningLoad ? 0.3 : 1
+        }}
+        rel="preload"
+        onClick={() => fetchRefreshServices()}
+      >
+        <Image priority loading="eager" src={refreshSvg} alt="play" width="50" height="50" />
+        <p>{'Reiniciar'}</p>
+      </button>
+    ) : (
+      <button rel="preload" onClick={() => fetchStatusServices()}>
+        <Image
+          priority
+          loading="eager"
+          src={service?.status !== 'active' ? playSvg : pauseSvg}
+          alt="play"
+          width="50"
+          height="50"
+        />
+        <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
+      </button>
+    );
 
   return (
     <Container $animation={runningLoad}>
       <Wrapper>
         <button
           style={{
-            opacity: service?.status === 'paused' || service?.status === 'analysis' ? 0.3 : 1
+            opacity: runningLoad || service?.status === 'paused' ? 0.3 : 1
           }}
           rel="preload"
-          onClick={() =>
-            service?.status !== 'analysis' &&
-            service?.status !== 'paused' &&
-            router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`)
-          }
+          onClick={async () => {
+            if (service?.status !== 'paused') {
+              setRunningLoad(true);
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+              router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`);
+            }
+          }}
         >
           <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
           <p>Finalizar</p>
         </button>
+        {buttonState}
         <button
-          rel="preload"
           style={{
-            opacity: service?.status === 'analysis' ? 0.3 : 1
+            opacity: 1
           }}
-          onClick={() => service?.status !== 'analysis' && fetchStatusServices()}
-        >
-          <Image
-            priority
-            loading="eager"
-            src={service?.status !== 'active' ? playSvg : pauseSvg}
-            alt="play"
-            width="50"
-            height="50"
-          />
-          <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
-        </button>
-        <button
           rel="preload"
-          style={{
-            opacity: 0.3
-          }}
           onClick={() => {}}
         >
-          <Image priority loading="eager" src={pinSvg} alt="close" width="50" height="50" />
-          <p>Fixar</p>
+          <Image priority loading="eager" src={docSvg} alt="play" width="50" height="50" />
+          <p>Pdf</p>
         </button>
-        <button
-          rel="preload"
-          style={{
-            opacity: service?.status === 'analysis' ? 0.3 : 1
-          }}
-          onClick={() => service?.status !== 'analysis' && fetchCancelServices()}
-        >
+        <button rel="preload" onClick={() => fetchCancelServices()}>
           <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />
           <p>Cancelar</p>
         </button>
