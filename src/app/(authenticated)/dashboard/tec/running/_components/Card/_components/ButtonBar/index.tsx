@@ -44,7 +44,6 @@ export function ButtonBar({ service }: { service: RunningService }) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: `/api/tec/running/${service?.status === 'active' ? 'pause' : 'start'}`,
-          employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
 
@@ -72,7 +71,6 @@ export function ButtonBar({ service }: { service: RunningService }) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/running/cancel',
-          employeeId: String(service?.employee_id),
           protocol: service?.protocol
         });
         setRunningLoad(false);
