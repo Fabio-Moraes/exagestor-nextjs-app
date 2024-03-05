@@ -1,8 +1,6 @@
 import { ContextProvider } from '../hooks/useGlobalContext';
 
-import { WebSocketProvider } from './_contexts/WebSocketContext';
-
-// import { WebSocketProvider } from 'contexts/WebSocketContext';
+import { WebSocketProvider } from 'contexts/WebSocketContext';
 import StyledComponentsRegistry from 'lib/registry';
 
 import './globals.css';
