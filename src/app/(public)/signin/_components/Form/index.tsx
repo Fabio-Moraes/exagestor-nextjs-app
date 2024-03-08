@@ -104,7 +104,6 @@ export const Form = () => {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        console.log('LOG: RETRY');
         setIsPopupValue(
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );
@@ -113,6 +112,13 @@ export const Form = () => {
           identification: identification,
           password: password
         });
+
+        await apiRoute.post('/api/user').then((data) => {
+          console.log(data);
+        });
+
+        const response = await apiRoute.post('/api/user');
+        console.log(response);
 
         router.refresh();
         break;

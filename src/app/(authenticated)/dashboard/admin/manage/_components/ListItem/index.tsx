@@ -10,12 +10,13 @@ interface ListItemProps {
   id: number;
   name: string;
   role: string;
+  online: boolean;
   identification: string;
   created_at: string;
 }
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-  const { id, name, role, identification, created_at } = props;
+  const { id, name, role, identification, created_at, online } = props;
 
   const router = useRouter();
 
@@ -39,7 +40,10 @@ const ListItem: React.FC<ListItemProps> = (props) => {
   return (
     <Container selected={false}>
       <ItemContainer onClick={fetchConcludedServices}>
-        <p>Nome: {name}</p>
+        <p>
+          Nome: {name}
+          {online ? ' (online) 🟢' : ' (offline) 🔴'}
+        </p>
         <p>
           {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
         </p>

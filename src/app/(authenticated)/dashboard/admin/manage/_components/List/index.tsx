@@ -8,6 +8,8 @@ import Image from 'components/Vercel/Image';
 
 import ListItem from '../ListItem';
 
+import { useWebSocket } from 'contexts/WebSocketContext';
+
 import searchSvg from './_assets/svg/search.svg';
 
 import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
@@ -20,11 +22,44 @@ interface Service {
   created_at: string;
 }
 
+interface ConnectedUser {
+  id: number;
+  name: string;
+  role: string;
+}
+
 export function List({ service }: { service: Service[] }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
 
   const router = useRouter();
+  const socket = useWebSocket();
+
+  const updateConnectedUsers = (data: string) => {
+    const usersList = [];
+    const usersObject = JSON.parse(data);
+    const keys = Object.keys(usersObject);
+
+    for (const key of keys) {
+      const user = usersObject[key];
+      usersList.push(user);
+    }
+
+    setConnectedUsers(usersList);
+  };
+
+  useEffect(() => {
+    if (socket) {
+      socket.on(`SEND_CONNECTED_USER`, updateConnectedUsers);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off(`SEND_CONNECTED_USER`, updateConnectedUsers);
+      }
+    };
+  }, [socket, connectedUsers]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,7 +113,15 @@ export function List({ service }: { service: Service[] }) {
               </ItemsSkeleton>
             );
           })
-        : filteredItems.map((item) => <ListItem key={String(item.id)} {...item} />)}
+        : filteredItems.map((item) => (
+            <ListItem
+              key={String(item.id)}
+              {...item}
+              online={Boolean(
+                connectedUsers.find((user) => String(user.id) === String(item.id))
+              )}
+            />
+          ))}
     </ListContainer>
   );
 }

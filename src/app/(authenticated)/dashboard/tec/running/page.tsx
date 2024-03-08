@@ -100,20 +100,22 @@ export default function RunningService() {
     }
   };
 
-  useEffect(() => {
-    const initialize = async () => {
-      await fetchServices();
-      if (socket) {
-        await apiRoute.post('/api/user').then((res) => {
-          socket.on(`RUNNING_REFRESH_TEC:${res.data?.id}`, async () => {
-            await fetchServices();
-          });
-        });
-      }
-    };
+  const refreshFetchServices = async () => {
+    const response = await apiRoute.post('/api/user');
+    if (socket) {
+      socket.on(`RUNNING_REFRESH_TEC:${response.data.id}`, async () => {
+        await fetchServices();
+      });
+    }
+  };
 
-    initialize();
+  useEffect(() => {
+    refreshFetchServices();
   }, [socket]);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   return (
     <Container>

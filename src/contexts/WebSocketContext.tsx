@@ -3,6 +3,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 import { TimedWait } from 'functions/TimedWait';
+import apiRoute from 'services/apiRoute';
 
 import { io, Socket } from 'socket.io-client';
 
@@ -27,13 +28,20 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     const connectSocket = async (): Promise<void> => {
       try {
+        const response = await apiRoute.post('/api/user');
+
         const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
           transports: ['websocket'],
-          withCredentials: true
+          withCredentials: false,
+          reconnection: true, // Ativar reconexão automática
+          reconnectionAttempts: 5, // Número máximo de tentativas de reconexão
+          reconnectionDelay: 1000, // Atraso inicial de reconexão em milissegundos
+          reconnectionDelayMax: 5000 // Atraso máximo de reconexão em milissegundos
         });
 
         newSocket.on('connect', () => {
           console.log('Connected to WebSocket server');
+          newSocket.emit('INCLUDE_CONNECTED_USER', JSON.stringify(response.data));
         });
 
         newSocket.on('error', (error) => {

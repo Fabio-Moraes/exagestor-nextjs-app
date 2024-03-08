@@ -7,6 +7,8 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import apiRoute from 'services/apiRoute';
 
+import { useWebSocket } from 'contexts/WebSocketContext';
+
 import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';
 
@@ -17,6 +19,7 @@ export function Header() {
   const [user, setUser] = useState({} as { name: string });
 
   const router = useRouter();
+  const socket = useWebSocket();
   const maxRetries = 4;
 
   async function fetchUser() {
@@ -36,6 +39,10 @@ export function Header() {
     setIsLoading(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
+        const response = await apiRoute.post('/api/user');
+        if (socket) {
+          socket.emit('FETCH_DISCONNECT_USER', JSON.stringify(response.data));
+        }
         await apiRoute.post('/api/logout');
         router.refresh();
         count = maxRetries;
