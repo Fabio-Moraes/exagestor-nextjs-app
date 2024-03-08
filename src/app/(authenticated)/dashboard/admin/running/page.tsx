@@ -112,6 +112,13 @@ export default function RunningService() {
     };
 
     initialize();
+    return () => {
+      if (socket) {
+        socket.off(`RUNNING_REFRESH_ADMIN`, async () => {
+          await fetchServices();
+        });
+      }
+    };
   }, [socket]);
 
   return (

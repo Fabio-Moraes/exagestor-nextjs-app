@@ -59,9 +59,13 @@ export function List({ service }: { service: Service[] }) {
         socket.off(`SEND_CONNECTED_USER`, updateConnectedUsers);
       }
     };
-  }, [socket, connectedUsers]);
+  }, [socket]);
 
   useEffect(() => {
+    if (socket) {
+      socket.emit('FETCH_CONNECTED_USER');
+    }
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
