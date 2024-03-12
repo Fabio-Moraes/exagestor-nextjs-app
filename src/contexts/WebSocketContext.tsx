@@ -44,8 +44,6 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
           newSocket.emit('CONNECTED_USER', data);
         });
 
-        newSocket.emit('IDLE_USER', { ...data, idle: false });
-
         const handleVisibilityChange = async () => {
           if (document.visibilityState === 'hidden') {
             newSocket.emit('IDLE_USER', { ...data, idle: true });
@@ -55,6 +53,8 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        newSocket.emit('IDLE_USER', { ...data, idle: false });
 
         newSocket.on('error', (error) => {
           console.error('WebSocket error:', error);
