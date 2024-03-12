@@ -1,5 +1,6 @@
 'use client';
 
+import 'page-visibility-polyfill';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 import { TimedWait } from 'functions/TimedWait';
@@ -40,8 +41,14 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
           query: { ...data }
         });
 
+        let idleUserEmitted = false;
+
         newSocket.on('connect', () => {
           newSocket.emit('CONNECTED_USER', data);
+          if (!idleUserEmitted) {
+            newSocket.emit('IDLE_USER', { ...data, idle: false });
+            idleUserEmitted = true;
+          }
         });
 
         const handleVisibilityChange = async () => {
