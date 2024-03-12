@@ -1,6 +1,5 @@
 'use client';
 
-import 'page-visibility-polyfill';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 import { TimedWait } from 'functions/TimedWait';
