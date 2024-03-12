@@ -41,7 +41,6 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         });
 
         let idleUserEmitted = false;
-
         newSocket.on('connect', () => {
           newSocket.emit('CONNECTED_USER', data);
           if (!idleUserEmitted) {
