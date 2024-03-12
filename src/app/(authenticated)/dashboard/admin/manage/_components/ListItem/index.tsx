@@ -6,17 +6,25 @@ import { encryptObject } from 'functions';
 
 import { Container, ItemContainer } from './styles';
 
+interface ConnectedUser {
+  userid: number;
+  username: string;
+  status: string;
+  role: string;
+  socket_id: string; // Adicionar socket_id para rastrear o status de conexão
+}
+
 interface ListItemProps {
   id: number;
   name: string;
   role: string;
-  online: boolean;
   identification: string;
   created_at: string;
+  connectedUsers: ConnectedUser[];
 }
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-  const { id, name, role, identification, created_at, online } = props;
+  const { id, name, role, identification, created_at, connectedUsers } = props;
 
   const router = useRouter();
 
@@ -37,12 +45,19 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
   }
 
+  const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
+
+  const statusUser = {
+    on: '(Online) 🟢',
+    off: '(Offline) 🔴',
+    idle: '(Em segundo plano) 🟠'
+  } as { [key: string]: string };
+
   return (
     <Container selected={false}>
       <ItemContainer onClick={fetchConcludedServices}>
         <p>
-          Nome: {name}
-          {online ? ' (online) 🟢' : ' (offline) 🔴'}
+          Nome: {name} {connected ? statusUser[connected.status] : statusUser['off']}
         </p>
         <p>
           {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}

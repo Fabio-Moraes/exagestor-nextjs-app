@@ -23,42 +23,30 @@ interface Service {
 }
 
 interface ConnectedUser {
-  id: number;
-  name: string;
+  userid: number;
+  username: string;
+  status: string;
   role: string;
+  socket_id: string; // Adicionar socket_id para rastrear o status de conexão
 }
 
 export function List({ service }: { service: Service[] }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
   const socket = useWebSocket();
 
-  const updateConnectedUsers = (data: string) => {
-    const usersList = [];
-    const usersObject = JSON.parse(data);
-    const keys = Object.keys(usersObject);
-
-    for (const key of keys) {
-      const user = usersObject[key];
-      usersList.push(user);
-    }
-
-    setConnectedUsers(usersList);
-  };
-
   useEffect(() => {
     if (socket) {
-      socket.on(`SEND_CONNECTED_USER`, updateConnectedUsers);
-    }
+      const handleConnectedUser = (data: ConnectedUser[]) => setConnectedUsers(data);
+      socket.on(`SEND_CONNECTED_USER`, handleConnectedUser);
 
-    return () => {
-      if (socket) {
-        socket.off(`SEND_CONNECTED_USER`, updateConnectedUsers);
-      }
-    };
+      return () => {
+        socket.off(`SEND_CONNECTED_USER`, handleConnectedUser);
+      };
+    }
   }, [socket]);
 
   useEffect(() => {
@@ -73,7 +61,7 @@ export function List({ service }: { service: Service[] }) {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [socket]);
 
   const filteredItems = service?.filter((item) =>
     item.name
@@ -86,7 +74,7 @@ export function List({ service }: { service: Service[] }) {
     <ListContainer>
       <div>
         <SearchWrapper>
-          <Image priority src={searchSvg} alt="Book" width={25} height={25} />
+          <Image priority src={searchSvg} alt="Livro" width={25} height={25} />
           <SearchBar
             type="text"
             placeholder="Pesquisar funcionários..."
@@ -99,33 +87,27 @@ export function List({ service }: { service: Service[] }) {
             rel="preload"
             onClick={() => router.push(`/dashboard/admin/manage/general-historic`)}
           >
-            Historico Geral
+            Histórico Geral
           </Button>
           <Button rel="preload" onClick={() => {}}>
-            Relatorio
+            Relatório
           </Button>
         </div>
       </div>
       {isLoading
-        ? [...Array(4)].map((_, index) => {
-            return (
-              <ItemsSkeleton key={String(index)}>
-                <LineSkaleton width="14rem" />
-                <LineSkaleton width="19rem" />
-                <LineSkaleton width="25rem" />
-                <LineSkaleton width="10rem" />
-              </ItemsSkeleton>
-            );
-          })
+        ? [...Array(4)].map((_, index) => (
+            <ItemsSkeleton key={String(index)}>
+              <LineSkaleton width="14rem" />
+              <LineSkaleton width="19rem" />
+              <LineSkaleton width="25rem" />
+              <LineSkaleton width="10rem" />
+            </ItemsSkeleton>
+          ))
         : filteredItems.map((item) => (
-            <ListItem
-              key={String(item.id)}
-              {...item}
-              online={Boolean(
-                connectedUsers.find((user) => String(user.id) === String(item.id))
-              )}
-            />
+            <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
           ))}
     </ListContainer>
   );
 }
+
+///connectedUsers.find((user) => Number(user.userid) === Number(item.id)

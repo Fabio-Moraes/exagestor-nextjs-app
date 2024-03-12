@@ -36,13 +36,23 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
           reconnection: true, // Ativar reconexão automática
           reconnectionAttempts: 5, // Número máximo de tentativas de reconexão
           reconnectionDelay: 1000, // Atraso inicial de reconexão em milissegundos
-          reconnectionDelayMax: 5000 // Atraso máximo de reconexão em milissegundos
+          reconnectionDelayMax: 5000, // Atraso máximo de reconexão em milissegundos
+          query: { ...response.data }
         });
 
         newSocket.on('connect', () => {
-          console.log('Connected to WebSocket server');
-          newSocket.emit('INCLUDE_CONNECTED_USER', JSON.stringify(response.data));
+          newSocket.emit('CONNECTED_USER', response.data);
         });
+
+        const handleVisibilityChange = async () => {
+          if (document.visibilityState === 'hidden') {
+            newSocket.emit('IDLE_USER', { ...response.data, idle: true });
+          } else if (document.visibilityState === 'visible') {
+            newSocket.emit('IDLE_USER', { ...response.data, idle: false });
+          }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         newSocket.on('error', (error) => {
           console.error('WebSocket error:', error);
