@@ -28,7 +28,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     const connectSocket = async (): Promise<void> => {
       try {
-        const response = await apiRoute.post('/api/user');
+        const { data } = await apiRoute.post('/api/user');
 
         const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
           transports: ['websocket'],
@@ -37,18 +37,20 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
           reconnectionAttempts: 5, // Número máximo de tentativas de reconexão
           reconnectionDelay: 1000, // Atraso inicial de reconexão em milissegundos
           reconnectionDelayMax: 5000, // Atraso máximo de reconexão em milissegundos
-          query: { ...response.data }
+          query: { ...data }
         });
 
         newSocket.on('connect', () => {
-          newSocket.emit('CONNECTED_USER', response.data);
+          newSocket.emit('CONNECTED_USER', data);
         });
+
+        newSocket.emit('IDLE_USER', { ...data, idle: false });
 
         const handleVisibilityChange = async () => {
           if (document.visibilityState === 'hidden') {
-            newSocket.emit('IDLE_USER', { ...response.data, idle: true });
+            newSocket.emit('IDLE_USER', { ...data, idle: true });
           } else if (document.visibilityState === 'visible') {
-            newSocket.emit('IDLE_USER', { ...response.data, idle: false });
+            newSocket.emit('IDLE_USER', { ...data, idle: false });
           }
         };
 

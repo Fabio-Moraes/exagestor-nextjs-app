@@ -39,11 +39,10 @@ export function Header() {
     setIsLoading(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiRoute.post('/api/user');
-        if (socket) {
-          socket.emit('FETCH_DISCONNECT_USER', JSON.stringify(response.data));
-        }
         await apiRoute.post('/api/logout');
+        if (socket) {
+          socket.emit('DISCONNECTED_USER');
+        }
         router.refresh();
         count = maxRetries;
       } catch (error) {
