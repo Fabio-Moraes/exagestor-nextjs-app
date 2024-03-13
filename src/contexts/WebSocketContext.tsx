@@ -78,20 +78,12 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     }, connectionCheckInterval);
 
-    function handleOnlineEvent() {
-      console.log('Conexão com a internet restabelecida!');
-      window.location.reload();
-    }
-
-    window.addEventListener('load', function () {
-      console.log('Conexão com a internet restabelecida!');
-      window.location.reload();
-    });
-
-    window.addEventListener('online', handleOnlineEvent);
+    window.addEventListener('load', window.location.reload);
+    window.addEventListener('online', window.location.reload);
 
     return () => {
-      window.removeEventListener('online', handleOnlineEvent);
+      window.removeEventListener('load', window.location.reload);
+      window.removeEventListener('online', window.location.reload);
       clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
