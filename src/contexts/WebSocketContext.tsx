@@ -85,7 +85,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       connectionCheckInterval
     );
 
-    window.addEventListener('load', connectedWebsocketEvent);
+    //window.addEventListener('load', connectedWebsocketEvent);
     window.addEventListener('online', connectedWebsocketEvent);
 
     return () => {
@@ -95,7 +95,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         socket.disconnect();
       }
     };
-  }, [socket]);
+  }, []);
 
   return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
 };
