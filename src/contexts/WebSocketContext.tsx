@@ -69,6 +69,8 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     };
 
+    connectSocket();
+
     window.addEventListener('load', async () => {
       if (!socket || socket.disconnected) {
         console.log('Reconectando o WebSocket na abertura do navegador...');
