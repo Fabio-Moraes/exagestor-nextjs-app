@@ -69,7 +69,12 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     };
 
-    connectSocket();
+    window.addEventListener('load', async () => {
+      if (!socket || socket.disconnected) {
+        console.log('Reconectando o WebSocket na abertura do navegador...');
+        await attemptReconnection();
+      }
+    });
 
     const connectionCheckInterval = 3000;
     const checkConnectionIntervalId = setInterval(async () => {
