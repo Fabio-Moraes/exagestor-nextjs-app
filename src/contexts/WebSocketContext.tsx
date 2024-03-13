@@ -83,7 +83,11 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       window.location.reload();
     }
 
-    window.addEventListener('load', handleOnlineEvent);
+    window.addEventListener('load', function () {
+      console.log('Conexão com a internet restabelecida!');
+      window.location.reload();
+    });
+
     window.addEventListener('online', handleOnlineEvent);
 
     return () => {
