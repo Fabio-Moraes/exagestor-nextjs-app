@@ -14,16 +14,10 @@ type ProviderProps = {
   children: ReactNode;
 };
 
-export const useWebSocket = (): WebSocketContextType => {
-  const socket = useContext(WebSocketContext);
-  return socket;
-};
+export const useWebSocket = (): WebSocketContextType => useContext(WebSocketContext);
 
 const WebSocketProvider = ({ children }: ProviderProps) => {
   const [socket, setSocket] = useState<WebSocketContextType>(null);
-
-  const maxRetries = 4;
-  const connectionCheckInterval = 3000;
 
   useEffect(() => {
     const connectSocket = async (): Promise<void> => {
@@ -33,42 +27,28 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
           transports: ['websocket'],
           withCredentials: false,
-          reconnection: true, // Ativar reconexão automática
-          reconnectionAttempts: 10, // Número máximo de tentativas de reconexão
-          reconnectionDelay: 1000, // Atraso inicial de reconexão em milissegundos
-          reconnectionDelayMax: 5000, // Atraso máximo de reconexão em milissegundos
+          reconnection: true,
+          reconnectionAttempts: 5,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
           query: { ...data }
         });
 
-        let idleUserEmitted = false;
         newSocket.on('connect', () => {
-          newSocket.emit('CONNECTED_USER', {
-            ...data,
-            status:
-              idleUserEmitted && document.visibilityState === 'hidden' ? 'hidden' : 'online'
-          });
-          idleUserEmitted = true;
+          const status = document.visibilityState === 'hidden' ? 'hidden' : 'online';
+          newSocket.emit('CONNECTED_USER', { ...data, status });
         });
 
-        const handleVisibilityChange = async () => {
-          if (document.visibilityState === 'hidden') {
-            newSocket.emit('HIDDEN_USER', { ...data, hidden: true });
-          } else if (document.visibilityState === 'visible') {
-            newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
-          }
+        const handleVisibilityChange = () => {
+          const hidden = document.visibilityState === 'hidden';
+          newSocket.emit('HIDDEN_USER', { ...data, hidden });
         };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
         newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
-
-        newSocket.on('error', (error) => {
-          console.error('WebSocket error:', error);
-        });
-
-        newSocket.on('disconnect', () => {
-          console.log('Disconnected from WebSocket server');
-        });
+        newSocket.on('error', (error) => console.error('WebSocket error:', error));
+        newSocket.on('disconnect', () => console.log('Disconnected from WebSocket server'));
 
         setSocket(newSocket);
       } catch (error) {
@@ -76,6 +56,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     };
 
+    const maxRetries = 4;
     const attemptReconnection = async (): Promise<void> => {
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
@@ -89,6 +70,8 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
     };
 
     connectSocket();
+
+    const connectionCheckInterval = 3000;
     const checkConnectionIntervalId = setInterval(async () => {
       if (socket && socket.disconnected) {
         console.log('Reconnecting due to inactive connection...');
@@ -96,7 +79,15 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     }, connectionCheckInterval);
 
+    function handleOnlineEvent() {
+      console.log('Conexão com a internet restabelecida!');
+      window.location.reload();
+    }
+
+    window.addEventListener('online', handleOnlineEvent);
+
     return () => {
+      window.removeEventListener('online', handleOnlineEvent);
       clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
