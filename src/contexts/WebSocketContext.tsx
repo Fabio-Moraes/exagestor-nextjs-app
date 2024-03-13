@@ -71,7 +71,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
 
     connectSocket();
 
-    async function ConnectedWebsocketEvent() {
+    async function connectedWebsocketEvent() {
       if (!socket || socket.disconnected) {
         console.log('Reconectando o WebSocket na abertura do navegador...');
         await attemptReconnection();
@@ -79,24 +79,23 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
     }
 
     const connectionCheckInterval = 3000;
-    const checkConnectionIntervalId = setInterval(async () => {
-      if (socket && socket.disconnected) {
-        console.log('Reconnecting due to inactive connection...');
-        await attemptReconnection();
-      }
-    }, connectionCheckInterval);
 
-    window.addEventListener('load', ConnectedWebsocketEvent);
-    window.addEventListener('online', ConnectedWebsocketEvent);
+    const checkConnectionIntervalId = setInterval(
+      connectedWebsocketEvent,
+      connectionCheckInterval
+    );
+
+    window.addEventListener('load', connectedWebsocketEvent);
+    window.addEventListener('online', connectedWebsocketEvent);
 
     return () => {
-      window.removeEventListener('online', ConnectedWebsocketEvent);
+      window.removeEventListener('online', connectedWebsocketEvent);
       clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
       }
     };
-  }, []);
+  }, [socket]);
 
   return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
 };
