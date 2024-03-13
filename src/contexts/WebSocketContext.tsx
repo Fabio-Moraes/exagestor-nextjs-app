@@ -71,12 +71,12 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
 
     connectSocket();
 
-    window.addEventListener('load', async () => {
+    async function ConnectedWebsocketEvent() {
       if (!socket || socket.disconnected) {
         console.log('Reconectando o WebSocket na abertura do navegador...');
         await attemptReconnection();
       }
-    });
+    }
 
     const connectionCheckInterval = 3000;
     const checkConnectionIntervalId = setInterval(async () => {
@@ -86,15 +86,11 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     }, connectionCheckInterval);
 
-    function handleOnlineEvent() {
-      console.log('Conexão com a internet restabelecida!');
-      window.location.reload();
-    }
-
-    window.addEventListener('online', handleOnlineEvent);
+    window.addEventListener('load', ConnectedWebsocketEvent);
+    window.addEventListener('online', ConnectedWebsocketEvent);
 
     return () => {
-      window.removeEventListener('online', handleOnlineEvent);
+      window.removeEventListener('online', ConnectedWebsocketEvent);
       clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
@@ -106,3 +102,4 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
 };
 
 export { WebSocketProvider, WebSocketContext };
+//window.location.reload();
