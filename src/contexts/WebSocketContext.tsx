@@ -2,7 +2,7 @@
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-import { TimedWait } from 'functions/TimedWait';
+//import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { io, Socket } from 'socket.io-client';
@@ -56,7 +56,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       }
     };
 
-    const maxRetries = 4;
+    /*const maxRetries = 4;
     const attemptReconnection = async (): Promise<void> => {
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
@@ -67,30 +67,33 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
           await TimedWait(3000);
         }
       }
-    };
+    };*/
 
     connectSocket();
 
-    async function connectedWebsocketEvent() {
-      if (!socket || socket.disconnected) {
-        console.log('Reconectando o WebSocket na abertura do navegador...');
+    /*const connectionCheckInterval = 3000;
+    const checkConnectionIntervalId = setInterval(async () => {
+      if (socket && socket.disconnected) {
+        console.log('Reconnecting due to inactive connection...');
         await attemptReconnection();
       }
+    }, connectionCheckInterval);*/
+
+    window.addEventListener('load', function () {
+      console.log('Conexão com a internet restabelecida!');
+      window.location.reload();
+    });
+
+    function handleOnlineEvent() {
+      console.log('Conexão com a internet restabelecida!');
+      window.location.reload();
     }
 
-    const connectionCheckInterval = 3000;
-
-    const checkConnectionIntervalId = setInterval(
-      connectedWebsocketEvent,
-      connectionCheckInterval
-    );
-
-    //window.addEventListener('load', connectedWebsocketEvent);
-    window.addEventListener('online', connectedWebsocketEvent);
+    window.addEventListener('online', handleOnlineEvent);
 
     return () => {
-      window.removeEventListener('online', connectedWebsocketEvent);
-      clearInterval(checkConnectionIntervalId);
+      window.removeEventListener('online', handleOnlineEvent);
+      /* clearInterval(checkConnectionIntervalId); */
       if (socket) {
         socket.disconnect();
       }
@@ -101,4 +104,3 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
 };
 
 export { WebSocketProvider, WebSocketContext };
-//window.location.reload();
