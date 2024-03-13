@@ -26,9 +26,8 @@ export function Header() {
     for (let count = 0; count < maxRetries; count++) {
       try {
         const response = await apiRoute.post('/api/user');
-
-        count = maxRetries;
         setUser(response.data);
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
@@ -44,7 +43,7 @@ export function Header() {
           socket.emit('DISCONNECTED_USER');
         }
         router.refresh();
-        count = maxRetries;
+        break;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
         if (count === maxRetries) setIsLoading(false);

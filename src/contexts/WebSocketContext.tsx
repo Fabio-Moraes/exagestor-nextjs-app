@@ -38,6 +38,12 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         newSocket.emit('CONNECTED_USER', { ...data, status });
       });
 
+      newSocket.on(`LOGOUT_USER:${data.id}`, async () => {
+        await apiRoute.post('/api/logout');
+        newSocket.emit('DISCONNECTED_USER');
+        window.location.reload();
+      });
+
       const handleVisibilityChange = () => {
         const hidden = document.visibilityState === 'hidden';
         newSocket.emit('HIDDEN_USER', { ...data, hidden });

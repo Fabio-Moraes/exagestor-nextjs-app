@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 
 import { encryptObject } from 'functions';
 
+import { useWebSocket } from 'contexts/WebSocketContext';
+
 import { Container, ItemContainer } from './styles';
 
 interface ConnectedUser {
@@ -27,6 +29,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
   const { id, name, role, identification, created_at, connectedUsers } = props;
 
   const router = useRouter();
+  const socket = useWebSocket();
 
   function formatDate(date: string) {
     const now = new Date(date);
@@ -65,6 +68,17 @@ const ListItem: React.FC<ListItemProps> = (props) => {
         <p>Registrado em: {formatDate(created_at)}</p>
         <p>Cargo: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
       </ItemContainer>
+      {connected && (
+        <button
+          onClick={() => {
+            if (socket) {
+              socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
+            }
+          }}
+        >
+          <p>Sair</p>
+        </button>
+      )}
     </Container>
   );
 };
