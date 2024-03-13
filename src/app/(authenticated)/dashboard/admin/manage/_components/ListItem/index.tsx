@@ -48,16 +48,16 @@ const ListItem: React.FC<ListItemProps> = (props) => {
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
   const statusUser = {
-    on: '(Online) 🟢',
-    off: '(Offline) 🔴',
-    idle: '(Em segundo plano) 🟠'
+    online: '(Online) 🟢',
+    offline: '(Offline) 🔴',
+    hidden: '(Em segundo plano) 🟠'
   } as { [key: string]: string };
 
   return (
     <Container selected={false}>
       <ItemContainer onClick={fetchConcludedServices}>
         <p>
-          Nome: {name} {connected ? statusUser[connected.status] : statusUser['off']}
+          Nome: {name} {connected ? statusUser[connected.status] : statusUser['offline']}
         </p>
         <p>
           {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}

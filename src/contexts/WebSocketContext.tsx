@@ -34,33 +34,33 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
           transports: ['websocket'],
           withCredentials: false,
           reconnection: true, // Ativar reconexão automática
-          reconnectionAttempts: 5, // Número máximo de tentativas de reconexão
+          reconnectionAttempts: 10, // Número máximo de tentativas de reconexão
           reconnectionDelay: 1000, // Atraso inicial de reconexão em milissegundos
           reconnectionDelayMax: 5000, // Atraso máximo de reconexão em milissegundos
           query: { ...data }
         });
 
         let idleUserEmitted = false;
-
         newSocket.on('connect', () => {
-          newSocket.emit('CONNECTED_USER', data);
-          if (!idleUserEmitted) {
-            newSocket.emit('IDLE_USER', { ...data, idle: false });
-            idleUserEmitted = true;
-          }
+          newSocket.emit('CONNECTED_USER', {
+            ...data,
+            status:
+              idleUserEmitted && document.visibilityState === 'hidden' ? 'hidden' : 'online'
+          });
+          idleUserEmitted = true;
         });
 
         const handleVisibilityChange = async () => {
           if (document.visibilityState === 'hidden') {
-            newSocket.emit('IDLE_USER', { ...data, idle: true });
+            newSocket.emit('HIDDEN_USER', { ...data, hidden: true });
           } else if (document.visibilityState === 'visible') {
-            newSocket.emit('IDLE_USER', { ...data, idle: false });
+            newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
           }
         };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        newSocket.emit('IDLE_USER', { ...data, idle: false });
+        newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
 
         newSocket.on('error', (error) => {
           console.error('WebSocket error:', error);
