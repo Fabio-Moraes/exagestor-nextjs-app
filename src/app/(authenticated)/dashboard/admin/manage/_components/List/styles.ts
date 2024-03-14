@@ -64,7 +64,7 @@ export const Button = styled.button`
   flex-shrink: 0;
   padding: 1rem;
   border-radius: 0.5rem;
-  width: 12rem;
+  width: 16rem;
   background-color: #fff;
   border: 0.2rem solid #27a567;
   cursor: pointer;

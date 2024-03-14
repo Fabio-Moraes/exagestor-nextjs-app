@@ -36,11 +36,11 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const day = now.getDate().toString().padStart(2, '0');
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
+    // const hours = now.getHours().toString().padStart(2, '0');
+    // const minutes = now.getMinutes().toString().padStart(2, '0');
+    // const seconds = now.getSeconds().toString().padStart(2, '0');
 
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return `${day}/${month}/${year}`; // ${hours}:${minutes}:${seconds}
   }
 
   async function fetchConcludedServices() {
@@ -50,23 +50,27 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
-  const statusUser = {
-    online: '(Online) 🟢',
-    offline: '(Offline) 🔴',
-    hidden: '(Em segundo plano) 🟠'
-  } as { [key: string]: string };
+  const ProfileUser = ({ name, status = 'offline' }: { name: string; status?: string }) => {
+    const statusUser = {
+      online: `🟢 ${name} (Online)`,
+      offline: `🔴 ${name} (Offline)`,
+      hidden: `🟠 ${name} (Em segundo plano)`
+    } as { [key: string]: string };
+
+    return statusUser[status];
+  };
 
   return (
     <Container selected={false}>
       <ItemContainer onClick={fetchConcludedServices}>
-        <p>
-          Nome: {name} {connected ? statusUser[connected.status] : statusUser['offline']}
-        </p>
-        <p>
-          {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
-        </p>
-        <p>Registrado em: {formatDate(created_at)}</p>
-        <p>Cargo: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
+        <p>{ProfileUser({ name, status: connected?.status })}</p>
+        <div>
+          <p>
+            {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
+          </p>
+          <p>DESDE: {formatDate(created_at)}</p>
+          <p>CARGO: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
+        </div>
       </ItemContainer>
       {connected && (
         <button
