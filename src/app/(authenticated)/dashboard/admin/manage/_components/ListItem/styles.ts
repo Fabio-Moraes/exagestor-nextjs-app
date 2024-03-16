@@ -7,7 +7,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  //border: 0.1rem solid #27a567;
   margin: 0rem 1rem 2.8rem 1rem;
   border-radius: 0.7rem;
   cursor: pointer;
@@ -66,7 +65,6 @@ export const ItemContainer = styled.div`
       font-size: 1.6rem;
       text-align: start;
       padding: 0.23rem 0;
-      //width: 100%;
     }
   }
 `;

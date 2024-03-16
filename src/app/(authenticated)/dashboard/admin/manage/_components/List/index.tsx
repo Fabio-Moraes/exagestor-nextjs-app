@@ -116,7 +116,12 @@ export function List({ service }: { service: Service[] }) {
             </ItemsSkeleton>
           ))
         : filteredItems.map((item) => (
-            <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
+            <>
+              <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
+              <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
+              <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
+              <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
+            </>
           ))}
     </ListContainer>
   );

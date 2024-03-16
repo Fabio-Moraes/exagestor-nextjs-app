@@ -32,7 +32,6 @@ export const ListContainer = styled.div`
 `;
 
 export const SearchWrapper = styled.div`
-  position: relative;
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -49,7 +48,7 @@ export const SearchBar = styled.input`
   font-size: 1.6rem;
   background-color: transparent;
   border-radius: 2rem;
-  width: 100%;
+  //width: 100%;
   outline: none;
   position: absolute;
   text-indent: 3rem;

@@ -12,7 +12,8 @@ export const Title = styled.h1`
   margin-bottom: 2rem;
   border-radius: 0.7rem;
   font-family: 'OpenSans-SemiBold';
-  color: #333;
+  color: #222;
+  margin-inline: 1rem;
 
   @media (min-width: 550px) {
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
@@ -32,7 +33,7 @@ export const ErrorContainer = styled.div`
   > span {
     text-align: left;
     font-size: 1.7rem;
-    color: #333;
+    color: #222;
   }
 
   > button {
