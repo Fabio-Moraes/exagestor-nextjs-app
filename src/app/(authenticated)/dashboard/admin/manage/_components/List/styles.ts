@@ -3,17 +3,17 @@
 import styled from 'styled-components';
 
 export const ListContainer = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding-bottom: 1rem;
-  background-color: #ffffff;
+  //background-color: #f2f2f0;
   border-radius: 0.7rem;
-  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  border: 0.2rem solid #3f795e;
+  //box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  //border: 0.2rem solid #3f795e;
 
   > div:first-child {
     display: flex;
     padding: 1rem;
-    background-color: #3f795e;
+    //background-color: #3f795e;
     flex-direction: column;
     align-items: center;
     margin-bottom: 0.9rem;
@@ -36,12 +36,13 @@ export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  background-color: #fff;
   padding-left: 0.5rem;
-  border-radius: 5rem;
   width: 100%;
-  height: 3.5rem;
+  height: 4rem;
   margin-bottom: 1rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+  background-color: #fafafa;
 `;
 
 export const SearchBar = styled.input`
@@ -52,6 +53,7 @@ export const SearchBar = styled.input`
   outline: none;
   position: absolute;
   text-indent: 3rem;
+  margin-left: 0.5rem;
 
   &::placeholder {
     color: #333;
@@ -65,8 +67,8 @@ export const Button = styled.button`
   padding: 1rem;
   border-radius: 0.5rem;
   width: 16rem;
-  background-color: #fff;
-  border: 0.2rem solid #27a567;
+  background-color: #8bc9a8;
+  //border: 0.2rem solid #27a567;
   cursor: pointer;
 `;
 

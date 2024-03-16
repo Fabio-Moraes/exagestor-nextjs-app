@@ -1,38 +1,35 @@
 'use client';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const Container = styled.div<{ selected: boolean }>`
-  background-color: #fff;
-
-  ${(props) =>
-    props.selected &&
-    css`
-      background-color: #8bc9a8;
-    `};
-
+export const Container = styled.div`
+  background-image: linear-gradient(-135deg, #8bc9a8, #dce6dc, #8bc9a8, #dce6dc);
   display: flex;
-  align-items: end;
+  flex-direction: column;
   justify-content: space-between;
-  border: 0.2rem solid #27a567;
-  margin: 0.5rem 1rem 0 1rem;
+  //border: 0.1rem solid #27a567;
+  margin: 0rem 1rem 2.8rem 1rem;
   border-radius: 0.7rem;
   cursor: pointer;
 
   overflow: hidden;
 
-  button:nth-child(2) {
-    border: 0.2rem solid #b3475b;
-    background-color: #d9534f;
-    border-radius: 0.5rem;
-    padding: 0.4rem 1rem;
-    cursor: pointer;
-    margin-left: auto;
-    margin: 0.5rem;
-    color: #fff;
+  > div:nth-child(2) {
+    display: flex;
+    justify-content: end;
+    min-height: 4rem;
+    > button {
+      border: 0.2rem solid #b3475b;
+      background-color: #d9534f;
+      padding: 0.4rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      margin: 0.5rem;
+      color: #fff;
+    }
   }
 
-  > button p {
+  > div button p {
     font-family: 'OpenSans-SemiBold';
     font-size: 1.2rem;
   }
@@ -48,21 +45,25 @@ export const Reset = styled.div`
   padding-left: 1rem;
 `;
 
-export const ItemContainer = styled.button`
+export const ItemContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: start;
   flex-direction: column;
 
   > p:first-child {
-    background-color: #9acfb2;
-    padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+    font-family: 'OpenSans-SemiBold';
+    font-size: 1.5rem;
+    background-color: #f2f2f0;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
     border-radius: 0 0 0.5rem 0;
   }
 
   > div {
     margin: 0.5rem;
     p {
+      font-family: 'OpenSans-SemiBold';
+      font-size: 1.6rem;
       text-align: start;
       padding: 0.23rem 0;
       //width: 100%;

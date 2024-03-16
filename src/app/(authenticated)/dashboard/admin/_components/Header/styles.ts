@@ -11,7 +11,18 @@ export const Container = styled.div`
   padding: 0.8rem 1.2rem 0.9rem 1.5rem;
 
   @media (max-width: 550px) {
-    background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
+    background-image: linear-gradient(
+      -135deg,
+      #aed3c7,
+      #aed3c7,
+      #aed3c7,
+      #aed3c7,
+      #ffffff,
+      #ffffff,
+      #ffffff,
+      #aed3c7,
+      #aed3c7
+    );
   }
 
   @media (min-width: 550px) {
@@ -97,8 +108,8 @@ export const ProfileCompany = styled.div`
   text-align: left;
   display: flex;
   height: 100%;
-  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
+  //box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+  //background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
   padding: 0.7rem;
   padding-left: 1.1rem;
   border-radius: 0.7rem;

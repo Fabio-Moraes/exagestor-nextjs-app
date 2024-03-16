@@ -26,7 +26,7 @@ export const Title = styled.h1`
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: #d8e5df;
   border: 0.2rem solid #3f795e;
   border-radius: 0.7rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);

@@ -175,7 +175,7 @@ export default function NewRegister() {
     <Container>
       <Title>Novo Funcionário(a)</Title>
       <FormContainer onSubmit={handleSubmit}>
-        <label htmlFor="Nome completo">Nome completo:</label>
+        {/* <label htmlFor="Nome completo">Nome completo:</label> */}
         <Input
           type="text"
           id="Nome"
@@ -210,7 +210,7 @@ export default function NewRegister() {
           </CheckboxButton>
         </div>
 
-        <label htmlFor="CNPJ">Cnpj</label>
+        {/* <label htmlFor="CNPJ">Cnpj:</label> */}
         <Input
           type="numeric"
           placeholder={`${cpfOrCnpj}`}
@@ -218,7 +218,7 @@ export default function NewRegister() {
           onChange={cpfOrCnpj === 'CNPJ' ? handleChangeCnpj : handleChangeCpf}
         />
 
-        <label htmlFor="Senha">Senha:</label>
+        {/* <label htmlFor="Senha">Senha:</label> */}
         <Input
           type="password"
           placeholder="Senha"
@@ -226,7 +226,7 @@ export default function NewRegister() {
           onChange={(e) => setPassword(e.target.value.trim())}
         />
 
-        <label htmlFor="Confirme a senha">Confirme a senha:</label>
+        {/* <label htmlFor="Confirme a senha">Confirme a senha:</label> */}
         <Input
           type="password"
           placeholder="Confirme a senha"

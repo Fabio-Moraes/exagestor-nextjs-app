@@ -1,8 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 
-import { encryptObject } from 'functions';
+//import { encryptObject } from 'functions';
 
 import { useWebSocket } from 'contexts/WebSocketContext';
 
@@ -28,7 +28,7 @@ interface ListItemProps {
 const ListItem: React.FC<ListItemProps> = (props) => {
   const { id, name, role, identification, created_at, connectedUsers } = props;
 
-  const router = useRouter();
+  //const router = useRouter();
   const socket = useWebSocket();
 
   function formatDate(date: string) {
@@ -43,14 +43,14 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     return `${day}/${month}/${year}`; // ${hours}:${minutes}:${seconds}
   }
 
-  async function fetchConcludedServices() {
+  /*   async function fetchConcludedServices() {
     const encryptSlug = encryptObject({ userId: id });
     router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
-  }
+  } */
 
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
-  const ProfileUser = ({ name, status = 'offline' }: { name: string; status?: string }) => {
+  const ProfileUser = ({ name = '...', status = 'offline' }) => {
     const statusUser = {
       online: `🟢 ${name} (Online)`,
       offline: `🔴 ${name} (Offline)`,
@@ -61,8 +61,8 @@ const ListItem: React.FC<ListItemProps> = (props) => {
   };
 
   return (
-    <Container selected={false}>
-      <ItemContainer onClick={fetchConcludedServices}>
+    <Container>
+      <ItemContainer /* onClick={fetchConcludedServices} */>
         <p>{ProfileUser({ name, status: connected?.status })}</p>
         <div>
           <p>
@@ -72,17 +72,20 @@ const ListItem: React.FC<ListItemProps> = (props) => {
           <p>CARGO: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
         </div>
       </ItemContainer>
-      {connected && (
-        <button
-          onClick={() => {
-            if (socket) {
-              socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
-            }
-          }}
-        >
-          <p>Sair</p>
-        </button>
-      )}
+
+      <div>
+        {connected && (
+          <button
+            onClick={() => {
+              if (socket) {
+                socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
+              }
+            }}
+          >
+            <p>Desconectar</p>
+          </button>
+        )}
+      </div>
     </Container>
   );
 };

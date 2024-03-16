@@ -17,7 +17,6 @@ export const Container = styled.div`
   width: 100%;
   left: 0;
   top: 0;
-  z-index: 2;
   white-space: nowrap;
 
   @media (min-width: 550px) {
