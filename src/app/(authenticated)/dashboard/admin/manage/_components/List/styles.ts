@@ -5,18 +5,13 @@ import styled from 'styled-components';
 export const ListContainer = styled.div`
   margin-top: 1rem;
   padding-bottom: 1rem;
-  //background-color: #f2f2f0;
   border-radius: 0.7rem;
-  //box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  //border: 0.2rem solid #3f795e;
 
   > div:first-child {
     display: flex;
-    padding: 1rem;
-    //background-color: #3f795e;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 0.9rem;
+    margin-bottom: 1rem;
 
     > div {
       display: flex;
@@ -35,27 +30,34 @@ export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  padding-left: 0.5rem;
   width: 100%;
   height: 4rem;
-  margin-bottom: 1rem;
-  border: 0.1rem solid #ccc;
   border-radius: 0.5rem;
   background-color: #fafafa;
+  margin: 0rem 0 2rem 0;
+  outline: 0.1rem solid #ccc;
+  position: relative;
+
+  &:focus-within {
+    outline: 0.2rem solid #27a567;
+  }
+
+  @media (min-width: 550px) {
+    margin: 1rem 0 2rem 0;
+  }
 `;
 
 export const SearchBar = styled.input`
+  z-index: 1;
+  flex-grow: 1;
   font-size: 1.6rem;
-  background-color: transparent;
-  border-radius: 2rem;
-  //width: 100%;
-  outline: none;
-  position: absolute;
   text-indent: 3rem;
-  margin-left: 0.5rem;
+  height: 100%;
+  padding-left: 3.5rem;
+  text-indent: 0;
 
   &::placeholder {
-    color: #333;
+    color: #666;
   }
 `;
 
@@ -67,23 +69,60 @@ export const Button = styled.button`
   border-radius: 0.5rem;
   width: 16rem;
   background-color: #8bc9a8;
-  //border: 0.2rem solid #27a567;
   cursor: pointer;
 `;
 
 export const ItemsSkeleton = styled.div`
+  background-image: linear-gradient(45deg, #3f7971 65%, #8bc9a8);
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   flex-direction: column;
-  background-color: #fff;
-  border: 0.2rem solid #27a567;
-  margin: 0.5rem 1rem 0 1rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  cursor: progress;
+  justify-content: start;
+  margin: 0rem 0rem 2.8rem 0rem;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  min-height: 18rem;
 
-  > div:last-child {
+  > div:first-child {
+    display: flex;
+    background-color: #f2f2f0;
+    border-radius: 0 0 0.5rem 0;
+    max-width: 17rem;
+    max-height: 3rem;
+    margin: 0;
+
+    > div {
+      margin: 0.5rem;
+      color: #ffffff;
+      font-family: 'OpenSans-Bold';
+      font-size: 1.6rem;
+      text-align: start;
+      padding: 0.23rem 0;
+    }
+  }
+
+  > div {
+    margin: 0.5rem;
     margin-bottom: 0;
   }
 `;
+
+/* 
+> div::before {
+      content: '';
+      background-color: #000;
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      transition: transform 300ms ease;
+      transform-origin: right;
+      transform: scaleX(0);
+    }
+
+    > div:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    } 
+*/

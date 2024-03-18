@@ -36,8 +36,8 @@ export function CardContent({ service }: { service: RunningService }) {
       <div>
         <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
         <p>CIDADE: {service?.city.toUpperCase()}</p>
-        <p>ENDEREÇO DE ORIGEM DO SERVIÇO: {service?.address.toUpperCase()}</p>
-        <p>NOMENCLATURA DE CAIXA OU CABO: {service?.nomenclature.toUpperCase()}</p>
+        <p>ENDEREÇO: {service?.address.toUpperCase()}</p>
+        <p>NOMENCL. CX OU CABO: {service?.nomenclature.toUpperCase()}</p>
         <p>CLASSE: {service?.classification}</p>
         <p>PROTOCOLO: {service?.protocol}</p>
         <p>INICIADO EM: {createdAt}</p>

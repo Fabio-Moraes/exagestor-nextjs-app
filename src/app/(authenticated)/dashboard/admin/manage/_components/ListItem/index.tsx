@@ -1,12 +1,13 @@
 'use client';
 
-//import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 
-//import { encryptObject } from 'functions';
+import { encryptObject } from 'functions';
 
 import { useWebSocket } from 'contexts/WebSocketContext';
 
-import { Container, ItemContainer } from './styles';
+import { Container, ItemContainer, Dialog } from './styles';
 
 interface ConnectedUser {
   userid: number;
@@ -28,7 +29,7 @@ interface ListItemProps {
 const ListItem: React.FC<ListItemProps> = (props) => {
   const { id, name, role, identification, created_at, connectedUsers } = props;
 
-  //const router = useRouter();
+  const router = useRouter();
   const socket = useWebSocket();
 
   function formatDate(date: string) {
@@ -43,11 +44,6 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     return `${day}/${month}/${year}`; // ${hours}:${minutes}:${seconds}
   }
 
-  /*   async function fetchConcludedServices() {
-    const encryptSlug = encryptObject({ userId: id });
-    router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
-  } */
-
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
   const ProfileUser = ({ name = '...', status = 'offline' }) => {
@@ -60,33 +56,90 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     return statusUser[status];
   };
 
-  return (
-    <Container>
-      <ItemContainer /* onClick={fetchConcludedServices} */>
-        <p>{ProfileUser({ name, status: connected?.status })}</p>
-        <div>
-          <p>
-            {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
-          </p>
-          <p>DESDE: {formatDate(created_at)}</p>
-          <p>CARGO: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
-        </div>
-      </ItemContainer>
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-      <div>
-        {connected && (
-          <button
-            onClick={() => {
-              if (socket) {
-                socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
-              }
-            }}
-          >
-            <p>Desconectar</p>
-          </button>
-        )}
-      </div>
-    </Container>
+  const handleOpenDialog = () => {
+    console.log('open dialog');
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const handleCloseDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+      document.body.style.overflow = 'auto';
+    }
+  };
+
+  type EventTypes = React.MouseEvent<HTMLDialogElement, MouseEvent>;
+
+  const handleClickOutsideDialog = (event: EventTypes) => {
+    const { clientX, clientY } = event.nativeEvent;
+    if (dialogRef.current) {
+      const rect = dialogRef.current.getBoundingClientRect();
+      if (
+        rect.left > clientX ||
+        rect.right < clientX ||
+        rect.top > clientY ||
+        rect.bottom < clientY
+      ) {
+        dialogRef.current.close();
+        document.body.style.overflow = 'auto';
+      }
+    }
+  };
+
+  async function fetchConcludedServices() {
+    const encryptSlug = encryptObject({ userId: id });
+    handleCloseDialog();
+    router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
+  }
+
+  return (
+    <>
+      <Container onClick={handleOpenDialog}>
+        <ItemContainer>
+          <p>{ProfileUser({ name, status: connected?.status })}</p>
+          <div>
+            <p>
+              {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
+            </p>
+            <p>DESDE: {formatDate(created_at)}</p>
+            <p>CARGO: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
+          </div>
+        </ItemContainer>
+
+        <div>
+          {connected && (
+            <button
+              onClick={() => {
+                if (socket) {
+                  socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
+                }
+              }}
+            >
+              <p>Desconectar</p>
+            </button>
+          )}
+        </div>
+      </Container>
+      <Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
+        <button>
+          <p>VISUALIZAR CARGA</p>
+        </button>
+        <button onClick={fetchConcludedServices}>
+          <p>NOVO SERVIÇO</p>
+        </button>
+        <button>
+          <p>INATIVAR FUNCIONÁRIO</p>
+        </button>
+        <button>
+          <p>ALTERAR SENHA</p>
+        </button>
+      </Dialog>
+    </>
   );
 };
 

@@ -12,14 +12,13 @@ export const Title = styled.h1`
   margin-bottom: 2rem;
   border-radius: 0.7rem;
   font-family: 'OpenSans-SemiBold';
-  color: #333;
 
   @media (min-width: 550px) {
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: #8bc9a8;
-    color: #000;
+    background-color: #5e9987;
+    color: #fff;
   }
 `;
 
@@ -49,19 +48,19 @@ export const FormContainer = styled.form`
 
 export const Input = styled.input`
   padding: 1rem;
-  margin: 0 2rem 1.5rem 2rem;
+  margin: 0 0rem 1.5rem 0rem;
   font-size: 1.6rem;
   background-color: #fafafa;
-  border: 0.1rem solid #ccc;
   border-radius: 0.5rem;
+  outline: 0.1rem solid #ccc;
+  font-family: 'OpenSans-Regular';
 
   &:focus {
-    outline: none;
-    border-color: #27a567;
+    outline: 0.2rem solid #27a567;
   }
 
   &::placeholder {
-    color: #999;
+    color: #666;
   }
 `;
 
@@ -99,30 +98,11 @@ export const TogglePasswordVisibilityButton = styled.button`
   }
 `;
 
-export const Select = styled.select`
-  padding: 1rem;
-  margin: 0 2rem 1.5rem 2rem;
-  border: 0.1rem solid #000000;
-  border-radius: 0.4rem;
-  font-size: 1.6rem;
-  background-color: #fff;
-  color: #777;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const Option = styled.option`
-  background-color: #fff;
-  color: #777;
-`;
-
 export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0 1rem 1rem 2rem;
+  margin: 0 1rem 1rem 0.5rem;
 
   > div {
     width: 2rem;

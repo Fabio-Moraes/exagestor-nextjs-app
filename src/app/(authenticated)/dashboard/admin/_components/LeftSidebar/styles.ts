@@ -22,6 +22,8 @@ export const Wrapper = styled.div`
   position: sticky;
   top: 4rem;
 
+  margin-top: 4.5rem;
+
   > div {
     width: 100%;
   }
@@ -44,6 +46,7 @@ export const Button = styled.button<{ $path?: boolean }>`
   display: flex;
   outline: 0;
   width: 100%;
+  height: 4.5rem;
 
   > span {
     color: #000;

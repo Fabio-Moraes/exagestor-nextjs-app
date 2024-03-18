@@ -29,7 +29,7 @@ input {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   background: none;
-  font-family: OpenSans-Regular;
+  font-family: 'OpenSans-SemiBold';
 }
 
 @font-face {

@@ -7,7 +7,7 @@ export function Footer() {
     <Container>
       <Wrapper>
         <div>
-          <h1>© COPYRIGHT 2024 - EXACODE </h1>
+          <h1>© COPYRIGHT 2024 - EXACODE</h1>
         </div>
         <span>TODOS OS DIREITOS RESERVADOS.</span>
       </Wrapper>

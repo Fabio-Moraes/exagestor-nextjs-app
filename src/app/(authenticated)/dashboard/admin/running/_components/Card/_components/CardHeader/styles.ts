@@ -1,15 +1,24 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div<{ $path: string }>`
+import { lighten } from 'polished';
+
+export const Container = styled.div<{ $color: string }>`
   display: flex;
   align-items: start;
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 0.4rem 0.2rem;
-  background-color: ${({ $path }) => $path};
+  ${({ $color }) => css`
+    background: linear-gradient(
+      45deg,
+      ${$color} 20%,
+      ${lighten(0.2, $color)} 50%,
+      ${lighten(0.2, $color)},
+      ${$color}
+    );
+  `}
 
   > div {
     display: flex;
@@ -19,30 +28,23 @@ export const Container = styled.div<{ $path: string }>`
 
     > div {
       display: flex;
-      margin: 0.3rem 0.5rem;
-      background-color: #fff;
-      border-radius: 0.3rem;
-      padding: 0.5rem;
-      flex-direction: row;
-      max-height: 3rem;
-      max-width: 80%;
+      margin: 0 0 1rem 0;
+      background-color: #f2f2f0;
+      padding: 0.5rem 0;
+      flex-direction: column;
+      min-width: 16rem;
+      border-radius: 0 0 0.7rem 0;
 
-      > p {
-        font-family: 'OpenSans-SemiBold';
-        color: #000;
-        font-size: 1.5rem;
-        max-width: 100%;
-      }
+      > div {
+        display: flex;
+        flex-direction: row;
+        padding: 0.5rem 1rem 0rem 1rem;
 
-      > p:first-child {
-        margin-right: 0.3rem;
-      }
-
-      > p:last-child {
-        overflow: hidden;
-        margin-left: 0.2rem;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        > p {
+          margin-left: 0.5rem;
+          font-family: 'OpenSans-SemiBold';
+          font-size: 1.5rem;
+        }
       }
     }
 

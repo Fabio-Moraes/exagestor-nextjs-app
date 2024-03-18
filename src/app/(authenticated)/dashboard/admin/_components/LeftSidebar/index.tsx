@@ -21,7 +21,7 @@ export function LeftSidebar() {
         <div>
           <Button
             $path={['/dashboard/admin/running'].includes(pathname)}
-            onClick={() => router.push('/dashboard/admin/running')}
+            onClick={() => router.push('/dashboard/admin/running', { scroll: false })}
             rel="preload"
           >
             <Image
@@ -39,7 +39,7 @@ export function LeftSidebar() {
         <div>
           <Button
             $path={['/dashboard/admin/register', '/'].includes(pathname)}
-            onClick={() => router.push('/dashboard/admin/register')}
+            onClick={() => router.push('/dashboard/admin/register', { scroll: false })}
             rel="preload"
           >
             <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
@@ -50,7 +50,7 @@ export function LeftSidebar() {
         <div>
           <Button
             $path={['/dashboard/admin/manage'].includes(pathname)}
-            onClick={() => router.push('/dashboard/admin/manage')}
+            onClick={() => router.push('/dashboard/admin/manage', { scroll: false })}
             rel="preload"
           >
             <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />

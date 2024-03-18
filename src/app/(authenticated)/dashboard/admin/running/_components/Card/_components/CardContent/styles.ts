@@ -2,11 +2,14 @@
 
 import styled from 'styled-components';
 
+//import { lighten } from 'polished';
+
 export const Container = styled.div<{ $color: string }>`
-  display: flex;
   white-space: nowrap;
   width: 100%;
-  background-color: #ffffff;
+  //background-color: ${({ $color }) => $color};
+
+  background-color: #f2f2f0;
 
   flex-direction: column;
   justify-content: space-between;
@@ -17,19 +20,21 @@ export const Container = styled.div<{ $color: string }>`
     width: 100%;
     height: 100%;
     padding: 0.7rem;
+
     > p {
       padding: 0.5rem;
-      margin-bottom: 1rem;
+      margin: 0.5rem 0;
       text-align: start;
       font-size: 1.5rem;
       white-space: normal;
 
       font-family: 'OpenSans-SemiBold';
-      background-color: ${({ $color }) => $color};
-      border-radius: 0.3rem;
+      //border: 0.2rem solid #ccc;
+      //border-radius: 0.5rem;
     }
 
     > p:last-child {
+      //border: none;
       margin-bottom: 0;
     }
   }

@@ -67,18 +67,20 @@ const StatusOptions = {
 
 export function CardHeader({ service }: { service: RunningService }) {
   return (
-    <Container $path={service?.status === 'analysis' ? '#e9c80f' : ' #3c7d5d'}>
+    <Container $color={service?.status === 'analysis' ? '#e9c80f' : '#5e9987'}>
       <div>
         <div>
-          <p>TÉCNICO:</p>
-          <Image
-            src={iconUser}
-            priority
-            loading="eager"
-            alt="Axa"
-            style={{ width: '2rem', height: 'auto' }}
-          />
-          <p>{service?.name_tec.toLocaleUpperCase()}</p>
+          <div>
+            <Image
+              src={iconUser}
+              priority
+              loading="eager"
+              alt="Axa"
+              style={{ width: '2rem', height: 'auto' }}
+            />
+            <p>{service?.name_tec.toLocaleUpperCase()}</p>
+          </div>
+          <div>{StatusOptions[service?.status]}</div>
         </div>
         <button>
           <Image
@@ -86,15 +88,13 @@ export function CardHeader({ service }: { service: RunningService }) {
             priority
             loading="eager"
             alt="Axa"
-            style={{ width: '1.8rem', height: 'auto' }}
+            style={{
+              margin: '0.2rem',
+              width: '1.8rem',
+              height: 'auto'
+            }}
           />
         </button>
-      </div>
-      <div>
-        <div>
-          <p>SERVIÇO:</p>
-          {StatusOptions[service?.status]}
-        </div>
       </div>
     </Container>
   );

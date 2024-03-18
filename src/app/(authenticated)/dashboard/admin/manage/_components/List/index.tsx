@@ -1,6 +1,5 @@
 'use client';
 
-//import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -12,12 +11,7 @@ import { useWebSocket } from 'contexts/WebSocketContext';
 
 import searchSvg from './_assets/svg/search.svg';
 
-import {
-  /* Button, */ ItemsSkeleton,
-  ListContainer,
-  SearchBar,
-  SearchWrapper
-} from './styles';
+import { ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
 
 interface Service {
   id: number;
@@ -32,7 +26,7 @@ interface ConnectedUser {
   username: string;
   status: string;
   role: string;
-  socket_id: string; // Adicionar socket_id para rastrear o status de conexão
+  socket_id: string;
 }
 
 export function List({ service }: { service: Service[] }) {
@@ -40,7 +34,6 @@ export function List({ service }: { service: Service[] }) {
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  //const router = useRouter();
   const socket = useWebSocket();
 
   useEffect(() => {
@@ -83,7 +76,7 @@ export function List({ service }: { service: Service[] }) {
             priority
             src={searchSvg}
             alt="Livro"
-            style={{ marginLeft: 3 }}
+            style={{ marginLeft: '0.5rem' }}
             width={25}
             height={25}
           />
@@ -94,34 +87,21 @@ export function List({ service }: { service: Service[] }) {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </SearchWrapper>
-        {/*         <div>
-          <Button
-            rel="preload"
-            onClick={() => router.push(`/dashboard/admin/manage/general-historic`)}
-          >
-            Histórico Geral
-          </Button>
-          <Button rel="preload" onClick={() => {}}>
-            Relatório
-          </Button>
-        </div> */}
       </div>
       {isLoading
         ? [...Array(4)].map((_, index) => (
             <ItemsSkeleton key={String(index)}>
-              <LineSkaleton width="14rem" />
+              <div>
+                <LineSkaleton width="14rem" />
+              </div>
               <LineSkaleton width="19rem" />
               <LineSkaleton width="25rem" />
               <LineSkaleton width="10rem" />
             </ItemsSkeleton>
           ))
         : filteredItems.map((item) => (
-            <>
-              <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
-            </>
+            <ListItem key={String(item.id)} {...item} connectedUsers={connectedUsers} />
           ))}
     </ListContainer>
   );
 }
-
-///connectedUsers.find((user) => Number(user.userid) === Number(item.id)

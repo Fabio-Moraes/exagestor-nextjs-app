@@ -138,7 +138,7 @@ export function ButtonBar({ service }: { service: Service }) {
         onClick={() => fetchRefreshServices()}
       >
         <Image priority loading="eager" src={refreshSvg} alt="play" width="50" height="50" />
-        <p>{'Reiniciar'}</p>
+        {/* <p>{'Reiniciar'}</p> */}
       </button>
     ) : (
       <button rel="preload" onClick={() => fetchStatusServices()}>
@@ -150,12 +150,12 @@ export function ButtonBar({ service }: { service: Service }) {
           width="50"
           height="50"
         />
-        <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
+        {/* <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p> */}
       </button>
     );
 
   return (
-    <Container $animation={runningLoad} $color={'#8bc9a8'}>
+    <Container $animation={runningLoad} $color={'#3f7971'}>
       <Wrapper>
         <button
           style={{
@@ -171,7 +171,7 @@ export function ButtonBar({ service }: { service: Service }) {
           }}
         >
           <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
-          <p>Finalizar</p>
+          {/* <p>Finalizar</p> */}
         </button>
         {buttonState}
         <button
@@ -182,11 +182,11 @@ export function ButtonBar({ service }: { service: Service }) {
           onClick={() => {}}
         >
           <Image priority loading="eager" src={docSvg} alt="play" width="50" height="50" />
-          <p>Pdf</p>
+          {/* <p>Pdf</p> */}
         </button>
         <button rel="preload" onClick={() => fetchCancelServices()}>
           <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />
-          <p>Cancelar</p>
+          {/* <p>Cancelar</p> */}
         </button>
       </Wrapper>
     </Container>

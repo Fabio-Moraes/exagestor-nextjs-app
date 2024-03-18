@@ -34,8 +34,6 @@ export const Container = styled.div<{ $animation: boolean; $color: string }>`
 
   background-size: 400% 400%;
   animation: ${animation} 1.2s ease-in-out infinite;
-
-  position: relative;
 `;
 
 export const Wrapper = styled.div`

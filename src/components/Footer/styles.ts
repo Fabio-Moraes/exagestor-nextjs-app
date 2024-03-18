@@ -12,7 +12,7 @@ export const Container = styled.footer`
 `;
 
 export const Wrapper = styled.div`
-  background-image: linear-gradient(to left, #3f795e, #3f7971, #3f795e);
+  background-image: linear-gradient(90deg, #68b790, #3f7971 20%, #3f7971 80%, #68b790);
   width: min(60.1rem, 100%);
   padding-top: 1rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
@@ -31,7 +31,7 @@ export const Wrapper = styled.div`
 
   > div h1 {
     color: #fff;
-    font-size: 1.3rem;
+    font-size: 1.36rem;
     text-align: center;
     margin: 0.7rem;
     margin-bottom: 1rem;
@@ -43,5 +43,6 @@ export const Wrapper = styled.div`
     font-size: 1.2rem;
     text-align: center;
     padding-bottom: 2rem;
+    margin-left: 0.5rem;
   }
 `;

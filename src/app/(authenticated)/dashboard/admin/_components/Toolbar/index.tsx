@@ -20,7 +20,7 @@ export function Toolbar() {
       <Button
         $path={['/dashboard/admin/running'].includes(pathname)}
         rel="preload"
-        onClick={() => router.push(`/dashboard/admin/running`)}
+        onClick={() => router.push(`/dashboard/admin/running`, { scroll: false })}
       >
         <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
         <span>
@@ -33,7 +33,7 @@ export function Toolbar() {
       <Button
         $path={['/dashboard/admin/register', '/'].includes(pathname)}
         rel="preload"
-        onClick={() => router.push(`/dashboard/admin/register`)}
+        onClick={() => router.push(`/dashboard/admin/register`, { scroll: false })}
       >
         <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
         <span>
@@ -46,7 +46,7 @@ export function Toolbar() {
       <Button
         $path={['/dashboard/admin/manage'].includes(pathname)}
         rel="preload"
-        onClick={() => router.push(`/dashboard/admin/manage`)}
+        onClick={() => router.push(`/dashboard/admin/manage`, { scroll: false })}
       >
         <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
         <span>
@@ -54,7 +54,7 @@ export function Toolbar() {
         </span>
       </Button>
 
-      <Button rel="preload" onClick={() => router.push('/')}>
+      <Button rel="preload" onClick={() => router.push('/', { scroll: false })}>
         <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
         <span>
           Mais

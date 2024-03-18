@@ -12,16 +12,13 @@ export const Container = styled.div`
 
   @media (max-width: 550px) {
     background-image: linear-gradient(
-      -135deg,
-      #aed3c7,
-      #aed3c7,
-      #aed3c7,
-      #aed3c7,
-      #ffffff,
-      #ffffff,
-      #ffffff,
-      #aed3c7,
-      #aed3c7
+      49deg,
+      #92d3b3 10%,
+      #b1d6c3 15%,
+      #ffffff 30%,
+      #ffffff 50%,
+      #b1d6c3 70%,
+      #92d3b3
     );
   }
 
