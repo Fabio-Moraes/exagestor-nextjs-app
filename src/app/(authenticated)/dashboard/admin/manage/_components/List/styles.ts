@@ -36,7 +36,6 @@ export const SearchWrapper = styled.div`
   background-color: #fafafa;
   margin: 0rem 0 2rem 0;
   outline: 0.1rem solid #ccc;
-  position: relative;
 
   &:focus-within {
     outline: 0.2rem solid #27a567;
@@ -48,12 +47,11 @@ export const SearchWrapper = styled.div`
 `;
 
 export const SearchBar = styled.input`
-  z-index: 1;
   flex-grow: 1;
   font-size: 1.6rem;
   text-indent: 3rem;
   height: 100%;
-  padding-left: 3.5rem;
+  padding-left: 0.7rem;
   text-indent: 0;
 
   &::placeholder {
