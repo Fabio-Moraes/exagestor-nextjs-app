@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import { useContexState } from 'hooks/useGlobalContext';
+import { useLocalStorage } from 'contexts/localStorage';
 import apiRoute from 'services/apiRoute';
 
 import {
@@ -41,7 +41,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const [requestInProcess, setRequestInProcess] = useState(false);
 
   const { setObservationBox, observationBox, selectMaterial, selectService } =
-    useContexState();
+    useLocalStorage();
 
   useEffect(() => {
     const timer = setTimeout(() => {

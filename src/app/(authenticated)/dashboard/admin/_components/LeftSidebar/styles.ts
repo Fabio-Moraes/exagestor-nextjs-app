@@ -20,8 +20,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
   border-radius: 0.7rem;
   position: sticky;
-  top: 4rem;
-
+  top: 4.5rem;
   margin-top: 4.5rem;
 
   > div {

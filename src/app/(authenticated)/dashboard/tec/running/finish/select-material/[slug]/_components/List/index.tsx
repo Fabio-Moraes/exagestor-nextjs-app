@@ -8,7 +8,7 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import { useContexState } from 'hooks/useGlobalContext';
+import { useLocalStorage } from 'contexts/localStorage';
 import apiRoute from 'services/apiRoute';
 
 import { ListItem } from '../ListItem';
@@ -56,7 +56,7 @@ export function List(props: { serviceData: ServiceData }) {
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectMaterial, setSelectMaterial } = useContexState();
+  const { selectMaterial, setSelectMaterial } = useLocalStorage();
 
   const [materials, setMaterials] = useState<Materials[]>([]);
   const [connectionError, setConnectionError] = useState(false);

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
-import { useContexState } from 'hooks/useGlobalContext';
+import { useLocalStorage } from 'contexts/localStorage';
 
 import { ListItem } from '../ListItem';
 
@@ -42,7 +42,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
   const [showSelected, setShowSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectService, setSelectService } = useContexState();
+  const { selectService, setSelectService } = useLocalStorage();
 
   useEffect(() => {
     const timer = setTimeout(() => {

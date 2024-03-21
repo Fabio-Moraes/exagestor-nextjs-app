@@ -6,7 +6,7 @@ type ServiceItem = {
   [key: string]: number;
 };
 
-type StateContext = {
+type LocalStorageContextType = {
   selectMaterial: { [key: string]: ServiceItem };
   setSelectMaterial: React.Dispatch<React.SetStateAction<{ [key: string]: ServiceItem }>>;
 
@@ -21,9 +21,9 @@ type ProviderProps = {
   children: ReactNode;
 };
 
-export const Context = createContext({} as StateContext);
+const LocalStorageContext = createContext({} as LocalStorageContextType);
 
-export const ContextProvider = ({ children }: ProviderProps) => {
+const LocalStorageProvider = ({ children }: ProviderProps) => {
   const isClient = typeof window !== 'undefined';
 
   const [selectService, setSelectService] = useState<{
@@ -55,7 +55,7 @@ export const ContextProvider = ({ children }: ProviderProps) => {
   }, [selectService, selectMaterial, observationBox, isClient]);
 
   return (
-    <Context.Provider
+    <LocalStorageContext.Provider
       value={
         {
           selectMaterial,
@@ -64,14 +64,17 @@ export const ContextProvider = ({ children }: ProviderProps) => {
           setSelectService,
           observationBox,
           setObservationBox
-        } as StateContext
+        } as LocalStorageContextType
       }
     >
       {children}
-    </Context.Provider>
+    </LocalStorageContext.Provider>
   );
 };
 
-export function useContexState(): StateContext {
-  return useContext(Context);
-}
+const useLocalStorage = (): LocalStorageContextType => {
+  const context = useContext(LocalStorageContext);
+  return context;
+};
+
+export { LocalStorageProvider, useLocalStorage, LocalStorageContext };

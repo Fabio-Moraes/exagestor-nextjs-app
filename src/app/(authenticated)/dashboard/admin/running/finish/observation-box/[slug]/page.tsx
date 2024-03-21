@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import { useContexState } from 'hooks/useGlobalContext';
+import { useLocalStorage } from 'contexts/localStorage';
 import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
@@ -38,7 +38,7 @@ export default function FinishService({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectMaterial } = useContexState();
+  const { selectMaterial } = useLocalStorage();
 
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);

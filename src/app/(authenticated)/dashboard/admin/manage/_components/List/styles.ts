@@ -6,6 +6,7 @@ export const ListContainer = styled.div`
   margin-top: 1rem;
   padding-bottom: 1rem;
   border-radius: 0.7rem;
+  /* position: relative; */
 
   > div:first-child {
     display: flex;

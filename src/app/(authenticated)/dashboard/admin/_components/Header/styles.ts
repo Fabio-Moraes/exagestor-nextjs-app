@@ -8,7 +8,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem 1.2rem 0.9rem 1.5rem;
+  padding: 1.8rem 1.5rem 2rem 1.5rem;
 
   @media (max-width: 550px) {
     background-image: linear-gradient(

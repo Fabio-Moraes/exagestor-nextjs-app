@@ -5,9 +5,8 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
+import { useWebSocket } from 'contexts/webSocket';
 import apiRoute from 'services/apiRoute';
-
-import { useWebSocket } from 'contexts/WebSocketContext';
 
 import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';

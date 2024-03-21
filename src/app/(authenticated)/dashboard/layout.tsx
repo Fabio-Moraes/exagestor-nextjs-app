@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { WebSocketProvider } from 'contexts/WebSocketContext';
+import { AppProvider } from 'contexts';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <WebSocketProvider>{children}</WebSocketProvider>;
+  return <AppProvider>{children}</AppProvider>;
 }

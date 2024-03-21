@@ -2,7 +2,9 @@
 
 import styled from 'styled-components';
 
-export const Container = styled.div`
+import { motion } from 'framer-motion';
+
+export const Container = styled(motion.div)`
   background-image: linear-gradient(45deg, #3f7971 65%, #8bc9a8);
   display: flex;
   flex-direction: column;
@@ -23,9 +25,10 @@ export const Container = styled.div`
       background-color: #d9534f;
       padding: 0.4rem 1rem;
       border-radius: 0.5rem;
-      cursor: pointer;
       margin: 0.5rem;
       color: #fff;
+      cursor: pointer;
+      user-select: none;
     }
   }
 
@@ -33,12 +36,6 @@ export const Container = styled.div`
     font-family: 'OpenSans-SemiBold';
     font-size: 1.2rem;
     color: #fff;
-  }
-
-  transition: all 0.5s ease;
-
-  &:active {
-    transform: translateY(2px);
   }
 `;
 
@@ -86,6 +83,8 @@ export const Dialog = styled.dialog`
     border-radius: 0.5rem;
     width: 25rem;
     margin: 1rem;
+    cursor: pointer;
+    user-select: none;
 
     > p {
       text-align: center;

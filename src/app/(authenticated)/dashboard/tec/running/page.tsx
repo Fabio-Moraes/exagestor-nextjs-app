@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
-import { useContexState } from 'hooks/useGlobalContext';
+import { useLocalStorage } from 'contexts/localStorage';
 import apiRoute from 'services/apiRoute';
 
-import { useWebSocket } from 'contexts/WebSocketContext';
+import { useWebSocket } from 'contexts/webSocket';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
@@ -37,7 +37,7 @@ export default function RunningService() {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const { setSelectService, setSelectMaterial } = useContexState();
+  const { setSelectService, setSelectMaterial } = useLocalStorage();
 
   const socket = useWebSocket();
 

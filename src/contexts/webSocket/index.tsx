@@ -2,19 +2,18 @@
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-import { TimedWait } from 'functions/TimedWait';
+// import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { io, Socket } from 'socket.io-client';
 
 type WebSocketContextType = Socket | null;
-const WebSocketContext = createContext<WebSocketContextType>(null);
 
 type ProviderProps = {
   children: ReactNode;
 };
 
-export const useWebSocket = (): WebSocketContextType => useContext(WebSocketContext);
+const WebSocketContext = createContext<WebSocketContextType>(null);
 
 const WebSocketProvider = ({ children }: ProviderProps) => {
   const [socket, setSocket] = useState<WebSocketContextType>(null);
@@ -27,9 +26,9 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         transports: ['websocket'],
         withCredentials: false,
         reconnection: true,
-        reconnectionAttempts: 5,
+        reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
+        reconnectionDelayMax: 3000,
         query: { ...data }
       });
 
@@ -60,29 +59,29 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
     }
   };
 
-  const maxRetries = 4;
-  const attemptReconnection = async (): Promise<void> => {
-    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
-      try {
-        await connectSocket();
-        console.log('Reconnecting due to inactive connection...');
-        break;
-      } catch (error) {
-        console.error(`Reconnection attempt ${retryCount} failed:`, error);
-        await TimedWait(3000);
+  /* const maxRetries = 4;
+    const attemptReconnection = async (): Promise<void> => {
+      for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+        try {
+          await connectSocket();
+          console.log('Reconnecting due to inactive connection...');
+          break;
+        } catch (error) {
+          console.error(`Reconnection attempt ${retryCount} failed:`, error);
+          await TimedWait(3000);
+        }
       }
-    }
-  };
+    }; */
 
   useEffect(() => {
     connectSocket();
 
-    const connectionCheckInterval = 3000;
+    /* const connectionCheckInterval = 3000;
     const checkConnectionIntervalId = setInterval(async () => {
       if (socket && socket.disconnected) {
         await attemptReconnection();
       }
-    }, connectionCheckInterval);
+    }, connectionCheckInterval); */
 
     window.addEventListener('load', window.location.reload);
     window.addEventListener('online', window.location.reload);
@@ -90,9 +89,18 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
     return () => {
       window.removeEventListener('load', window.location.reload);
       window.removeEventListener('online', window.location.reload);
-      clearInterval(checkConnectionIntervalId);
+      // clearInterval(checkConnectionIntervalId);
       if (socket) {
         socket.disconnect();
+
+        async () => {
+          const { data } = await apiRoute.post('/api/user');
+          socket.off(`LOGOUT_USER:${data.id}`);
+        };
+
+        socket.off('connect');
+        socket.off('error');
+        socket.off('disconnect');
       }
     };
   }, []);
@@ -100,4 +108,9 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
   return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
 };
 
-export { WebSocketProvider, WebSocketContext };
+const useWebSocket = (): WebSocketContextType => {
+  const context = useContext(WebSocketContext);
+  return context;
+};
+
+export { WebSocketProvider, useWebSocket, WebSocketContext };

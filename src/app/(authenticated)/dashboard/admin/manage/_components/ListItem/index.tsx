@@ -5,7 +5,7 @@ import { useRef } from 'react';
 
 import { encryptObject } from 'functions';
 
-import { useWebSocket } from 'contexts/WebSocketContext';
+import { useWebSocket } from 'contexts/webSocket';
 
 import { Container, ItemContainer, Dialog } from './styles';
 
@@ -14,7 +14,7 @@ interface ConnectedUser {
   username: string;
   status: string;
   role: string;
-  socket_id: string; // Adicionar socket_id para rastrear o status de conexão
+  socket_id: string;
 }
 
 interface ListItemProps {
@@ -24,10 +24,12 @@ interface ListItemProps {
   identification: string;
   created_at: string;
   connectedUsers: ConnectedUser[];
+  connectedWebSocket: boolean;
 }
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-  const { id, name, role, identification, created_at, connectedUsers } = props;
+  const { id, name, role, identification, created_at, connectedUsers, connectedWebSocket } =
+    props;
 
   const router = useRouter();
   const socket = useWebSocket();
@@ -37,11 +39,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const day = now.getDate().toString().padStart(2, '0');
-    // const hours = now.getHours().toString().padStart(2, '0');
-    // const minutes = now.getMinutes().toString().padStart(2, '0');
-    // const seconds = now.getSeconds().toString().padStart(2, '0');
-
-    return `${day}/${month}/${year}`; // ${hours}:${minutes}:${seconds}
+    return `${day}/${month}/${year}`;
   }
 
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
@@ -50,7 +48,8 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     const statusUser = {
       online: `🟢 ${name} (Online)`,
       offline: `🔴 ${name} (Offline)`,
-      hidden: `🟠 ${name} (Em segundo plano)`
+      hidden: `🟠 ${name} (Em segundo plano)`,
+      connecting: `🔵 ${name} (Conectando-se ao servidor)`
     } as { [key: string]: string };
 
     return statusUser[status];
@@ -62,14 +61,12 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     console.log('open dialog');
     if (dialogRef.current) {
       dialogRef.current.showModal();
-      document.body.style.overflow = 'hidden';
     }
   };
 
   const handleCloseDialog = () => {
     if (dialogRef.current) {
       dialogRef.current.close();
-      document.body.style.overflow = 'auto';
     }
   };
 
@@ -86,7 +83,6 @@ const ListItem: React.FC<ListItemProps> = (props) => {
         rect.bottom < clientY
       ) {
         dialogRef.current.close();
-        document.body.style.overflow = 'auto';
       }
     }
   };
@@ -99,9 +95,18 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 
   return (
     <>
-      <Container onClick={handleOpenDialog}>
+      <Container
+        whileHover={{ scale: 0.98 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={handleOpenDialog}
+      >
         <ItemContainer>
-          <p>{ProfileUser({ name, status: connected?.status })}</p>
+          <p>
+            {ProfileUser({
+              name,
+              status: connectedWebSocket ? connected?.status : 'connecting'
+            })}
+          </p>
           <div>
             <p>
               {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}

@@ -1,6 +1,3 @@
-import { ContextProvider } from '../hooks/useGlobalContext';
-
-//import { WebSocketProvider } from 'contexts/WebSocketContext';
 import StyledComponentsRegistry from 'lib/registry';
 
 import './globals.css';
@@ -16,9 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html>
       <body>
-        <StyledComponentsRegistry>
-          <ContextProvider>{children}</ContextProvider>
-        </StyledComponentsRegistry>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );
