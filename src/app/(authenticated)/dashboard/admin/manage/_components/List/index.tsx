@@ -39,12 +39,16 @@ export function List({ service }: { service: Service[] }) {
 
   useEffect(() => {
     if (socket) {
-      const handleConnectedUser = (data: ConnectedUser[]) => setConnectedUsers(data);
+      const handleConnectedUser = (data: ConnectedUser[]) => {
+        setConnectedUsers(data);
+      };
 
       const handleConnectedWebSocket = () => {
         socket.on(`SEND_CONNECTED_USER`, handleConnectedUser);
         setConnectedWebSocket(socket.connected);
       };
+
+      setConnectedWebSocket(socket.connected);
 
       socket.on(`SEND_CONNECTED_USER`, handleConnectedUser);
       socket.on('connect', handleConnectedWebSocket);

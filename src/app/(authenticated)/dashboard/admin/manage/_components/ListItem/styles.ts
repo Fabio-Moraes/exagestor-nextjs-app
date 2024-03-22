@@ -15,28 +15,6 @@ export const Container = styled(motion.div)`
   overflow: hidden;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   min-height: 18rem;
-
-  > div:nth-child(2) {
-    display: flex;
-    justify-content: end;
-
-    > button {
-      border: 0.2rem solid #b3475b;
-      background-color: #d9534f;
-      padding: 0.4rem 1rem;
-      border-radius: 0.5rem;
-      margin: 0.5rem;
-      color: #fff;
-      cursor: pointer;
-      user-select: none;
-    }
-  }
-
-  > div button p {
-    font-family: 'OpenSans-SemiBold';
-    font-size: 1.2rem;
-    color: #fff;
-  }
 `;
 
 export const ItemContainer = styled.div`
@@ -45,17 +23,21 @@ export const ItemContainer = styled.div`
   align-items: start;
   flex-direction: column;
 
-  > p {
-    font-family: 'OpenSans-SemiBold';
-    font-size: 1.5rem;
+  > div:first-child {
     background-color: #f2f2f0;
-    padding: 0.5rem 1rem 0.5rem 0.5rem;
     border-radius: 0 0 0.5rem 0;
+    padding: 0.5rem 0;
     min-width: 17rem;
-    min-height: 3rem;
+    line-height: 1.2;
+
+    > p {
+      font-family: 'OpenSans-SemiBold';
+      font-size: 1.5rem;
+      padding: 0 0.5rem;
+    }
   }
 
-  > div {
+  > div:last-child {
     margin: 0.5rem;
 
     p {
@@ -65,6 +47,73 @@ export const ItemContainer = styled.div`
       text-align: start;
       padding: 0.23rem 0;
     }
+  }
+`;
+
+export const OnlineText = styled.p`
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: #00b37e;
+
+  &::before {
+    content: '';
+    width: 0.8rem;
+    height: 0.8rem;
+    display: block;
+    background-color: #00b37e;
+    border-radius: 50%;
+  }
+`;
+
+export const HiddenText = styled.p`
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: #d4903b;
+  margin-right: 0.5rem;
+
+  &::before {
+    content: '';
+    width: 0.8rem;
+    height: 0.8rem;
+    display: block;
+    background-color: #d4903b;
+    border-radius: 50%;
+  }
+`;
+
+export const OfflineText = styled.p`
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: #424242;
+  margin-right: 0.5rem;
+
+  &::before {
+    content: '';
+    width: 0.8rem;
+    height: 0.8rem;
+    display: block;
+    background-color: #424242;
+    border-radius: 50%;
+  }
+`;
+
+export const ConnectedText = styled.p`
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: #1976d2;
+  margin-right: 0.5rem;
+
+  &::before {
+    content: '';
+    width: 0.8rem;
+    height: 0.8rem;
+    display: block;
+    background-color: #1976d2;
+    border-radius: 50%;
   }
 `;
 

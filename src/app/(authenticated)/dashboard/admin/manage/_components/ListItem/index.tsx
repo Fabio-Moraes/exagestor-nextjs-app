@@ -7,7 +7,15 @@ import { encryptObject } from 'functions';
 
 import { useWebSocket } from 'contexts/webSocket';
 
-import { Container, ItemContainer, Dialog } from './styles';
+import {
+  Container,
+  ItemContainer,
+  Dialog,
+  OnlineText,
+  HiddenText,
+  OfflineText,
+  ConnectedText
+} from './styles';
 
 interface ConnectedUser {
   userid: number;
@@ -44,13 +52,16 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
-  const ProfileUser = ({ name = '...', status = 'offline' }) => {
+  const ProfileUser = ({ status = 'offline' }) => {
+    if (!connectedWebSocket) {
+      return <ConnectedText>Conectando-se ao servidor</ConnectedText>;
+    }
+
     const statusUser = {
-      online: `🟢 ${name} (Online)`,
-      offline: `🔴 ${name} (Offline)`,
-      hidden: `🟠 ${name} (Em segundo plano)`,
-      connecting: `🔵 ${name} (Conectando-se ao servidor)`
-    } as { [key: string]: string };
+      online: <OnlineText>Online</OnlineText>,
+      offline: <OfflineText>Offline</OfflineText>,
+      hidden: <HiddenText>Em segundo plano</HiddenText>
+    } as { [key: string]: JSX.Element };
 
     return statusUser[status];
   };
@@ -93,6 +104,10 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
   }
 
+  const selectedRole = {
+    tec: 'TÉCNICO'
+  } as { [key: string]: string };
+
   return (
     <>
       <Container
@@ -101,34 +116,18 @@ const ListItem: React.FC<ListItemProps> = (props) => {
         onClick={handleOpenDialog}
       >
         <ItemContainer>
-          <p>
-            {ProfileUser({
-              name,
-              status: connectedWebSocket ? connected?.status : 'connecting'
-            })}
-          </p>
+          <div>
+            <p>{name.toUpperCase()}</p>
+            <ProfileUser status={connected?.status} />
+          </div>
           <div>
             <p>
               {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
             </p>
             <p>DESDE: {formatDate(created_at)}</p>
-            <p>CARGO: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
+            <p>CARGO: {selectedRole[role]}</p>
           </div>
         </ItemContainer>
-
-        <div>
-          {connected && (
-            <button
-              onClick={() => {
-                if (socket) {
-                  socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
-                }
-              }}
-            >
-              <p>Desconectar</p>
-            </button>
-          )}
-        </div>
       </Container>
       <Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
         <button>
@@ -143,6 +142,18 @@ const ListItem: React.FC<ListItemProps> = (props) => {
         <button>
           <p>ALTERAR SENHA</p>
         </button>
+        {connected && (
+          <button
+            onClick={() => {
+              if (socket) {
+                socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
+                handleCloseDialog();
+              }
+            }}
+          >
+            <p>DESCONECTAR</p>
+          </button>
+        )}
       </Dialog>
     </>
   );

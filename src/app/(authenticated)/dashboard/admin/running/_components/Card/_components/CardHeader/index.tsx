@@ -76,7 +76,7 @@ export function CardHeader({ service }: { service: RunningService }) {
               priority
               loading="eager"
               alt="Axa"
-              style={{ width: '2rem', height: 'auto' }}
+              style={{ width: '2.05rem', height: 'auto' }}
             />
             <p>{service?.name_tec.toLocaleUpperCase()}</p>
           </div>
@@ -89,7 +89,7 @@ export function CardHeader({ service }: { service: RunningService }) {
             loading="eager"
             alt="Axa"
             style={{
-              margin: '0.2rem',
+              //margin: '0.2rem',
               width: '1.8rem',
               height: 'auto'
             }}
