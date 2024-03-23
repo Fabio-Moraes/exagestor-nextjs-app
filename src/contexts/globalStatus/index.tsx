@@ -9,19 +9,16 @@ import {
   useState
 } from 'react';
 
-// type ServiceItem = {
-// [key: string]: number;
-// };
+type ServiceItem = {
+  [key: string]: number;
+};
 
 type StateContext = {
-  websocketConnected: boolean;
-  setWebsocketConnected: Dispatch<SetStateAction<boolean>>;
+  web: ServiceItem;
+  setWeb: Dispatch<SetStateAction<ServiceItem>>;
 
-  openNotificationbar: boolean;
-  setOpenNotificationbar: Dispatch<SetStateAction<boolean>>;
-
-  // selectService: { [key: string]: ServiceItem };
-  // setSelectService: Dispatch<SetStateAction<{ [key: string]: ServiceItem }>>;
+  open: ServiceItem;
+  setOpen: Dispatch<SetStateAction<ServiceItem>>;
 };
 
 type ProviderProps = {
@@ -31,20 +28,17 @@ type ProviderProps = {
 const GlobalStatusContext = createContext({} as StateContext);
 
 const GlobalStatusProvider = ({ children }: ProviderProps) => {
-  const [websocketConnected, setWebsocketConnected] = useState(false);
-  const [openNotificationbar, setOpenNotificationbar] = useState(false);
-  // const [selectMaterial, setSelectMaterial] = useState<{ [key: string]: ServiceItem }>({});
+  const [web, setWeb] = useState<ServiceItem>({});
+  const [open, setOpen] = useState<ServiceItem>({});
 
   return (
     <GlobalStatusContext.Provider
       value={{
-        // selectMaterial,
-        // setSelectMaterial,
-        websocketConnected,
-        setWebsocketConnected,
+        web,
+        setWeb,
 
-        openNotificationbar,
-        setOpenNotificationbar
+        open: open,
+        setOpen
       }}
     >
       {children}

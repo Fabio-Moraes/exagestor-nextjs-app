@@ -1,14 +1,14 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-import { TimedWait } from 'functions/TimedWait';
+//import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
-import { useGlobalStatus } from '../globalStatus';
+//import { useGlobalStatus } from '../globalStatus';
 
 import { io, Socket } from 'socket.io-client';
+import { useWebsocketConnected } from 'store/websocketConnected';
 
 type WebSocketContextType = Socket | null;
 
@@ -20,9 +20,11 @@ const WebSocketContext = createContext<WebSocketContextType>(null);
 
 const WebSocketProvider = ({ children }: ProviderProps) => {
   const [socket, setSocket] = useState<WebSocketContextType>(null);
-  const { setWebsocketConnected, setOpenNotificationbar } = useGlobalStatus();
+  //const { setWebsocketConnected, setOpenNotificationbar } = useGlobalStatus();
 
-  const pathname = usePathname();
+  const updateWebsocketConnected = useWebsocketConnected(
+    (state) => state.updateWebsocketConnected
+  );
 
   const connectSocket = async (): Promise<void> => {
     try {
@@ -41,10 +43,6 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       newSocket.on('connect', async () => {
         const status = document.visibilityState === 'hidden' ? 'hidden' : 'online';
         newSocket.emit('CONNECTED_USER', { ...data, status });
-        setSocket(newSocket);
-        setWebsocketConnected(true);
-        await TimedWait(1000);
-        setOpenNotificationbar(true);
       });
 
       newSocket.on(`LOGOUT_USER:${data.id}`, async () => {
@@ -58,15 +56,14 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         newSocket.emit('HIDDEN_USER', { ...data, hidden });
       };
 
+      setInterval(() => {
+        updateWebsocketConnected(newSocket.connected);
+      }, 1000);
+
       document.addEventListener('visibilitychange', handleVisibilityChange);
       newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
       newSocket.on('error', (error) => console.error('WebSocket error:', error));
-      newSocket.on('disconnect', () => {
-        setSocket(newSocket);
-        setWebsocketConnected(false);
-        setOpenNotificationbar(false);
-        console.log('Disconnected from WebSocket server');
-      });
+      newSocket.on('disconnect', () => console.log('Disconnected from WebSocket server'));
 
       setSocket(newSocket);
     } catch (error) {
@@ -76,8 +73,6 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     if (socket) {
-      socket.disconnect();
-
       async () => {
         const { data } = await apiRoute.post('/api/user');
         socket.off(`LOGOUT_USER:${data.id}`);
@@ -86,6 +81,8 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       socket.off('connect');
       socket.off('error');
       socket.off('disconnect');
+
+      socket.disconnect();
     }
 
     connectSocket();
@@ -109,7 +106,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         socket.off('disconnect');
       }
     };
-  }, [pathname]);
+  }, []);
 
   return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
 };
@@ -119,4 +116,24 @@ const useWebSocket = (): WebSocketContextType => {
   return context;
 };
 
-export { WebSocketProvider, useWebSocket, WebSocketContext };
+const useWebSocketListener = (eventName: string, handler: (data: Socket) => void): void => {
+  const socket = useWebSocket();
+
+  useEffect(() => {
+    const eventHandler = (data: Socket) => {
+      handler(data);
+    };
+
+    if (socket) {
+      socket.on(eventName, eventHandler);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off(eventName, eventHandler);
+      }
+    };
+  }, [socket, eventName, handler]);
+};
+
+export { WebSocketProvider, useWebSocket, WebSocketContext, useWebSocketListener };

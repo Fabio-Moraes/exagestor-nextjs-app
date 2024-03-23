@@ -16,12 +16,17 @@ const animationBackground = keyframes`
 `;
 
 const animationProgress = keyframes`
-  from {
-    width: 0%;
+ from {
+  width: 0%;
   }
+  
+  20% {
+    width: var(--first-percentage-random);
+  }
+
   to {
-    width: var(--progress)
-    }
+    width: var(--last-percentage-random);
+  }
 `;
 
 export const Container = styled(motion.div)<{ $fullProgress?: boolean }>`
@@ -68,7 +73,7 @@ export const Container = styled(motion.div)<{ $fullProgress?: boolean }>`
         return css`
           animation:
             ${animationBackground} 1.2s ease-in-out infinite,
-            ${animationProgress} 6s linear forwards;
+            ${animationProgress} 60s linear forwards;
         `;
       }
     }};

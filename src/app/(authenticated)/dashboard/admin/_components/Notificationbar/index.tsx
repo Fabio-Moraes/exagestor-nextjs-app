@@ -2,29 +2,46 @@
 
 import { useEffect, useState } from 'react';
 
-import { useGlobalStatus } from 'contexts/globalStatus';
 import { AnimatePresence } from 'framer-motion';
+import { useWebsocketConnected } from 'store/websocketConnected';
 
 import { Container } from './styles';
 
 export function Notificationbar() {
-  const [progress, setProgress] = useState('');
-  const { websocketConnected, openNotificationbar } = useGlobalStatus();
+  const [firstPercentageRandom, setFirstPercentageRandom] = useState('0%');
+  const [lastPercentageRandom, setLastPercentageRandom] = useState('0%');
+  const [shouldRender, setShouldRender] = useState(false);
+
+  const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
+
+  const generateRandomPercentage = (min: number, max: number) => {
+    return Math.random() * (max - min) + min;
+  };
 
   useEffect(() => {
-    const generateProgress = () => {
-      setProgress(`${Math.random() * (90 - 40) + 40}%`);
-    };
+    const firstPercentage = `${generateRandomPercentage(30, 50)}%`;
+    const lastPercentage = `${generateRandomPercentage(70, 90)}%`;
+    setFirstPercentageRandom(firstPercentage);
+    setLastPercentageRandom(lastPercentage);
 
-    generateProgress();
-  }, []);
+    const timer = setTimeout(() => {
+      setShouldRender(!websocketConnected);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [websocketConnected]);
 
   return (
     <AnimatePresence>
-      {!openNotificationbar && (
+      {shouldRender && (
         <Container
           $fullProgress={websocketConnected}
-          style={{ '--progress': progress } as { [key: string]: string }}
+          style={
+            {
+              '--first-percentage-random': firstPercentageRandom,
+              '--last-percentage-random': lastPercentageRandom
+            } as { [key: string]: string }
+          }
           initial={{
             marginBottom: '-3rem',
             transform: 'translateY(-100%)'
