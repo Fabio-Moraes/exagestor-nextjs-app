@@ -8,6 +8,8 @@ import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
+//import { useWebSocket } from 'contexts/webSocket';
+
 import checkSvg from './_assets/svg/check.svg';
 import closeSvg from './_assets/svg/close.svg';
 import docSvg from './_assets/svg/doc.svg';
@@ -38,6 +40,30 @@ export function ButtonBar({ service }: { service: Service }) {
 
   const router = useRouter();
   const maxRetries = 5;
+
+  //const [connectedWebSocket, setConnectedWebSocket] = useState<boolean>(false);
+
+  //const socket = useWebSocket();
+
+  /*   useEffect(() => {
+      if (socket) {
+        const handleConnectedWebSocket = () => {
+          setConnectedWebSocket(socket.connected);
+        };
+  
+        setConnectedWebSocket(socket.connected);
+  
+        socket.on('connect', handleConnectedWebSocket);
+        socket.on('disconnect', handleConnectedWebSocket);
+  
+        return () => {
+          socket.off(`connect`);
+          socket.off(`disconnect`);
+        };
+      } else {
+        setConnectedWebSocket(false);
+      }
+    }, [socket]); */
 
   async function fetchStatusServices() {
     setRunningLoad(true);

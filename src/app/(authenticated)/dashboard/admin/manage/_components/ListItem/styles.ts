@@ -29,6 +29,7 @@ export const ItemContainer = styled.div`
     padding: 0.5rem 0;
     min-width: 17rem;
     line-height: 1.2;
+    height: 4.6rem;
 
     > p {
       font-family: 'OpenSans-SemiBold';

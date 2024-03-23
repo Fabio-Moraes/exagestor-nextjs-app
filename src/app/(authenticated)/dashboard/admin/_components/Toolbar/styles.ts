@@ -3,20 +3,14 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
+  z-index: 1;
   border: 0 solid #3f795e;
   border-width: 0.2rem 0 0.2rem 0;
-  position: sticky;
   display: flex;
-  padding: 0.3rem min(1.5rem, max(10vw, 1rem));
-  background-image: radial-gradient(
-    35rem at center,
-    rgba(255, 255, 255, 0.96) 20%,
-    rgba(39, 165, 103, 0.7)
-  );
-  justify-content: space-between;
   width: 100%;
-  left: 0;
-  top: 0;
+  padding: 0.3rem min(1.5rem, max(10vw, 1rem));
+  background-image: radial-gradient(35rem at center, #ffffff 20%, #27a567);
+  justify-content: space-between;
   white-space: nowrap;
 
   @media (min-width: 550px) {

@@ -6,6 +6,7 @@ import { useRef } from 'react';
 import { encryptObject } from 'functions';
 
 import { useWebSocket } from 'contexts/webSocket';
+import { AnimatePresence } from 'framer-motion';
 
 import {
   Container,
@@ -110,25 +111,27 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 
   return (
     <>
-      <Container
-        whileHover={{ scale: 0.98 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleOpenDialog}
-      >
-        <ItemContainer>
-          <div>
-            <p>{name.toUpperCase()}</p>
-            <ProfileUser status={connected?.status} />
-          </div>
-          <div>
-            <p>
-              {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
-            </p>
-            <p>DESDE: {formatDate(created_at)}</p>
-            <p>CARGO: {selectedRole[role]}</p>
-          </div>
-        </ItemContainer>
-      </Container>
+      <AnimatePresence>
+        <Container
+          whileHover={{ scale: 0.98 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleOpenDialog}
+        >
+          <ItemContainer>
+            <div>
+              <p>{name.toUpperCase()}</p>
+              <ProfileUser status={connected?.status} />
+            </div>
+            <div>
+              <p>
+                {identification.length > 14 ? 'CNPJ' : 'CPF'}: {identification}
+              </p>
+              <p>DESDE: {formatDate(created_at)}</p>
+              <p>CARGO: {selectedRole[role]}</p>
+            </div>
+          </ItemContainer>
+        </Container>
+      </AnimatePresence>
       <Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
         <button>
           <p>VISUALIZAR CARGA</p>

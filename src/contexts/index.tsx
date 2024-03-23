@@ -1,11 +1,13 @@
-import { LocalStorageProvider } from '../contexts/localStorage';
-
-import { WebSocketProvider } from 'contexts/webSocket';
+import { GlobalStatusProvider } from './globalStatus';
+import { LocalStorageProvider } from './localStorage';
+import { WebSocketProvider } from './webSocket';
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <LocalStorageProvider>
-      <WebSocketProvider>{children}</WebSocketProvider>
+      <GlobalStatusProvider>
+        <WebSocketProvider>{children}</WebSocketProvider>
+      </GlobalStatusProvider>
     </LocalStorageProvider>
   );
 };

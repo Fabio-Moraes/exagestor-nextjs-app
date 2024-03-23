@@ -66,10 +66,6 @@ export function List({ service }: { service: Service[] }) {
   }, [socket]);
 
   useEffect(() => {
-    if (socket) {
-      socket.emit('FETCH_CONNECTED_USER');
-    }
-
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -77,7 +73,7 @@ export function List({ service }: { service: Service[] }) {
     return () => {
       clearTimeout(timer);
     };
-  }, [socket]);
+  }, []);
 
   const filteredItems = service?.filter((item) =>
     item.name
@@ -111,6 +107,7 @@ export function List({ service }: { service: Service[] }) {
             <ItemsSkeleton key={String(index)}>
               <div>
                 <LineSkaleton width="14rem" />
+                <LineSkaleton width="10rem" />
               </div>
               <LineSkaleton width="19rem" />
               <LineSkaleton width="25rem" />

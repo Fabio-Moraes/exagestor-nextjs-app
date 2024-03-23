@@ -5,10 +5,20 @@ import styled from 'styled-components';
 export const Container = styled.div`
   position: relative;
   margin: 0 auto;
+  min-width: 100vw;
+`;
+
+export const Stickybar = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 100vw;
+  position: sticky;
+  left: 0;
+  top: 0;
 `;
 
 export const Wrapper = styled.div`
-  max-width: 100%;
+  min-width: 100vw;
   margin: 0 auto;
   display: flex;
   justify-content: center;

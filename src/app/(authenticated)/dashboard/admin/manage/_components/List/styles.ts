@@ -85,20 +85,14 @@ export const ItemsSkeleton = styled.div`
 
   > div:first-child {
     display: flex;
+    margin: 0;
+    flex-direction: column;
     background-color: #f2f2f0;
     border-radius: 0 0 0.5rem 0;
-    max-width: 17rem;
-    max-height: 3rem;
-    margin: 0;
-
-    > div {
-      margin: 0.5rem;
-      color: #ffffff;
-      font-family: 'OpenSans-Bold';
-      font-size: 1.6rem;
-      text-align: start;
-      padding: 0.23rem 0;
-    }
+    width: 17rem;
+    line-height: 1.2;
+    padding: 0.5rem 0 0 0.5rem;
+    height: 4.6rem;
   }
 
   > div {
