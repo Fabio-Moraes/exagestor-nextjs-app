@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react';
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
+import apiRoute from 'services/apiRoute';
+
 import { useLocalStorage } from 'contexts/localStorage';
 import { useWebSocket } from 'contexts/webSocket';
-import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 

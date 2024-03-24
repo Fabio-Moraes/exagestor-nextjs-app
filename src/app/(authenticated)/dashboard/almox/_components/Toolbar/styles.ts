@@ -8,11 +8,7 @@ export const Container = styled.div`
   position: sticky;
   display: flex;
   padding: 0.3rem min(1.5rem, max(10vw, 1rem));
-  background-image: radial-gradient(
-    35rem at center,
-    rgba(255, 255, 255, 0.96) 20%,
-    rgba(39, 165, 103, 0.7)
-  );
+  background-image: radial-gradient(35rem at center, #ffffff 20%, #27a567);
   justify-content: space-between;
   width: 100%;
   left: 0;

@@ -9,7 +9,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1.8rem 1.5rem 1.5rem 1.5rem;
-  min-width: calc(100vw);
 
   @media (max-width: 550px) {
     background-image: linear-gradient(

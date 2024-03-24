@@ -2,34 +2,27 @@
 
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-//import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
-
-//import { useGlobalStatus } from '../globalStatus';
 
 import { io, Socket } from 'socket.io-client';
 import { useWebsocketConnected } from 'store/websocketConnected';
 
 type WebSocketContextType = Socket | null;
-
-type ProviderProps = {
-  children: ReactNode;
-};
+type WebSocketProviderType = { children: ReactNode };
 
 const WebSocketContext = createContext<WebSocketContextType>(null);
 
-const WebSocketProvider = ({ children }: ProviderProps) => {
+const WebSocketProvider = ({ children }: WebSocketProviderType) => {
   const [socket, setSocket] = useState<WebSocketContextType>(null);
-  //const { setWebsocketConnected, setOpenNotificationbar } = useGlobalStatus();
-
   const updateWebsocketConnected = useWebsocketConnected(
     (state) => state.updateWebsocketConnected
   );
 
-  const connectSocket = async (): Promise<void> => {
-    try {
-      const { data } = await apiRoute.post('/api/user');
+  let intervalId: NodeJS.Timeout | null = null;
 
+  const connectSocket = async (): Promise<void> => {
+    const { data } = await apiRoute.post('/api/user');
+    return new Promise<void>((resolve, reject) => {
       const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
         transports: ['websocket'],
         withCredentials: false,
@@ -43,11 +36,17 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
       newSocket.on('connect', async () => {
         const status = document.visibilityState === 'hidden' ? 'hidden' : 'online';
         newSocket.emit('CONNECTED_USER', { ...data, status });
+        resolve();
+      });
+
+      newSocket.on('error', (error) => {
+        reject(error);
       });
 
       newSocket.on(`LOGOUT_USER:${data.id}`, async () => {
         await apiRoute.post('/api/logout');
         newSocket.emit('DISCONNECTED_USER');
+        newSocket.disconnect();
         window.location.reload();
       });
 
@@ -56,36 +55,44 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
         newSocket.emit('HIDDEN_USER', { ...data, hidden });
       };
 
-      setInterval(() => {
+      newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      intervalId = setInterval(() => {
         updateWebsocketConnected(newSocket.connected);
       }, 1000);
 
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-      newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
-      newSocket.on('error', (error) => console.error('WebSocket error:', error));
-      newSocket.on('disconnect', () => console.log('Disconnected from WebSocket server'));
-
       setSocket(newSocket);
-    } catch (error) {
-      console.error('Error connecting to WebSocket:', error);
-    }
+      return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        newSocket.disconnect();
+      };
+    });
   };
 
-  useEffect(() => {
+  const clearConnection = async () => {
     if (socket) {
-      async () => {
-        const { data } = await apiRoute.post('/api/user');
-        socket.off(`LOGOUT_USER:${data.id}`);
-      };
-
+      const { data } = await apiRoute.post('/api/user');
+      socket.off(`LOGOUT_USER:${data.id}`);
       socket.off('connect');
       socket.off('error');
       socket.off('disconnect');
-
       socket.disconnect();
     }
+    if (intervalId) clearInterval(intervalId);
+  };
 
-    connectSocket();
+  useEffect(() => {
+    const initializeWebSocket = async () => {
+      try {
+        await clearConnection();
+        await connectSocket();
+      } catch (error) {
+        console.error('Error connecting to WebSocket:', error);
+      }
+    };
+
+    initializeWebSocket();
 
     window.addEventListener('load', window.location.reload);
     window.addEventListener('online', window.location.reload);
@@ -93,18 +100,7 @@ const WebSocketProvider = ({ children }: ProviderProps) => {
     return () => {
       window.removeEventListener('load', window.location.reload);
       window.removeEventListener('online', window.location.reload);
-      if (socket) {
-        socket.disconnect();
-
-        async () => {
-          const { data } = await apiRoute.post('/api/user');
-          socket.off(`LOGOUT_USER:${data.id}`);
-        };
-
-        socket.off('connect');
-        socket.off('error');
-        socket.off('disconnect');
-      }
+      clearConnection();
     };
   }, []);
 
@@ -120,18 +116,11 @@ const useWebSocketListener = (eventName: string, handler: (data: Socket) => void
   const socket = useWebSocket();
 
   useEffect(() => {
-    const eventHandler = (data: Socket) => {
-      handler(data);
-    };
-
-    if (socket) {
-      socket.on(eventName, eventHandler);
-    }
+    const eventHandler = (data: Socket) => handler(data);
+    if (socket) socket.on(eventName, eventHandler);
 
     return () => {
-      if (socket) {
-        socket.off(eventName, eventHandler);
-      }
+      if (socket) socket.off(eventName, eventHandler);
     };
   }, [socket, eventName, handler]);
 };
