@@ -46,7 +46,6 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
       newSocket.on(`LOGOUT_USER:${data.id}`, async () => {
         await apiRoute.post('/api/logout');
         newSocket.emit('DISCONNECTED_USER');
-        newSocket.disconnect();
         window.location.reload();
       });
 
@@ -112,7 +111,10 @@ const useWebSocket = (): WebSocketContextType => {
   return context;
 };
 
-const useWebSocketListener = (eventName: string, handler: (data: Socket) => void): void => {
+const useWebSocketListenerOn = (
+  eventName: string,
+  handler: <T>(data: Socket | T) => void
+): void => {
   const socket = useWebSocket();
 
   useEffect(() => {
@@ -125,4 +127,15 @@ const useWebSocketListener = (eventName: string, handler: (data: Socket) => void
   }, [socket, eventName, handler]);
 };
 
-export { WebSocketProvider, useWebSocket, WebSocketContext, useWebSocketListener };
+const useWebSocketListenerEmit = (eventName: string, params = {}): void => {
+  const socket = useWebSocket();
+  if (socket) socket.emit(eventName, params);
+};
+
+export {
+  WebSocketProvider,
+  useWebSocket,
+  WebSocketContext,
+  useWebSocketListenerOn,
+  useWebSocketListenerEmit
+};

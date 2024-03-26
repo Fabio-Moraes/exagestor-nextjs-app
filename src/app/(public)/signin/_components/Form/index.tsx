@@ -113,10 +113,6 @@ export const Form = () => {
           password: password
         });
 
-        await apiRoute.post('/api/user').then((data) => {
-          console.log(data);
-        });
-
         const response = await apiRoute.post('/api/user');
         console.log(response);
 

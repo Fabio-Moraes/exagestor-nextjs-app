@@ -7,7 +7,8 @@ import Image from 'components/Vercel/Image';
 
 import ListItem from '../ListItem';
 
-import { useWebSocket } from 'contexts/webSocket';
+import { useWebSocketListenerOn } from 'contexts/webSocket';
+import { useWebsocketConnected } from 'store/websocketConnected';
 
 import searchSvg from './_assets/svg/search.svg';
 
@@ -32,38 +33,13 @@ interface ConnectedUser {
 export function List({ service }: { service: Service[] }) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
-  const [connectedWebSocket, setConnectedWebSocket] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const socket = useWebSocket();
+  const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
 
-  useEffect(() => {
-    if (socket) {
-      const handleConnectedUser = (data: ConnectedUser[]) => {
-        setConnectedUsers(data);
-      };
-
-      const handleConnectedWebSocket = () => {
-        socket.on(`SEND_CONNECTED_USER`, handleConnectedUser);
-        setConnectedWebSocket(socket.connected);
-      };
-
-      setConnectedWebSocket(socket.connected);
-
-      socket.on(`SEND_CONNECTED_USER`, handleConnectedUser);
-      socket.on('connect', handleConnectedWebSocket);
-      socket.on('disconnect', handleConnectedWebSocket);
-
-      return () => {
-        socket.off(`SEND_CONNECTED_USER`);
-        socket.off(`connect`);
-        socket.off(`disconnect`);
-      };
-    } else {
-      setConnectedUsers([]);
-      setConnectedWebSocket(false);
-    }
-  }, [socket]);
+  useWebSocketListenerOn('SEND_CONNECTED_USER', (data) => {
+    setConnectedUsers(data as ConnectedUser[]);
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -119,7 +95,7 @@ export function List({ service }: { service: Service[] }) {
               key={String(item.id)}
               {...item}
               connectedUsers={connectedUsers}
-              connectedWebSocket={connectedWebSocket}
+              websocketConnected={websocketConnected}
             />
           ))}
     </ListContainer>

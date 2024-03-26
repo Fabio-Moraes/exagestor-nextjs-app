@@ -7,8 +7,9 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import { useLocalStorage } from 'contexts/localStorage';
 import apiRoute from 'services/apiRoute';
+
+import { useLocalStorage } from 'contexts/localStorage';
 
 import { Container, ErrorContainer, Title } from './styles';
 

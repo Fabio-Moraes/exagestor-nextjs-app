@@ -8,7 +8,7 @@ import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
-//import { useWebSocket } from 'contexts/webSocket';
+import { useWebsocketConnected } from 'store/websocketConnected';
 
 import checkSvg from './_assets/svg/check.svg';
 import closeSvg from './_assets/svg/close.svg';
@@ -36,34 +36,11 @@ interface Service {
 }
 
 export function ButtonBar({ service }: { service: Service }) {
+  const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
   const [runningLoad, setRunningLoad] = useState(false);
 
   const router = useRouter();
   const maxRetries = 5;
-
-  //const [connectedWebSocket, setConnectedWebSocket] = useState<boolean>(false);
-
-  //const socket = useWebSocket();
-
-  /*   useEffect(() => {
-      if (socket) {
-        const handleConnectedWebSocket = () => {
-          setConnectedWebSocket(socket.connected);
-        };
-  
-        setConnectedWebSocket(socket.connected);
-  
-        socket.on('connect', handleConnectedWebSocket);
-        socket.on('disconnect', handleConnectedWebSocket);
-  
-        return () => {
-          socket.off(`connect`);
-          socket.off(`disconnect`);
-        };
-      } else {
-        setConnectedWebSocket(false);
-      }
-    }, [socket]); */
 
   async function fetchStatusServices() {
     setRunningLoad(true);
@@ -164,7 +141,6 @@ export function ButtonBar({ service }: { service: Service }) {
         onClick={() => fetchRefreshServices()}
       >
         <Image priority loading="eager" src={refreshSvg} alt="play" width="50" height="50" />
-        {/* <p>{'Reiniciar'}</p> */}
       </button>
     ) : (
       <button rel="preload" onClick={() => fetchStatusServices()}>
@@ -176,12 +152,11 @@ export function ButtonBar({ service }: { service: Service }) {
           width="50"
           height="50"
         />
-        {/* <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p> */}
       </button>
     );
 
   return (
-    <Container $animation={runningLoad} $color={'#3f7971'}>
+    <Container $animation={runningLoad || !websocketConnected} $color={'#3f7971'}>
       <Wrapper>
         <button
           style={{
@@ -197,7 +172,6 @@ export function ButtonBar({ service }: { service: Service }) {
           }}
         >
           <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
-          {/* <p>Finalizar</p> */}
         </button>
         {buttonState}
         <button
@@ -208,11 +182,9 @@ export function ButtonBar({ service }: { service: Service }) {
           onClick={() => {}}
         >
           <Image priority loading="eager" src={docSvg} alt="play" width="50" height="50" />
-          {/* <p>Pdf</p> */}
         </button>
         <button rel="preload" onClick={() => fetchCancelServices()}>
           <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />
-          {/* <p>Cancelar</p> */}
         </button>
       </Wrapper>
     </Container>

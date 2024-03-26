@@ -33,11 +33,11 @@ interface ListItemProps {
   identification: string;
   created_at: string;
   connectedUsers: ConnectedUser[];
-  connectedWebSocket: boolean;
+  websocketConnected: boolean;
 }
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-  const { id, name, role, identification, created_at, connectedUsers, connectedWebSocket } =
+  const { id, name, role, identification, created_at, connectedUsers, websocketConnected } =
     props;
 
   const router = useRouter();
@@ -54,7 +54,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
   const ProfileUser = ({ status = 'offline' }) => {
-    if (!connectedWebSocket) {
+    if (!websocketConnected) {
       return <ConnectedText>Conectando-se ao servidor</ConnectedText>;
     }
 

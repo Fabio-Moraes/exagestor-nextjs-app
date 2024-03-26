@@ -8,7 +8,7 @@ import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { useLocalStorage } from 'contexts/localStorage';
-import { useWebSocket } from 'contexts/webSocket';
+import { useWebSocketListenerOn } from 'contexts/webSocket';
 
 import { Container, ErrorContainer, ListContainer, Title } from './styles';
 
@@ -38,8 +38,6 @@ export default function RunningService() {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
   const { setSelectService, setSelectMaterial } = useLocalStorage();
-
-  const socket = useWebSocket();
 
   function removePropertyLocalStorage(services: RunningService[]) {
     const serviceProtocols = services?.map((service) => service.protocol);
@@ -100,26 +98,13 @@ export default function RunningService() {
     }
   };
 
+  useWebSocketListenerOn(`RUNNING_REFRESH_ADMIN`, () => {
+    fetchServices();
+  });
+
   useEffect(() => {
-    const initialize = async () => {
-      await fetchServices();
-
-      if (socket) {
-        socket.on(`RUNNING_REFRESH_ADMIN`, async () => {
-          await fetchServices();
-        });
-      }
-    };
-
-    initialize();
-    return () => {
-      if (socket) {
-        socket.off(`RUNNING_REFRESH_ADMIN`, async () => {
-          await fetchServices();
-        });
-      }
-    };
-  }, [socket]);
+    fetchServices();
+  }, []);
 
   return (
     <Container>
