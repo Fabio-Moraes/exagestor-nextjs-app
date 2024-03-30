@@ -40,8 +40,8 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
       });
 
       newSocket.on('connect', async () => {
-        const status = document.visibilityState === 'hidden' ? 'hidden' : 'online';
-        newSocket.emit('CONNECTED_USER', { ...data, status });
+        const hidden = document.visibilityState === 'hidden';
+        newSocket.emit('CONNECTED_USER', { ...data, hidden });
         resolve();
       });
 
