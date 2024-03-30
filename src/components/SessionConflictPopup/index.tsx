@@ -39,30 +39,14 @@ export function SessionConflictPopup() {
   };
 
   const disconnected = async () => {
-    //handleCloseDialog();
     await apiRoute.post('/api/logout');
-    if (socket) socket.emit('DISCONNECTED_USER');
+    if (socket) socket.disconnect();
     window.location.reload();
   };
 
   useEffect(() => {
     user();
   }, []);
-
-  // const handleClickOutsideDialog = (event: EventTypes) => {
-  //   const { clientX, clientY } = event.nativeEvent;
-  //   if (dialogRef.current) {
-  //     const rect = dialogRef.current.getBoundingClientRect();
-  //     if (
-  //       rect.left > clientX ||
-  //       rect.right < clientX ||
-  //       rect.top > clientY ||
-  //       rect.bottom < clientY
-  //     ) {
-  //       dialogRef.current.close();
-  //     }
-  //   }
-  // };
 
   return (
     <Container ref={dialogRef}>
@@ -80,7 +64,7 @@ export function SessionConflictPopup() {
       <div>
         <button
           onClick={() => {
-            if (socket) socket.emit('SESSION_CONFLICT_REMOVE', dataUser);
+            if (socket) socket.emit('SESSION_CONFLICT_DISCONNECT', dataUser);
             handleCloseDialog();
           }}
         >

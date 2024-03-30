@@ -149,7 +149,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
           <button
             onClick={() => {
               if (socket) {
-                socket.emit('LOGOUT_USER', JSON.stringify({ employee_id: id }));
+                socket.emit('REMOTE_LOGOUT_USER', JSON.stringify({ employee_id: id }));
                 handleCloseDialog();
               }
             }}

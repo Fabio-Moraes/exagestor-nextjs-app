@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
 import { useWebSocket } from 'contexts/webSocket';
@@ -15,7 +16,6 @@ import iconUser from './_assets/svg/user.svg';
 import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
 
 export function Header() {
-  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({} as { name: string });
 
   const router = useRouter();
@@ -29,38 +29,30 @@ export function Header() {
         setUser(response.data);
         break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await TimedWait(5000);
       }
     }
   }
 
   async function fetchDeletedeToken() {
-    setIsLoading(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
         await apiRoute.post('/api/logout');
-        if (socket) {
-          socket.emit('DISCONNECTED_USER');
-        }
+        if (socket) socket.disconnect();
         router.refresh();
         break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        if (count === maxRetries) setIsLoading(false);
+        await TimedWait(5000);
       }
     }
   }
 
   useEffect(() => {
-    fetchUser();
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
+    const initialize = async () => {
+      await fetchUser();
     };
+
+    initialize();
   }, []);
 
   return (
@@ -79,7 +71,7 @@ export function Header() {
         </ProfileInfoCompany>
       </ProfileCompany>
       <ProfileUser>
-        {user.name && !isLoading ? <span>{user.name}</span> : <LineSkaleton width="30rem" />}
+        {user.name ? <span>{user.name}</span> : <LineSkaleton width="30rem" color="#b78e6a" />}
         <div>
           <div>
             <Image

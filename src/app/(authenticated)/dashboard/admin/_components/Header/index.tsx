@@ -5,7 +5,10 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
+import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
+
+import { useWebSocket } from 'contexts/webSocket';
 
 import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';
@@ -16,8 +19,8 @@ export function Header() {
   const [user, setUser] = useState({} as { name: string });
 
   const router = useRouter();
+  const socket = useWebSocket();
   const maxRetries = 5;
-  //const connectionCheckInterval = 3000;
 
   async function fetchUser() {
     for (let count = 0; count < maxRetries; count++) {
@@ -28,7 +31,7 @@ export function Header() {
         setUser(response.data);
         break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await TimedWait(5000);
       }
     }
   }
@@ -37,11 +40,11 @@ export function Header() {
     for (let count = 0; count < maxRetries; count++) {
       try {
         await apiRoute.post('/api/logout');
+        if (socket) socket.disconnect();
         router.refresh();
-        count = maxRetries;
         break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await TimedWait(5000);
       }
     }
   }

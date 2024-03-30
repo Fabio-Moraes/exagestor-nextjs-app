@@ -5,6 +5,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import apiRoute from 'services/apiRoute';
 
 import { io, Socket } from 'socket.io-client';
+import { useRemoteDisconnectionPopup } from 'store/remoteDisconnectionPopup';
 import { useWebsocketConnected } from 'store/websocketConnected';
 
 type WebSocketContextType = Socket | null;
@@ -14,8 +15,13 @@ const WebSocketContext = createContext<WebSocketContextType>(null);
 
 const WebSocketProvider = ({ children }: WebSocketProviderType) => {
   const [socket, setSocket] = useState<WebSocketContextType>(null);
+
   const updateWebsocketConnected = useWebsocketConnected(
     (state) => state.updateWebsocketConnected
+  );
+
+  const updateRemoteDisconnectionPopup = useRemoteDisconnectionPopup(
+    (state) => state.updateRemoteDisconnectionPopup
   );
 
   let intervalId: NodeJS.Timeout | null = null;
@@ -29,8 +35,8 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,
-        reconnectionDelayMax: 3000,
-        query: { ...data }
+        reconnectionDelayMax: 3000
+        //query: { ...data }
       });
 
       newSocket.on('connect', async () => {
@@ -43,10 +49,11 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
         reject(error);
       });
 
-      newSocket.on(`LOGOUT_USER:${data.id}`, async () => {
+      newSocket.on(`REMOTE_LOGOUT_USER:${data.id}`, async (data) => {
+        const { role } = JSON.parse(data);
         await apiRoute.post('/api/logout');
-        newSocket.emit('DISCONNECTED_USER');
-        window.location.reload();
+        newSocket.disconnect();
+        updateRemoteDisconnectionPopup({ open: true, role: role });
       });
 
       const handleVisibilityChange = () => {
@@ -56,6 +63,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
 
       newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
       document.addEventListener('visibilitychange', handleVisibilityChange);
+      //document.addEventListener('click', handleVisibilityChange);
 
       intervalId = setInterval(() => {
         updateWebsocketConnected(newSocket.connected);
@@ -64,6 +72,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
       setSocket(newSocket);
       return () => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
+        //document.removeEventListener('click', handleVisibilityChange);
         newSocket.disconnect();
       };
     });
@@ -72,7 +81,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
   const clearConnection = async () => {
     if (socket) {
       const { data } = await apiRoute.post('/api/user');
-      socket.off(`LOGOUT_USER:${data.id}`);
+      socket.off(`REMOTE_LOGOUT_USER:${data.id}`);
       socket.off('connect');
       socket.off('error');
       socket.off('disconnect');
