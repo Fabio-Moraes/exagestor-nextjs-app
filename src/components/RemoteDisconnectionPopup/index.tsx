@@ -37,8 +37,11 @@ export function RemoteDisconnectionPopup() {
     const obj = {
       myself: (
         <>
-          <h1>Você foi desconectado pelo administrador do sistema.</h1>
-          <p>Se houver dúvidas ou preocupações, entre em contato com o suporte técnico.</p>
+          <h1>
+            Você está sendo desconectado remotamente devido à atividade da sua conta em outro
+            dispositivo.
+          </h1>
+          <p>Se não foi você, altere sua senha e verifique a segurança da sua conta.</p>
         </>
       ),
       admin: (
