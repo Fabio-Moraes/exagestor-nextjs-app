@@ -8,6 +8,7 @@ import Image from 'components/Vercel/Image';
 import ListItem from '../ListItem';
 
 import { useWebSocketListenerOn } from 'contexts/webSocket';
+import { useWebSocket } from 'contexts/webSocket';
 import { useWebsocketConnected } from 'store/websocketConnected';
 
 import searchSvg from './_assets/svg/search.svg';
@@ -37,11 +38,14 @@ export function List({ service }: { service: Service[] }) {
 
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
 
-  useWebSocketListenerOn('SEND_CONNECTED_USER', (data) => {
+  const websocket = useWebSocket();
+
+  useWebSocketListenerOn('ALL_CONNECTED_USER', (data) => {
     setConnectedUsers(data as ConnectedUser[]);
   });
 
   useEffect(() => {
+    if (websocket) websocket.emit('GET_CONNECTED_USER');
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);

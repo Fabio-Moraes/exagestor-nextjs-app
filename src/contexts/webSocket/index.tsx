@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 import apiRoute from 'services/apiRoute';
@@ -125,6 +126,7 @@ const useWebSocketListenerOn = (
   handler: <T>(data: Socket | T) => void
 ): void => {
   const socket = useWebSocket();
+  const pathname = usePathname();
 
   useEffect(() => {
     const eventHandler = (data: Socket) => handler(data);
@@ -133,7 +135,7 @@ const useWebSocketListenerOn = (
     return () => {
       if (socket) socket.off(eventName, eventHandler);
     };
-  }, [socket, eventName, handler]);
+  }, [socket, eventName, handler, pathname]);
 };
 
 const useWebSocketListenerEmit = (eventName: string, params = {}): void => {
