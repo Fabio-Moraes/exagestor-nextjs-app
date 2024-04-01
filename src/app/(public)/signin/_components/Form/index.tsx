@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
@@ -55,7 +55,7 @@ export const Form = () => {
     };
   });
 
-  const router = useRouter();
+  //const router = useRouter();
 
   const handleChangeCnpj = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -116,7 +116,7 @@ export const Form = () => {
         const response = await apiRoute.post('/api/user');
         console.log(response);
 
-        router.refresh();
+        window.location.reload();
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {

@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -18,7 +17,6 @@ import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './st
 export function Header() {
   const [user, setUser] = useState({} as { name: string });
 
-  const router = useRouter();
   const socket = useWebSocket();
   const maxRetries = 5;
 
@@ -41,7 +39,7 @@ export function Header() {
       try {
         await apiRoute.post('/api/logout');
         if (socket) socket.disconnect();
-        router.refresh();
+        window.location.reload();
         break;
       } catch (error) {
         await TimedWait(5000);

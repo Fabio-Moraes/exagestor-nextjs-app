@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -16,7 +15,6 @@ export function Header() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({} as { name: string });
 
-  const router = useRouter();
   const maxRetries = 4;
 
   async function fetchUser() {
@@ -37,7 +35,7 @@ export function Header() {
     for (let count = 0; count < maxRetries; count++) {
       try {
         await apiRoute.post('/api/logout');
-        router.refresh();
+        window.location.reload();
         count = maxRetries;
       } catch (error) {
         await new Promise((resolve) => setTimeout(resolve, 5000));
