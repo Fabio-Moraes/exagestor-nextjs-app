@@ -3,14 +3,16 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-  z-index: 1;
-  border: 0 solid #3f795e;
-  border-width: 0.2rem 0 0.2rem 0;
+  border: 0.2rem solid #3f795e;
+  position: sticky;
   display: flex;
-  width: 100%;
-  padding: 0.3rem min(1.5rem, max(10vw, 1rem));
+  padding: 0.3rem min(2rem, max(10vw, 1rem));
   background-image: radial-gradient(35rem at center, #ffffff 20%, #27a567);
   justify-content: space-between;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
   white-space: nowrap;
 
   @media (min-width: 550px) {
@@ -28,7 +30,6 @@ export const Button = styled.button<{ $path?: boolean }>`
   outline: 0;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem 0.5rem 1rem;
-  width: 7.5rem;
   cursor: pointer;
 
   > span {
@@ -40,6 +41,7 @@ export const Button = styled.button<{ $path?: boolean }>`
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
+      border: 0.2rem solid #000000;
       background-color: #27a567;
       > span {
         color: #fff;

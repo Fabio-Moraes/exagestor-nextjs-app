@@ -1,11 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-import { encryptObject } from 'functions';
 
 import ListItem from '../ListItem';
 
@@ -38,8 +36,6 @@ export function List({ service }: { service: Service[] }) {
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const router = useRouter();
-
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
 
   const websocket = useWebSocket();
@@ -66,11 +62,6 @@ export function List({ service }: { service: Service[] }) {
       .includes(searchTerm.toLowerCase().replace(/[.\-/]/g, ''))
   );
 
-  function fetchHistoric() {
-    const encryptSlug = encryptObject({ userId: undefined, userName: undefined });
-    router.push(`/dashboard/admin/manage/general-historic/${encryptSlug}`);
-  }
-
   return (
     <ListContainer>
       <div>
@@ -91,9 +82,6 @@ export function List({ service }: { service: Service[] }) {
           />
         </SearchWrapper>
       </div>
-      <button onClick={fetchHistoric}>
-        <p>HISTÓRICO GERAL</p>
-      </button>
       {isLoading
         ? [...Array(4)].map((_, index) => (
             <ItemsSkeleton key={String(index)}>

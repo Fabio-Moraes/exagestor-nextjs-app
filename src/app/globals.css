@@ -24,6 +24,10 @@ body {
   font-size: 1.6rem;
 }
 
+/* body:has(dialog:modal) {
+  overflow-y: hidden;
+} */
+
 *,
 input {
   border: 0;

@@ -2,12 +2,18 @@
 
 import styled from 'styled-components';
 
-export const Container = styled.div`
+//import { lighten } from 'polished';
+
+export const Container = styled.div<{ $color: string }>`
   white-space: nowrap;
   width: 100%;
+  //background-color: ${({ $color }) => $color};
+
   background-color: #f2f2f0;
+
   flex-direction: column;
   justify-content: space-between;
+
   align-items: center;
 
   > div:last-child {
@@ -23,9 +29,12 @@ export const Container = styled.div`
       white-space: normal;
 
       font-family: 'OpenSans-SemiBold';
+      //border: 0.2rem solid #ccc;
+      //border-radius: 0.5rem;
     }
 
     > p:last-child {
+      //border: none;
       margin-bottom: 0;
     }
   }

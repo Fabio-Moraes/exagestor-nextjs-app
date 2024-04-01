@@ -9,7 +9,6 @@ export const Container = styled.div`
 `;
 
 export const Stickybar = styled.div`
-  z-index: 1000;
   display: flex;
   flex-direction: column;
   min-width: 100vw;

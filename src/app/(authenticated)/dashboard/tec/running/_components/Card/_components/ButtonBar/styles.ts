@@ -14,16 +14,16 @@ const animation = keyframes`
   }
 `;
 
-export const Container = styled.div<{ $animation: boolean; $color: string }>`
-  background-color: ${({ $color }) => $color};
-  ${({ $animation, $color }) =>
+export const Container = styled.div<{ $animation: boolean }>`
+  background-color: #8bc9a8;
+  ${({ $animation }) =>
     $animation &&
     css`
       background: linear-gradient(
         90deg,
-        ${$color} 0%,
-        ${lighten(0.2, $color)} 50%,
-        ${$color} 100%
+        ${'#8bc9a8'} 0%,
+        ${lighten(0.2, '#8bc9a8')} 50%,
+        ${'#8bc9a8'} 100%
       );
 
       > div {
@@ -34,6 +34,8 @@ export const Container = styled.div<{ $animation: boolean; $color: string }>`
 
   background-size: 400% 400%;
   animation: ${animation} 1.2s ease-in-out infinite;
+
+  position: relative;
 `;
 
 export const Wrapper = styled.div`

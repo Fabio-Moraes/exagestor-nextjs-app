@@ -99,22 +99,10 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     }
   };
 
-  function fetchConcludedServices() {
+  async function fetchConcludedServices() {
     const encryptSlug = encryptObject({ userId: id });
     handleCloseDialog();
     router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
-  }
-
-  function fetchStock() {
-    const encryptSlug = encryptObject({ userId: id, userName: name });
-    handleCloseDialog();
-    router.push(`/dashboard/admin/manage/stock/${encryptSlug}`);
-  }
-
-  function fetchHistoric() {
-    const encryptSlug = encryptObject({ userId: id, userName: name });
-    handleCloseDialog();
-    router.push(`/dashboard/admin/manage/general-historic/${encryptSlug}`);
   }
 
   const selectedRole = {
@@ -145,14 +133,11 @@ const ListItem: React.FC<ListItemProps> = (props) => {
         </Container>
       </AnimatePresence>
       <Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
-        <button onClick={fetchStock}>
+        <button>
           <p>VISUALIZAR CARGA</p>
         </button>
         <button onClick={fetchConcludedServices}>
           <p>NOVO SERVIÇO</p>
-        </button>
-        <button onClick={fetchHistoric}>
-          <p>HISTÓRICO</p>
         </button>
         <button>
           <p>INATIVAR FUNCIONÁRIO</p>

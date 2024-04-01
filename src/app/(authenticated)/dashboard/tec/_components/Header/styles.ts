@@ -8,18 +8,10 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.8rem 1.5rem 1.5rem 1.5rem;
+  padding: 0.8rem 1.2rem 0.9rem 1.5rem;
 
   @media (max-width: 550px) {
-    background-image: linear-gradient(
-      49deg,
-      #92d3b3 10%,
-      #b1d6c3 15%,
-      #ffffff 30%,
-      #ffffff 50%,
-      #b1d6c3 70%,
-      #92d3b3
-    );
+    background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
   }
 
   @media (min-width: 550px) {
@@ -36,7 +28,7 @@ export const ProfileUser = styled.div`
   border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
-  width: 14rem;
+  width: 12rem;
   height: 7rem;
   align-items: end;
   padding: 0 0.6rem 0.3rem 0.4rem;
@@ -47,12 +39,12 @@ export const ProfileUser = styled.div`
     outline: 0;
     text-align: start;
     white-space: nowrap;
-    text-overflow: ellipsis;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     font-family: 'OpenSans-SemiBold';
     color: #111111;
     overflow: hidden;
+    text-overflow: ellipsis;
     height: 2rem;
     width: 100%;
   }
@@ -103,10 +95,11 @@ export const ProfileCompany = styled.div`
   display: flex;
   align-items: center;
   text-align: left;
+  //background-color: #8bc9a8;
   display: flex;
   height: 100%;
-  //box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
-  //background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+  background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
   padding: 0.7rem;
   padding-left: 1.1rem;
   border-radius: 0.7rem;

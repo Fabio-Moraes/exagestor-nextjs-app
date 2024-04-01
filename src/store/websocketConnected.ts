@@ -6,6 +6,15 @@ interface websocketConnectedState {
   updateWebsocketConnected: (by: boolean) => void;
 }
 
+// export const useWebsocketConnected = create<websocketConnectedState>((set) => ({
+//   websocketConnected: false,
+//   updateWebsocketConnected: (connected: boolean) => {
+//     return set(() => ({
+//       websocketConnected: connected
+//     }));
+//   }
+// }));
+
 export const useWebsocketConnected = create<websocketConnectedState>()(
   persist(
     (set) => ({

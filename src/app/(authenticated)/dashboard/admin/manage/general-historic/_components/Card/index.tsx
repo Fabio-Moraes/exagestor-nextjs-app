@@ -63,7 +63,9 @@ export function Card({ service }: { service: Service }) {
   return (
     <Container
       rel="preload"
-      onClick={() => router.push(`/dashboard/admin/manage/details/${encryptSlug}`)}
+      onClick={() =>
+        router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`)
+      }
     >
       <p>{postCardAt}</p>
       <div>

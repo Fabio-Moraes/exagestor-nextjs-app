@@ -199,6 +199,7 @@ export default function NewService() {
     <Container>
       <Title>Novo Serviço</Title>
       <FormContainer onSubmit={handleSubmit}>
+        <label htmlFor="requester">Solicitante:</label>
         <Input
           type="text"
           id="requester"
@@ -207,12 +208,8 @@ export default function NewService() {
           onChange={handleName}
         />
 
-        <Select
-          id="selectedCity"
-          style={{ color: selectedCity ? '#000' : '#666' }}
-          value={selectedCity}
-          onChange={handleCityChange}
-        >
+        <label htmlFor="selectedCity">Cidade:</label>
+        <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
           <Option value="">Selecione uma cidade</Option>
           {cities.map((city, index) => (
             <Option key={index.toString()} value={city}>
@@ -220,17 +217,21 @@ export default function NewService() {
             </Option>
           ))}
         </Select>
+
+        <label htmlFor="serviceOriginAddress">Endereço de origem do serviço:</label>
         <Input
           type="text"
           id="serviceOriginAddress"
-          placeholder="Endereço de origem do serviço"
+          placeholder="Informe o endereço de origem do serviço"
           value={address}
           onChange={handleServiceOriginAddressChange}
         />
+
+        <label htmlFor="boxOrCableNomenclature">Nomenclatura de caixa ou cabo:</label>
         <Input
           type="text"
           id="boxOrCableNomenclature"
-          placeholder="Nomenclatura de caixa ou cabo"
+          placeholder="Informe a nomenclatura de caixa ou cabo"
           value={nomenclature}
           onChange={handleBoxOrCableNomenclatureChange}
         />
