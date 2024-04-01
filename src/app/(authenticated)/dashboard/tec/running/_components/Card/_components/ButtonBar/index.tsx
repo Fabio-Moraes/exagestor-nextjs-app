@@ -8,10 +8,12 @@ import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
+import { useWebsocketConnected } from 'store/websocketConnected';
+
 import checkSvg from './_assets/svg/check.svg';
 import closeSvg from './_assets/svg/close.svg';
+import docSvg from './_assets/svg/doc.svg';
 import pauseSvg from './_assets/svg/pause.svg';
-import pinSvg from './_assets/svg/pin.svg';
 import playSvg from './_assets/svg/play.svg';
 
 import { Container, Wrapper } from './styles';
@@ -32,22 +34,42 @@ interface RunningService {
   name_tec: string;
 }
 
+interface propsImageType {
+  priority: boolean;
+  loading: 'eager';
+  width: number;
+  height: number;
+}
+
 export function ButtonBar({ service }: { service: RunningService }) {
   const [runningLoad, setRunningLoad] = useState(false);
+  const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
+
+  const { protocol, status } = service;
+  const encryptSlug = encryptObject({ protocol: protocol });
 
   const router = useRouter();
   const maxRetries = 4;
 
-  async function fetchStatusServices() {
+  const allButtonsLocked = !(!runningLoad && websocketConnected && status !== 'analysis');
+
+  const onClickButtonCheck = () => {
+    if (allButtonsLocked || status === 'paused') return;
+
+    router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`);
+  };
+
+  async function onClickButtonPlayPause() {
+    if (allButtonsLocked) return;
+
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: `/api/tec/running/${service?.status === 'active' ? 'pause' : 'start'}`,
-          protocol: service?.protocol
+          baseURL: `/api/tec/running/${status === 'active' ? 'pause' : 'start'}`,
+          protocol: protocol
         });
 
-        setRunningLoad(false);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -61,19 +83,22 @@ export function ButtonBar({ service }: { service: RunningService }) {
             }
           }
         }
+      } finally {
+        setRunningLoad(false);
       }
     }
   }
 
-  async function fetchCancelServices() {
+  async function onClickButtonCancel() {
+    if (allButtonsLocked) return;
+
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/running/cancel',
-          protocol: service?.protocol
+          protocol: protocol
         });
-        setRunningLoad(false);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -87,67 +112,43 @@ export function ButtonBar({ service }: { service: RunningService }) {
             }
           }
         }
+      } finally {
+        setRunningLoad(false);
       }
     }
   }
 
-  const encryptSlug = encryptObject({
-    protocol: service?.protocol
-  });
+  const onClickButtonDoc = () => {};
+
+  const styleButtonCheck = { opacity: status === 'paused' || allButtonsLocked ? 0.3 : 1 };
+  const styleButtonPlayPause = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonDoc = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };
+
+  const propsImage = {
+    priority: true,
+    loading: 'eager',
+    width: 50,
+    height: 50
+  } as propsImageType;
+
+  const iconPlayPause = status !== 'active' ? playSvg : pauseSvg;
+  const startAnimation = Boolean(runningLoad || !websocketConnected);
 
   return (
-    <Container $animation={runningLoad}>
+    <Container $animation={startAnimation} $color={'#3f7971'}>
       <Wrapper>
-        <button
-          style={{
-            opacity: service?.status === 'paused' || service?.status === 'analysis' ? 0.3 : 1
-          }}
-          rel="preload"
-          onClick={() =>
-            service?.status !== 'analysis' &&
-            service?.status !== 'paused' &&
-            router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`)
-          }
-        >
-          <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
-          <p>Finalizar</p>
+        <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
+          <Image {...propsImage} src={checkSvg} alt="check" />
         </button>
-        <button
-          rel="preload"
-          style={{
-            opacity: service?.status === 'analysis' ? 0.3 : 1
-          }}
-          onClick={() => service?.status !== 'analysis' && fetchStatusServices()}
-        >
-          <Image
-            priority
-            loading="eager"
-            src={service?.status !== 'active' ? playSvg : pauseSvg}
-            alt="play"
-            width="50"
-            height="50"
-          />
-          <p>{service?.status !== 'active' ? 'Retomar' : 'Pausar'}</p>
+        <button rel="preload" style={styleButtonPlayPause} onClick={onClickButtonPlayPause}>
+          <Image {...propsImage} src={iconPlayPause} alt="play-pause" />
         </button>
-        <button
-          rel="preload"
-          style={{
-            opacity: 0.3
-          }}
-          onClick={() => {}}
-        >
-          <Image priority loading="eager" src={pinSvg} alt="close" width="50" height="50" />
-          <p>Fixar</p>
+        <button rel="preload" style={styleButtonDoc} onClick={onClickButtonDoc}>
+          <Image {...propsImage} src={docSvg} alt="doc" />
         </button>
-        <button
-          rel="preload"
-          style={{
-            opacity: service?.status === 'analysis' ? 0.3 : 1
-          }}
-          onClick={() => service?.status !== 'analysis' && fetchCancelServices()}
-        >
-          <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />
-          <p>Cancelar</p>
+        <button rel="preload" style={styleButtonClose} onClick={onClickButtonCancel}>
+          <Image {...propsImage} src={closeSvg} alt="close" />
         </button>
       </Wrapper>
     </Container>
