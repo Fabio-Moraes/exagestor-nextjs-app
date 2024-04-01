@@ -35,24 +35,42 @@ interface Service {
   name_tec: string;
 }
 
+interface propsImageType {
+  priority: boolean;
+  loading: 'eager';
+  width: number;
+  height: number;
+}
+
 export function ButtonBar({ service }: { service: Service }) {
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
   const [runningLoad, setRunningLoad] = useState(false);
 
+  const { protocol, status, employee_id, update_count } = service;
+
   const router = useRouter();
   const maxRetries = 5;
 
-  async function fetchStatusServices() {
+  const allButtonsLocked = !(!runningLoad && websocketConnected);
+
+  const onClickButtonCheck = () => {
+    if (allButtonsLocked || status === 'paused') return;
+
+    router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
+  };
+
+  async function onClickButtonPlayPause() {
+    if (allButtonsLocked) return;
+
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
-          baseURL: `/api/admin/running/${service?.status === 'active' ? 'pause' : 'start'}`,
-          employeeId: String(service?.employee_id),
-          protocol: service?.protocol
+          baseURL: `/api/admin/running/${status === 'active' ? 'pause' : 'start'}`,
+          employeeId: String(employee_id),
+          protocol: protocol
         });
 
-        setRunningLoad(false);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -66,21 +84,23 @@ export function ButtonBar({ service }: { service: Service }) {
             }
           }
         }
+      } finally {
+        setRunningLoad(false);
       }
     }
   }
 
-  async function fetchRefreshServices() {
+  async function onClickButtonRefresh() {
+    if (allButtonsLocked) return;
+
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/running/start',
-          employeeId: String(service?.employee_id),
-          protocol: service?.protocol
+          employeeId: String(employee_id),
+          protocol: protocol
         });
-
-        setRunningLoad(false);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -94,20 +114,23 @@ export function ButtonBar({ service }: { service: Service }) {
             }
           }
         }
+      } finally {
+        setRunningLoad(false);
       }
     }
   }
 
-  async function fetchCancelServices() {
+  async function onClickButtonCancel() {
+    if (allButtonsLocked) return;
+
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/running/cancel',
-          employeeId: String(service?.employee_id),
-          protocol: service?.protocol
+          employeeId: String(employee_id),
+          protocol: protocol
         });
-        setRunningLoad(false);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -121,70 +144,60 @@ export function ButtonBar({ service }: { service: Service }) {
             }
           }
         }
+      } finally {
+        setRunningLoad(false);
       }
     }
   }
 
   const encryptSlug = encryptObject({
-    protocol: service?.protocol,
-    employeeId: service?.employee_id,
-    updateCount: String(Number(service?.update_count || 0) + 1)
+    protocol: protocol,
+    employeeId: employee_id,
+    updateCount: String(Number(update_count || 0) + 1)
   });
 
-  const buttonState =
-    service?.status === 'analysis' ? (
-      <button
-        style={{
-          opacity: runningLoad ? 0.3 : 1
-        }}
-        rel="preload"
-        onClick={() => fetchRefreshServices()}
-      >
-        <Image priority loading="eager" src={refreshSvg} alt="play" width="50" height="50" />
-      </button>
-    ) : (
-      <button rel="preload" onClick={() => fetchStatusServices()}>
-        <Image
-          priority
-          loading="eager"
-          src={service?.status !== 'active' ? playSvg : pauseSvg}
-          alt="play"
-          width="50"
-          height="50"
-        />
-      </button>
-    );
+  const styleButtonCheck = { opacity: status === 'paused' || allButtonsLocked ? 0.3 : 1 };
+  const styleButtonPlayPause = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonDoc = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };
+
+  const propsImage = {
+    priority: true,
+    loading: 'eager',
+    width: 50,
+    height: 50
+  } as propsImageType;
+
+  const selectPlayPauseRefresh = () => {
+    if (status === 'analysis') return refreshSvg;
+    if (status !== 'active') return playSvg;
+    return pauseSvg;
+  };
+
+  const iconPlayPauseRefresh = selectPlayPauseRefresh();
+  const startAnimation = Boolean(runningLoad || !websocketConnected);
+
+  const onClickSelectPlayPauseRefresh =
+    status === 'analysis' ? onClickButtonRefresh : onClickButtonPlayPause;
 
   return (
-    <Container $animation={runningLoad || !websocketConnected} $color={'#3f7971'}>
+    <Container $animation={startAnimation} $color={'#3f7971'}>
       <Wrapper>
-        <button
-          style={{
-            opacity: runningLoad || service?.status === 'paused' ? 0.3 : 1
-          }}
-          rel="preload"
-          onClick={async () => {
-            if (service?.status !== 'paused') {
-              setRunningLoad(true);
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
-            }
-          }}
-        >
-          <Image priority loading="eager" src={checkSvg} alt="Add" width="50" height="50" />
+        <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
+          <Image {...propsImage} src={checkSvg} alt="check" />
         </button>
-        {buttonState}
         <button
-          style={{
-            opacity: 1
-          }}
           rel="preload"
-          onClick={() => {}}
+          style={styleButtonPlayPause}
+          onClick={onClickSelectPlayPauseRefresh}
         >
-          <Image priority loading="eager" src={docSvg} alt="play" width="50" height="50" />
+          <Image {...propsImage} src={iconPlayPauseRefresh} alt="play-pause-refres" />
         </button>
-        <button rel="preload" onClick={() => fetchCancelServices()}>
-          <Image priority loading="eager" src={closeSvg} alt="close" width="50" height="50" />
+        <button rel="preload" style={styleButtonDoc} onClick={() => {}}>
+          <Image {...propsImage} src={docSvg} alt="doc" />
+        </button>
+        <button rel="preload" style={styleButtonClose} onClick={onClickButtonCancel}>
+          <Image {...propsImage} src={closeSvg} alt="close" />
         </button>
       </Wrapper>
     </Container>

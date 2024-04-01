@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
@@ -27,10 +28,23 @@ interface Service {
   protocol: string;
 }
 
-export default function GeneralHistoric() {
+interface SlugType {
+  params: {
+    slug: string;
+  };
+}
+
+interface DecryptObjectType {
+  userId?: number;
+  userName?: string;
+}
+
+export default function GeneralHistoric({ params }: SlugType) {
   const [services, setServices] = useState<Service[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+
+  const { userId, userName } = decryptObject(params.slug) as DecryptObjectType;
 
   const maxRetries = 4;
 
@@ -46,7 +60,8 @@ export default function GeneralHistoric() {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/manage/general-historic'
+          baseURL: '/api/admin/manage/employee-historic',
+          employee_id: userId
         });
 
         setServices(response.data);
@@ -79,7 +94,7 @@ export default function GeneralHistoric() {
 
   return (
     <Container>
-      <Title>Histórico Geral</Title>
+      <Title>Histórico Geral {userName && `- ${userName}`}</Title>
       <ListContainer>
         {services.map((service) => (
           <ListItem key={service.id}>

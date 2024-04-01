@@ -8,6 +8,34 @@ export const ListContainer = styled.div`
   border-radius: 0.7rem;
   /* position: relative; */
 
+  > button {
+    background-color: #27a567;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    width: 10rem;
+    margin-bottom: 3rem;
+    cursor: pointer;
+    user-select: none;
+
+    > p {
+      text-align: center;
+      width: 100%;
+      color: #fff;
+    }
+
+    display: flex;
+    height: 4.5rem;
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 3px 0px #8bc9a8;
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+  }
+
   > div:first-child {
     display: flex;
     flex-direction: column;

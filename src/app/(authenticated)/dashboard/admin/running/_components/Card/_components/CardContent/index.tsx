@@ -32,7 +32,7 @@ export function CardContent({ service }: { service: RunningService }) {
   const createdAt = formatDate(service.created_at);
 
   return (
-    <Container $color={service?.status === 'analysis' ? '#fbf4cf' : '#D8E5DF'}>
+    <Container>
       <div>
         <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
         <p>CIDADE: {service?.city.toUpperCase()}</p>

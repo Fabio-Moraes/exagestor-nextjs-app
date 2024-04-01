@@ -33,7 +33,7 @@ export function CardContent({ service }: { service: RunningService }) {
   const patternProtocol = /(\d{1})(\d{4})(\d{4})(\d{4})(\d{4})/;
 
   return (
-    <Container $color={service?.status === 'analysis' ? '#fbf4cf' : '#D8E5DF'}>
+    <Container>
       <div>
         <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
         <p>CIDADE: {service?.city.toUpperCase()}</p>
