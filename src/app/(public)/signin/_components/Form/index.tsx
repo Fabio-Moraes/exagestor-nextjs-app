@@ -146,7 +146,6 @@ export const Form = () => {
     <>
       <Container>
         <FormContainer onSubmit={handleSubmit}>
-          <p>{process.env.NEXT_PUBLIC_FRONTEND_ORIGIN_BASEURL}</p>
           <div>
             <Image
               priority
