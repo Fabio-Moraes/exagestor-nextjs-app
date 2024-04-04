@@ -67,8 +67,8 @@ export function List({ service }: { service: Service[] }) {
   );
 
   function fetchHistoric() {
-    const encryptSlug = encryptObject({ userId: undefined, userName: undefined });
-    router.push(`/dashboard/admin/manage/general-historic/${encryptSlug}`);
+    const encryptSlug = encryptObject({ employee_all: true });
+    router.push(`/dashboard/admin/manage/historic/${encryptSlug}`, { scroll: false });
   }
 
   return (

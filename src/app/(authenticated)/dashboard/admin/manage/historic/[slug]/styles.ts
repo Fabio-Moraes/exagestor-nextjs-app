@@ -26,6 +26,58 @@ export const Title = styled.h1`
 export const ListContainer = styled.ul`
   list-style: none;
   padding: 0;
+
+  > button {
+    width: 17rem;
+    background-color: #27a567;
+    flex-shrink: 0;
+    color: #fff;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    user-select: none;
+
+    > p {
+      text-align: center;
+      width: 100%;
+    }
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 3px 0px #8bc9a8;
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+  }
+
+  /* > button {
+    background-color: #fff;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    width: 25rem;
+    margin: 1rem;
+    cursor: pointer;
+    user-select: none;
+
+    > p {
+      text-align: center;
+      width: 100%;
+    }
+
+    display: flex;
+    height: 4.5rem;
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 3px 0px #8bc9a8;
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+  } */
 `;
 
 export const ListItem = styled.li`

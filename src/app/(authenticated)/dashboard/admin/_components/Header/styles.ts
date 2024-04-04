@@ -8,7 +8,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.8rem 1.5rem 1.5rem 1.5rem;
+  padding: 1.5rem;
 
   @media (max-width: 550px) {
     background-image: linear-gradient(
@@ -36,7 +36,7 @@ export const ProfileUser = styled.div`
   border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
-  width: 14rem;
+  width: 15rem;
   height: 7rem;
   align-items: end;
   padding: 0 0.6rem 0.3rem 0.4rem;
@@ -126,7 +126,7 @@ export const ProfileInfoCompany = styled.div`
 
   > span {
     font-family: 'OpenSans-Medium';
-    font-size: 1.38rem;
+    font-size: 1.2rem;
     color: #000;
   }
 `;

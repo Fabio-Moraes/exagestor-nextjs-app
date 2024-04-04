@@ -94,7 +94,7 @@ export default function Details({ params }: SlugType) {
         const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
 
         const response = await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/manage/general-historic/details',
+          baseURL: '/api/admin/manage/historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
           updateCount: String(decryptSlug.updateCount)

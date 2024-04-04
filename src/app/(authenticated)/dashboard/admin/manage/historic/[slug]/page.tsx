@@ -8,6 +8,8 @@ import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
 
 interface Service {
@@ -37,6 +39,7 @@ interface SlugType {
 interface DecryptObjectType {
   userId?: number;
   userName?: string;
+  employee_all?: boolean;
 }
 
 export default function GeneralHistoric({ params }: SlugType) {
@@ -44,7 +47,7 @@ export default function GeneralHistoric({ params }: SlugType) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
-  const { userId, userName } = decryptObject(params.slug) as DecryptObjectType;
+  const { userId, userName, employee_all } = decryptObject(params.slug) as DecryptObjectType;
 
   const maxRetries = 4;
 
@@ -60,11 +63,13 @@ export default function GeneralHistoric({ params }: SlugType) {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await apiRoute.post('/api/bridge', {
-          baseURL: '/api/admin/manage/employee-historic',
-          employee_id: userId
+          baseURL: '/api/admin/manage/historic',
+          employee_id: userId,
+          employee_all: employee_all,
+          initial_id: services.length >= 1 ? services[services.length - 1].id : null
         });
 
-        setServices(response.data);
+        setServices((res) => [...res, ...response.data]);
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {
@@ -97,10 +102,16 @@ export default function GeneralHistoric({ params }: SlugType) {
       <Title>Histórico Geral {userName && `- ${userName}`}</Title>
       <ListContainer>
         {services.map((service) => (
-          <ListItem key={service.id}>
+          <ListItem key={uuidv4()}>
             <Card service={service} />
           </ListItem>
         ))}
+
+        {services.length >= 1 && (
+          <button onClick={fetchServices}>
+            <p>Mais resultados</p>
+          </button>
+        )}
       </ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (

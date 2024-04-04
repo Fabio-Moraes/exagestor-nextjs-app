@@ -101,19 +101,19 @@ const ListItem: React.FC<ListItemProps> = (props) => {
   function fetchConcludedServices() {
     const encryptSlug = encryptObject({ userId: id });
     handleCloseDialog();
-    router.push(`/dashboard/admin/manage/new/${encryptSlug}`);
+    router.push(`/dashboard/admin/manage/new/${encryptSlug}`, { scroll: false });
   }
 
   function fetchStock() {
     const encryptSlug = encryptObject({ userId: id, userName: name });
     handleCloseDialog();
-    router.push(`/dashboard/admin/manage/stock/${encryptSlug}`);
+    router.push(`/dashboard/admin/manage/stock/${encryptSlug}`, { scroll: false });
   }
 
   function fetchHistoric() {
     const encryptSlug = encryptObject({ userId: id, userName: name });
     handleCloseDialog();
-    router.push(`/dashboard/admin/manage/general-historic/${encryptSlug}`);
+    router.push(`/dashboard/admin/manage/historic/${encryptSlug}`, { scroll: false });
   }
 
   const selectedRole = {

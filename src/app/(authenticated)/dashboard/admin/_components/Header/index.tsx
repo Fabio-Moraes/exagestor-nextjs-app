@@ -63,10 +63,10 @@ export function Header() {
           priority
           loading="eager"
           alt="Axa"
-          style={{ width: '5.4rem', height: 'auto' }}
+          style={{ width: '5.8rem', height: 'auto' }}
         />
         <ProfileInfoCompany>
-          <h1>EXA TELECOM</h1>
+          <h1>EXATELECOM</h1>
           <span>Telecomunicações</span>
         </ProfileInfoCompany>
       </ProfileCompany>
