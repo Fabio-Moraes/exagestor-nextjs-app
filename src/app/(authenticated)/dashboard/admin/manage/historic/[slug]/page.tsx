@@ -59,7 +59,7 @@ export default function GeneralHistoric({ params }: SlugType) {
   const maxRetries = 4;
 
   function generateConnectingMessage(count: number): string {
-    return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+    return count > 1 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   }
 
   async function fetchServices() {
