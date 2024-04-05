@@ -69,7 +69,7 @@ export default function GeneralHistoric({ params }: SlugType) {
       try {
         if (index > 0) setIsPopupValue(generateConnectingMessage(index));
         setSpineer(true);
-        await TimedWait(500);
+        await TimedWait(400);
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/manage/historic',
