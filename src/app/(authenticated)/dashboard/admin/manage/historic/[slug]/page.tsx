@@ -59,15 +59,15 @@ export default function GeneralHistoric({ params }: SlugType) {
   const maxRetries = 4;
 
   function generateConnectingMessage(count: number): string {
-    return count > 1 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+    return count > 1 ? `Conectando<br>Tentativa (${count})` : 'Conectando';
   }
 
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+    for (let index = 0; index < maxRetries; index++) {
       try {
-        setIsPopupValue(generateConnectingMessage(retryCount));
+        if (index > 0) setIsPopupValue(generateConnectingMessage(index));
         setSpineer(true);
         await TimedWait(500);
 
@@ -90,7 +90,7 @@ export default function GeneralHistoric({ params }: SlugType) {
               break;
             }
 
-            if (retryCount === maxRetries) {
+            if (index === maxRetries) {
               setConnectionError(true);
               setIsPopupValue(null);
             } else {
