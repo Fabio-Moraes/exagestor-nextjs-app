@@ -4,13 +4,19 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import apiRoute from 'services/apiRoute';
 
+import * as animationData from './_assets/lottie/animation.json';
+
+import { Player } from '@lottiefiles/react-lottie-player';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
+import down from './_assets/svg/down.svg';
+
+import { Container, ErrorContainer, ListContainer, ListItem, Title, Spinner } from './styles';
 
 interface Service {
   id: number;
@@ -44,6 +50,7 @@ interface DecryptObjectType {
 
 export default function GeneralHistoric({ params }: SlugType) {
   const [services, setServices] = useState<Service[]>([]);
+  const [spinner, setSpineer] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -61,6 +68,8 @@ export default function GeneralHistoric({ params }: SlugType) {
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
+        setSpineer(true);
+        await TimedWait(500);
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/manage/historic',
@@ -89,6 +98,8 @@ export default function GeneralHistoric({ params }: SlugType) {
             }
           }
         }
+      } finally {
+        setSpineer(false);
       }
     }
   }
@@ -107,11 +118,27 @@ export default function GeneralHistoric({ params }: SlugType) {
           </ListItem>
         ))}
 
-        {services.length >= 1 && (
-          <button onClick={fetchServices}>
-            <p>Mais resultados</p>
-          </button>
-        )}
+        {services.length >= 1 &&
+          (spinner ? (
+            <Spinner>
+              <div>
+                <Player
+                  src={animationData}
+                  loop
+                  autoplay
+                  speed={1.5}
+                  style={{ height: '7rem', width: '7rem' }}
+                />
+              </div>
+            </Spinner>
+          ) : (
+            <button onClick={fetchServices}>
+              <div>
+                <p>Mais resultados</p>
+                <Image priority loading="eager" src={down} alt="Add" width="25" height="25" />
+              </div>
+            </button>
+          ))}
       </ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (
