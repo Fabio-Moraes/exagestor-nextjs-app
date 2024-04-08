@@ -1,23 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import api from 'services/apiBackend';
+
 import { JWT_SECRET_KEY } from '../../../constants';
 
 import { jwtVerify } from 'jose';
 
-type CustomError = {
+interface CustomError extends Error {
   response?: {
     status: number;
   };
-} & Error;
+}
 
-type RequestType = {
+interface RequestType {
   baseURL: string;
   ['key']: string | number;
-};
-
-type FetchType = {
-  token: string;
-} & RequestType;
+}
 
 export async function POST(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
@@ -25,7 +23,8 @@ export async function POST(request: NextRequest) {
 
   try {
     await jwtVerify(token ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
-    const data = token && (await fetchBridge({ baseURL, token, ...res }));
+
+    const { data } = await api.post(baseURL, { token, ...res });
 
     return NextResponse.json(data, { status: 200 });
   } catch (error: unknown) {
@@ -40,17 +39,4 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
     }
   }
-}
-
-async function fetchBridge({ baseURL, token, ...res }: FetchType) {
-  const originBaseUrl = process.env.NEXT_PUBLIC_BACKEND_ORIGIN_BASEURL;
-  const response = await fetch(`${originBaseUrl}${baseURL}`, {
-    method: 'POST',
-    cache: 'no-store',
-    body: JSON.stringify({ token, ...res }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  return await response.json();
 }

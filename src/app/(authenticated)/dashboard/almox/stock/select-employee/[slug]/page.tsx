@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { List } from './_components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -42,7 +42,7 @@ export default function SelectEmployee({ params }: SlugType) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiAxios.post('/api/bridge', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/almox/stock/select-employee'
         });
 

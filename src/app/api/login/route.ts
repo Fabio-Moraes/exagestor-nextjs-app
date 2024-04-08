@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import api from 'services/apiBackend';
+
 import { JWT_SECRET_KEY } from '../../../constants';
 
 import jwt from 'jsonwebtoken';
@@ -18,8 +20,8 @@ interface CustomError extends Error {
 export async function POST(request: NextRequest) {
   try {
     const { identification, password }: RequestType = await request.json();
-    const contentJwt = await fetchLogin({ identification, password });
-    const token = jwt.sign(contentJwt, JWT_SECRET_KEY, { expiresIn: '7d' });
+    const contentJwt = await api.post('/api/auth/signin', { identification, password });
+    const token = jwt.sign(contentJwt.data, JWT_SECRET_KEY, { expiresIn: '7d' });
     const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
     const response = NextResponse.json({ success: true }, { status: 200 });
 
@@ -46,17 +48,4 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
     }
   }
-}
-
-async function fetchLogin({ identification, password }: RequestType) {
-  const originBaseUrl = process.env.NEXT_PUBLIC_BACKEND_ORIGIN_BASEURL;
-  const response = await fetch(`${originBaseUrl}/api/auth/signin`, {
-    method: 'POST',
-    cache: 'no-store',
-    body: JSON.stringify({ identification, password }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  return await response.json();
 }

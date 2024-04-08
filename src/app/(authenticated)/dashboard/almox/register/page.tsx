@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
@@ -86,7 +86,7 @@ export default function NewRegister() {
         try {
           setIsPopupValue(generateConnectingMessage(retryCount));
 
-          const response = await apiAxios.post('/api/bridge', {
+          const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/almox/register',
             productName: productName.current?.value,
             productCode: productCode,

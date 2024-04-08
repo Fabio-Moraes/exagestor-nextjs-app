@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
@@ -157,7 +157,7 @@ export default function NewService({ params }: SlugType) {
             classificationF
           });
 
-          const response = await apiAxios.post('/api/bridge', {
+          const response = await apiRoute.post('/api/bridge', {
             baseURL: '/api/admin/manage/new',
             employeeId: decryptObject(params.slug).userId,
             clientName: name,

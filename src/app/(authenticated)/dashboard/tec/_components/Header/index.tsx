@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import { useWebSocket } from 'contexts/webSocket';
 
@@ -23,7 +23,7 @@ export function Header() {
   async function fetchUser() {
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiAxios.post('/api/decode/auth_token');
+        const response = await apiRoute.post('/api/decode/auth_token');
         setUser(response.data);
         break;
       } catch (error) {
@@ -35,7 +35,7 @@ export function Header() {
   async function fetchDeletedeToken() {
     for (let count = 0; count < maxRetries; count++) {
       try {
-        await apiAxios.post('/api/logout');
+        await apiRoute.post('/api/logout');
         if (socket) socket.disconnect();
         window.location.reload();
         break;

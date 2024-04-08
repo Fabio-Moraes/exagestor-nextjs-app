@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import { useWebsocketConnected } from 'store/websocketConnected';
 
@@ -65,7 +65,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        await apiAxios.post('/api/bridge', {
+        await apiRoute.post('/api/bridge', {
           baseURL: `/api/tec/running/${status === 'active' ? 'pause' : 'start'}`,
           protocol: protocol
         });
@@ -95,7 +95,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        await apiAxios.post('/api/bridge', {
+        await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/running/cancel',
           protocol: protocol
         });

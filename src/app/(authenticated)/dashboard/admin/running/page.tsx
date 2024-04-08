@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import { useLocalStorage } from 'contexts/localStorage';
 import { useWebSocketListenerOn } from 'contexts/webSocket';
@@ -69,7 +69,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(index));
 
-        const response = await apiAxios.post('/api/bridge', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/running'
         });
 

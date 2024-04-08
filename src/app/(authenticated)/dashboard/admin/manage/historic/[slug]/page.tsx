@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import * as animationData from './_assets/lottie/animation.json';
 
@@ -71,7 +71,7 @@ export default function GeneralHistoric({ params }: SlugType) {
         setSpineer(true);
         await TimedWait(300);
 
-        const response = await apiAxios.post('/api/bridge', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/manage/historic',
           employee_id: userId,
           employee_all: employee_all,

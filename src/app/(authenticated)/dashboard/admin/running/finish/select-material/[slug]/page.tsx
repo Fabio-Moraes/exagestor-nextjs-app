@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -71,9 +71,9 @@ export default function FinishService({ params }: SlugType) {
           employee_id: Number(decryptSlug.employeeId)
         };
 
-        const responseDataStock = await apiAxios.post('/api/bridge', paramDataStock);
+        const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
 
-        const response = await apiAxios.post('/api/bridge', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/running/finish/select-material',
           protocol: decryptSlug.protocol?.toString(),
           employeeId: decryptSlug.employeeId?.toString()

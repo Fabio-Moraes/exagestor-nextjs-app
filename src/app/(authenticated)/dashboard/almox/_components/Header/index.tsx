@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';
@@ -20,7 +20,7 @@ export function Header() {
   async function fetchUser() {
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiAxios.post('/api/decode/auth_token');
+        const response = await apiRoute.post('/api/decode/auth_token');
 
         count = maxRetries;
         setUser(response.data);
@@ -34,7 +34,7 @@ export function Header() {
     setIsLoading(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
-        await apiAxios.post('/api/logout');
+        await apiRoute.post('/api/logout');
         window.location.reload();
         count = maxRetries;
       } catch (error) {

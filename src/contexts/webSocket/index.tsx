@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import { io, Socket } from 'socket.io-client';
 import { useRemoteDisconnectionPopup } from 'store/remoteDisconnectionPopup';
@@ -28,7 +28,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
   let intervalId: NodeJS.Timeout | null = null;
 
   const connectSocket = async (): Promise<void> => {
-    const { data } = await apiAxios.post('/api/decode/auth_token');
+    const { data } = await apiRoute.post('/api/decode/auth_token');
     return new Promise<void>((resolve, reject) => {
       const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
         transports: ['websocket'],
@@ -52,7 +52,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
 
       newSocket.on(`REMOTE_LOGOUT_USER:${data.id}`, async (data) => {
         const { role } = JSON.parse(data);
-        await apiAxios.post('/api/logout');
+        await apiRoute.post('/api/logout');
         newSocket.disconnect();
         updateRemoteDisconnectionPopup({ open: true, role: role });
       });
@@ -81,7 +81,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
 
   const clearConnection = async () => {
     if (socket) {
-      const { data } = await apiAxios.post('/api/decode/auth_token');
+      const { data } = await apiRoute.post('/api/decode/auth_token');
       socket.off(`REMOTE_LOGOUT_USER:${data.id}`);
       socket.off('connect');
       socket.off('error');

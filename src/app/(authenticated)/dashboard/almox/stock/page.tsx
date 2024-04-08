@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiAxios from 'services/apiAxios';
+import apiRoute from 'services/apiRoute';
 
 import {
   Container,
@@ -49,7 +49,7 @@ export default function NewStock() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiAxios.post('/api/bridge', {
+        const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/almox/stock'
         });
 
