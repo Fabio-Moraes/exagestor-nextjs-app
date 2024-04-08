@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
-import apiRoute from 'services/apiRoute';
+import apiAxios from 'services/apiAxios';
 
 import alert from './_assets/svg/alert.svg';
 import exa from './_assets/svg/exa_logo.svg';
@@ -108,12 +108,12 @@ export const Form = () => {
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );
 
-        await apiRoute.post('/api/login', {
+        await apiAxios.post('/api/login', {
           identification: identification,
           password: password
         });
 
-        const response = await apiRoute.post('/api/decode/auth_token');
+        const response = await apiAxios.post('/api/decode/auth_token');
         console.log(response);
 
         window.location.reload();

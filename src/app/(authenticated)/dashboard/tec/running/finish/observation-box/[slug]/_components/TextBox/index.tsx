@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import apiAxios from 'services/apiAxios';
 
 import { useLocalStorage } from 'contexts/localStorage';
 
@@ -63,7 +63,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          await apiRoute.post('/api/bridge', {
+          await apiAxios.post('/api/bridge', {
             baseURL: '/api/tec/running/finish/concluded',
             protocol: serviceData?.protocol,
             serviceIds: JSON.stringify('selectedItems'),

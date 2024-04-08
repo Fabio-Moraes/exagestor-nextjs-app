@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_FRONTEND_ORIGIN_BASEURL;
-const apiRoute = axios.create({
+const apiAxios = axios.create({
   baseURL,
   headers: {
     'Access-Control-Allow-Origin': baseURL,
@@ -12,4 +12,4 @@ const apiRoute = axios.create({
   withCredentials: true
 });
 
-export default apiRoute;
+export default apiAxios;

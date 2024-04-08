@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import apiAxios from 'services/apiAxios';
 
 import { Container, Table, TableHeader, TableRow, Title, ErrorContainer } from './styles';
 
@@ -34,9 +34,9 @@ export default function NewStock() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const responseUser = await apiRoute.post('/api/decode/auth_token');
+        const responseUser = await apiAxios.post('/api/decode/auth_token');
 
-        const responseStock = await apiRoute.post('/api/bridge', {
+        const responseStock = await apiAxios.post('/api/bridge', {
           baseURL: '/api/tec/stock',
           employee_id: Number(responseUser.data.id)
         });

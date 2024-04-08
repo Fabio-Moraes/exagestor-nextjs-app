@@ -8,7 +8,7 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import apiAxios from 'services/apiAxios';
 
 import iconExa from './_assets/svg/exa_logo.svg';
 
@@ -91,9 +91,9 @@ export default function Details({ params }: SlugType) {
           employee_id: Number(decryptSlug.employeeId)
         };
 
-        const responseDataStock = await apiRoute.post('/api/bridge', paramDataStock);
+        const responseDataStock = await apiAxios.post('/api/bridge', paramDataStock);
 
-        const response = await apiRoute.post('/api/bridge', {
+        const response = await apiAxios.post('/api/bridge', {
           baseURL: '/api/tec/historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),

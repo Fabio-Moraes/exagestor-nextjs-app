@@ -54,6 +54,7 @@ async function fetchAccountStatus(token: string) {
   const baseURL = process.env.NEXT_PUBLIC_BACKEND_ORIGIN_BASEURL;
   const res = await fetch(`${baseURL}/api/auth/data_user`, {
     method: 'POST',
+    cache: 'no-store',
     body: JSON.stringify({ token }),
     headers: {
       'Content-Type': 'application/json'

@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import apiAxios from 'services/apiAxios';
 
 import { useWebSocket } from 'contexts/webSocket';
 
@@ -79,7 +79,7 @@ export default function UpdateStateEmployee({ params }: SlugType) {
         try {
           setIsPopupValue(generateConnectingMessage(retryCount));
 
-          const response = await apiRoute.post('/api/bridge', {
+          const response = await apiAxios.post('/api/bridge', {
             baseURL: '/api/admin/manage/update_status_employee',
             employeeId: String(userId),
             yourPassword: yourPassword,
