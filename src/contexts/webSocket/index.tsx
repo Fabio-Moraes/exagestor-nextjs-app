@@ -28,7 +28,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
   let intervalId: NodeJS.Timeout | null = null;
 
   const connectSocket = async (): Promise<void> => {
-    const { data } = await apiRoute.post('/api/user');
+    const { data } = await apiRoute.post('/api/decode/auth_token');
     return new Promise<void>((resolve, reject) => {
       const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
         transports: ['websocket'],
@@ -81,7 +81,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
 
   const clearConnection = async () => {
     if (socket) {
-      const { data } = await apiRoute.post('/api/user');
+      const { data } = await apiRoute.post('/api/decode/auth_token');
       socket.off(`REMOTE_LOGOUT_USER:${data.id}`);
       socket.off('connect');
       socket.off('error');

@@ -13,13 +13,14 @@ interface Service {
   id: number;
   name: string;
   role: string;
+  status: string;
   identification: string;
   created_at: string;
   admin_id: number;
 }
 
 export default function FinishService() {
-  const [services, setServices] = useState<Service[]>([]);
+  const [employee, setEmployee] = useState<Service[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -40,7 +41,7 @@ export default function FinishService() {
           baseURL: '/api/admin/manage'
         });
 
-        setServices(response.data);
+        setEmployee(response.data);
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {
@@ -80,7 +81,7 @@ export default function FinishService() {
           </span>
         </ErrorContainer>
       ) : (
-        <List service={services} />
+        <List service={employee} />
       )}
     </Container>
   );

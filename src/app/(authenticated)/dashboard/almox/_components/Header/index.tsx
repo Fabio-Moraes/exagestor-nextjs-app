@@ -20,7 +20,7 @@ export function Header() {
   async function fetchUser() {
     for (let count = 0; count < maxRetries; count++) {
       try {
-        const response = await apiRoute.post('/api/user');
+        const response = await apiRoute.post('/api/decode/auth_token');
 
         count = maxRetries;
         setUser(response.data);

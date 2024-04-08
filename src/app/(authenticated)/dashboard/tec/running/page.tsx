@@ -101,7 +101,7 @@ export default function RunningService() {
   };
 
   const refreshFetchServices = async () => {
-    const response = await apiRoute.post('/api/user');
+    const response = await apiRoute.post('/api/decode/auth_token');
     if (socket) {
       socket.on(`RUNNING_REFRESH_TEC:${response.data.id}`, async () => {
         await fetchServices();

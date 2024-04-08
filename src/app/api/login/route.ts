@@ -20,11 +20,7 @@ interface CustomError extends Error {
 export async function POST(request: NextRequest) {
   try {
     const { identification, password }: RequestType = await request.json();
-    const contentJwt = await api.post('/api/auth/signin', {
-      identification,
-      password
-    });
-
+    const contentJwt = await api.post('/api/auth/signin', { identification, password });
     const token = jwt.sign(contentJwt.data, JWT_SECRET_KEY, { expiresIn: '7d' });
     const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
     const response = NextResponse.json({ success: true }, { status: 200 });
@@ -39,8 +35,6 @@ export async function POST(request: NextRequest) {
       ...(appEnv && { sameSite: 'strict' })
     });
 
-    //response.cookies.delete('auth_token');
-
     return response;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -48,13 +42,10 @@ export async function POST(request: NextRequest) {
 
       if (customError.response) {
         const statusCode = customError.response.status;
-
-        if (statusCode === 401) {
-          return NextResponse.json({ error: error.message }, { status: 401 });
-        }
-      } else {
-        return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: statusCode });
       }
+
+      return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
     }
   }
 }

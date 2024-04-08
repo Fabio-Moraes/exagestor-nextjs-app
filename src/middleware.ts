@@ -11,36 +11,55 @@ interface Decoded {
   };
 }
 
+const redirectRole = {
+  admin: '/dashboard/admin/running',
+  tec: '/dashboard/tec/new',
+  almox: '/dashboard/almox/stock'
+};
+
+const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';
+const isPublicEndpoint = (pathname: string) => ['/', '/signin'].includes(pathname);
+
 export default async function middleware(request: NextRequest) {
-  const TOKEN = request.cookies.get('auth_token')?.value;
-  const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';
-
-  const { user }: Decoded = TOKEN ? await jwtDecode(TOKEN) : {};
-
-  const redirect = {
-    admin: '/dashboard/admin/running',
-    tec: '/dashboard/tec/new',
-    almox: '/dashboard/almox/stock'
-  };
+  const cookie = request.cookies.get('auth_token');
+  const token = cookie?.value;
+  const decoded: Decoded = token ? await jwtDecode(token) : {};
+  const account = token && (await fetchAccountStatus(token));
 
   try {
-    await jwtVerify(TOKEN ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
+    await jwtVerify(token ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
 
-    if (user && !request.nextUrl.pathname.includes(user.role)) {
-      return NextResponse.redirect(new URL(redirect[user.role], request.url));
+    if (account?.status === 'inactive') {
+      const response = NextResponse.redirect(new URL('/signin', request.url));
+      response.cookies.delete('auth_token');
+      return response;
     }
 
-    if (user && ['/', '/signin'].includes(request.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL(redirect[user.role], request.url));
+    if (decoded.user && !request.nextUrl.pathname.includes(decoded.user.role)) {
+      return NextResponse.redirect(new URL(redirectRole[decoded.user.role], request.url));
+    }
+
+    if (decoded.user && isPublicEndpoint(request.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL(redirectRole[decoded.user.role], request.url));
     }
 
     return NextResponse.next();
   } catch (error) {
-    if (['/', '/signin'].includes(request.nextUrl.pathname)) {
-      return NextResponse.next();
-    }
+    if (isPublicEndpoint(request.nextUrl.pathname)) return NextResponse.next();
     return NextResponse.redirect(new URL('/signin', request.url));
   }
+}
+
+async function fetchAccountStatus(token: string) {
+  const baseURL = process.env.NEXT_PUBLIC_BACKEND_ORIGIN_BASEURL;
+  const res = await fetch(`${baseURL}/api/auth/data_user`, {
+    method: 'POST',
+    body: JSON.stringify({ token }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return await res.json();
 }
 
 export const config = {

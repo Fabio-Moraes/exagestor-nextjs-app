@@ -113,7 +113,7 @@ export const Form = () => {
           password: password
         });
 
-        const response = await apiRoute.post('/api/user');
+        const response = await apiRoute.post('/api/decode/auth_token');
         console.log(response);
 
         window.location.reload();
@@ -127,6 +127,12 @@ export const Form = () => {
             if (statusCode === 401) {
               setIsPopupValue(null);
               setInvalidCredentials('Credenciais inválidas');
+              break;
+            }
+
+            if (statusCode === 403) {
+              setIsPopupValue(null);
+              setInvalidCredentials('Conta bloqueada');
               break;
             }
           } else {

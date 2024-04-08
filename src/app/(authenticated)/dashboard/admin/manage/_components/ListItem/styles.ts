@@ -24,7 +24,7 @@ export const ItemContainer = styled.div`
   flex-direction: column;
 
   > div:first-child {
-    background-color: #f2f2f0;
+    background-color: #ffffff;
     border-radius: 0 0 0.5rem 0;
     padding: 0.5rem 0;
     min-width: 17rem;

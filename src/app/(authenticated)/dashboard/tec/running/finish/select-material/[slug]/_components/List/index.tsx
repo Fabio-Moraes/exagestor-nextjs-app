@@ -75,7 +75,7 @@ export function List(props: { serviceData: ServiceData }) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const responseDataUser = await apiRoute.post('/api/user');
+        const responseDataUser = await apiRoute.post('/api/decode/auth_token');
         const responseDataStock = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/stock',
           employee_id: Number(responseDataUser.data.id)

@@ -56,18 +56,18 @@ export default function RunningService() {
     setSelectMaterial((prevItems) => filterProtocols(prevItems, serviceProtocols));
   }
 
-  const maxRetries = 4;
-
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   }
 
+  const retries = 4;
+
   const fetchServices = async () => {
     setConnectionError(false);
 
-    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+    for (let index = 0; index < retries; index++) {
       try {
-        setIsPopupValue(generateConnectingMessage(retryCount));
+        setIsPopupValue(generateConnectingMessage(index));
 
         const response = await apiRoute.post('/api/bridge', {
           baseURL: '/api/admin/running'
@@ -86,7 +86,7 @@ export default function RunningService() {
               break;
             }
 
-            if (retryCount === maxRetries) {
+            if (index === retries) {
               setConnectionError(true);
               setIsPopupValue(null);
             } else {

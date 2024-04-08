@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { JWT_SECRET_KEY } from '../../../constants';
+import { JWT_SECRET_KEY } from '../../../../constants';
 
 import { jwtVerify } from 'jose';
 import jwtDecode from 'jwt-decode';
@@ -10,6 +10,7 @@ interface Decoded {
     id: number;
     name: string;
     role: string;
+    accountStatus: string;
   };
 }
 
@@ -33,13 +34,10 @@ export async function POST(request: NextRequest) {
 
       if (customError.response) {
         const statusCode = customError.response.status;
-
-        if (statusCode === 401) {
-          return NextResponse.json({ error: error.message }, { status: 401 });
-        }
-      } else {
-        return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: statusCode });
       }
+
+      return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
     }
   }
 }

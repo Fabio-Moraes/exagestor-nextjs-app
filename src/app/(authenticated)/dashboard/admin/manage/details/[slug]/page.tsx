@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -77,7 +77,7 @@ export default function Details({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
 
-  const router = useRouter();
+  //const router = useRouter();
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -130,12 +130,12 @@ export default function Details({ params }: SlugType) {
   useEffect(() => {
     fetchServices();
 
-    window.history.pushState(null, '', window.location.href);
+    /*   window.history.pushState(null, '', window.location.href);
     window.onpopstate = function () {
       window.history.pushState(null, '', window.location.href);
-      router.push(`/dashboard/admin/manage/general-historic`);
+      router.push(`/dashboard/admin/manage`);
     };
-
+ */
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);

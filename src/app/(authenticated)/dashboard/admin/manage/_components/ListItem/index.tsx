@@ -30,15 +30,24 @@ interface ListItemProps {
   id: number;
   name: string;
   role: string;
+  status: string;
   identification: string;
   created_at: string;
   connectedUsers: ConnectedUser[];
   websocketConnected: boolean;
 }
 
-const ListItem: React.FC<ListItemProps> = (props) => {
-  const { id, name, role, identification, created_at, connectedUsers, websocketConnected } =
-    props;
+const ListItem = (props: ListItemProps) => {
+  const {
+    id,
+    name,
+    role,
+    status,
+    identification,
+    created_at,
+    connectedUsers,
+    websocketConnected
+  } = props;
 
   const router = useRouter();
   const socket = useWebSocket();
@@ -53,18 +62,22 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 
   const connected = connectedUsers.find((user) => Number(user.userid) === Number(id));
 
-  const ProfileUser = ({ status = 'offline' }) => {
+  const ProfileUser = ({ connectionStatus = 'offline' }) => {
+    if (status === 'inactive') {
+      return <OfflineText>Inativado</OfflineText>;
+    }
+
     if (!websocketConnected) {
       return <ConnectedText>Conectando-se ao servidor</ConnectedText>;
     }
 
-    const statusUser = {
+    const connectionStatusUser = {
       online: <OnlineText>Online</OnlineText>,
       offline: <OfflineText>Offline</OfflineText>,
       hidden: <HiddenText>Em segundo plano</HiddenText>
     } as { [key: string]: JSX.Element };
 
-    return statusUser[status];
+    return connectionStatusUser[connectionStatus];
   };
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -116,6 +129,24 @@ const ListItem: React.FC<ListItemProps> = (props) => {
     router.push(`/dashboard/admin/manage/historic/${encryptSlug}`, { scroll: false });
   }
 
+  function fetchChangePassword() {
+    const encryptSlug = encryptObject({ userId: id, userName: name });
+    handleCloseDialog();
+    router.push(`/dashboard/admin/manage/change_password/${encryptSlug}`, { scroll: false });
+  }
+
+  function fetchUpdateStatusEmployee(accountStatus: 'inactive' | 'active') {
+    const encryptSlug = encryptObject({
+      userId: id,
+      userName: name,
+      accountStatus: accountStatus
+    });
+    handleCloseDialog();
+    router.push(`/dashboard/admin/manage/update_status_employee/${encryptSlug}`, {
+      scroll: false
+    });
+  }
+
   const selectedRole = {
     tec: 'TÉCNICO'
   } as { [key: string]: string };
@@ -127,11 +158,15 @@ const ListItem: React.FC<ListItemProps> = (props) => {
           whileHover={{ scale: 0.98 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleOpenDialog}
+          style={{
+            /*  opacity: status === 'inactive' ? 0.8 : 1 */
+            filter: status === 'inactive' ? 'saturate(0)' : 'contrast(2)'
+          }}
         >
           <ItemContainer>
             <div>
               <p>{name.toUpperCase()}</p>
-              <ProfileUser status={connected?.status} />
+              <ProfileUser connectionStatus={connected?.status} />
             </div>
             <div>
               <p>
@@ -144,21 +179,32 @@ const ListItem: React.FC<ListItemProps> = (props) => {
         </Container>
       </AnimatePresence>
       <Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
-        <button onClick={fetchStock}>
-          <p>VISUALIZAR CARGA</p>
-        </button>
-        <button onClick={fetchConcludedServices}>
-          <p>NOVO SERVIÇO</p>
-        </button>
-        <button onClick={fetchHistoric}>
-          <p>HISTÓRICO</p>
-        </button>
-        <button>
-          <p>INATIVAR FUNCIONÁRIO</p>
-        </button>
-        <button>
-          <p>ALTERAR SENHA</p>
-        </button>
+        <>
+          <button onClick={fetchStock}>
+            <p>VISUALIZAR CARGA</p>
+          </button>
+          {status !== 'inactive' && (
+            <button onClick={fetchConcludedServices}>
+              <p>NOVO SERVIÇO</p>
+            </button>
+          )}
+          <button onClick={fetchHistoric}>
+            <p>HISTÓRICO</p>
+          </button>
+          {status === 'inactive' ? (
+            <button onClick={() => fetchUpdateStatusEmployee('active')}>
+              <p>REATIVAR FUNCIONÁRIO</p>
+            </button>
+          ) : (
+            <button onClick={() => fetchUpdateStatusEmployee('inactive')}>
+              <p>INATIVAR FUNCIONÁRIO</p>
+            </button>
+          )}
+          <button onClick={fetchChangePassword}>
+            <p>ALTERAR SENHA</p>
+          </button>
+        </>
+
         {connected && (
           <button
             onClick={() => {

@@ -21,6 +21,7 @@ interface Service {
   id: number;
   name: string;
   role: string;
+  status: string;
   identification: string;
   created_at: string;
 }

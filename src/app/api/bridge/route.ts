@@ -33,13 +33,10 @@ export async function POST(request: NextRequest) {
 
       if (customError.response) {
         const statusCode = customError.response.status;
-
-        if (statusCode === 401) {
-          return NextResponse.json({ error: error.message }, { status: 401 });
-        }
-      } else {
-        return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: statusCode });
       }
+
+      return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
     }
   }
 }

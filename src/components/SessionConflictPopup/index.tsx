@@ -34,7 +34,7 @@ export function SessionConflictPopup() {
   useWebSocketListenerOn('SESSION_CONFLICT_DETECTED', handleOpenDialog);
 
   const user = async () => {
-    const { data } = await apiRoute.post('/api/user');
+    const { data } = await apiRoute.post('/api/decode/auth_token');
     setDataUser(data);
   };
 

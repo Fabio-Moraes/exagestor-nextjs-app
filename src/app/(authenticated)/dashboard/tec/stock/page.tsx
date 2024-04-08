@@ -34,7 +34,7 @@ export default function NewStock() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const responseUser = await apiRoute.post('/api/user');
+        const responseUser = await apiRoute.post('/api/decode/auth_token');
 
         const responseStock = await apiRoute.post('/api/bridge', {
           baseURL: '/api/tec/stock',
