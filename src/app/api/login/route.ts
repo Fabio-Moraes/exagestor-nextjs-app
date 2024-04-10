@@ -19,8 +19,8 @@ interface CustomError extends Error {
 
 export async function POST(request: NextRequest) {
   try {
-    const nextRequest: RequestType = await request.json();
-    const contentJwt = await backendApi.post('/api/auth/signin', nextRequest);
+    const { identification, password }: RequestType = await request.json();
+    const contentJwt = await backendApi.post('/api/auth/signin', { identification, password });
     const token = jwt.sign(contentJwt.data, JWT_SECRET_KEY, { expiresIn: '7d' });
     const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
     const response = NextResponse.json({ success: true }, { status: 200 });
