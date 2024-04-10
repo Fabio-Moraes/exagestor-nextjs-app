@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { List } from './_components/List';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import { Container, ErrorContainer, Title } from './styles';
 
@@ -37,7 +37,7 @@ export default function FinishService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiRoute.post('/api/bridge', {
+        const response = await internalApi.post('/api/bridge', {
           baseURL: '/api/admin/manage'
         });
 

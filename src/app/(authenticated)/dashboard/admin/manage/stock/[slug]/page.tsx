@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import { Container, Table, TableHeader, TableRow, Title, ErrorContainer } from './styles';
 
@@ -48,7 +48,7 @@ export default function NewStock({ params }: SlugType) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const responseStock = await apiRoute.post('/api/bridge', {
+        const responseStock = await internalApi.post('/api/bridge', {
           baseURL: '/api/tec/stock',
           employee_id: Number(userId)
         });

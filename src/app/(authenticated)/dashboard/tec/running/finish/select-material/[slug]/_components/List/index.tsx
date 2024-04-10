@@ -8,7 +8,7 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import { ListItem } from '../ListItem';
 
@@ -75,8 +75,8 @@ export function List(props: { serviceData: ServiceData }) {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const responseDataUser = await apiRoute.post('/api/decode/auth_token');
-        const responseDataStock = await apiRoute.post('/api/bridge', {
+        const responseDataUser = await internalApi.post('/api/decode/auth_token');
+        const responseDataStock = await internalApi.post('/api/bridge', {
           baseURL: '/api/tec/stock',
           employee_id: Number(responseDataUser.data.id)
         });

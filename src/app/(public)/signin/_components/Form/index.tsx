@@ -1,12 +1,11 @@
 'use client';
 
-//import { useRouter } from 'next/navigation';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import alert from './_assets/svg/alert.svg';
 import exa from './_assets/svg/exa_logo.svg';
@@ -55,12 +54,10 @@ export const Form = () => {
     };
   });
 
-  //const router = useRouter();
-
   const handleChangeCnpj = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const formattedCnpj = value
-      .replace(/[^\d]/g, '') // Remove todos os caracteres não numéricos
+      .replace(/[^\d]/g, '')
       .replace(/^(\d{2})(\d)/, '$1.$2')
       .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
       .replace(/\.(\d{3})(\d)/, '.$1/$2')
@@ -72,7 +69,7 @@ export const Form = () => {
   const handleChangeCpf = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const formattedCpf = value
-      .replace(/[^\d]/g, '') // Remove todos os caracteres não numéricos
+      .replace(/[^\d]/g, '')
       .replace(/^(\d{3})(\d)/, '$1.$2')
       .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
       .replace(/\.(\d{3})(\d)/, '.$1-$2')
@@ -108,12 +105,12 @@ export const Form = () => {
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );
 
-        await apiRoute.post('/api/login', {
+        await internalApi.post('/api/login', {
           identification: identification,
           password: password
         });
 
-        const response = await apiRoute.post('/api/decode/auth_token');
+        const response = await internalApi.post('/api/decode/auth_token');
         console.log(response);
 
         window.location.reload();

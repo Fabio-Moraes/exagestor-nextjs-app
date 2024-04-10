@@ -2,7 +2,7 @@
 
 import { useEffect, useRef /* , useEffect */, useState } from 'react';
 
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import * as animationData from './_assets/lottie/animation.json';
 
@@ -34,12 +34,12 @@ export function SessionConflictPopup() {
   useWebSocketListenerOn('SESSION_CONFLICT_DETECTED', handleOpenDialog);
 
   const user = async () => {
-    const { data } = await apiRoute.post('/api/decode/auth_token');
+    const { data } = await internalApi.post('/api/decode/auth_token');
     setDataUser(data);
   };
 
   const disconnected = async () => {
-    await apiRoute.post('/api/logout');
+    await internalApi.post('/api/logout');
     if (socket) socket.disconnect();
     window.location.reload();
   };

@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
-interface CustomError extends Error {
+type CustomError = {
   response?: {
     status: number;
   };
-}
+} & Error;
 
 export async function POST() {
   try {

@@ -18,7 +18,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Button = styled.button<{ $path?: boolean }>`
+export const WrapperLink = styled.div<{ $path?: boolean }>`
   display: flex;
   position: static;
   flex-direction: column;
@@ -36,6 +36,7 @@ export const Button = styled.button<{ $path?: boolean }>`
     font-weight: bold;
     font-size: 1.2rem;
     overflow-wrap: break-word;
+    color: #000;
   }
 
   ${({ $path = '' }) => {

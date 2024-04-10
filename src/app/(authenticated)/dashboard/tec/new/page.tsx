@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
@@ -150,7 +150,7 @@ export default function NewService() {
             classificationF
           });
 
-          const response = await apiRoute.post('/api/bridge', {
+          const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/tec/new',
             clientName: name,
             city: selectedCity,

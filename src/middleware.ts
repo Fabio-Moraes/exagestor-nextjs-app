@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import jwtDecode from 'jwt-decode';
 
-interface Decoded {
+type Decoded = {
   user?: {
     id: number;
     name: string;
     role: 'admin' | 'tec' | 'almox';
   };
-}
+};
 
 const redirectRole = {
   admin: '/dashboard/admin/running',

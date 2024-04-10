@@ -5,28 +5,27 @@ import { JWT_SECRET_KEY } from '../../../../constants';
 import { jwtVerify } from 'jose';
 import jwtDecode from 'jwt-decode';
 
-interface Decoded {
+type Decoded = {
   user?: {
     id: number;
     name: string;
     role: string;
     accountStatus: string;
   };
-}
+};
 
-interface CustomError extends Error {
+type CustomError = {
   response?: {
     status: number;
   };
-}
+} & Error;
 
 export async function POST(request: NextRequest) {
   const TOKEN = request.cookies.get('auth_token')?.value;
-
   const { user }: Decoded = TOKEN ? await jwtDecode(TOKEN) : {};
+
   try {
     await jwtVerify(TOKEN ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
-
     return NextResponse.json({ ...user }, { status: 200 });
   } catch (error: unknown) {
     if (error instanceof Error) {

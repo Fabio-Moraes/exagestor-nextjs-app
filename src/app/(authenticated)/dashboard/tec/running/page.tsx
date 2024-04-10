@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import { useLocalStorage } from 'contexts/localStorage';
 import { useWebSocket } from 'contexts/webSocket';
@@ -71,7 +71,7 @@ export default function RunningService() {
       try {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
-        const response = await apiRoute.post('/api/bridge', {
+        const response = await internalApi.post('/api/bridge', {
           baseURL: '/api/tec/running'
         });
 
@@ -101,7 +101,7 @@ export default function RunningService() {
   };
 
   const refreshFetchServices = async () => {
-    const response = await apiRoute.post('/api/decode/auth_token');
+    const response = await internalApi.post('/api/decode/auth_token');
     if (socket) {
       socket.on(`RUNNING_REFRESH_TEC:${response.data.id}`, async () => {
         await fetchServices();

@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import api from 'services/apiBackend';
+import { backendApi } from 'services/apiAxios';
 
 import { JWT_SECRET_KEY } from '../../../constants';
 
 import { jwtVerify } from 'jose';
 
-interface CustomError extends Error {
+type CustomError = {
   response?: {
     status: number;
   };
-}
+} & Error;
 
-interface RequestType {
+type RequestType = {
   baseURL: string;
   ['key']: string | number;
-}
+};
 
 export async function POST(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
@@ -23,9 +23,7 @@ export async function POST(request: NextRequest) {
 
   try {
     await jwtVerify(token ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
-
-    const { data } = await api.post(baseURL, { token, ...res });
-
+    const { data } = await backendApi.post(baseURL, { token, ...res });
     return NextResponse.json(data, { status: 200 });
   } catch (error: unknown) {
     if (error instanceof Error) {

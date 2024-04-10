@@ -9,7 +9,7 @@ import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import ListItem from '../ListItem';
 
@@ -81,7 +81,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
             retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
           );
 
-          const response = await apiRoute.post('/api/bridge', {
+          const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/almox/stock/select-employee/insert-material',
             employee_id: employeeId,
             insert: decryptSlug.selectedMaterials

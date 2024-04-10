@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
-import apiRoute from 'services/apiRoute';
+import { internalApi } from 'services/apiAxios';
 
 import { useWebsocketConnected } from 'store/websocketConnected';
 
@@ -65,7 +65,7 @@ export function ButtonBar({ service }: { service: Service }) {
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        await apiRoute.post('/api/bridge', {
+        await internalApi.post('/api/bridge', {
           baseURL: `/api/admin/running/${status === 'active' ? 'pause' : 'start'}`,
           employeeId: String(employee_id),
           protocol: protocol
@@ -96,7 +96,7 @@ export function ButtonBar({ service }: { service: Service }) {
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        await apiRoute.post('/api/bridge', {
+        await internalApi.post('/api/bridge', {
           baseURL: '/api/admin/running/start',
           employeeId: String(employee_id),
           protocol: protocol
@@ -126,7 +126,7 @@ export function ButtonBar({ service }: { service: Service }) {
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        await apiRoute.post('/api/bridge', {
+        await internalApi.post('/api/bridge', {
           baseURL: '/api/admin/running/cancel',
           employeeId: String(employee_id),
           protocol: protocol
