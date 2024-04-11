@@ -84,7 +84,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
             updateCount: serviceData?.update_count + 1
           });
 
-          router.push(`/dashboard/admin/manage/general-historic/details/${encryptSlug}`);
+          router.push(`/dashboard/admin/manage/details/${encryptSlug}`);
           break;
         } catch (error: unknown) {
           if (error instanceof Error) {
