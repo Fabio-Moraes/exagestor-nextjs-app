@@ -8,7 +8,7 @@ import iconFlagAnalysis from './_assets/svg/flag_analysis.svg';
 import iconPin from './_assets/svg/pin.svg';
 import iconUser from './_assets/svg/user.svg';
 
-import { Container } from './styles';
+import * as S from './styles';
 
 interface RunningService {
   id: number;
@@ -67,7 +67,7 @@ const StatusOptions = {
 
 export function CardHeader({ service }: { service: RunningService }) {
   return (
-    <Container $color={service?.status === 'analysis' ? '#e9c80f' : '#5e9987'}>
+    <S.Container $color={service?.status === 'analysis' ? '#e9c80f' : '#5e9987'}>
       <div>
         <div>
           <div>
@@ -89,13 +89,12 @@ export function CardHeader({ service }: { service: RunningService }) {
             loading="eager"
             alt="Axa"
             style={{
-              //margin: '0.2rem',
               width: '1.8rem',
               height: 'auto'
             }}
           />
         </button>
       </div>
-    </Container>
+    </S.Container>
   );
 }

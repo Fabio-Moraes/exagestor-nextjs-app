@@ -1,4 +1,4 @@
-import { Container } from './styles';
+import * as S from './styles';
 
 interface RunningService {
   id: number;
@@ -32,7 +32,7 @@ export function CardContent({ service }: { service: RunningService }) {
   const createdAt = formatDate(service.created_at);
 
   return (
-    <Container>
+    <S.Container>
       <div>
         <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
         <p>CIDADE: {service?.city.toUpperCase()}</p>
@@ -49,6 +49,6 @@ export function CardContent({ service }: { service: RunningService }) {
         </p>
         <p>ATUALIZAÇÃO DE STATUS: {service?.update_count}</p>
       </div>
-    </Container>
+    </S.Container>
   );
 }

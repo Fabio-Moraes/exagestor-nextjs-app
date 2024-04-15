@@ -1,17 +1,17 @@
 import { Form } from './_components/Form';
 
-import { Container, Main, Wrapper } from './styles';
+import * as S from './styles';
 
 export default function SignIn() {
   return (
-    <Container>
-      <Wrapper>
-        <Main>
+    <S.Container>
+      <S.Wrapper>
+        <S.Main>
           <div>
             <Form />
           </div>
-        </Main>
-      </Wrapper>
-    </Container>
+        </S.Main>
+      </S.Wrapper>
+    </S.Container>
   );
 }

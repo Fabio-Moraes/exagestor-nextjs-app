@@ -13,7 +13,7 @@ export const Container = styled(motion.div)`
   border-radius: 0.7rem;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
   min-height: 18rem;
 `;
 

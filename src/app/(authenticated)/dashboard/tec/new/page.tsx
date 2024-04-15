@@ -11,16 +11,7 @@ import { internalApi } from 'services/apiAxios';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
-import {
-  Button,
-  CheckboxButton,
-  Container,
-  FormContainer,
-  Input,
-  Option,
-  Select,
-  Title
-} from './styles';
+import * as S from './styles';
 
 const cities = ['Curitiba', 'Paranaguá', 'Matinhos', 'Ponta Grossa'];
 
@@ -196,10 +187,10 @@ export default function NewService() {
   };
 
   return (
-    <Container>
-      <Title>Novo Serviço</Title>
-      <FormContainer onSubmit={handleSubmit}>
-        <Input
+    <S.Container>
+      <S.Title>Novo Serviço</S.Title>
+      <S.FormContainer onSubmit={handleSubmit}>
+        <S.Input
           type="text"
           id="requester"
           placeholder="Informe o nome do solicitante"
@@ -207,27 +198,27 @@ export default function NewService() {
           onChange={handleName}
         />
 
-        <Select
+        <S.Select
           id="selectedCity"
           style={{ color: selectedCity ? '#000' : '#666' }}
           value={selectedCity}
           onChange={handleCityChange}
         >
-          <Option value="">Selecione uma cidade</Option>
+          <S.Option value="">Selecione uma cidade</S.Option>
           {cities.map((city, index) => (
-            <Option key={index.toString()} value={city}>
+            <S.Option key={index.toString()} value={city}>
               {city}
-            </Option>
+            </S.Option>
           ))}
-        </Select>
-        <Input
+        </S.Select>
+        <S.Input
           type="text"
           id="serviceOriginAddress"
           placeholder="Endereço de origem do serviço"
           value={address}
           onChange={handleServiceOriginAddressChange}
         />
-        <Input
+        <S.Input
           type="text"
           id="boxOrCableNomenclature"
           placeholder="Nomenclatura de caixa ou cabo"
@@ -236,27 +227,27 @@ export default function NewService() {
         />
 
         <div>
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={classificationF}
             onClick={handleCheckboxClickClassF}
           >
             <div />
             <span>Classe F</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={classificationL}
             onClick={handleCheckboxClickClassL}
           >
             <div />
             <span>Classe L</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
         </div>
 
-        <Button type="submit">Iniciar Serviço</Button>
-      </FormContainer>
+        <S.Button type="submit">Iniciar Serviço</S.Button>
+      </S.FormContainer>
 
       {modalValue && !isPopupValuesetIsPopupValue && (
         <Modal icon={iconSvgModal} message={modalValue} />
@@ -264,6 +255,6 @@ export default function NewService() {
       {isPopupValuesetIsPopupValue && (
         <FullScreenLoading message={isPopupValuesetIsPopupValue} />
       )}
-    </Container>
+    </S.Container>
   );
 }

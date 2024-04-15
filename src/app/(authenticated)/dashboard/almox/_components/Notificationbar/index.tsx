@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useWebsocketConnected } from 'store/websocketConnected';
 
-import { Container } from './styles';
+import * as S from './styles';
 
 export function Notificationbar() {
   const [firstPercentageRandom, setFirstPercentageRandom] = useState('0%');
@@ -34,7 +34,7 @@ export function Notificationbar() {
   return (
     <AnimatePresence>
       {shouldRender && (
-        <Container
+        <S.Container
           $fullProgress={websocketConnected}
           style={
             {
@@ -62,7 +62,7 @@ export function Notificationbar() {
           }}
         >
           <p>Conectando-se ao servidor</p>
-        </Container>
+        </S.Container>
       )}
     </AnimatePresence>
   );

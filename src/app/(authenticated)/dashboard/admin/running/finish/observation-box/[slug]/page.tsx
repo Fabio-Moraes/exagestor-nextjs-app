@@ -11,7 +11,7 @@ import { internalApi } from 'services/apiAxios';
 
 import { useLocalStorage } from 'contexts/localStorage';
 
-import { Container, ErrorContainer, Title } from './styles';
+import * as S from './styles';
 
 interface SlugType {
   params: {
@@ -97,26 +97,26 @@ export default function FinishService({ params }: SlugType) {
   }, []);
 
   return (
-    <Container>
-      <Title>
+    <S.Container>
+      <S.Title>
         <h1>Campo de Observação</h1>
         {isLoading || !serviceData[0]?.protocol ? (
           <LineSkaleton width="30rem" />
         ) : (
           <span>PROTOCOLO: {serviceData[0]?.protocol}</span>
         )}
-      </Title>
+      </S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
         <TextBox serviceData={serviceData[0]} />
       )}
-    </Container>
+    </S.Container>
   );
 }

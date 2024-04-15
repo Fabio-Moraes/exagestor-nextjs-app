@@ -11,15 +11,7 @@ import { internalApi } from 'services/apiAxios';
 
 import { useLocalStorage } from 'contexts/localStorage';
 
-import {
-  Button,
-  ListContainer,
-  InputContainer,
-  Input,
-  SkaletonInput,
-  ContainerCounter,
-  ErrorContainer
-} from './styles';
+import * as S from './styles';
 
 interface ServiceData {
   id: number;
@@ -183,25 +175,25 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
     <>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
-        <ListContainer>
-          <InputContainer>
+        <S.ListContainer>
+          <S.InputContainer>
             {isLoading || !serviceData?.protocol ? (
-              <SkaletonInput>
+              <S.SkaletonInput>
                 <LineSkaleton width="100%" />
                 <LineSkaleton width="100%" />
                 <LineSkaleton width="65%" />
                 <LineSkaleton width="85%" />
                 <LineSkaleton width="75%" />
-              </SkaletonInput>
+              </S.SkaletonInput>
             ) : (
-              <Input
+              <S.Input
                 ref={textareaRef}
                 value={observationBox[serviceData?.protocol] ?? ''}
                 onChange={handleDescriptionChange}
@@ -210,19 +202,19 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
                 contentEditable="true"
               />
             )}
-          </InputContainer>
-          <ContainerCounter>
+          </S.InputContainer>
+          <S.ContainerCounter>
             {isLoading || !serviceData?.protocol ? (
               <LineSkaleton width="3rem" />
             ) : (
               <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
             )}
-          </ContainerCounter>
+          </S.ContainerCounter>
           <div>
-            <Button onClick={() => router.back()}>Voltar</Button>
-            <Button onClick={() => fetchConcludedMaterial()}>Concluir</Button>
+            <S.Button onClick={() => router.back()}>Voltar</S.Button>
+            <S.Button onClick={() => fetchConcludedMaterial()}>Concluir</S.Button>
           </div>
-        </ListContainer>
+        </S.ListContainer>
       )}
     </>
   );

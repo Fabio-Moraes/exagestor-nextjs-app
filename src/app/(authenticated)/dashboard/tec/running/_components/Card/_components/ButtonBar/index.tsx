@@ -16,7 +16,7 @@ import docSvg from './_assets/svg/doc.svg';
 import pauseSvg from './_assets/svg/pause.svg';
 import playSvg from './_assets/svg/play.svg';
 
-import { Container, Wrapper } from './styles';
+import * as S from './styles';
 
 interface RunningService {
   id: number;
@@ -136,8 +136,8 @@ export function ButtonBar({ service }: { service: RunningService }) {
   const startAnimation = Boolean(runningLoad || !websocketConnected);
 
   return (
-    <Container $animation={startAnimation} $color={'#3f7971'}>
-      <Wrapper>
+    <S.Container $animation={startAnimation} $color={'#3f7971'}>
+      <S.Wrapper>
         <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
           <Image {...propsImage} src={checkSvg} alt="check" />
         </button>
@@ -150,7 +150,7 @@ export function ButtonBar({ service }: { service: RunningService }) {
         <button rel="preload" style={styleButtonClose} onClick={onClickButtonCancel}>
           <Image {...propsImage} src={closeSvg} alt="close" />
         </button>
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }

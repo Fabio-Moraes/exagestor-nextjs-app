@@ -1,32 +1,30 @@
 import React from 'react';
 
 import { Header } from './_components/Header';
-//import { HeaderFirst } from './_components/HeaderFirst';
 import { LeftSidebar } from './_components/LeftSidebar';
 import { Notificationbar } from './_components/Notificationbar';
 import { RightSidebar } from './_components/RightSidebar';
 import { Toolbar } from './_components/Toolbar';
 import { Footer } from 'components/Footer';
 
-import { Container, Main, Wrapper, Stickybar } from '../styles';
+import * as S from '../styles';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Container>
-      <Wrapper>
+    <S.Container>
+      <S.Wrapper>
         <LeftSidebar />
-        <Main>
+        <S.Main>
           <Header />
-          {/* <HeaderFirst /> */}
-          <Stickybar>
+          <S.Stickybar>
             <Toolbar />
             <Notificationbar />
-          </Stickybar>
+          </S.Stickybar>
           {children}
           <Footer />
-        </Main>
+        </S.Main>
         <RightSidebar />
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }

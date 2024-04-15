@@ -14,7 +14,7 @@ import { useWebSocket } from 'contexts/webSocket';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
-import { Button, Container, FormContainer, Input, Title } from './styles';
+import * as S from './styles';
 
 interface SlugType {
   params: {
@@ -138,22 +138,22 @@ export default function UpdateStateEmployee({ params }: SlugType) {
   } as { [key: string]: string };
 
   return (
-    <Container>
-      <Title>
+    <S.Container>
+      <S.Title>
         {selectedStateAccount[accountStatus]} {userName && `- ${userName}`}
-      </Title>
-      <FormContainer onSubmit={handleSubmit}>
-        <Input
+      </S.Title>
+      <S.FormContainer onSubmit={handleSubmit}>
+        <S.Input
           type="password"
           placeholder="Digite sua senha de administrador"
           value={yourPassword}
           onChange={(e) => setYourPassword(e.target.value.trim())}
         />
 
-        <Button type="submit">{selectedStateAccount[accountStatus]}</Button>
-      </FormContainer>
+        <S.Button type="submit">{selectedStateAccount[accountStatus]}</S.Button>
+      </S.FormContainer>
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-    </Container>
+    </S.Container>
   );
 }

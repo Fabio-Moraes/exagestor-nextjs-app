@@ -2,7 +2,7 @@ import { ButtonBar } from './_components/ButtonBar';
 import { CardContent } from './_components/CardContent';
 import { CardHeader } from './_components/CardHeader';
 
-import { Wrapper, Container } from './styles';
+import * as S from './styles';
 
 interface RunningService {
   id: number;
@@ -22,12 +22,12 @@ interface RunningService {
 
 export function Card({ service }: { service: RunningService }) {
   return (
-    <Container>
+    <S.Container>
       <CardHeader service={service} />
-      <Wrapper>
+      <S.Wrapper>
         <CardContent service={service} />
         <ButtonBar service={service} />
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }

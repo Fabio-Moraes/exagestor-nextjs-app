@@ -17,7 +17,7 @@ import pauseSvg from './_assets/svg/pause.svg';
 import playSvg from './_assets/svg/play.svg';
 import refreshSvg from './_assets/svg/refresh.svg';
 
-import { Container, Wrapper } from './styles';
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -181,8 +181,8 @@ export function ButtonBar({ service }: { service: Service }) {
     status === 'analysis' ? onClickButtonRefresh : onClickButtonPlayPause;
 
   return (
-    <Container $animation={startAnimation} $color={'#3f7971'}>
-      <Wrapper>
+    <S.Container $animation={startAnimation} $color={'#3f7971'}>
+      <S.Wrapper>
         <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
           <Image {...propsImage} src={checkSvg} alt="check" />
         </button>
@@ -199,7 +199,7 @@ export function ButtonBar({ service }: { service: Service }) {
         <button rel="preload" style={styleButtonClose} onClick={onClickButtonCancel}>
           <Image {...propsImage} src={closeSvg} alt="close" />
         </button>
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }

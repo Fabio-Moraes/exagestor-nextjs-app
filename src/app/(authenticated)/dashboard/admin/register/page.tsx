@@ -11,7 +11,7 @@ import { internalApi } from 'services/apiAxios';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
-import { Button, CheckboxButton, Container, FormContainer, Input, Title } from './styles';
+import * as S from './styles';
 
 export default function NewRegister() {
   const [identification, setIdentification] = useState('');
@@ -120,7 +120,7 @@ export default function NewRegister() {
           setIsPopupValue(generateConnectingMessage(retryCount));
 
           const response = await internalApi.post('/api/bridge', {
-            baseURL: '/api/admin/register',
+            baseURL: '/api/admin/register-employee',
             name: name,
             password: password,
             identification: identification,
@@ -172,10 +172,10 @@ export default function NewRegister() {
   };
 
   return (
-    <Container>
-      <Title>Novo Funcionário(a)</Title>
-      <FormContainer onSubmit={handleSubmit}>
-        <Input
+    <S.Container>
+      <S.Title>Novo Funcionário(a)</S.Title>
+      <S.FormContainer onSubmit={handleSubmit}>
+        <S.Input
           type="text"
           id="Nome"
           placeholder="Nome completo"
@@ -184,7 +184,7 @@ export default function NewRegister() {
         />
 
         <div>
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={cpfOrCnpj === 'CNPJ'}
             onClick={() => {
@@ -194,9 +194,9 @@ export default function NewRegister() {
           >
             <div />
             <span>Jurídica</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={cpfOrCnpj === 'CPF'}
             onClick={() => {
@@ -206,21 +206,21 @@ export default function NewRegister() {
           >
             <div />
             <span>Física</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
         </div>
-        <Input
+        <S.Input
           type="numeric"
           placeholder={`${cpfOrCnpj}`}
           value={identification}
           onChange={cpfOrCnpj === 'CNPJ' ? handleChangeCnpj : handleChangeCpf}
         />
-        <Input
+        <S.Input
           type="password"
           placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value.trim())}
         />
-        <Input
+        <S.Input
           type="password"
           placeholder="Confirme a senha"
           value={passwordCheck}
@@ -228,7 +228,7 @@ export default function NewRegister() {
         />
 
         <div>
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={accountType === 'TEC'}
             onClick={() => {
@@ -237,9 +237,9 @@ export default function NewRegister() {
           >
             <div />
             <span>TEC</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={accountType === 'DIR'}
             onClick={() => {
@@ -248,9 +248,9 @@ export default function NewRegister() {
           >
             <div />
             <span>DIR</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={accountType === 'ALMOX'}
             onClick={() => {
@@ -259,9 +259,9 @@ export default function NewRegister() {
           >
             <div />
             <span>ALMOX</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={accountType === 'COP'}
             onClick={() => {
@@ -270,14 +270,14 @@ export default function NewRegister() {
           >
             <div />
             <span>COP</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
         </div>
 
-        <Button type="submit">Registrar</Button>
-      </FormContainer>
+        <S.Button type="submit">Registrar</S.Button>
+      </S.FormContainer>
 
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-    </Container>
+    </S.Container>
   );
 }

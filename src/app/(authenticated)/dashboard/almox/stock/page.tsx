@@ -7,16 +7,7 @@ import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import {
-  Container,
-  Table,
-  TableHeader,
-  TableRow,
-  Button,
-  Title,
-  CheckboxButton,
-  ErrorContainer
-} from './styles';
+import * as S from './styles';
 
 interface Materials {
   id: number;
@@ -96,19 +87,19 @@ export default function NewStock() {
   const encryptSlug = encryptObject({ selectedMaterials });
 
   return (
-    <Container>
-      <Title>Almoxarifado</Title>
+    <S.Container>
+      <S.Title>Almoxarifado</S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
         <>
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={checkbox === 'selectMaterial'}
             onClick={() => {
@@ -117,9 +108,9 @@ export default function NewStock() {
           >
             <div />
             <span>Montar Carga</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={checkbox === 'manageStock'}
             onClick={() => {
@@ -128,9 +119,9 @@ export default function NewStock() {
           >
             <div />
             <span>Gerenciar Estoque</span>
-          </CheckboxButton>
-          <Table>
-            <TableHeader>
+          </S.CheckboxButton>
+          <S.Table>
+            <S.TableHeader>
               <div>
                 <span>MATERIAIS</span>
               </div>
@@ -143,13 +134,13 @@ export default function NewStock() {
               <div>
                 <span>CÓDIGO</span>
               </div>
-            </TableHeader>
+            </S.TableHeader>
             {materials &&
               materials.map((item, index) => (
-                <TableRow
+                <S.TableRow
                   $isSelected={
                     checkbox === 'selectMaterial' && selectedTableRows.includes(item.id)
-                  } // Assuming each item has a unique id
+                  }
                   onClick={() => {
                     if (checkbox === 'selectMaterial' && Number(item.quantity_value) > 0) {
                       toggleRowSelection(item.id);
@@ -169,20 +160,20 @@ export default function NewStock() {
                   <div>
                     <span>{item.product_code}</span>
                   </div>
-                </TableRow>
+                </S.TableRow>
               ))}
-          </Table>
+          </S.Table>
           {selectedTableRows.length > 0 && checkbox === 'selectMaterial' && (
-            <Button
+            <S.Button
               onClick={() => {
                 router.push(`/dashboard/almox/stock/select-material/${encryptSlug}`);
               }}
             >
               Selecionar Quantidade ({selectedTableRows.length})
-            </Button>
+            </S.Button>
           )}
         </>
       )}
-    </Container>
+    </S.Container>
   );
 }

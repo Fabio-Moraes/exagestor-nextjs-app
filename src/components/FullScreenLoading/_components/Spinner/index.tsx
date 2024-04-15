@@ -2,11 +2,11 @@ import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 
-import { Container } from './styles';
+import * as S from './styles';
 
 export function Spinner({ active = true }: { active?: boolean }) {
   return (
-    <Container>
+    <S.Container>
       <div>
         <div>
           {active && (
@@ -20,6 +20,6 @@ export function Spinner({ active = true }: { active?: boolean }) {
           )}
         </div>
       </div>
-    </Container>
+    </S.Container>
   );
 }

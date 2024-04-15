@@ -10,16 +10,16 @@ import execution from './_assets/svg/execution.svg';
 import manage from './_assets/svg/manage.svg';
 import menu from './_assets/svg/menu.svg';
 
-import { WrapperLink, Container, Wrapper } from './styles';
+import * as S from './styles';
 
 export function LeftSidebar() {
   const pathname = usePathname();
 
   return (
-    <Container>
-      <Wrapper>
+    <S.Container>
+      <S.Wrapper>
         <Link href="/dashboard/admin/running" scroll={false}>
-          <WrapperLink $path={['/dashboard/admin/running'].includes(pathname)}>
+          <S.WrapperLink $path={['/dashboard/admin/running'].includes(pathname)}>
             <Image
               priority
               loading="eager"
@@ -29,25 +29,25 @@ export function LeftSidebar() {
               height="25"
             />
             <span>Em Execução</span>
-          </WrapperLink>
+          </S.WrapperLink>
         </Link>
 
         <Link href="/dashboard/admin/register" scroll={false}>
-          <WrapperLink $path={['/dashboard/admin/register', '/'].includes(pathname)}>
+          <S.WrapperLink $path={['/dashboard/admin/register', '/'].includes(pathname)}>
             <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
             <span>Novo Resgistro</span>
-          </WrapperLink>
+          </S.WrapperLink>
         </Link>
 
         <Link href="/dashboard/admin/manage" scroll={false}>
-          <WrapperLink $path={['/dashboard/admin/manage'].includes(pathname)}>
+          <S.WrapperLink $path={['/dashboard/admin/manage'].includes(pathname)}>
             <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
             <span>Gerenciar Equipe</span>
-          </WrapperLink>
+          </S.WrapperLink>
         </Link>
 
         <Link href="/" scroll={false}>
-          <WrapperLink>
+          <S.WrapperLink>
             <Image
               priority
               loading="eager"
@@ -57,9 +57,9 @@ export function LeftSidebar() {
               height="25"
             />
             <span>Materiais Utilizados</span>
-          </WrapperLink>
+          </S.WrapperLink>
         </Link>
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }

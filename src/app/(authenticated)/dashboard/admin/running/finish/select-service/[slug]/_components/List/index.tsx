@@ -15,7 +15,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import infoSvg from './_assets/svg/info.svg';
 import searchSvg from './_assets/svg/search.svg';
 
-import { Button, ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
+import * as S from './styles';
 
 interface ListProps {
   id: string;
@@ -153,29 +153,29 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
   const selectedItemKeys = Object.keys(selectService[String(serviceData?.protocol)] || {});
 
   return (
-    <ListContainer>
+    <S.ListContainer>
       <AnimatePresence>
         <div>
-          <SearchWrapper>
+          <S.SearchWrapper>
             <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-            <SearchBar
+            <S.SearchBar
               type="text"
               placeholder="Pesquisar serviço..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </SearchWrapper>
+          </S.SearchWrapper>
           <div>
             <div>
-              <Button onClick={() => setShowSelected(!showSelected)}>
+              <S.Button onClick={() => setShowSelected(!showSelected)}>
                 {showSelected
                   ? 'Mostrar Todos'
                   : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
                       selectedItemKeys.length
                     })`}
-              </Button>
+              </S.Button>
 
-              <Button onClick={selectServiceClean}>Limpar</Button>
+              <S.Button onClick={selectServiceClean}>Limpar</S.Button>
             </div>
             <Image priority src={infoSvg} alt="Add" width={30} height={30} />
           </div>
@@ -183,10 +183,10 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
         {isLoading
           ? [...Array(8)].map((_, index) => {
               return (
-                <ItemsSkeleton key={String(index)}>
+                <S.ItemsSkeleton key={String(index)}>
                   <LineSkaleton height="3rem" width="3.5rem" />
                   <LineSkaleton height="3rem" />
-                </ItemsSkeleton>
+                </S.ItemsSkeleton>
               );
             })
           : filteredItems.map((item) => (
@@ -211,13 +211,13 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
             ))}
       </AnimatePresence>
       <div>
-        <Button rel="preload" onClick={() => router.back()}>
+        <S.Button rel="preload" onClick={() => router.back()}>
           Voltar
-        </Button>
-        <Button rel="preload" onClick={() => fetchConcludedServices()}>
+        </S.Button>
+        <S.Button rel="preload" onClick={() => fetchConcludedServices()}>
           Avançar
-        </Button>
+        </S.Button>
       </div>
-    </ListContainer>
+    </S.ListContainer>
   );
 }

@@ -10,7 +10,7 @@ import { internalApi } from 'services/apiAxios';
 import { useLocalStorage } from 'contexts/localStorage';
 import { useWebSocket } from 'contexts/webSocket';
 
-import { Container, ErrorContainer, ListContainer, Title } from './styles';
+import * as S from './styles';
 
 interface RunningService {
   id: number;
@@ -118,26 +118,26 @@ export default function RunningService() {
   }, []);
 
   return (
-    <Container>
-      <Title>Em Execução</Title>
+    <S.Container>
+      <S.Title>Em Execução</S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
-        <ListContainer>
+        <S.ListContainer>
           {runningService.map((service, index) => (
             <div key={String(index)}>
               <Card service={service} />
             </div>
           ))}
-        </ListContainer>
+        </S.ListContainer>
       )}
-    </Container>
+    </S.Container>
   );
 }

@@ -8,15 +8,7 @@ import { encryptObject } from 'functions';
 import { useWebSocket } from 'contexts/webSocket';
 import { AnimatePresence } from 'framer-motion';
 
-import {
-  Container,
-  ItemContainer,
-  Dialog,
-  OnlineText,
-  HiddenText,
-  OfflineText,
-  ConnectedText
-} from './styles';
+import * as S from './styles';
 
 interface ConnectedUser {
   userid: number;
@@ -64,17 +56,17 @@ const ListItem = (props: ListItemProps) => {
 
   const ProfileUser = ({ connectionStatus = 'offline' }) => {
     if (status === 'inactive') {
-      return <OfflineText>Inativado</OfflineText>;
+      return <S.OfflineText>Inativado</S.OfflineText>;
     }
 
     if (!websocketConnected) {
-      return <ConnectedText>Conectando-se ao servidor</ConnectedText>;
+      return <S.ConnectedText>Conectando-se ao servidor</S.ConnectedText>;
     }
 
     const connectionStatusUser = {
-      online: <OnlineText>Online</OnlineText>,
-      offline: <OfflineText>Offline</OfflineText>,
-      hidden: <HiddenText>Em segundo plano</HiddenText>
+      online: <S.OnlineText>Online</S.OnlineText>,
+      offline: <S.OfflineText>Offline</S.OfflineText>,
+      hidden: <S.HiddenText>Em segundo plano</S.HiddenText>
     } as { [key: string]: JSX.Element };
 
     return connectionStatusUser[connectionStatus];
@@ -154,7 +146,7 @@ const ListItem = (props: ListItemProps) => {
   return (
     <>
       <AnimatePresence>
-        <Container
+        <S.Container
           whileHover={{ scale: 0.98 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleOpenDialog}
@@ -163,7 +155,7 @@ const ListItem = (props: ListItemProps) => {
             filter: status === 'inactive' ? 'saturate(0)' : 'contrast(2)'
           }}
         >
-          <ItemContainer>
+          <S.ItemContainer>
             <div>
               <p>{name.toUpperCase()}</p>
               <ProfileUser connectionStatus={connected?.status} />
@@ -175,10 +167,10 @@ const ListItem = (props: ListItemProps) => {
               <p>DESDE: {formatDate(created_at)}</p>
               <p>CARGO: {selectedRole[role]}</p>
             </div>
-          </ItemContainer>
-        </Container>
+          </S.ItemContainer>
+        </S.Container>
       </AnimatePresence>
-      <Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
+      <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
         <>
           <button onClick={fetchStock}>
             <p>VISUALIZAR CARGA</p>
@@ -217,7 +209,7 @@ const ListItem = (props: ListItemProps) => {
             <p>DESCONECTAR</p>
           </button>
         )}
-      </Dialog>
+      </S.Dialog>
     </>
   );
 };

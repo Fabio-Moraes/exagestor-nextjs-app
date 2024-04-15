@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef /* , useEffect */, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { internalApi } from 'services/apiAxios';
 
@@ -9,9 +9,7 @@ import * as animationData from './_assets/lottie/animation.json';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useWebSocketListenerOn, useWebSocket } from 'contexts/webSocket';
 
-import { Container } from './styles';
-
-//type EventTypes = React.MouseEvent<HTMLDialogElement, MouseEvent>;
+import * as S from './styles';
 
 export function SessionConflictPopup() {
   const [dataUser, setDataUser] = useState();
@@ -49,7 +47,7 @@ export function SessionConflictPopup() {
   }, []);
 
   return (
-    <Container ref={dialogRef}>
+    <S.Container ref={dialogRef}>
       <h1>Detectamos que sua conta está atualmente ativa em outro dispositivo.</h1>
       <p>Deseja encerrar a sessão no outro dispositivo e continuar nesta?</p>
       <div>
@@ -78,6 +76,6 @@ export function SessionConflictPopup() {
           <p>Não</p>
         </button>
       </div>
-    </Container>
+    </S.Container>
   );
 }

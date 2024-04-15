@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
+import * as S from './styles';
 
 interface Material {
   id: number;
@@ -70,25 +70,25 @@ export default function Historic() {
   }, []);
 
   return (
-    <Container>
-      <Title>Histórico Geral</Title>
-      <ListContainer>
+    <S.Container>
+      <S.Title>Histórico Geral</S.Title>
+      <S.ListContainer>
         {material.map((material) => (
-          <ListItem key={material.id}>
+          <S.ListItem key={material.id}>
             <Card service={material} />
-          </ListItem>
+          </S.ListItem>
         ))}
-      </ListContainer>
+      </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor,
             tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
-        </ErrorContainer>
+        </S.ErrorContainer>
       )}
-    </Container>
+    </S.Container>
   );
 }

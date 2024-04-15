@@ -12,16 +12,7 @@ import { internalApi } from 'services/apiAxios';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
-import {
-  Button,
-  CheckboxButton,
-  Container,
-  FormContainer,
-  Input,
-  Option,
-  Select,
-  Title
-} from './styles';
+import * as S from './styles';
 
 interface SlugType {
   params: {
@@ -204,11 +195,11 @@ export default function NewService({ params }: SlugType) {
   };
 
   return (
-    <Container>
-      <Title>Novo Serviço</Title>
-      <FormContainer onSubmit={handleSubmit}>
+    <S.Container>
+      <S.Title>Novo Serviço</S.Title>
+      <S.FormContainer onSubmit={handleSubmit}>
         <label htmlFor="requester">Solicitante:</label>
-        <Input
+        <S.Input
           type="text"
           id="requester"
           placeholder="Informe o nome do solicitante"
@@ -217,17 +208,17 @@ export default function NewService({ params }: SlugType) {
         />
 
         <label htmlFor="selectedCity">Cidade:</label>
-        <Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
-          <Option value="">Selecione uma cidade</Option>
+        <S.Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
+          <S.Option value="">Selecione uma cidade</S.Option>
           {cities.map((city, index) => (
-            <Option key={index.toString()} value={city}>
+            <S.Option key={index.toString()} value={city}>
               {city}
-            </Option>
+            </S.Option>
           ))}
-        </Select>
+        </S.Select>
 
         <label htmlFor="serviceOriginAddress">Endereço de origem do serviço:</label>
-        <Input
+        <S.Input
           type="text"
           id="serviceOriginAddress"
           placeholder="Informe o endereço de origem do serviço"
@@ -236,7 +227,7 @@ export default function NewService({ params }: SlugType) {
         />
 
         <label htmlFor="boxOrCableNomenclature">Nomenclatura de caixa ou cabo:</label>
-        <Input
+        <S.Input
           type="text"
           id="boxOrCableNomenclature"
           placeholder="Informe a nomenclatura de caixa ou cabo"
@@ -245,30 +236,30 @@ export default function NewService({ params }: SlugType) {
         />
 
         <div>
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={classificationF}
             onClick={handleCheckboxClickClassF}
           >
             <div />
             <span>Classe F</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={classificationL}
             onClick={handleCheckboxClickClassL}
           >
             <div />
             <span>Classe L</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
         </div>
 
-        <Button type="submit">Iniciar Serviço</Button>
-      </FormContainer>
+        <S.Button type="submit">Iniciar Serviço</S.Button>
+      </S.FormContainer>
 
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-    </Container>
+    </S.Container>
   );
 }

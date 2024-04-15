@@ -9,7 +9,7 @@ import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import { Container, ErrorContainer, Title } from './styles';
+import * as S from './styles';
 
 const data = [
   { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
@@ -109,26 +109,26 @@ export default function FinishService({ params }: SlugType) {
   }, []);
 
   return (
-    <Container>
-      <Title>
+    <S.Container>
+      <S.Title>
         <h1>Selecionar Serviço</h1>
         {isLoading || !ServiceData[0]?.protocol ? (
           <LineSkaleton width="30rem" />
         ) : (
           <span>PROTOCOLO: {ServiceData[0]?.protocol}</span>
         )}
-      </Title>
+      </S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
         <List items={data} serviceData={ServiceData[0]} />
       )}
-    </Container>
+    </S.Container>
   );
 }

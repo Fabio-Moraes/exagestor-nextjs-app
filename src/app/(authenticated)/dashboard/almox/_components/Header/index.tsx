@@ -9,7 +9,7 @@ import { internalApi } from 'services/apiAxios';
 import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';
 
-import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
+import * as S from './styles';
 
 export function Header() {
   const [isLoading, setIsLoading] = useState(true);
@@ -57,8 +57,8 @@ export function Header() {
   }, []);
 
   return (
-    <Container>
-      <ProfileCompany>
+    <S.Container>
+      <S.ProfileCompany>
         <Image
           src={iconExa}
           priority
@@ -66,12 +66,12 @@ export function Header() {
           alt="Axa"
           style={{ width: '5.4rem', height: 'auto' }}
         />
-        <ProfileInfoCompany>
+        <S.ProfileInfoCompany>
           <h1>EXA TELECOM</h1>
           <span>Telecomunicações</span>
-        </ProfileInfoCompany>
-      </ProfileCompany>
-      <ProfileUser>
+        </S.ProfileInfoCompany>
+      </S.ProfileCompany>
+      <S.ProfileUser>
         {user.name && !isLoading ? (
           <span>{user.name}</span>
         ) : (
@@ -96,7 +96,7 @@ export function Header() {
             <h2>Sair</h2>
           </button>
         </div>
-      </ProfileUser>
-    </Container>
+      </S.ProfileUser>
+    </S.Container>
   );
 }

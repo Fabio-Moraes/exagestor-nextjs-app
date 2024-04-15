@@ -3,11 +3,11 @@ import Image from 'components/Vercel/Image';
 import code from './_assets/svg/code.svg';
 import coffee from './_assets/svg/coffee.svg';
 
-import { Container } from './styles';
+import * as S from './styles';
 
 export function Footer() {
   return (
-    <Container>
+    <S.Container>
       <div>
         <h1>Construído com</h1>
         <Image priority src={coffee} alt="Coffee" width={22} height={25} />
@@ -16,6 +16,6 @@ export function Footer() {
         <h1>por Fabio Moraes</h1>
       </div>
       <span>TODOS OS DIREITOS RESERVADOS.</span>
-    </Container>
+    </S.Container>
   );
 }

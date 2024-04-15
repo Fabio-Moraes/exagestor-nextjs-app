@@ -4,10 +4,18 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import Image from 'components/Vercel/Image';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import { Container, ErrorContainer, ListContainer, ListItem, Title } from './styles';
+import * as animationData from './_assets/lottie/animation.json';
+
+import { Player } from '@lottiefiles/react-lottie-player';
+import { v4 as uuidv4 } from 'uuid';
+
+import down from './_assets/svg/down.svg';
+
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -28,6 +36,7 @@ interface Service {
 
 export default function HistoricService() {
   const [services, setServices] = useState<Service[]>([]);
+  const [spinner, setSpineer] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -40,15 +49,18 @@ export default function HistoricService() {
   async function fetchServices() {
     setConnectionError(false);
 
-    for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
+    for (let index = 0; index < maxRetries; index++) {
       try {
-        setIsPopupValue(generateConnectingMessage(retryCount));
+        if (index > 0) setIsPopupValue(generateConnectingMessage(index));
+        setSpineer(true);
+        await TimedWait(300);
 
         const response = await internalApi.post('/api/bridge', {
-          baseURL: '/api/tec/historic'
+          baseURL: '/api/tec/historic',
+          initial_id: services.length >= 1 ? services[services.length - 1].id : null
         });
 
-        setServices(response.data);
+        setServices((res) => [...res, ...response.data]);
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {
@@ -60,7 +72,7 @@ export default function HistoricService() {
               break;
             }
 
-            if (retryCount === maxRetries) {
+            if (index === maxRetries) {
               setConnectionError(true);
               setIsPopupValue(null);
             } else {
@@ -68,6 +80,8 @@ export default function HistoricService() {
             }
           }
         }
+      } finally {
+        setSpineer(false);
       }
     }
   }
@@ -77,25 +91,46 @@ export default function HistoricService() {
   }, []);
 
   return (
-    <Container>
-      <Title>Histórico Geral</Title>
-      <ListContainer>
+    <S.Container>
+      <S.Title>Histórico Geral</S.Title>
+      <S.ListContainer>
         {services.map((service) => (
-          <ListItem key={service.id}>
+          <S.ListItem key={uuidv4()}>
             <Card service={service} />
-          </ListItem>
+          </S.ListItem>
         ))}
-      </ListContainer>
+        {services.length >= 1 &&
+          (spinner ? (
+            <S.Spinner>
+              <div>
+                <Player
+                  src={animationData}
+                  loop
+                  autoplay
+                  speed={1.5}
+                  style={{ height: '7rem', width: '7rem' }}
+                />
+              </div>
+            </S.Spinner>
+          ) : (
+            <button onClick={fetchServices}>
+              <div>
+                <p>Mais resultados</p>
+                <Image priority loading="eager" src={down} alt="Add" width="25" height="25" />
+              </div>
+            </button>
+          ))}
+      </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor,
             tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
-        </ErrorContainer>
+        </S.ErrorContainer>
       )}
-    </Container>
+    </S.Container>
   );
 }

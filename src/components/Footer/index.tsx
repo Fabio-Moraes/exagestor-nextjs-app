@@ -1,17 +1,17 @@
 'use client';
 
-import { Container, Wrapper } from './styles';
+import * as S from './styles';
 
 export function Footer() {
   return (
-    <Container>
-      <Wrapper>
+    <S.Container>
+      <S.Wrapper>
         <div>
           <h1>© COPYRIGHT 2024 - EXACODE</h1>
         </div>
         <span>TODOS OS DIREITOS RESERVADOS.</span>
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }
 

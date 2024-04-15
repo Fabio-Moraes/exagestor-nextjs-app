@@ -18,14 +18,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import infoSvg from './_assets/svg/info.svg';
 import searchSvg from './_assets/svg/search.svg';
 
-import {
-  Button,
-  ItemsSkeleton,
-  ListContainer,
-  SearchBar,
-  SearchWrapper,
-  ErrorContainer
-} from './styles';
+import * as S from './styles';
 
 interface ServiceData {
   id: number;
@@ -184,36 +177,36 @@ export function List(props: { serviceData: ServiceData }) {
     <>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
-        <ListContainer>
+        <S.ListContainer>
           <AnimatePresence>
             <div>
-              <SearchWrapper>
+              <S.SearchWrapper>
                 <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-                <SearchBar
+                <S.SearchBar
                   type="text"
                   placeholder="Pesquisar serviço..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </SearchWrapper>
+              </S.SearchWrapper>
               <div>
                 <div>
-                  <Button onClick={() => setShowSelected(!showSelected)}>
+                  <S.Button onClick={() => setShowSelected(!showSelected)}>
                     {showSelected
                       ? 'Mostrar Todos'
                       : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${
                           selectedItemKeys.length
                         })`}
-                  </Button>
+                  </S.Button>
 
-                  <Button onClick={selectServiceClean}>Limpar</Button>
+                  <S.Button onClick={selectServiceClean}>Limpar</S.Button>
                 </div>
                 <Image priority src={infoSvg} alt="Add" width={30} height={30} />
               </div>
@@ -221,10 +214,10 @@ export function List(props: { serviceData: ServiceData }) {
             {isLoading
               ? [...Array(8)].map((_, index) => {
                   return (
-                    <ItemsSkeleton key={String(index)}>
+                    <S.ItemsSkeleton key={String(index)}>
                       <LineSkaleton height="3rem" width="3.5rem" />
                       <LineSkaleton height="3rem" />
-                    </ItemsSkeleton>
+                    </S.ItemsSkeleton>
                   );
                 })
               : filteredItems.map((item) => (
@@ -247,10 +240,10 @@ export function List(props: { serviceData: ServiceData }) {
                 ))}
           </AnimatePresence>
           <div>
-            <Button onClick={() => router.back()}>Voltar</Button>
-            <Button onClick={() => fetchConcludedMaterial()}>Avançar</Button>
+            <S.Button onClick={() => router.back()}>Voltar</S.Button>
+            <S.Button onClick={() => fetchConcludedMaterial()}>Avançar</S.Button>
           </div>
-        </ListContainer>
+        </S.ListContainer>
       )}
     </>
   );

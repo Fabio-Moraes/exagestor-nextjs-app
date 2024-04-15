@@ -3,17 +3,14 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
+  z-index: 1;
   border: 0 solid #3f795e;
   border-width: 0.2rem 0 0.2rem 0;
-  position: sticky;
   display: flex;
+  width: 100%;
   padding: 0.3rem min(1.5rem, max(10vw, 1rem));
   background-image: radial-gradient(35rem at center, #ffffff 20%, #27a567);
   justify-content: space-between;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 2;
   white-space: nowrap;
 
   @media (min-width: 550px) {
@@ -21,7 +18,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Button = styled.button<{ $path?: boolean }>`
+export const WrapperLink = styled.div<{ $path?: boolean }>`
   display: flex;
   position: static;
   flex-direction: column;
@@ -39,11 +36,11 @@ export const Button = styled.button<{ $path?: boolean }>`
     font-weight: bold;
     font-size: 1.2rem;
     overflow-wrap: break-word;
+    color: #000;
   }
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
-      //border: 0.2rem solid #000000;
       background-color: #27a567;
       > span {
         color: #fff;

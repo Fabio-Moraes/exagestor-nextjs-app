@@ -12,17 +12,7 @@ import exa from './_assets/svg/exa_logo.svg';
 import eyeClosed from './_assets/svg/eye-closed-.svg';
 import eyeOpen from './_assets/svg/eye-open.svg';
 
-import {
-  Button,
-  CheckboxButton,
-  Container,
-  ErrorSpan,
-  FormContainer,
-  Input,
-  PasswordInput,
-  PasswordInputContainer,
-  TogglePasswordVisibilityButton
-} from './styles';
+import * as S from './styles';
 
 interface CustomError extends Error {
   response?: {
@@ -147,8 +137,8 @@ export const Form = () => {
 
   return (
     <>
-      <Container>
-        <FormContainer onSubmit={handleSubmit}>
+      <S.Container>
+        <S.FormContainer onSubmit={handleSubmit}>
           <div>
             <Image
               priority
@@ -165,7 +155,7 @@ export const Form = () => {
           </div>
 
           <div>
-            <CheckboxButton
+            <S.CheckboxButton
               type="button"
               $checked={cpfOrCnpj === 'CNPJ'}
               onClick={() => {
@@ -175,9 +165,9 @@ export const Form = () => {
             >
               <div />
               <span>Jurídica</span>
-            </CheckboxButton>
+            </S.CheckboxButton>
 
-            <CheckboxButton
+            <S.CheckboxButton
               type="button"
               $checked={cpfOrCnpj === 'CPF'}
               onClick={() => {
@@ -187,24 +177,24 @@ export const Form = () => {
             >
               <div />
               <span>Física</span>
-            </CheckboxButton>
+            </S.CheckboxButton>
           </div>
 
-          <Input
+          <S.Input
             type="numeric"
             placeholder={`${cpfOrCnpj}`}
             value={identification}
             onChange={cpfOrCnpj === 'CNPJ' ? handleChangeCnpj : handleChangeCpf}
           />
 
-          <PasswordInputContainer>
-            <PasswordInput
+          <S.PasswordInputContainer>
+            <S.PasswordInput
               type={passwordVisible ? 'text' : 'password'}
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value.trim())}
             />
-            <TogglePasswordVisibilityButton
+            <S.TogglePasswordVisibilityButton
               type="button"
               onClick={() => setPasswordVisible((i) => !i)}
             >
@@ -219,13 +209,13 @@ export const Form = () => {
                   marginLeft: -5
                 }}
               />
-            </TogglePasswordVisibilityButton>
-          </PasswordInputContainer>
+            </S.TogglePasswordVisibilityButton>
+          </S.PasswordInputContainer>
 
-          <Button type="submit">Entrar</Button>
-        </FormContainer>
+          <S.Button type="submit">Entrar</S.Button>
+        </S.FormContainer>
         {invalidCredentials && (
-          <ErrorSpan>
+          <S.ErrorSpan>
             <div>
               <Image priority src={alert} alt="Book" width={55} height={55} />
             </div>
@@ -234,9 +224,9 @@ export const Form = () => {
                 __html: invalidCredentials
               }}
             />
-          </ErrorSpan>
+          </S.ErrorSpan>
         )}
-      </Container>
+      </S.Container>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </>
   );

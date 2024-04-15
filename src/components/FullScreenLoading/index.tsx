@@ -1,14 +1,14 @@
 import { Spinner } from './_components/Spinner';
 
-import { Container, Wrapper } from './styles';
+import * as S from './styles';
 
 export function FullScreenLoading({ message = '' }: { message?: string }) {
   return (
-    <Container>
-      <Wrapper>
+    <S.Container>
+      <S.Wrapper>
         <Spinner />
         <span dangerouslySetInnerHTML={{ __html: message }} />
-      </Wrapper>
-    </Container>
+      </S.Wrapper>
+    </S.Container>
   );
 }

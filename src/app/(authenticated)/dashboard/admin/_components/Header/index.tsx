@@ -12,7 +12,7 @@ import { useWebSocket } from 'contexts/webSocket';
 import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';
 
-import { Container, ProfileCompany, ProfileInfoCompany, ProfileUser } from './styles';
+import * as S from './styles';
 
 export function Header() {
   const [user, setUser] = useState({} as { name: string });
@@ -56,8 +56,8 @@ export function Header() {
   }, []);
 
   return (
-    <Container>
-      <ProfileCompany>
+    <S.Container>
+      <S.ProfileCompany>
         <Image
           src={iconExa}
           priority
@@ -65,12 +65,12 @@ export function Header() {
           alt="Axa"
           style={{ width: '5.8rem', height: 'auto' }}
         />
-        <ProfileInfoCompany>
+        <S.ProfileInfoCompany>
           <h1>EXATELECOM</h1>
           <span>Telecomunicações</span>
-        </ProfileInfoCompany>
-      </ProfileCompany>
-      <ProfileUser>
+        </S.ProfileInfoCompany>
+      </S.ProfileCompany>
+      <S.ProfileUser>
         {user.name ? <span>{user.name}</span> : <LineSkaleton width="30rem" color="#b78e6a" />}
         <div>
           <div>
@@ -91,7 +91,7 @@ export function Header() {
             <h2>Sair</h2>
           </button>
         </div>
-      </ProfileUser>
-    </Container>
+      </S.ProfileUser>
+    </S.Container>
   );
 }

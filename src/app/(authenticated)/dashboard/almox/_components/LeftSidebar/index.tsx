@@ -1,27 +1,24 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import Image from 'components/Vercel/Image';
+import Link from 'components/Vercel/Link';
 
-import home from './_assets/svg/add.svg';
+import add from './_assets/svg/add.svg';
 import execution from './_assets/svg/execution.svg';
+import manage from './_assets/svg/manage.svg';
 
-import { Button, Container, Wrapper } from './styles';
+import * as S from './styles';
 
 export function LeftSidebar() {
-  const router = useRouter();
   const pathname = usePathname();
 
   return (
-    <Container>
-      <Wrapper>
-        <div>
-          <Button
-            $path={['/dashboard/almox/historic'].includes(pathname)}
-            onClick={() => router.push(`/dashboard/almox/historic`)}
-            rel="preload"
-          >
+    <S.Container>
+      <S.Wrapper>
+        <Link href="/dashboard/almox/stock" scroll={false}>
+          <S.WrapperLink $path={['/dashboard/almox/stock'].includes(pathname)}>
             <Image
               priority
               loading="eager"
@@ -30,21 +27,24 @@ export function LeftSidebar() {
               width="25"
               height="25"
             />
-            <span>Histórico GeraL</span>
-          </Button>
-        </div>
+            <span>Gerenciar Estoque</span>
+          </S.WrapperLink>
+        </Link>
 
-        <div>
-          <Button
-            $path={['/dashboard/almox/register', '/'].includes(pathname)}
-            onClick={() => router.push('/dashboard/almox/register')}
-            rel="preload"
-          >
-            <Image priority loading="eager" src={home} alt="Add" width="25" height="25" />
+        <Link href="/dashboard/almox/register" scroll={false}>
+          <S.WrapperLink $path={['/dashboard/almox/register', '/'].includes(pathname)}>
+            <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
             <span>Novo Produto</span>
-          </Button>
-        </div>
-      </Wrapper>
-    </Container>
+          </S.WrapperLink>
+        </Link>
+
+        <Link href="/dashboard/almox/manage" scroll={false}>
+          <S.WrapperLink $path={['/dashboard/almox/manage'].includes(pathname)}>
+            <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
+            <span>Gerenciar Equipe</span>
+          </S.WrapperLink>
+        </Link>
+      </S.Wrapper>
+    </S.Container>
   );
 }

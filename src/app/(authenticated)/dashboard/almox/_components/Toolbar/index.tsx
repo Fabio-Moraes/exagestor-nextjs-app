@@ -1,68 +1,63 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import Image from 'components/Vercel/Image';
+import Link from 'components/Vercel/Link';
 
 import add from './_assets/svg/add.svg';
 import execution from './_assets/svg/execution.svg';
 import manage from './_assets/svg/manage.svg';
 import menu from './_assets/svg/menu.svg';
 
-import { Button, Container } from './styles';
+import * as S from './styles';
 
 export function Toolbar() {
-  const router = useRouter();
   const pathname = usePathname();
 
   return (
-    <Container>
-      <Button
-        $path={['/dashboard/almox/stock'].includes(pathname)}
-        rel="preload"
-        onClick={() => router.push(`/dashboard/almox/stock`)}
-      >
-        <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
-        <span>
-          Gerenciar
-          <br />
-          Estoque
-        </span>
-      </Button>
+    <S.Container>
+      <Link href="/dashboard/almox/stock" scroll={false}>
+        <S.WrapperLink $path={['/dashboard/almox/stock'].includes(pathname)}>
+          <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
+          <span>
+            Gerenciar
+            <br />
+            Estoque
+          </span>
+        </S.WrapperLink>
+      </Link>
 
-      <Button
-        $path={['/dashboard/almox/register', '/'].includes(pathname)}
-        rel="preload"
-        onClick={() => router.push(`/dashboard/almox/register`)}
-      >
-        <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
-        <span>
-          Novo
-          <br />
-          Produto
-        </span>
-      </Button>
+      <Link href="/dashboard/almox/register" scroll={false}>
+        <S.WrapperLink $path={['/dashboard/almox/register', '/'].includes(pathname)}>
+          <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
+          <span>
+            Novo
+            <br />
+            Produto
+          </span>
+        </S.WrapperLink>
+      </Link>
 
-      <Button
-        //style={{ opacity: 0 }}
-        $path={['/dashboard/admin/historic'].includes(pathname)}
-        rel="preload"
-        onClick={() => router.push(`/dashboard/almox/historic`)}
-      >
-        <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
-        <span>
-          Histórico <br /> GeraL
-        </span>
-      </Button>
+      <Link href="/dashboard/almox/manage" scroll={false}>
+        <S.WrapperLink $path={['/dashboard/admin/manage'].includes(pathname)}>
+          <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
+          <span>
+            Gerenciar <br /> Equipe
+          </span>
+        </S.WrapperLink>
+      </Link>
 
-      <Button style={{ opacity: 0 }} rel="preload" onClick={() => {}}>
-        <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
-        <span>
-          Mais
-          <br />
-          Opções
-        </span>
-      </Button>
-    </Container>
+      <Link href="/">
+        <S.WrapperLink style={{ opacity: 0 }} rel="preload" onClick={() => {}}>
+          <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
+          <span>
+            Mais
+            <br />
+            Opções
+          </span>
+        </S.WrapperLink>
+      </Link>
+    </S.Container>
   );
 }

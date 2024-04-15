@@ -1,4 +1,4 @@
-import { Container } from './styles';
+import * as S from './styles';
 
 interface RunningService {
   id: number;
@@ -33,7 +33,7 @@ export function CardContent({ service }: { service: RunningService }) {
   const patternProtocol = /(\d{1})(\d{4})(\d{4})(\d{4})(\d{4})/;
 
   return (
-    <Container>
+    <S.Container>
       <div>
         <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
         <p>CIDADE: {service?.city.toUpperCase()}</p>
@@ -50,6 +50,6 @@ export function CardContent({ service }: { service: RunningService }) {
         </p>
         <p>ATUALIZAÇÃO DE STATUS: {service?.update_count}</p>
       </div>
-    </Container>
+    </S.Container>
   );
 }

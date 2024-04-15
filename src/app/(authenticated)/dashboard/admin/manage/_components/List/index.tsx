@@ -15,7 +15,7 @@ import { useWebsocketConnected } from 'store/websocketConnected';
 
 import searchSvg from './_assets/svg/search.svg';
 
-import { ItemsSkeleton, ListContainer, SearchBar, SearchWrapper } from './styles';
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -73,9 +73,9 @@ export function List({ service }: { service: Service[] }) {
   }
 
   return (
-    <ListContainer>
+    <S.ListContainer>
       <div>
-        <SearchWrapper>
+        <S.SearchWrapper>
           <Image
             priority
             src={searchSvg}
@@ -84,20 +84,20 @@ export function List({ service }: { service: Service[] }) {
             width={25}
             height={25}
           />
-          <SearchBar
+          <S.SearchBar
             type="text"
             placeholder="Pesquisar funcionários..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </SearchWrapper>
+        </S.SearchWrapper>
       </div>
       <button onClick={fetchHistoric}>
         <p>HISTÓRICO GERAL</p>
       </button>
       {isLoading
         ? [...Array(4)].map((_, index) => (
-            <ItemsSkeleton key={String(index)}>
+            <S.ItemsSkeleton key={String(index)}>
               <div>
                 <LineSkaleton width="14rem" />
                 <LineSkaleton width="10rem" />
@@ -105,7 +105,7 @@ export function List({ service }: { service: Service[] }) {
               <LineSkaleton width="19rem" />
               <LineSkaleton width="25rem" />
               <LineSkaleton width="10rem" />
-            </ItemsSkeleton>
+            </S.ItemsSkeleton>
           ))
         : filteredItems.map((item) => (
             <ListItem
@@ -115,6 +115,6 @@ export function List({ service }: { service: Service[] }) {
               websocketConnected={websocketConnected}
             />
           ))}
-    </ListContainer>
+    </S.ListContainer>
   );
 }

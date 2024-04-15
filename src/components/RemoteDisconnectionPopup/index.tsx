@@ -7,7 +7,7 @@ import * as animationData from './_assets/lottie/animation.json';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useRemoteDisconnectionPopup } from 'store/remoteDisconnectionPopup';
 
-import { Container } from './styles';
+import * as S from './styles';
 
 export function RemoteDisconnectionPopup() {
   const { open, role } = useRemoteDisconnectionPopup(
@@ -55,7 +55,7 @@ export function RemoteDisconnectionPopup() {
   };
 
   return (
-    <Container ref={dialogRef}>
+    <S.Container ref={dialogRef}>
       <Content role={role} />
       <div>
         <Player
@@ -75,6 +75,6 @@ export function RemoteDisconnectionPopup() {
           <p>Entendido</p>
         </button>
       </div>
-    </Container>
+    </S.Container>
   );
 }

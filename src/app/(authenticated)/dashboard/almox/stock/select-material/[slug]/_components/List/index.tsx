@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import infoSvg from './_assets/svg/info.svg';
 import searchSvg from './_assets/svg/search.svg';
 
-import { Button, ListContainer, SearchBar, SearchWrapper } from './styles';
+import * as S from './styles';
 
 interface Materials {
   id: number;
@@ -85,35 +85,35 @@ export function List({ materials }: { materials: Materials[] }) {
   const encryptSlug = encryptObject({ selectedMaterials });
 
   return (
-    <ListContainer>
+    <S.ListContainer>
       <AnimatePresence>
         <div>
-          <SearchWrapper>
+          <S.SearchWrapper>
             <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-            <SearchBar
+            <S.SearchBar
               type="text"
               placeholder="Pesquisar produtos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </SearchWrapper>
+          </S.SearchWrapper>
           <div>
             <div>
-              <Button onClick={() => setShowSelected(!showSelected)}>
+              <S.Button onClick={() => setShowSelected(!showSelected)}>
                 {showSelected
                   ? 'Mostrar Todos'
                   : `Filtrar Selecionado${
                       nonZeroQuantityItemsValue > 1 ? 's' : ''
                     } (${nonZeroQuantityItemsValue})`}
-              </Button>
+              </S.Button>
 
-              <Button
+              <S.Button
                 onClick={() => {
                   setQuantityItems({});
                 }}
               >
                 Limpar
-              </Button>
+              </S.Button>
             </div>
             <Image priority src={infoSvg} alt="Add" width={30} height={30} />
           </div>
@@ -141,15 +141,15 @@ export function List({ materials }: { materials: Materials[] }) {
           ))}
       </AnimatePresence>
       <div>
-        <Button onClick={() => router.back()}>Voltar</Button>
-        <Button
+        <S.Button onClick={() => router.back()}>Voltar</S.Button>
+        <S.Button
           onClick={() => {
             router.push(`/dashboard/almox/stock/select-employee/${encryptSlug}`);
           }}
         >
           Avançar
-        </Button>
+        </S.Button>
       </div>
-    </ListContainer>
+    </S.ListContainer>
   );
 }

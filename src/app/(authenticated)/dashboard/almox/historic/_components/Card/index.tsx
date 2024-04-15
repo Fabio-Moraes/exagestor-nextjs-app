@@ -1,4 +1,4 @@
-import { Container } from './styles';
+import * as S from './styles';
 
 interface Material {
   id: number;
@@ -26,16 +26,8 @@ function formatDate(date: string) {
 export function Card({ service }: { service: Material }) {
   const createdAt = formatDate(service.created_at);
 
-  // const status = {
-  //   concluded: '✅ Finalizado',
-  //   analysis: '🔍 Em análise',
-  //   active: '🚧 Em andamento',
-  //   paused: '⏸️ Pausado',
-  //   canceled: '❌ Cancelado'
-  // } as { [key: string]: string };
-
   return (
-    <Container rel="preload" onClick={() => {}}>
+    <S.Container rel="preload" onClick={() => {}}>
       <p></p>
       <div>
         <p>
@@ -48,6 +40,6 @@ export function Card({ service }: { service: Material }) {
         <p>ENVIADO EM: {createdAt}</p>
         {/* <p>Serviço: {status[service?.status]}</p> */}
       </div>
-    </Container>
+    </S.Container>
   );
 }

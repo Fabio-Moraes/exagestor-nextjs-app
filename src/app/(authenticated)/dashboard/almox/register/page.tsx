@@ -11,18 +11,7 @@ import { internalApi } from 'services/apiAxios';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
-import {
-  Button,
-  CheckboxButton,
-  Container,
-  FormContainer,
-  Input,
-  Title,
-  Observation,
-  ContainerObservation,
-  ContainerCounter,
-  Asterisk
-} from './styles';
+import * as S from './styles';
 
 export default function NewRegister() {
   const [productCode, setProductCode] = useState('');
@@ -87,7 +76,7 @@ export default function NewRegister() {
           setIsPopupValue(generateConnectingMessage(retryCount));
 
           const response = await internalApi.post('/api/bridge', {
-            baseURL: '/api/almox/register',
+            baseURL: '/api/almox/register-material',
             productName: productName.current?.value,
             productCode: productCode,
             productBatch: productBatch || null,
@@ -96,6 +85,7 @@ export default function NewRegister() {
             observation: observationBox || null
           });
 
+          console.log('item duplicado');
           const { status } = response.data;
 
           if (status === 'already registered') {
@@ -219,16 +209,16 @@ export default function NewRegister() {
   };
 
   return (
-    <Container>
-      <Title>Novo Produto</Title>
-      <FormContainer onSubmit={handleSubmit}>
+    <S.Container>
+      <S.Title>Novo Produto</S.Title>
+      <S.FormContainer onSubmit={handleSubmit}>
         <label htmlFor="Nome do Produto">
-          Nome do Produto: <Asterisk>*</Asterisk>
+          Nome do Produto: <S.Asterisk>*</S.Asterisk>
         </label>
-        <Input type="text" id="Nome" placeholder="Nome do Produto" ref={productName} />
+        <S.Input type="text" id="Nome" placeholder="Nome do Produto" ref={productName} />
 
         <label htmlFor="Lote">Lote:</label>
-        <Input
+        <S.Input
           type="text"
           id="Nome"
           placeholder="Lote"
@@ -237,9 +227,9 @@ export default function NewRegister() {
         />
 
         <label htmlFor="Código">
-          Código: <Asterisk>*</Asterisk>
+          Código: <S.Asterisk>*</S.Asterisk>
         </label>
-        <Input
+        <S.Input
           type="text"
           id="Nome"
           placeholder="Código"
@@ -248,9 +238,9 @@ export default function NewRegister() {
         />
 
         <label htmlFor="Quantidade">
-          Quantidade: <Asterisk>*</Asterisk>
+          Quantidade: <S.Asterisk>*</S.Asterisk>
         </label>
-        <Input
+        <S.Input
           type="text"
           placeholder="Quantidade"
           value={quantityValue !== '0' ? quantityValue : ''}
@@ -258,7 +248,7 @@ export default function NewRegister() {
         />
 
         <div>
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={unitType === 'UNID'}
             onClick={() => {
@@ -267,9 +257,9 @@ export default function NewRegister() {
           >
             <div />
             <span>Und.</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={unitType === 'CX'}
             onClick={() => {
@@ -278,9 +268,9 @@ export default function NewRegister() {
           >
             <div />
             <span>Cx.</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
 
-          <CheckboxButton
+          <S.CheckboxButton
             type="button"
             $checked={unitType === 'METRO'}
             onClick={() => {
@@ -289,10 +279,10 @@ export default function NewRegister() {
           >
             <div />
             <span>Metro</span>
-          </CheckboxButton>
+          </S.CheckboxButton>
         </div>
-        <ContainerObservation>
-          <Observation
+        <S.ContainerObservation>
+          <S.Observation
             ref={textareaRef}
             value={observationBox ?? ''}
             onChange={handleDescriptionChange}
@@ -300,18 +290,18 @@ export default function NewRegister() {
             placeholder="Escreva sua descrição aqui..."
             contentEditable="true"
           />
-          <ContainerCounter>
+          <S.ContainerCounter>
             <p>{500 - (observationBox?.length ?? 0)}</p>
-          </ContainerCounter>
-        </ContainerObservation>
-        <Button type="submit">Registrar</Button>
+          </S.ContainerCounter>
+        </S.ContainerObservation>
+        <S.Button type="submit">Registrar</S.Button>
         <span>
-          Todos os campos marcados com <Asterisk>*</Asterisk> são obrigatórios.
+          Todos os campos marcados com <S.Asterisk>*</S.Asterisk> são obrigatórios.
         </span>
-      </FormContainer>
+      </S.FormContainer>
 
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-    </Container>
+    </S.Container>
   );
 }

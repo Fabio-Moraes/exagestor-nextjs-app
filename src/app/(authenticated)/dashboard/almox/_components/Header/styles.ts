@@ -8,10 +8,18 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem 1.2rem 0.9rem 1.5rem;
+  padding: 1.5rem;
 
-  @media (max-width: 55rem) {
-    background-image: linear-gradient(to top, #a9c4b8, #ffffff, #ffffff);
+  @media (max-width: 550px) {
+    background-image: linear-gradient(
+      49deg,
+      #92d3b3 10%,
+      #b1d6c3 15%,
+      #ffffff 30%,
+      #ffffff 50%,
+      #b1d6c3 70%,
+      #92d3b3
+    );
   }
 
   @media (min-width: 550px) {
@@ -25,11 +33,10 @@ export const ProfileUser = styled.div`
   height: 100%;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
   background-image: linear-gradient(to top, #ffd700, #dce6dc);
-  //background-color: #ffd700;
   border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
-  width: 14rem;
+  width: 15rem;
   height: 7rem;
   align-items: end;
   padding: 0 0.6rem 0.3rem 0.4rem;
@@ -98,8 +105,6 @@ export const ProfileCompany = styled.div`
   text-align: left;
   display: flex;
   height: 100%;
-  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
   padding: 0.7rem;
   padding-left: 1.1rem;
   border-radius: 0.7rem;
@@ -121,7 +126,7 @@ export const ProfileInfoCompany = styled.div`
 
   > span {
     font-family: 'OpenSans-Medium';
-    font-size: 1.38rem;
+    font-size: 1.2rem;
     color: #000;
   }
 `;

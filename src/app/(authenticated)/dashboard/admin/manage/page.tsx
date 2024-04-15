@@ -7,7 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import { Container, ErrorContainer, Title } from './styles';
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -70,19 +70,19 @@ export default function FinishService() {
   }, []);
 
   return (
-    <Container>
-      <Title>Gerenciar Equipe</Title>
+    <S.Container>
+      <S.Title>Gerenciar Equipe</S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
         <List service={employee} />
       )}
-    </Container>
+    </S.Container>
   );
 }

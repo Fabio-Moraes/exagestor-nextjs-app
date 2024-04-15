@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 
 import { motion, PanInfo } from 'framer-motion';
 
-import {
-  Container,
-  ItemContainer,
-  SearchBar,
-  DecrementButton,
-  IncrementButton
-} from './styles';
+import * as S from './styles';
 
 interface Materials {
   id: number;
@@ -86,17 +80,17 @@ export const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, o
       dragElastic={{ left: 0.5, right: 0 }}
       style={{ pointerEvents: pointer, listStyle: 'none' }}
     >
-      <Container>
-        <ItemContainer selected={count > 0}>
+      <S.Container>
+        <S.ItemContainer selected={count > 0}>
           <div>
             <p>{item.unit_type}</p>
-            <IncrementButton onClick={handleIncrement}>+</IncrementButton>
-            <SearchBar type="text" value={String(count)} onChange={handleInputChange} />
-            <DecrementButton onClick={handleDecrement}>-</DecrementButton>
+            <S.IncrementButton onClick={handleIncrement}>+</S.IncrementButton>
+            <S.SearchBar type="text" value={String(count)} onChange={handleInputChange} />
+            <S.DecrementButton onClick={handleDecrement}>-</S.DecrementButton>
           </div>
           <span>{item.product_name.toUpperCase()}</span>
-        </ItemContainer>
-      </Container>
+        </S.ItemContainer>
+      </S.Container>
     </motion.li>
   );
 };

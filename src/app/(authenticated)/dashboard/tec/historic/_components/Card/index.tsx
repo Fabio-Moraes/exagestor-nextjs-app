@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 
 import { encryptObject } from 'functions';
 
-import { Container } from './styles';
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -60,7 +60,7 @@ export function Card({ service }: { service: Service }) {
   const router = useRouter();
 
   return (
-    <Container
+    <S.Container
       rel="preload"
       onClick={() => router.push(`/dashboard/tec/historic/details/${encryptSlug}`)}
     >
@@ -72,6 +72,6 @@ export function Card({ service }: { service: Service }) {
         <p>Iniciado em: {createdAt}</p>
         <p>Serviço: {status[service?.status]}</p>
       </div>
-    </Container>
+    </S.Container>
   );
 }

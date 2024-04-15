@@ -17,14 +17,7 @@ import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 import searchSvg from './_assets/svg/search.svg';
 
-import {
-  Button,
-  ItemsSkeleton,
-  ListContainer,
-  SearchBar,
-  SearchWrapper,
-  ContainerButton
-} from './styles';
+import * as S from './styles';
 
 interface Employee {
   id: number;
@@ -148,27 +141,27 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
 
   return (
     <>
-      <ListContainer>
+      <S.ListContainer>
         <div>
-          <SearchWrapper>
+          <S.SearchWrapper>
             <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-            <SearchBar
+            <S.SearchBar
               type="text"
               placeholder="Pesquisar funcionários..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </SearchWrapper>
+          </S.SearchWrapper>
         </div>
         {isLoading
           ? [...Array(4)].map((_, index) => {
               return (
-                <ItemsSkeleton key={String(index)}>
+                <S.ItemsSkeleton key={String(index)}>
                   <LineSkaleton width="14rem" />
                   <LineSkaleton width="19rem" />
                   <LineSkaleton width="25rem" />
                   <LineSkaleton width="10rem" />
-                </ItemsSkeleton>
+                </S.ItemsSkeleton>
               );
             })
           : filteredItems.map((item) => (
@@ -179,17 +172,17 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
                 {...item}
               />
             ))}
-        <ContainerButton $isSelected={Boolean(employeeId)}>
-          <Button
+        <S.ContainerButton $isSelected={Boolean(employeeId)}>
+          <S.Button
             onClick={() => {
               router.push(`/dashboard/almox/stock`);
             }}
           >
             Voltar
-          </Button>
-          <Button onClick={() => employeeId && handleSubmit()}>Enviar Carga</Button>
-        </ContainerButton>
-      </ListContainer>
+          </S.Button>
+          <S.Button onClick={() => employeeId && handleSubmit()}>Enviar Carga</S.Button>
+        </S.ContainerButton>
+      </S.ListContainer>
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </>

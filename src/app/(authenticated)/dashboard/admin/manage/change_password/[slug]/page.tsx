@@ -12,7 +12,7 @@ import { internalApi } from 'services/apiAxios';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
-import { Button, Container, FormContainer, Input, Title } from './styles';
+import * as S from './styles';
 
 interface SlugType {
   params: {
@@ -133,35 +133,35 @@ export default function ChangePassword({ params }: SlugType) {
   };
 
   return (
-    <Container>
-      <Title>Redefinir senha {userName && `- ${userName}`}</Title>
-      <FormContainer onSubmit={handleSubmit}>
-        <Input
+    <S.Container>
+      <S.Title>Redefinir senha {userName && `- ${userName}`}</S.Title>
+      <S.FormContainer onSubmit={handleSubmit}>
+        <S.Input
           type="password"
           placeholder="Sua senha de administrador"
           value={yourPassword}
           onChange={(e) => setYourPassword(e.target.value.trim())}
         />
 
-        <Input
+        <S.Input
           type="password"
           placeholder="Nova senha do funcionário"
           value={newPasswordEmployee}
           onChange={(e) => setNewPasswordEmployee(e.target.value.trim())}
         />
 
-        <Input
+        <S.Input
           type="password"
           placeholder="Confirme a nova senha"
           value={passwordCheck}
           onChange={(e) => setPasswordCheck(e.target.value.trim())}
         />
 
-        <Button type="submit">Redefinir</Button>
-      </FormContainer>
+        <S.Button type="submit">Redefinir</S.Button>
+      </S.FormContainer>
 
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-    </Container>
+    </S.Container>
   );
 }

@@ -3,7 +3,7 @@
 import { List } from './_components/List';
 import { decryptObject } from 'functions';
 
-import { Container, Title } from './styles';
+import * as S from './styles';
 
 interface SlugType {
   params: {
@@ -24,9 +24,9 @@ export default function FinishService({ params }: SlugType) {
   const decryptSlug = decryptObject(params.slug) as { selectedMaterials: Materials[] };
 
   return (
-    <Container>
-      <Title>Definir Carga</Title>
+    <S.Container>
+      <S.Title>Definir Carga</S.Title>
       <List materials={decryptSlug.selectedMaterials} />
-    </Container>
+    </S.Container>
   );
 }

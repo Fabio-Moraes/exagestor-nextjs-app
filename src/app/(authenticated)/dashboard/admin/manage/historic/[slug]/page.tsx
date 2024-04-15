@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import down from './_assets/svg/down.svg';
 
-import { Container, ErrorContainer, ListContainer, ListItem, Title, Spinner } from './styles';
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -109,18 +109,18 @@ export default function GeneralHistoric({ params }: SlugType) {
   }, []);
 
   return (
-    <Container>
-      <Title>Histórico Geral {userName && `- ${userName}`}</Title>
-      <ListContainer>
+    <S.Container>
+      <S.Title>Histórico Geral {userName && `- ${userName}`}</S.Title>
+      <S.ListContainer>
         {services.map((service) => (
-          <ListItem key={uuidv4()}>
+          <S.ListItem key={uuidv4()}>
             <Card service={service} />
-          </ListItem>
+          </S.ListItem>
         ))}
 
         {services.length >= 1 &&
           (spinner ? (
-            <Spinner>
+            <S.Spinner>
               <div>
                 <Player
                   src={animationData}
@@ -130,7 +130,7 @@ export default function GeneralHistoric({ params }: SlugType) {
                   style={{ height: '7rem', width: '7rem' }}
                 />
               </div>
-            </Spinner>
+            </S.Spinner>
           ) : (
             <button onClick={fetchServices}>
               <div>
@@ -139,17 +139,17 @@ export default function GeneralHistoric({ params }: SlugType) {
               </div>
             </button>
           ))}
-      </ListContainer>
+      </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor,
             tente novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
-        </ErrorContainer>
+        </S.ErrorContainer>
       )}
-    </Container>
+    </S.Container>
   );
 }

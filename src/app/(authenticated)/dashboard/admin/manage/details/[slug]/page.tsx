@@ -1,6 +1,5 @@
 'use client';
 
-//import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -12,18 +11,7 @@ import { internalApi } from 'services/apiAxios';
 
 import iconExa from './_assets/svg/exa_logo.svg';
 
-import {
-  ErrorContainer,
-  Button,
-  Container,
-  Wrapper,
-  Observation,
-  Table,
-  Title,
-  Info,
-  ProfileCompany,
-  ProfileInfoCompany
-} from './styles';
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -77,7 +65,6 @@ export default function Details({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
 
-  //const router = useRouter();
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -130,12 +117,6 @@ export default function Details({ params }: SlugType) {
   useEffect(() => {
     fetchServices();
 
-    /*   window.history.pushState(null, '', window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, '', window.location.href);
-      router.push(`/dashboard/admin/manage`);
-    };
- */
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -214,19 +195,19 @@ export default function Details({ params }: SlugType) {
   const objListService = JSON.parse(services?.list_service || '{}');
 
   return (
-    <Container>
-      <Title>Relatório</Title>
+    <S.Container>
+      <S.Title>Relatório</S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
-        <ErrorContainer>
+        <S.ErrorContainer>
           <span>
             Não foi possível consultar o histórico devido a instabilidade na conexão. Por
             favor, tente novamente.
           </span>
-        </ErrorContainer>
+        </S.ErrorContainer>
       ) : (
-        <Wrapper>
-          <Info ref={elementRef}>
+        <S.Wrapper>
+          <S.Info ref={elementRef}>
             {isLoading || !services ? (
               <>
                 <LineSkaleton width="18rem" />
@@ -241,7 +222,7 @@ export default function Details({ params }: SlugType) {
               </>
             ) : (
               <>
-                <ProfileCompany>
+                <S.ProfileCompany>
                   <Image
                     src={iconExa}
                     priority
@@ -249,11 +230,11 @@ export default function Details({ params }: SlugType) {
                     alt="Axa"
                     style={{ width: '3.4rem', height: 'auto' }}
                   />
-                  <ProfileInfoCompany>
+                  <S.ProfileInfoCompany>
                     <h1>EXA TELECOM</h1>
                     <span>Telecomunicações</span>
-                  </ProfileInfoCompany>
-                </ProfileCompany>
+                  </S.ProfileInfoCompany>
+                </S.ProfileCompany>
                 <p>Endereço: {services?.address}</p>
                 <p>Cidade: {services?.city}</p>
                 <p>Classificação: {services?.classification}</p>
@@ -268,7 +249,7 @@ export default function Details({ params }: SlugType) {
                 <p>Serviço: {status[services?.status]}</p>
                 <p>Contador de Atualização: {services?.update_count}</p>
                 {services?.list_material && (
-                  <Table>
+                  <S.Table>
                     <div>
                       <div>
                         <span>Materiais</span>
@@ -314,11 +295,11 @@ export default function Details({ params }: SlugType) {
                           </div>
                         ))
                         .filter((item) => objListMaterial[String(item.key)] > 0)}
-                  </Table>
+                  </S.Table>
                 )}
                 <p />
                 {services?.list_service && (
-                  <Table>
+                  <S.Table>
                     <div>
                       <div>
                         <span>Serviços</span>
@@ -342,23 +323,23 @@ export default function Details({ params }: SlugType) {
                           </div>
                         ))
                         .filter((item) => objListService[String(item.key)] > 0)}
-                  </Table>
+                  </S.Table>
                 )}
                 <p />
                 {services?.observation && (
-                  <Observation>
+                  <S.Observation>
                     <p>Observação</p>
                     {renderTextWithLineBreaks(services?.observation ?? '')}
-                  </Observation>
+                  </S.Observation>
                 )}
               </>
             )}
-          </Info>
+          </S.Info>
           {!isLoading && services && (
-            <Button onClick={captureImageAndSaveAsPdf}>Salvar relatório como PDF</Button>
+            <S.Button onClick={captureImageAndSaveAsPdf}>Salvar relatório como PDF</S.Button>
           )}
-        </Wrapper>
+        </S.Wrapper>
       )}
-    </Container>
+    </S.Container>
   );
 }
