@@ -161,13 +161,14 @@ export const Wrapper = styled.div`
 `;
 
 export const DialogQr = styled.dialog`
-  //background-image: linear-gradient(45deg, #3f7971 65%, #8bc9a8);
   border-radius: 5rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #3f7971;
+  background-color: rgb(63, 121, 113, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border: 0.5rem solid #8bc9a8;
 
   > button {

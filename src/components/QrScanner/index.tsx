@@ -1,18 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect, useRef } from 'react';
+
+import { Spinner } from 'components/Spinner';
 
 import QrScanner from 'qr-scanner';
 
 import * as S from './styles';
 
-interface ScannedProps {
+type ScannedProps = {
   handleScanned: (data: string) => void;
-}
+};
 
 export function QRScanner({ handleScanned }: ScannedProps) {
   const videoElementRef = useRef<HTMLVideoElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoElementRef.current;
@@ -35,6 +38,12 @@ export function QRScanner({ handleScanned }: ScannedProps) {
       }
     );
     qrScanner.$canvas.getContext('2d', { willReadFrequently: true });
+
+    video.onloadedmetadata = () => {
+      console.log('player video...');
+      setIsVideoPlaying(true);
+    };
+
     qrScanner.start();
 
     return () => {
@@ -45,6 +54,14 @@ export function QRScanner({ handleScanned }: ScannedProps) {
 
   return (
     <S.VideoWrapper>
+      {!isVideoPlaying && (
+        <>
+          <div>
+            <Spinner />
+          </div>
+          <p>Aguardando permissão para acessar a câmera.</p>
+        </>
+      )}
       <S.QrVideo ref={videoElementRef} />
     </S.VideoWrapper>
   );
