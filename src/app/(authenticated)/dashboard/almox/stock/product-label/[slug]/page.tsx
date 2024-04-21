@@ -80,14 +80,14 @@ export default function ProductLabel({ params }: SlugType) {
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const captureImageAndSaveAsPdf = () => {
+  const captureImageAndSaveAsPdf = (product_code: string) => {
     const element = elementRef.current;
 
     if (element) {
       import('html2pdf.js').then(({ default: html2pdf }) => {
         html2pdf(element, {
           margin: 10,
-          filename: 'file.pdf',
+          filename: `ETIQUETA_${product_code}.pdf`,
           image: { type: 'png', quality: 1 },
           html2canvas: { scale: 2 },
           jsPDF: { unit: 'mm', format: 'a5', orientation: 'p' }
@@ -101,7 +101,7 @@ export default function ProductLabel({ params }: SlugType) {
 
   return (
     <S.Container>
-      <S.Title>Relatório</S.Title>
+      <S.Title>Etiqueta</S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <S.ErrorContainer>
@@ -118,7 +118,9 @@ export default function ProductLabel({ params }: SlugType) {
             <p>{materials[0]?.product_code}</p>
           </S.Info>
           {materials && (
-            <S.Button onClick={captureImageAndSaveAsPdf}>Salvar etiqueta</S.Button>
+            <S.Button onClick={() => captureImageAndSaveAsPdf(materials[0]?.product_code)}>
+              Salvar etiqueta
+            </S.Button>
           )}
         </S.Wrapper>
       )}

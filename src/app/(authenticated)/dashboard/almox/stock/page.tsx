@@ -56,6 +56,7 @@ export default function NewStock() {
 
         setIsPopupValue(null);
         setMaterials(response.data);
+        setCheckbox('selectMaterial');
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
