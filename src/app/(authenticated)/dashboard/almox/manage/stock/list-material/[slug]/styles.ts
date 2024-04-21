@@ -147,7 +147,7 @@ export const Table = styled.div`
   }
 `;
 
-export const Button = styled.button`
+export const Button = styled.div`
   width: 30rem;
   background-color: #27a567;
   padding: 1rem;

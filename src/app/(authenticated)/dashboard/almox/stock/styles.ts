@@ -59,7 +59,7 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0 1rem 1rem 2rem;
+  //margin: 0 1rem 0rem 0rem;
 
   > div {
     width: 2rem;
@@ -93,36 +93,6 @@ export const TableHeader = styled.div`
     > span {
       width: 100%;
       font-family: 'OpenSans-Bold';
-      font-size: 1.3rem;
-    }
-  }
-
-  > div:first-child {
-    width: 100%;
-    padding: 0.5rem 1rem;
-    border-left: 0;
-    text-align: start;
-  }
-`;
-
-export const TableRow = styled.div<{ $isSelected: boolean }>`
-  display: flex;
-  flex-direction: row;
-  border-bottom: 0.2rem solid #000;
-  background-color: ${({ $isSelected }) => ($isSelected ? '#e9c80f' : '#ffffff')};
-  padding: 1rem 0;
-  width: 100%;
-
-  > div {
-    min-width: 6.7rem;
-    border-left: 0.2rem solid #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    > span {
-      width: 100%;
-      font-family: 'OpenSans-SemiBold';
       font-size: 1.3rem;
     }
   }
@@ -179,5 +149,55 @@ export const ErrorContainer = styled.div`
     border-radius: 0.7rem;
     font-size: 1.6rem;
     color: #fff;
+  }
+`;
+
+export const Wrapper = styled.div`
+  //background-color: hotpink;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+export const DialogQr = styled.dialog`
+  //background-image: linear-gradient(45deg, #3f7971 65%, #8bc9a8);
+  border-radius: 5rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #3f7971;
+  border: 0.5rem solid #8bc9a8;
+
+  > button {
+    background-color: #fff;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    width: 25rem;
+    margin: 1rem;
+    cursor: pointer;
+    user-select: none;
+
+    > p {
+      text-align: center;
+      width: 100%;
+    }
+
+    display: flex;
+    height: 4.5rem;
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 3px 0px #8bc9a8;
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+  }
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;

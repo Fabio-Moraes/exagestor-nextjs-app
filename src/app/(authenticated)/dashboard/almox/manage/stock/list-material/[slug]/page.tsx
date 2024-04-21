@@ -1,8 +1,8 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import Link from 'components/Vercel/Link';
 import { decryptObject } from 'functions';
 import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
@@ -35,8 +35,6 @@ export default function NewStock({ params }: SlugType) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [selectedTableRows, setSelectedTableRows] = useState<number[]>([]);
-
-  const router = useRouter();
 
   const { userId, userName } = decryptObject(params.slug) as DecryptObjectType;
 
@@ -155,13 +153,9 @@ export default function NewStock({ params }: SlugType) {
               ))}
           </S.Table>
           {selectedTableRows.length > 0 && (
-            <S.Button
-              onClick={() => {
-                router.push(`/dashboard/almox/manage/stock/select-material/${encryptSlug}`);
-              }}
-            >
-              Selecionar Quantidade ({selectedTableRows.length})
-            </S.Button>
+            <Link href={`/dashboard/almox/manage/stock/select-material/${encryptSlug}`}>
+              <S.Button>Selecionar Quantidade ({selectedTableRows.length})</S.Button>
+            </Link>
           )}
         </>
       )}

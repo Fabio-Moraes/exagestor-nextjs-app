@@ -86,7 +86,9 @@ const ListItem = (props: ListItemProps) => {
   function fetchStock() {
     const encryptSlug = encryptObject({ userId: id, userName: name });
     handleCloseDialog();
-    router.push(`/dashboard/almox/manage/stock/material/${encryptSlug}`, { scroll: false });
+    router.push(`/dashboard/almox/manage/stock/list-material/${encryptSlug}`, {
+      scroll: false
+    });
   }
 
   const selectedRole = {
@@ -101,7 +103,6 @@ const ListItem = (props: ListItemProps) => {
           whileTap={{ scale: 0.95 }}
           onClick={handleOpenDialog}
           style={{
-            /*  opacity: status === 'inactive' ? 0.8 : 1 */
             filter: status === 'inactive' ? 'saturate(0)' : 'contrast(2)'
           }}
         >
