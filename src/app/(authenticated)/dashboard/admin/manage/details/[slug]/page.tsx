@@ -181,14 +181,14 @@ export default function Details({ params }: SlugType) {
   const objListService = JSON.parse(services?.list_service || '{}');
 
   const [handleToPrinter] = useHandlePrint({
-    elementRef: elementRef.current,
+    elementRef: elementRef,
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });
 
   const [handleToSavePdf] = useHandlePrint({
     download: true,
-    elementRef: elementRef.current,
+    elementRef: elementRef,
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });

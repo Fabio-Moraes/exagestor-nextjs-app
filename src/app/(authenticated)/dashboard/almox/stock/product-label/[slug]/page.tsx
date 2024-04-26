@@ -87,14 +87,14 @@ export default function ProductLabel({ params }: SlugType) {
   }, []);
 
   const [handleToPrinter] = useHandlePrint({
-    elementRef: elementRef.current,
+    elementRef: elementRef,
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });
 
   const [handleToSavePdf] = useHandlePrint({
     download: true,
-    elementRef: elementRef.current,
+    elementRef: elementRef,
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });

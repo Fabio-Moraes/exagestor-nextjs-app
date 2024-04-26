@@ -5,7 +5,7 @@ import { useReactToPrint } from 'react-to-print';
 type PropType = {
   title?: string;
   download?: boolean;
-  elementRef: HTMLDivElement | null;
+  elementRef: React.RefObject<HTMLDivElement>;
   onAfterPrint: () => void;
   onBeforePrint?: () => void | Promise<unknown>;
   jsPDF?: {
@@ -26,7 +26,8 @@ export const useHandlePrint = (props: PropType) => {
 
   const reactToPrint = useReactToPrint({
     documentTitle: title,
-    content: () => elementRef,
+
+    content: () => elementRef?.current,
     pageStyle: `
       @media print {
         @page { margin: 0; }
@@ -39,9 +40,9 @@ export const useHandlePrint = (props: PropType) => {
     onAfterPrint,
     print: download
       ? async () => {
-          if (elementRef) {
+          if (elementRef.current) {
             await import('html2pdf.js').then(({ default: html2pdf }) => {
-              html2pdf(elementRef, {
+              html2pdf(elementRef.current!, {
                 margin: 10,
                 filename: `${title}.pdf`,
                 image: { type: 'png', quality: 1 },
