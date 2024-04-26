@@ -39,12 +39,12 @@ export const useHandlePrint = (props: PropType) => {
     onBeforePrint,
     onAfterPrint,
     print: download
-      ? async (printIframe) => {
-          const document = printIframe.contentDocument;
-          if (document) {
+      ? async (/* printIframe */) => {
+          //const document = printIframe.contentDocument;
+          if (elementRef) {
             await import('html2pdf.js').then(({ default: html2pdf }) => {
-              const html = document.getElementsByTagName('html')[0];
-              html2pdf(html, {
+              //const html = document.getElementsByTagName('html')[0];
+              html2pdf(elementRef, {
                 margin: 10,
                 filename: `${title}.pdf`,
                 image: { type: 'png', quality: 1 },
