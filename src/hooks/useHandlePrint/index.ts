@@ -28,14 +28,14 @@ export const useHandlePrint = (props: PropType) => {
     documentTitle: title,
 
     content: () => elementRef?.current,
-    pageStyle: `
-      @media print {
-        @page { margin: 0; }
-      }
-      body {
-        -webkit-print-color-adjust: exact;
-      }
-    `,
+    // pageStyle: `
+    // @media print {
+    // @page { margin: 0; }
+    // }
+    // body {
+    // -webkit-print-color-adjust: exact;
+    // }
+    // `,
     onBeforePrint,
     onAfterPrint,
     print: download
@@ -52,8 +52,8 @@ export const useHandlePrint = (props: PropType) => {
             });
           }
         }
-      : undefined,
-    removeAfterPrint: true
+      : undefined
+    //removeAfterPrint: true
   });
 
   return [reactToPrint];
