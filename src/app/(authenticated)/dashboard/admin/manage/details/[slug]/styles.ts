@@ -36,21 +36,6 @@ export const Wrapper = styled.div`
   > p {
     margin-top: 1rem;
   }
-
-  > div:last-child {
-    display: flex;
-    margin: 0.8rem;
-    padding: 1rem;
-    background-color: #3f795e;
-    border-radius: 0.5rem;
-
-    justify-content: space-between;
-    align-items: center;
-
-    > span {
-      width: 13rem;
-    }
-  }
 `;
 
 export const Info = styled.section`
@@ -182,11 +167,19 @@ export const List = styled.div`
   padding: 2rem;
 `;
 
+export const WrapperButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  background-color: aliceblue;
+  width: 100%;
+  padding: 2rem 2rem 1.5rem 2rem;
+`;
+
 export const Button = styled.button`
   display: flex;
   height: 3rem;
-  width: auto;
-  margin: 2rem 3rem 1.5rem 3rem;
   padding: 2rem 1.5rem;
   background-color: #3c7d5d;
   align-items: center;
@@ -195,6 +188,7 @@ export const Button = styled.button`
   color: #fff;
   text-align: center;
   font-size: 1.6rem;
+  white-space: nowrap;
 `;
 
 export const ErrorContainer = styled.div`

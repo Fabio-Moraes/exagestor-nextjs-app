@@ -1,6 +1,6 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Container = styled.div`
   text-align: center;
@@ -33,22 +33,49 @@ export const Wrapper = styled.div`
   justify-content: space-around;
   flex-direction: column;
 
+  overflow: hidden;
+
   > p {
     margin-top: 1rem;
   }
+`;
 
-  > div:last-child {
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const WrapperSpinner = styled.div`
+  // background-color: hotpink;
+  background-color: #3f7971;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  width: 80%;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+
+  > p {
+    color: #fff;
+  }
+
+  > div {
     display: flex;
-    margin: 0.8rem;
-    padding: 1rem;
-    background-color: #3f795e;
-    border-radius: 0.5rem;
-
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-
-    > span {
-      width: 13rem;
+    justify-content: center;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    border-radius: 1rem;
+    > div {
+      animation: ${rotateAnimation} 1s linear infinite;
     }
   }
 `;
@@ -75,31 +102,13 @@ export const Info = styled.section`
   }
 `;
 
-export const Observation = styled.div`
-  border: 0.2rem solid #000;
-  border-radius: 0.5rem;
-  padding-bottom: 1rem;
-
-  > p:first-child {
-    font-family: 'OpenSans-SemiBold';
-    padding: 1rem;
-    border-bottom: 0.2rem solid #000;
-    background-color: #8bc9a8;
-    margin-bottom: 1rem;
-    text-align: center;
-    font-size: 1.5rem;
-  }
-
-  > p {
-    padding: 0 1rem;
-    margin-bottom: 0;
-    text-align: start;
-    font-size: 1.3rem;
-    word-wrap: break-word;
-  }
-  > div {
-    min-height: 1rem;
-  }
+export const WrapperButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  background-color: aliceblue;
 `;
 
 export const Button = styled.button`
@@ -115,6 +124,7 @@ export const Button = styled.button`
   color: #fff;
   text-align: center;
   font-size: 1.6rem;
+  white-space: nowrap;
 `;
 
 export const ErrorContainer = styled.div`

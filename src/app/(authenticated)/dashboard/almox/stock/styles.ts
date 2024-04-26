@@ -166,7 +166,7 @@ export const DialogQr = styled.dialog`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(63, 121, 113, 0.3);
+  background-color: rgba(63, 121, 113, 0.3);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border: 0.5rem solid #8bc9a8;

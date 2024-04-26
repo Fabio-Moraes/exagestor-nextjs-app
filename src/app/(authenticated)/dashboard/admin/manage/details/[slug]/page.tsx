@@ -7,6 +7,7 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
+import { useHandlePrint } from 'hooks/useHandlePrint';
 import { internalApi } from 'services/apiAxios';
 
 import iconExa from './_assets/svg/exa_logo.svg';
@@ -64,6 +65,7 @@ export default function Details({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
+  const [processPrint, setProcessPrint] = useState(false);
 
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
@@ -175,24 +177,21 @@ export default function Details({ params }: SlugType) {
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const captureImageAndSaveAsPdf = () => {
-    const element = elementRef.current;
-
-    if (element) {
-      import('html2pdf.js').then(({ default: html2pdf }) => {
-        html2pdf(element, {
-          margin: 10,
-          filename: 'file.pdf',
-          image: { type: 'png', quality: 1 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'p' }
-        });
-      });
-    }
-  };
-
   const objListMaterial = JSON.parse(services?.list_material || '{}');
   const objListService = JSON.parse(services?.list_service || '{}');
+
+  const [handleToPrinter] = useHandlePrint({
+    elementRef: elementRef.current,
+    onBeforePrint: () => setProcessPrint(true),
+    onAfterPrint: () => setProcessPrint(false)
+  });
+
+  const [handleToSavePdf] = useHandlePrint({
+    download: true,
+    elementRef: elementRef.current,
+    onBeforePrint: () => setProcessPrint(true),
+    onAfterPrint: () => setProcessPrint(false)
+  });
 
   return (
     <S.Container>
@@ -335,11 +334,16 @@ export default function Details({ params }: SlugType) {
               </>
             )}
           </S.Info>
-          {!isLoading && services && (
-            <S.Button onClick={captureImageAndSaveAsPdf}>Salvar relatório como PDF</S.Button>
+          {!isLoading && services && !processPrint && (
+            <S.WrapperButton>
+              <S.Button onClick={handleToPrinter}>Imprimir</S.Button>
+              <S.Button onClick={handleToSavePdf}>Salvar como PDF</S.Button>
+            </S.WrapperButton>
           )}
         </S.Wrapper>
       )}
     </S.Container>
   );
 }
+
+//Print to PDF!

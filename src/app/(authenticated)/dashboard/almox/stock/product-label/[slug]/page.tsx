@@ -6,7 +6,12 @@ import QrCode from 'react-qr-code';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { decryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
+import { useHandlePrint } from 'hooks/useHandlePrint';
 import { internalApi } from 'services/apiAxios';
+
+import * as animationData from './_assets/lottie/animation.json';
+
+import { Player } from '@lottiefiles/react-lottie-player';
 
 import * as S from './styles';
 
@@ -29,9 +34,12 @@ export default function ProductLabel({ params }: SlugType) {
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [materials, setMaterials] = useState<Materials[]>([]);
+  const [processPrint, setProcessPrint] = useState(false);
 
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
+
+  const elementRef = useRef<HTMLDivElement>(null);
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
@@ -78,26 +86,18 @@ export default function ProductLabel({ params }: SlugType) {
     fetchServices();
   }, []);
 
-  const elementRef = useRef<HTMLDivElement>(null);
+  const [handleToPrinter] = useHandlePrint({
+    elementRef: elementRef.current,
+    onBeforePrint: () => setProcessPrint(true),
+    onAfterPrint: () => setProcessPrint(false)
+  });
 
-  const captureImageAndSaveAsPdf = (product_code: string) => {
-    const element = elementRef.current;
-
-    if (element) {
-      import('html2pdf.js').then(({ default: html2pdf }) => {
-        html2pdf(element, {
-          margin: 10,
-          filename: `ETIQUETA_${product_code}.pdf`,
-          image: { type: 'png', quality: 1 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a5', orientation: 'p' }
-        });
-      });
-
-      element.style.textAlign = 'center';
-      element.style.margin = '0 auto';
-    }
-  };
+  const [handleToSavePdf] = useHandlePrint({
+    download: true,
+    elementRef: elementRef.current,
+    onBeforePrint: () => setProcessPrint(true),
+    onAfterPrint: () => setProcessPrint(false)
+  });
 
   return (
     <S.Container>
@@ -117,11 +117,26 @@ export default function ProductLabel({ params }: SlugType) {
             <QrCode value={materials[0]?.product_code ?? ''} />
             <p>{materials[0]?.product_code}</p>
           </S.Info>
-          {materials && (
-            <S.Button onClick={() => captureImageAndSaveAsPdf(materials[0]?.product_code)}>
-              Salvar etiqueta
-            </S.Button>
+          {!processPrint ? (
+            <S.WrapperButton>
+              <S.Button onClick={handleToPrinter}>Imprimir</S.Button>
+              <S.Button onClick={handleToSavePdf}>Salvar como PDF</S.Button>
+            </S.WrapperButton>
+          ) : (
+            <S.WrapperSpinner>
+              <div>
+                <Player
+                  src={animationData}
+                  loop
+                  autoplay
+                  speed={1.5}
+                  style={{ height: '10rem', width: '10rem' }}
+                />
+              </div>
+              <p>Aguarde um instante enquanto geramos o cupom do produto.</p>
+            </S.WrapperSpinner>
           )}
+          <p>{}</p>
         </S.Wrapper>
       )}
     </S.Container>

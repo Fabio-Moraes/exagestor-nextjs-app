@@ -1,0 +1,1 @@
+export { useHandlePrint } from './useHandlePrint';
