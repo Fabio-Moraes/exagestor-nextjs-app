@@ -27,7 +27,6 @@ export const useHandlePrint = (props: PropType) => {
   const reactToPrint = useReactToPrint({
     documentTitle: title,
     content: () => elementRef,
-    copyStyles: true,
     pageStyle: `
       @media print {
         @page { margin: 0; }
@@ -39,11 +38,9 @@ export const useHandlePrint = (props: PropType) => {
     onBeforePrint,
     onAfterPrint,
     print: download
-      ? async (/* printIframe */) => {
-          //const document = printIframe.contentDocument;
+      ? async () => {
           if (elementRef) {
             await import('html2pdf.js').then(({ default: html2pdf }) => {
-              //const html = document.getElementsByTagName('html')[0];
               html2pdf(elementRef, {
                 margin: 10,
                 filename: `${title}.pdf`,
