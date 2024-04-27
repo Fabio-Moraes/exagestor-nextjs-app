@@ -52,8 +52,8 @@ export const useHandlePrint = (props: PropType) => {
             });
           }
         }
-      : undefined
-    //removeAfterPrint: true
+      : undefined,
+    removeAfterPrint: true
   });
 
   return [reactToPrint];
