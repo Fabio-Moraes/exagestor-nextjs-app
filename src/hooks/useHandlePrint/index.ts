@@ -27,6 +27,7 @@ export const useHandlePrint = (props: PropType) => {
   const reactToPrint = useReactToPrint({
     content: () => elementRef?.current,
     documentTitle: title,
+    copyStyles: true,
     pageStyle: `
     @media print {
       @page { margin: 0; }
