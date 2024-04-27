@@ -25,16 +25,15 @@ export const useHandlePrint = (props: PropType) => {
   } = props;
 
   const reactToPrint = useReactToPrint({
-    documentTitle: title,
-
     content: () => elementRef?.current,
+    documentTitle: title,
     pageStyle: `
-      @media print {
-        @page { margin: 0; }
-      }
-      body {
-        -webkit-print-color-adjust: exact;
-      }
+    @media print {
+      @page { margin: 0; }
+    }
+    body {
+      -webkit-print-color-adjust: exact;
+    }
     `,
     onBeforePrint,
     onAfterPrint,
@@ -52,8 +51,7 @@ export const useHandlePrint = (props: PropType) => {
             });
           }
         }
-      : undefined,
-    removeAfterPrint: true
+      : undefined
   });
 
   return [reactToPrint];
