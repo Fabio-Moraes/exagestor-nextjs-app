@@ -1,0 +1,11 @@
+:root {
+  --body-bg-color: #ffffff;
+  --primary-color: #ffffff;   /* Azul principal */
+  --secondary-color: #ffffff; /* Cinza escuro */
+  --success-color: #28a745;   /* Verde sucesso */
+  --warning-color: #ffffff;   /* Amarelo aviso */
+  --danger-color: #ffffff;    /* Vermelho perigo */
+  --light-color: #f8f9fa;     /* Branco claro */
+  --dark-color: #212529;      /* Preto escuro */
+  --text-color: #333;         /* Cor do texto */
+}

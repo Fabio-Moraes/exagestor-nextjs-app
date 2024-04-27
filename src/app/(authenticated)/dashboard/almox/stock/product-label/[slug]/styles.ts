@@ -50,7 +50,6 @@ const rotateAnimation = keyframes`
 `;
 
 export const WrapperSpinner = styled.div`
-  // background-color: hotpink;
   background-color: #3f7971;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
@@ -108,7 +107,6 @@ export const WrapperButton = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  background-color: aliceblue;
 `;
 
 export const Button = styled.button`

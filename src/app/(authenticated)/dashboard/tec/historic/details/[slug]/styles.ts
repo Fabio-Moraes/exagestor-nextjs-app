@@ -1,6 +1,6 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Container = styled.div`
   text-align: center;
@@ -21,6 +21,46 @@ export const Title = styled.h1`
   }
 `;
 
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const WrapperSpinner = styled.div`
+  background-color: #3f7971;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  width: 80%;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+
+  > p {
+    color: #fff;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    border-radius: 1rem;
+    > div {
+      animation: ${rotateAnimation} 1s linear infinite;
+    }
+  }
+`;
+
 export const Wrapper = styled.div`
   font-size: 1.8rem;
   background-color: #fff;
@@ -35,21 +75,6 @@ export const Wrapper = styled.div`
 
   > p {
     margin-top: 1rem;
-  }
-
-  > div:last-child {
-    display: flex;
-    margin: 0.8rem;
-    padding: 1rem;
-    background-color: #3f795e;
-    border-radius: 0.5rem;
-
-    justify-content: space-between;
-    align-items: center;
-
-    > span {
-      width: 13rem;
-    }
   }
 `;
 
@@ -182,11 +207,18 @@ export const List = styled.div`
   padding: 2rem;
 `;
 
+export const WrapperButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  padding: 2rem 2rem 1.5rem 2rem;
+`;
+
 export const Button = styled.button`
   display: flex;
   height: 3rem;
-  width: auto;
-  margin: 2rem 3rem 1.5rem 3rem;
   padding: 2rem 1.5rem;
   background-color: #3c7d5d;
   align-items: center;
@@ -195,6 +227,7 @@ export const Button = styled.button`
   color: #fff;
   text-align: center;
   font-size: 1.6rem;
+  white-space: nowrap;
 `;
 
 export const ErrorContainer = styled.div`

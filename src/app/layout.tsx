@@ -1,6 +1,8 @@
 import StyledComponentsRegistry from 'lib/registry';
 
-import './globals.css';
+import '../css/globals.css';
+import '../css/colors.css';
+import '../css/fonts.css';
 
 export const metadata = {
   title: {

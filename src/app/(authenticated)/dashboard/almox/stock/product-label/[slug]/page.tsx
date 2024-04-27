@@ -136,7 +136,6 @@ export default function ProductLabel({ params }: SlugType) {
               <p>Aguarde um instante enquanto geramos o cupom do produto.</p>
             </S.WrapperSpinner>
           )}
-          <p>{}</p>
         </S.Wrapper>
       )}
     </S.Container>

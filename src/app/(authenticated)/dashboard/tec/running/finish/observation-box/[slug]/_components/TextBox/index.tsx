@@ -70,7 +70,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
             updateCount: serviceData?.update_count + 1
           });
 
-          router.push(`/dashboard/tec/historic/details/${encryptSlug}`);
+          router.push(`/dashboard/tec/historic/details/${encryptSlug}`, { scroll: false });
           break;
         } catch (error: unknown) {
           if (error instanceof Error) {

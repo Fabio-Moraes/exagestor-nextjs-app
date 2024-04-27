@@ -61,7 +61,9 @@ export function List(props: { serviceData: ServiceData; items: Materials[] }) {
       protocol: serviceData?.protocol,
       employeeId: serviceData?.employee_id
     });
-    router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`);
+    router.push(`/dashboard/admin/running/finish/observation-box/${encryptSlug}`, {
+      scroll: false
+    });
   }
 
   const toggleItem = (key: string, count: number, maxCouter: number) => {

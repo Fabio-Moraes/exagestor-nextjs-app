@@ -114,7 +114,9 @@ export function List(props: { serviceData: ServiceData }) {
 
   async function fetchConcludedMaterial() {
     const encryptSlug = encryptObject({ protocol: serviceData?.protocol });
-    router.push(`/dashboard/tec/running/finish/observation-box/${encryptSlug}`);
+    router.push(`/dashboard/tec/running/finish/observation-box/${encryptSlug}`, {
+      scroll: false
+    });
   }
 
   const counterItems = (item: Materials, count: number) => {

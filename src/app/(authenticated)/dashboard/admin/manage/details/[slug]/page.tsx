@@ -10,6 +10,10 @@ import { TimedWait } from 'functions/TimedWait';
 import { useHandlePrint } from 'hooks/useHandlePrint';
 import { internalApi } from 'services/apiAxios';
 
+import * as animationData from './_assets/lottie/animation.json';
+
+import { Player } from '@lottiefiles/react-lottie-player';
+
 import iconExa from './_assets/svg/exa_logo.svg';
 
 import * as S from './styles';
@@ -334,16 +338,29 @@ export default function Details({ params }: SlugType) {
               </>
             )}
           </S.Info>
-          {!isLoading && services && !processPrint && (
-            <S.WrapperButton>
-              <S.Button onClick={handleToPrinter}>Imprimir</S.Button>
-              <S.Button onClick={handleToSavePdf}>Salvar como PDF</S.Button>
-            </S.WrapperButton>
-          )}
+          {!isLoading &&
+            services &&
+            (!processPrint ? (
+              <S.WrapperButton>
+                <S.Button onClick={handleToPrinter}>Imprimir</S.Button>
+                <S.Button onClick={handleToSavePdf}>Salvar como PDF</S.Button>
+              </S.WrapperButton>
+            ) : (
+              <S.WrapperSpinner>
+                <div>
+                  <Player
+                    src={animationData}
+                    loop
+                    autoplay
+                    speed={1.5}
+                    style={{ height: '10rem', width: '10rem' }}
+                  />
+                </div>
+                <p>Aguarde um instante enquanto geramos o relatório.</p>
+              </S.WrapperSpinner>
+            ))}
         </S.Wrapper>
       )}
     </S.Container>
   );
 }
-
-//Print to PDF!

@@ -1,6 +1,6 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Container = styled.div`
   text-align: center;
@@ -18,6 +18,46 @@ export const Title = styled.h1`
     line-height: 4rem;
     background-color: #3c7d5d;
     color: #fff;
+  }
+`;
+
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const WrapperSpinner = styled.div`
+  background-color: #3f7971;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  width: 80%;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+
+  > p {
+    color: #fff;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    border-radius: 1rem;
+    > div {
+      animation: ${rotateAnimation} 1s linear infinite;
+    }
   }
 `;
 
@@ -172,7 +212,6 @@ export const WrapperButton = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  background-color: aliceblue;
   width: 100%;
   padding: 2rem 2rem 1.5rem 2rem;
 `;
