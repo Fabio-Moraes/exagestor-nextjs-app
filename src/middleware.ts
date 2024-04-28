@@ -65,3 +65,4 @@ async function fetchAccountStatus(token: string) {
 export const config = {
   matcher: ['/', '/signin', '/dashboard/:path*']
 };
+//
