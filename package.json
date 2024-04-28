@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky && husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -33,6 +33,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^9.0.11",
+    "lint-staged": ">=10",
     "pinst": "^3.0.0",
     "prettier": "3.0.3",
     "typescript": "5.1.6"
@@ -64,5 +65,8 @@
     "utf-8-validate": "^6.0.3",
     "uuid": "^9.0.1",
     "zustand": "^4.5.2"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }
