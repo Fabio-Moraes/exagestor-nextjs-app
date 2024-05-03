@@ -1,5 +1,7 @@
 'use client';
 
+import DateTime from 'react-datetime';
+
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -12,68 +14,66 @@ export const Title = styled.h1`
   margin-bottom: 2rem;
   border-radius: 0.7rem;
   font-family: 'OpenSans-SemiBold';
-  color: #333;
 
   @media (min-width: 550px) {
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
-    color: #000;
+    background-color: #5e9987;
+    color: #fff;
   }
 `;
 
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #d8e5df;
-  border: 0.2rem solid #3f795e;
-  border-radius: 0.7rem;
-  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  padding-top: 1.5rem 0;
+  padding-top: 1.5rem;
 
   > div {
     display: flex;
     align-items: center;
-    margin: 2rem 0 0 0;
+  }
+
+  > div:nth-last-child(2) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 1rem;
   }
 
   > label {
     overflow-wrap: break-word;
-    margin: 1.5rem 2rem 0.5rem 2rem;
+    margin: 0 2rem 0.5rem 2rem;
     text-align: start;
   }
 `;
 
 export const Input = styled.input`
   padding: 1rem;
-  margin: 0 2rem 0 2rem;
-  border: 0.1rem solid #000000;
-  border-radius: 0.4rem;
+  margin: 0 0rem 1.5rem 0rem;
   font-size: 1.6rem;
-  background-color: #fff;
+  background-color: #fafafa;
+  border-radius: 0.5rem;
+  outline: 0.1rem solid #ccc;
+  font-family: 'OpenSans-Regular';
 
   &:focus {
-    outline: none;
+    outline: 0.2rem solid #27a567;
   }
 
   &::placeholder {
-    color: #777;
+    color: #666;
   }
 `;
 
 export const Select = styled.select`
   padding: 1rem;
-  margin: 0 2rem 0 2rem;
-  border: 0.1rem solid #000000;
-  border-radius: 0.4rem;
+  margin: 0 0rem 1.5rem 0rem;
   font-size: 1.6rem;
-  background-color: #fff;
-  color: #777;
-
-  &:focus {
-    outline: none;
-  }
+  background-color: #fafafa;
+  border-radius: 0.5rem;
+  outline: 0.1rem solid #ccc;
+  font-family: 'OpenSans-Regular';
 `;
 
 export const Option = styled.option`
@@ -81,17 +81,22 @@ export const Option = styled.option`
   color: #777;
 `;
 
-export const CheckboxButton = styled.button<{ $checked: number }>`
+export const WrapperCheckboxButton = styled.div`
   display: flex;
-  align-items: center;
+  width: 22rem;
+`;
+
+export const CheckboxButton = styled.button<{ $checked: boolean }>`
+  display: flex;
+  //align-items: center;
   cursor: pointer;
-  margin: 0 1rem 1rem 2rem;
+  margin: 0.6rem 1rem 2rem 0.5rem;
 
   > div {
     width: 2rem;
     height: 2rem;
     border: 0.2rem solid #27a567;
-    background-color: ${({ $checked }) => ($checked === 1 ? '#27a567' : '#fff')};
+    background-color: ${({ $checked }) => ($checked ? '#27A567' : '#fff')};
     border-radius: 1rem;
   }
   > span {
@@ -104,11 +109,19 @@ export const Button = styled.button`
   width: 15rem;
   background-color: #27a567;
   padding: 1rem;
-  margin: 2rem 2rem;
-  border: 0.1rem solid #000000;
-  border-radius: 0.4rem;
+  margin: 3rem 0rem;
+  border: none;
+  border-radius: 0.5rem;
   font-size: 1.6rem;
   color: #fff;
+
+  &:hover {
+    background-color: #00796b;
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const ErrorContainer = styled.div`
@@ -132,5 +145,26 @@ export const ErrorContainer = styled.div`
     border-radius: 0.7rem;
     font-size: 1.6rem;
     color: #fff;
+  }
+`;
+
+export const StyledDateTime = styled(DateTime)`
+  input {
+    width: 100%;
+    padding: 1rem;
+    margin: 0 0rem 1.5rem 0rem;
+    font-size: 1.6rem;
+    background-color: #fafafa;
+    border-radius: 0.5rem;
+    outline: 0.1rem solid #ccc;
+    font-family: 'OpenSans-Regular';
+
+    &:focus {
+      outline: 0.2rem solid #27a567;
+    }
+
+    &::placeholder {
+      color: #666;
+    }
   }
 `;

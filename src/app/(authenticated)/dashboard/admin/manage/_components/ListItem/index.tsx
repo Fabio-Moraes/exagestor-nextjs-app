@@ -103,7 +103,7 @@ const ListItem = (props: ListItemProps) => {
     }
   };
 
-  function fetchConcludedServices() {
+  function fetchNewServices() {
     const encryptSlug = encryptObject({ userId: id });
     handleCloseDialog();
     router.push(`/dashboard/admin/manage/new/${encryptSlug}`, { scroll: false });
@@ -176,7 +176,7 @@ const ListItem = (props: ListItemProps) => {
             <p>VISUALIZAR CARGA</p>
           </button>
           {status !== 'inactive' && (
-            <button onClick={fetchConcludedServices}>
+            <button onClick={fetchNewServices}>
               <p>NOVO SERVIÇO</p>
             </button>
           )}

@@ -3,6 +3,7 @@ import StyledComponentsRegistry from 'lib/registry';
 import '../css/globals.css';
 import '../css/colors.css';
 import '../css/fonts.css';
+import '../css/datetime.css';
 
 export const metadata = {
   title: {
