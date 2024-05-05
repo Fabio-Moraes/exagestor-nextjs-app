@@ -28,6 +28,7 @@ interface Service {
   status: string;
   update_count: number;
   created_at: string;
+  start_service_at: string;
   modification_at: string;
   finished_at: string;
   observation: string;
