@@ -22,6 +22,7 @@ interface RunningService {
   created_at: string;
   protocol: string;
   name_creator_leader: string;
+  role_creator_leader: string;
   name_tec: string;
 }
 
