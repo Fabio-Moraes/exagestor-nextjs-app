@@ -25,7 +25,7 @@ interface Service {
   address: string;
   nomenclature: string;
   classification: string;
-  status: 'analysis' | 'active' | 'paused' | 'concluded';
+  status: 'analysis' | 'active' | 'paused';
   update_count: number;
   created_at: string;
   start_service_at: string;
