@@ -28,7 +28,7 @@ interface RunningService {
   nomenclature: string;
   classification: string;
   update_count: number;
-  status: 'analysis' | 'active' | 'paused';
+  status: string;
   created_at: string;
   protocol: string;
   name_admin: string;

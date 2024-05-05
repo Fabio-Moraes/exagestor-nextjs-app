@@ -20,7 +20,7 @@ interface RunningService {
   nomenclature: string;
   classification: string;
   update_count: number;
-  status: 'analysis' | 'active' | 'paused';
+  status: string;
   start_service_at: string;
   created_at: string;
   protocol: string;
@@ -90,7 +90,15 @@ export function CardHeader(props: { service: RunningService; passedScheduledDate
   const { service, passedScheduledDate } = props;
 
   return (
-    <S.Container $color={statusColor[passedScheduledDate ? service?.status : 'scheduled']}>
+    <S.Container
+      $color={
+        statusColor[
+          passedScheduledDate
+            ? (service?.status as 'analysis' | 'active' | 'paused')
+            : 'scheduled'
+        ]
+      }
+    >
       <div>
         <div>
           <div>
@@ -103,7 +111,15 @@ export function CardHeader(props: { service: RunningService; passedScheduledDate
             />
             <p>{service?.name_tec.toLocaleUpperCase()}</p>
           </div>
-          <div>{StatusOptions[passedScheduledDate ? service?.status : 'scheduled']}</div>
+          <div>
+            {
+              StatusOptions[
+                passedScheduledDate
+                  ? (service?.status as 'analysis' | 'active' | 'paused')
+                  : 'scheduled'
+              ]
+            }
+          </div>
         </div>
         <button>
           <Image
