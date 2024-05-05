@@ -15,6 +15,8 @@ export const Container = styled.div`
     height: 100%;
     padding: 0.7rem;
 
+    user-select: text;
+
     > p {
       padding: 0.5rem;
       margin: 0.5rem 0;
@@ -28,5 +30,18 @@ export const Container = styled.div`
     > p:last-child {
       margin-bottom: 0;
     }
+  }
+`;
+
+export const Countdown = styled.div`
+  background-color: #3f7971;
+  margin-inline: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  line-height: 2.5rem;
+  > p {
+    color: #fff;
+    font-size: 1.5rem;
   }
 `;

@@ -20,8 +20,8 @@ export const Wrapper = styled.div`
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
   border-radius: 0.7rem;
   position: sticky;
-  top: 8.9rem;
-  margin-top: 8.9rem;
+  top: 12.3rem;
+  margin-top: 12.3rem;
 
   > div:not(:last-child) {
     margin-bottom: 0.5rem;

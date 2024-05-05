@@ -193,7 +193,7 @@ export default function NewService({ params }: SlugType) {
             setModalValue('Novo serviço iniciado com êxito.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            router.push('/dashboard/tec/running');
+            router.push('/dashboard/admin/running');
             return;
           } else {
             console.error('Erro:', response.data.error);
@@ -212,6 +212,8 @@ export default function NewService({ params }: SlugType) {
               if (retryCount === maxRetries) {
                 setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
                 setIsPopupValue('');
+              } else {
+                await TimedWait(3000);
               }
             }
           }
@@ -220,7 +222,7 @@ export default function NewService({ params }: SlugType) {
     }
   };
 
-  const inputProps = {
+  const calendarInputProps = {
     readOnly: true,
     style: { cursor: 'default' },
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => e.target.blur()
@@ -270,7 +272,7 @@ export default function NewService({ params }: SlugType) {
           dateFormat="DD/MM/YYYY"
           timeFormat={false}
           isValidDate={isValidDate}
-          inputProps={inputProps}
+          inputProps={calendarInputProps}
         />
 
         <S.StyledDateTime
@@ -279,7 +281,7 @@ export default function NewService({ params }: SlugType) {
           locale="pt"
           dateFormat={false}
           timeFormat="HH:mm"
-          inputProps={inputProps}
+          inputProps={calendarInputProps}
         />
 
         <S.WrapperCheckboxButton>

@@ -5,6 +5,7 @@ import Image from 'components/Vercel/Image';
 import iconPaused from './_assets/svg/cone.svg';
 import iconFlagActive from './_assets/svg/flag_active.svg';
 import iconFlagAnalysis from './_assets/svg/flag_analysis.svg';
+import iconFlagDate from './_assets/svg/flag_date.svg';
 import iconPin from './_assets/svg/pin.svg';
 import iconUser from './_assets/svg/user.svg';
 
@@ -19,7 +20,8 @@ interface RunningService {
   nomenclature: string;
   classification: string;
   update_count: number;
-  status: string;
+  status: 'analysis' | 'active' | 'paused';
+  start_service_at: string;
   created_at: string;
   protocol: string;
   name_admin: string;
@@ -62,12 +64,33 @@ const StatusOptions = {
       />
       <p>PAUSADO</p>
     </>
+  ),
+  scheduled: (
+    <>
+      <Image
+        src={iconFlagDate}
+        priority
+        loading="eager"
+        alt="Axa"
+        style={{ width: '2rem', height: 'auto' }}
+      />
+      <p>AGENDADO</p>
+    </>
   )
-} as { [key: string]: React.JSX.Element };
+} as const;
 
-export function CardHeader({ service }: { service: RunningService }) {
+const statusColor = {
+  analysis: '#e9c80f',
+  active: '#5e9987',
+  paused: '#5e9987',
+  scheduled: '#868474'
+} as const;
+
+export function CardHeader(props: { service: RunningService; passedScheduledDate: boolean }) {
+  const { service, passedScheduledDate } = props;
+
   return (
-    <S.Container $color={service?.status === 'analysis' ? '#e9c80f' : '#5e9987'}>
+    <S.Container $color={statusColor[passedScheduledDate ? service?.status : 'scheduled']}>
       <div>
         <div>
           <div>
@@ -80,7 +103,7 @@ export function CardHeader({ service }: { service: RunningService }) {
             />
             <p>{service?.name_tec.toLocaleUpperCase()}</p>
           </div>
-          <div>{StatusOptions[service?.status]}</div>
+          <div>{StatusOptions[passedScheduledDate ? service?.status : 'scheduled']}</div>
         </div>
         <button>
           <Image
@@ -89,7 +112,6 @@ export function CardHeader({ service }: { service: RunningService }) {
             loading="eager"
             alt="Axa"
             style={{
-              //margin: '0.2rem',
               width: '1.8rem',
               height: 'auto'
             }}

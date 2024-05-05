@@ -28,6 +28,7 @@ interface Service {
   classification: string;
   status: string;
   update_count: number;
+  start_service_at: string;
   created_at: string;
   modification_at: string;
   finished_at: string;
@@ -52,6 +53,18 @@ interface SlugType {
   };
 }
 
+function formatDate(date: string) {
+  const now = new Date(date);
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+}
+
 export default function Details({ params }: SlugType) {
   const dataListService = [
     { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
@@ -65,7 +78,7 @@ export default function Details({ params }: SlugType) {
     { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
   ];
 
-  const [services, setServices] = useState<Service | null>(null);
+  const [service, setService] = useState<Service | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,7 +109,7 @@ export default function Details({ params }: SlugType) {
         });
 
         setMaterials(responseDataStock.data);
-        setServices(response.data[0]);
+        setService(response.data[0]);
         setIsPopupValue(null);
 
         break;
@@ -139,18 +152,6 @@ export default function Details({ params }: SlugType) {
     };
   }, []);
 
-  function formatDate(date: string) {
-    const now = new Date(date);
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const day = now.getDate().toString().padStart(2, '0');
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-  }
-
   const status = {
     concluded: '✅ Finalizado',
     analysis: '🔍 Em análise',
@@ -173,24 +174,24 @@ export default function Details({ params }: SlugType) {
 
   const modificationFilter = () => {
     if (
-      services?.modification_at &&
-      services?.update_count > 0 &&
-      services?.status !== 'concluded'
+      service?.modification_at &&
+      service?.update_count > 0 &&
+      service?.status !== 'concluded'
     ) {
-      if (services?.status === 'paused') {
-        return <p>Pausado em: {formatDate(services?.modification_at)}</p>;
+      if (service?.status === 'paused') {
+        return <p>Pausado em: {formatDate(service?.modification_at)}</p>;
       }
 
-      if (services?.status === 'active') {
-        return <p>Retomado em: {formatDate(services?.modification_at)}</p>;
+      if (service?.status === 'active') {
+        return <p>Retomado em: {formatDate(service?.modification_at)}</p>;
       }
     }
   };
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const objListMaterial = JSON.parse(services?.list_material || '{}');
-  const objListService = JSON.parse(services?.list_service || '{}');
+  const objListMaterial = JSON.parse(service?.list_material || '{}');
+  const objListService = JSON.parse(service?.list_service || '{}');
 
   const [handleToPrinter] = useHandlePrint({
     elementRef: elementRef,
@@ -219,7 +220,7 @@ export default function Details({ params }: SlugType) {
       ) : (
         <S.Wrapper>
           <S.Info ref={elementRef}>
-            {isLoading || !services ? (
+            {isLoading || !service ? (
               <>
                 <LineSkaleton width="18rem" />
                 <LineSkaleton width="12rem" />
@@ -246,20 +247,21 @@ export default function Details({ params }: SlugType) {
                     <span>Telecomunicações</span>
                   </S.ProfileInfoCompany>
                 </S.ProfileCompany>
-                <p>Endereço: {services?.address}</p>
-                <p>Cidade: {services?.city}</p>
-                <p>Classificação: {services?.classification}</p>
-                <p>Solicitante: {services?.client_name}</p>
-                <p>Iniciado em: {formatDate(services?.created_at)}</p>
-                {services?.finished_at && (
-                  <p>Concluído em: {formatDate(services?.finished_at)}</p>
+                <p>Endereço: {service?.address}</p>
+                <p>Cidade: {service?.city}</p>
+                <p>Classificação: {service?.classification}</p>
+                <p>Solicitante: {service?.client_name}</p>
+                <p>Emissão: {formatDate(service?.created_at)}</p>
+                <p>Para: {formatDate(service?.start_service_at)}</p>
+                {service?.finished_at && (
+                  <p>Concluído em: {formatDate(service?.finished_at)}</p>
                 )}
-                {services?.modification_at && modificationFilter()}
-                <p>Nomenclatura: {services?.nomenclature}</p>
-                <p>Protocolo: {services?.protocol}</p>
-                <p>Serviço: {status[services?.status]}</p>
-                <p>Contador de Atualização: {services?.update_count}</p>
-                {services?.list_material && (
+                {service?.modification_at && modificationFilter()}
+                <p>Nomenclatura: {service?.nomenclature}</p>
+                <p>Protocolo: {service?.protocol}</p>
+                <p>Serviço: {status[service?.status]}</p>
+                <p>Contador de Atualização: {service?.update_count}</p>
+                {service?.list_material && (
                   <S.Table>
                     <div>
                       <div>
@@ -309,7 +311,7 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {services?.list_service && (
+                {service?.list_service && (
                   <S.Table>
                     <div>
                       <div>
@@ -337,17 +339,17 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {services?.observation && (
+                {service?.observation && (
                   <S.Observation>
                     <p>Observação</p>
-                    {renderTextWithLineBreaks(services?.observation ?? '')}
+                    {renderTextWithLineBreaks(service?.observation ?? '')}
                   </S.Observation>
                 )}
               </>
             )}
           </S.Info>
           {!isLoading &&
-            services &&
+            service &&
             (!processPrint ? (
               <S.WrapperButton>
                 <S.Button onClick={handleToPrinter}>Imprimir</S.Button>

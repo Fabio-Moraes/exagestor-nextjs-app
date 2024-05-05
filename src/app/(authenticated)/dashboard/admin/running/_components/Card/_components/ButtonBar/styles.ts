@@ -46,6 +46,7 @@ export const Wrapper = styled.div`
   @media (min-width: 550px) {
     right: 3rem;
     flex-direction: column;
+    height: 100%;
   }
 
   > button {

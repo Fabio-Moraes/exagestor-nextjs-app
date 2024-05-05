@@ -19,7 +19,7 @@ import refreshSvg from './_assets/svg/refresh.svg';
 
 import * as S from './styles';
 
-interface Service {
+interface RunningService {
   id: number;
   employee_id: number;
   client_name: string;
@@ -42,7 +42,9 @@ interface propsImageType {
   height: number;
 }
 
-export function ButtonBar({ service }: { service: Service }) {
+export function ButtonBar(props: { service: RunningService; passedScheduledDate: boolean }) {
+  const { service, passedScheduledDate } = props;
+
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
   const [runningLoad, setRunningLoad] = useState(false);
 
@@ -54,13 +56,13 @@ export function ButtonBar({ service }: { service: Service }) {
   const allButtonsLocked = !(!runningLoad && websocketConnected);
 
   const onClickButtonCheck = () => {
-    if (allButtonsLocked || status === 'paused') return;
+    if (!passedScheduledDate || allButtonsLocked || status === 'paused') return;
 
     router.push(`/dashboard/admin/running/finish/select-service/${encryptSlug}`);
   };
 
   async function onClickButtonPlayPause() {
-    if (allButtonsLocked) return;
+    if (!passedScheduledDate || allButtonsLocked) return;
 
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
@@ -91,7 +93,7 @@ export function ButtonBar({ service }: { service: Service }) {
   }
 
   async function onClickButtonRefresh() {
-    if (allButtonsLocked) return;
+    if (!passedScheduledDate || allButtonsLocked) return;
 
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
@@ -156,9 +158,18 @@ export function ButtonBar({ service }: { service: Service }) {
     updateCount: String(Number(update_count || 0) + 1)
   });
 
-  const styleButtonCheck = { opacity: status === 'paused' || allButtonsLocked ? 0.3 : 1 };
-  const styleButtonPlayPause = { opacity: allButtonsLocked ? 0.3 : 1 };
-  const styleButtonDoc = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonCheck = {
+    opacity: !passedScheduledDate || status === 'paused' || allButtonsLocked ? 0.3 : 1
+  };
+
+  const styleButtonPlayPause = {
+    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+  };
+
+  const styleButtonDoc = {
+    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+  };
+
   const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };
 
   const propsImage = {

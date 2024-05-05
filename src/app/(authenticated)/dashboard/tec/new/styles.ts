@@ -1,5 +1,7 @@
 'use client';
 
+import DateTime from 'react-datetime';
+
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -26,33 +28,34 @@ export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   padding-top: 1.5rem;
-  align-items: start;
 
   > div {
     display: flex;
-    justify-content: start;
-    width: 100%;
-    align-items: end;
-    margin: 0 0 0 0;
+    align-items: center;
+  }
+
+  > div:nth-last-child(2) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 1rem;
   }
 
   > label {
     overflow-wrap: break-word;
-    margin: 1.5rem 2rem 0.5rem 2rem;
+    margin: 0 2rem 0.5rem 2rem;
     text-align: start;
   }
 `;
 
 export const Input = styled.input`
   padding: 1rem;
-  width: 100%;
   margin: 0 0rem 1.5rem 0rem;
   font-size: 1.6rem;
   background-color: #fafafa;
   border-radius: 0.5rem;
   outline: 0.1rem solid #ccc;
   font-family: 'OpenSans-Regular';
-  color: #000;
 
   &:focus {
     outline: 0.2rem solid #27a567;
@@ -65,21 +68,12 @@ export const Input = styled.input`
 
 export const Select = styled.select`
   padding: 1rem;
-  width: 100%;
   margin: 0 0rem 1.5rem 0rem;
   font-size: 1.6rem;
   background-color: #fafafa;
   border-radius: 0.5rem;
   outline: 0.1rem solid #ccc;
   font-family: 'OpenSans-Regular';
-
-  &:focus {
-    outline: 0.2rem solid #27a567;
-  }
-
-  > option:first-child {
-    display: none;
-  }
 `;
 
 export const Option = styled.option`
@@ -87,17 +81,22 @@ export const Option = styled.option`
   color: #777;
 `;
 
-export const CheckboxButton = styled.button<{ $checked: number }>`
+export const WrapperCheckboxButton = styled.div`
   display: flex;
-  align-items: center;
+  width: 22rem;
+`;
+
+export const CheckboxButton = styled.button<{ $checked: boolean }>`
+  display: flex;
+  //align-items: center;
   cursor: pointer;
-  margin: 1rem 5rem 1.5rem 0rem;
+  margin: 0.6rem 1rem 2rem 0.5rem;
 
   > div {
     width: 2rem;
     height: 2rem;
     border: 0.2rem solid #27a567;
-    background-color: ${({ $checked }) => ($checked === 1 ? '#27a567' : '#fff')};
+    background-color: ${({ $checked }) => ($checked ? '#27A567' : '#fff')};
     border-radius: 1rem;
   }
   > span {
@@ -110,7 +109,7 @@ export const Button = styled.button`
   width: 15rem;
   background-color: #27a567;
   padding: 1rem;
-  margin: 3rem 0;
+  margin: 3rem 0rem;
   border: none;
   border-radius: 0.5rem;
   font-size: 1.6rem;
@@ -122,5 +121,50 @@ export const Button = styled.button`
 
   &:focus {
     outline: none;
+  }
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  > span {
+    text-align: left;
+    font-size: 1.7rem;
+    color: #333;
+  }
+
+  > button {
+    width: 15rem;
+    background-color: #27a567;
+    padding: 1rem;
+    margin: 2rem 2rem;
+    border: 0.1rem solid #000000;
+    border-radius: 0.7rem;
+    font-size: 1.6rem;
+    color: #fff;
+  }
+`;
+
+export const StyledDateTime = styled(DateTime)`
+  input {
+    width: 100%;
+    padding: 1rem;
+    margin: 0 0rem 1.5rem 0rem;
+    font-size: 1.6rem;
+    background-color: #fafafa;
+    border-radius: 0.5rem;
+    outline: 0.1rem solid #ccc;
+    font-family: 'OpenSans-Regular';
+
+    &:focus {
+      outline: 0.2rem solid #27a567;
+    }
+
+    &::placeholder {
+      color: #666;
+    }
   }
 `;

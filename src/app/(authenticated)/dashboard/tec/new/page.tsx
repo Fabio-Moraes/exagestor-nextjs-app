@@ -8,6 +8,9 @@ import { Modal } from 'components/Modal';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
+import moment, { Moment } from 'moment';
+import 'moment/locale/pt-br';
+
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
@@ -25,15 +28,18 @@ export default function NewService() {
 
   const [modalValue, setModalValue] = useState('');
   const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
-  const [isPopupValuesetIsPopupValue, setIsPopupValue] = useState('');
+  const [isPopupValue, setIsPopupValue] = useState('');
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
+
+  const [selectedDate, setSelectedDate] = useState<string | Moment>(moment());
+  const [selectedTime, setSelectedTime] = useState<string | Moment>(moment());
 
   const router = useRouter();
 
   const handleClickOutside = () => {
     if (modalValue !== '') {
-      !isPopupValuesetIsPopupValue && setModalValue('');
+      !isPopupValue && setModalValue('');
     }
   };
 
@@ -74,6 +80,25 @@ export default function NewService() {
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   }
+
+  const handleDateChange = (date: string | Moment) => {
+    setSelectedDate(date);
+  };
+
+  const handleTimeChange = (date: string | Moment) => {
+    setSelectedTime(date);
+  };
+
+  const isValidDate = (current: Date | string | Moment) => {
+    return moment(current).isSameOrAfter(moment(), 'day');
+  };
+
+  const dateMoment = moment(selectedDate);
+  const timeMoment = moment(selectedTime);
+
+  const startServiceAt = new Date(
+    `${dateMoment.format('YYYY-MM-DD')} ${timeMoment.format('HH:mm:ss')}`
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,7 +172,8 @@ export default function NewService() {
             city: selectedCity,
             classification: classification,
             nomenclature: nomenclature,
-            address: address
+            address: address,
+            startServiceAt: startServiceAt
           });
 
           const { success } = response.data;
@@ -186,6 +212,12 @@ export default function NewService() {
     }
   };
 
+  const calendarInputProps = {
+    readOnly: true,
+    style: { cursor: 'default' },
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => e.target.blur()
+  };
+
   return (
     <S.Container>
       <S.Title>Novo Serviço</S.Title>
@@ -193,17 +225,12 @@ export default function NewService() {
         <S.Input
           type="text"
           id="requester"
-          placeholder="Informe o nome do solicitante"
+          placeholder="Nome do solicitante"
           value={name}
           onChange={handleName}
         />
 
-        <S.Select
-          id="selectedCity"
-          style={{ color: selectedCity ? '#000' : '#666' }}
-          value={selectedCity}
-          onChange={handleCityChange}
-        >
+        <S.Select id="selectedCity" value={selectedCity} onChange={handleCityChange}>
           <S.Option value="">Selecione uma cidade</S.Option>
           {cities.map((city, index) => (
             <S.Option key={index.toString()} value={city}>
@@ -211,6 +238,7 @@ export default function NewService() {
             </S.Option>
           ))}
         </S.Select>
+
         <S.Input
           type="text"
           id="serviceOriginAddress"
@@ -218,6 +246,7 @@ export default function NewService() {
           value={address}
           onChange={handleServiceOriginAddressChange}
         />
+
         <S.Input
           type="text"
           id="boxOrCableNomenclature"
@@ -226,10 +255,29 @@ export default function NewService() {
           onChange={handleBoxOrCableNomenclatureChange}
         />
 
-        <div>
+        <S.StyledDateTime
+          value={selectedDate}
+          onChange={handleDateChange}
+          locale="pt"
+          dateFormat="DD/MM/YYYY"
+          timeFormat={false}
+          isValidDate={isValidDate}
+          inputProps={calendarInputProps}
+        />
+
+        <S.StyledDateTime
+          value={selectedTime}
+          onChange={handleTimeChange}
+          locale="pt"
+          dateFormat={false}
+          timeFormat="HH:mm"
+          inputProps={calendarInputProps}
+        />
+
+        <S.WrapperCheckboxButton>
           <S.CheckboxButton
             type="button"
-            $checked={classificationF}
+            $checked={Boolean(classificationF)}
             onClick={handleCheckboxClickClassF}
           >
             <div />
@@ -238,23 +286,18 @@ export default function NewService() {
 
           <S.CheckboxButton
             type="button"
-            $checked={classificationL}
+            $checked={Boolean(classificationL)}
             onClick={handleCheckboxClickClassL}
           >
             <div />
             <span>Classe L</span>
           </S.CheckboxButton>
-        </div>
+        </S.WrapperCheckboxButton>
 
         <S.Button type="submit">Iniciar Serviço</S.Button>
       </S.FormContainer>
-
-      {modalValue && !isPopupValuesetIsPopupValue && (
-        <Modal icon={iconSvgModal} message={modalValue} />
-      )}
-      {isPopupValuesetIsPopupValue && (
-        <FullScreenLoading message={isPopupValuesetIsPopupValue} />
-      )}
+      {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
+      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </S.Container>
   );
 }

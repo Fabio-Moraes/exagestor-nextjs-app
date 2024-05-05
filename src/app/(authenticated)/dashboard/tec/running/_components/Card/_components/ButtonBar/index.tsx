@@ -41,9 +41,11 @@ interface propsImageType {
   height: number;
 }
 
-export function ButtonBar({ service }: { service: RunningService }) {
-  const [runningLoad, setRunningLoad] = useState(false);
+export function ButtonBar(props: { service: RunningService; passedScheduledDate: boolean }) {
+  const { service, passedScheduledDate } = props;
+
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
+  const [runningLoad, setRunningLoad] = useState(false);
 
   const { protocol, status } = service;
   const encryptSlug = encryptObject({ protocol: protocol });
@@ -54,13 +56,13 @@ export function ButtonBar({ service }: { service: RunningService }) {
   const allButtonsLocked = !(!runningLoad && websocketConnected && status !== 'analysis');
 
   const onClickButtonCheck = () => {
-    if (allButtonsLocked || status === 'paused') return;
+    if (!passedScheduledDate || allButtonsLocked || status === 'paused') return;
 
     router.push(`/dashboard/tec/running/finish/select-service/${encryptSlug}`);
   };
 
   async function onClickButtonPlayPause() {
-    if (allButtonsLocked) return;
+    if (!passedScheduledDate || allButtonsLocked) return;
 
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
@@ -120,9 +122,18 @@ export function ButtonBar({ service }: { service: RunningService }) {
 
   const onClickButtonDoc = () => {};
 
-  const styleButtonCheck = { opacity: status === 'paused' || allButtonsLocked ? 0.3 : 1 };
-  const styleButtonPlayPause = { opacity: allButtonsLocked ? 0.3 : 1 };
-  const styleButtonDoc = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonCheck = {
+    opacity: !passedScheduledDate || status === 'paused' || allButtonsLocked ? 0.3 : 1
+  };
+
+  const styleButtonPlayPause = {
+    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+  };
+
+  const styleButtonDoc = {
+    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+  };
+
   const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };
 
   const propsImage = {

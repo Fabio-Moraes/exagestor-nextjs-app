@@ -27,7 +27,6 @@ export const Wrapper = styled.div`
 `;
 
 export const Main = styled.div`
-  user-select: none;
   flex-direction: column;
   width: min(60.1rem, 100%);
 

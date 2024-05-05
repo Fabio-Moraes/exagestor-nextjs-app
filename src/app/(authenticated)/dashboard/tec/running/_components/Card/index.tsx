@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { ButtonBar } from './_components/ButtonBar';
 import { CardContent } from './_components/CardContent';
 import { CardHeader } from './_components/CardHeader';
+
+import moment from 'moment';
 
 import * as S from './styles';
 
@@ -13,7 +17,8 @@ interface RunningService {
   nomenclature: string;
   classification: string;
   update_count: number;
-  status: string;
+  status: 'analysis' | 'active' | 'paused';
+  start_service_at: string;
   created_at: string;
   protocol: string;
   name_admin: string;
@@ -21,12 +26,27 @@ interface RunningService {
 }
 
 export function Card({ service }: { service: RunningService }) {
+  const [currentDate, setCurrentDate] = useState(moment());
+  const yourDate = moment(service?.start_service_at);
+  const passedScheduledDate = yourDate.isSameOrBefore(currentDate);
+
+  useEffect(() => {
+    if (!passedScheduledDate) {
+      const interval = setInterval(() => {
+        setCurrentDate(moment());
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [passedScheduledDate]);
+
+  const props = { service, passedScheduledDate };
+
   return (
     <S.Container>
-      <CardHeader service={service} />
+      <CardHeader {...props} />
       <S.Wrapper>
-        <CardContent service={service} />
-        <ButtonBar service={service} />
+        <CardContent {...props} />
+        <ButtonBar {...props} />
       </S.Wrapper>
     </S.Container>
   );
