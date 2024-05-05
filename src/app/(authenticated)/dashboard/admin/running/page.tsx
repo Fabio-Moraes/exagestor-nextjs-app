@@ -24,9 +24,10 @@ interface RunningService {
   address: string;
   nomenclature: string;
   classification: string;
+  status: 'analysis' | 'active' | 'paused' | 'concluded';
   update_count: number;
-  status: string;
   created_at: string;
+  start_service_at: string;
   protocol: string;
   name_admin: string;
   name_tec: string;

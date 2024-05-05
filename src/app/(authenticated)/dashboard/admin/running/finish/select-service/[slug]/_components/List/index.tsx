@@ -30,7 +30,8 @@ interface ServiceData {
   address: string;
   nomenclature: string;
   classification: string;
-  status: string;
+  status: 'analysis' | 'active' | 'paused' | 'concluded';
+  start_service_at: string;
   update_count: number;
   created_at: string;
   modification_at: string;

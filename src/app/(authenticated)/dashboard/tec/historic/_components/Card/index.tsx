@@ -12,7 +12,7 @@ interface Service {
   address: string;
   nomenclature: string;
   classification: string;
-  status: string;
+  status: 'analysis' | 'active' | 'paused' | 'concluded';
   update_count: number;
   start_service_at: string;
   created_at: string;
