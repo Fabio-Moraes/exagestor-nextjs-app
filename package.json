@@ -8,6 +8,7 @@
     "dev": "next dev",
     "dev:ip": "yarn exec ./scripts/ip-swapper-env && next dev",
     "dev:ssl": "next dev --experimental-https",
+    "tsc:test": "yarn tsc --noEmit",
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "build": "next build",
     "lint": "next lint"
