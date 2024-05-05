@@ -15,7 +15,7 @@ interface RunningService {
   start_service_at: string;
   created_at: string;
   protocol: string;
-  name_admin: string;
+  name_creator_leader: string;
   name_tec: string;
 }
 
@@ -66,8 +66,8 @@ export function CardContent(props: { service: RunningService; passedScheduledDat
         <p>PARA: {startServiceAt}</p>
         <p>
           INICIADO POR:
-          {service?.name_admin
-            ? ` ${service?.name_admin.toUpperCase().concat(' (ADMIN)')}`
+          {service?.name_creator_leader
+            ? ` ${service?.name_creator_leader.toUpperCase().concat(' (ADMIN)')}`
             : ` ${service?.name_tec.toUpperCase().concat(' (TEC)')}`}
         </p>
         <p>ATUALIZAÇÃO DE STATUS: {service?.update_count}</p>

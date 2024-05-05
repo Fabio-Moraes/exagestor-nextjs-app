@@ -9,17 +9,18 @@ export const Container = styled.div`
 
 export const Title = styled.h1`
   font-size: 2.4rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   border-radius: 0.7rem;
   font-family: 'OpenSans-SemiBold';
-  color: #333;
+  text-align: center;
 
   @media (min-width: 550px) {
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
-    color: #000;
+    background-color: #5e9987;
+    color: #fff;
+    margin-bottom: 3rem;
   }
 `;
 

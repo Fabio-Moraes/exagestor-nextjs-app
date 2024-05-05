@@ -7,12 +7,13 @@ type Decoded = {
   user?: {
     id: number;
     name: string;
-    role: 'admin' | 'tec' | 'almox';
+    role: 'admin' | 'tec' | 'almox' | 'cop';
   };
 };
 
 const redirectRole = {
   admin: '/dashboard/admin/running',
+  cop: '/dashboard/cop/running',
   tec: '/dashboard/tec/new',
   almox: '/dashboard/almox/stock'
 };

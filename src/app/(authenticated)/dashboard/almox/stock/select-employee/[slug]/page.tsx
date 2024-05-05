@@ -15,7 +15,7 @@ interface Employee {
   role: string;
   identification: string;
   created_at: string;
-  admin_id: number;
+  creator_leader_id: number;
 }
 
 interface SlugType {

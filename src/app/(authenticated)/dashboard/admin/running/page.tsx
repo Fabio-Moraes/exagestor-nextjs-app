@@ -29,7 +29,7 @@ interface RunningService {
   created_at: string;
   start_service_at: string;
   protocol: string;
-  name_admin: string;
+  name_creator_leader: string;
   name_tec: string;
 }
 

@@ -35,6 +35,9 @@ interface Service {
   list_service: string;
   observation: string;
   protocol: string;
+  name_tec: string;
+  name_creator_leader: string;
+  role_creator_leader: string;
 }
 
 interface Materials {
@@ -243,6 +246,14 @@ export default function Details({ params }: SlugType) {
                 <p>Cidade: {service?.city}</p>
                 <p>Classificação: {service?.classification}</p>
                 <p>Solicitante: {service?.client_name}</p>
+                <p>
+                  iniciado por:
+                  {service?.name_creator_leader
+                    ? ` ${service?.name_creator_leader.concat(
+                        ` (${service?.role_creator_leader.toUpperCase()})`
+                      )}`
+                    : ` ${service?.name_tec.concat(' (TEC)')}`}
+                </p>
                 <p>Emissão: {formatDate(service?.created_at)}</p>
                 <p>Para: {formatDate(service?.start_service_at)}</p>
                 {service?.finished_at && (

@@ -265,7 +265,7 @@ export default function NewRegister() {
             type="button"
             $checked={accountType === 'COP'}
             onClick={() => {
-              //setAccountType('COP');
+              setAccountType('COP');
             }}
           >
             <div />

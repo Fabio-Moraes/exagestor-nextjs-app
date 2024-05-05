@@ -48,8 +48,8 @@ export function Toolbar() {
         </S.WrapperLink>
       </Link>
 
-      <Link href="/">
-        <S.WrapperLink style={{ opacity: 0 }} rel="preload" onClick={() => {}}>
+      <Link href="/" scroll={false}>
+        <S.WrapperLink style={{ opacity: 0 }} rel="preload">
           <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
           <span>
             Mais
