@@ -102,9 +102,6 @@ const ListItem = (props: ListItemProps) => {
           whileHover={{ scale: 0.98 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleOpenDialog}
-          style={{
-            filter: status === 'inactive' ? 'saturate(0)' : 'contrast(2)'
-          }}
         >
           <S.ItemContainer>
             <div>

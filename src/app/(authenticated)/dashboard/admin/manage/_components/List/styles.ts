@@ -128,22 +128,3 @@ export const ItemsSkeleton = styled.div`
     margin-bottom: 0;
   }
 `;
-
-/* 
-> div::before {
-      content: '';
-      background-color: #000;
-      display: block;
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      transition: transform 300ms ease;
-      transform-origin: right;
-      transform: scaleX(0);
-    }
-
-    > div:hover::before {
-      transform: scaleX(1);
-      transform-origin: left;
-    } 
-*/
