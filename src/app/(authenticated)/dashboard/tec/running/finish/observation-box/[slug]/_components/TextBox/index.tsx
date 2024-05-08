@@ -59,7 +59,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
             baseURL: '/api/tec/running/finish/concluded',
             protocol: serviceData?.protocol,
             serviceIds: JSON.stringify('selectedItems'),
-            observation: String(observationBox[serviceData?.protocol]),
+            observation: String(observationBox[serviceData?.protocol]) ?? '',
             listService: JSON.stringify(selectService[serviceData?.protocol]),
             listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
           });

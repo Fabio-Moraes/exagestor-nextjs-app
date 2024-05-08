@@ -155,6 +155,19 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
   const selectedItemKeys = Object.keys(selectService[String(serviceData?.protocol)] || {});
 
+  function hasSelectedService(array: Array<number>): boolean {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] !== 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const serviceIsSelected = hasSelectedService(
+    Object.values(selectService?.[String(serviceData?.protocol)] ?? {})
+  );
+
   return (
     <S.ListContainer>
       <AnimatePresence>
@@ -217,7 +230,13 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
         <S.Button rel="preload" onClick={() => router.back()}>
           Voltar
         </S.Button>
-        <S.Button rel="preload" onClick={() => fetchConcludedServices()}>
+        <S.Button
+          style={{ opacity: serviceIsSelected ? '1' : 0.3 }}
+          rel="preload"
+          onClick={() => {
+            serviceIsSelected && fetchConcludedServices();
+          }}
+        >
           Avançar
         </S.Button>
       </div>

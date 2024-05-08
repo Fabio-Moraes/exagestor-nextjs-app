@@ -119,6 +119,19 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
 
   const proportion = { width: 30, height: 30 };
 
+  function hasSelectedService(array: Array<number>): boolean {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] !== 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const serviceIsSelected = hasSelectedService(
+    Object.values(selectService?.[String(serviceData?.protocol)] ?? {})
+  );
+
   return (
     <S.ListContainer>
       <AnimatePresence>
@@ -156,30 +169,39 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
                 </S.ItemsSkeleton>
               );
             })
-          : filteredItems.map((item) => (
-              <motion.ul
-                key={item.description}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-              >
-                <ListItem
+          : filteredItems.map((item) => {
+              return (
+                <motion.ul
                   key={item.description}
-                  item={item.description}
-                  count={selectService?.[String(serviceData?.protocol)]?.[item.id]}
-                  onSelect={({ count }) => {
-                    toggleItem(item.id, count);
-                  }}
-                  onReset={() => toggleItemReset(item.id)}
-                />
-              </motion.ul>
-            ))}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                >
+                  <ListItem
+                    key={item.description}
+                    item={item.description}
+                    count={selectService?.[String(serviceData?.protocol)]?.[item.id]}
+                    onSelect={({ count }) => {
+                      toggleItem(item.id, count);
+                    }}
+                    onReset={() => toggleItemReset(item.id)}
+                  />
+                </motion.ul>
+              );
+            })}
       </AnimatePresence>
+      <p>{}</p>
       <div>
         <S.Button rel="preload" onClick={() => router.back()}>
           Voltar
         </S.Button>
-        <S.Button rel="preload" onClick={() => fetchConcludedServices()}>
+        <S.Button
+          style={{ opacity: serviceIsSelected ? '1' : 0.3 }}
+          rel="preload"
+          onClick={() => {
+            serviceIsSelected && fetchConcludedServices();
+          }}
+        >
           Avançar
         </S.Button>
       </div>
