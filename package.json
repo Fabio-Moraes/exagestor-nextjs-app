@@ -36,6 +36,7 @@
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@use-gesture/react": "^10.3.1",
+    "apexcharts": "^3.49.0",
     "axios": "^1.4.0",
     "bufferutil": "^4.0.8",
     "crypto-js": "^4.2.0",
@@ -53,6 +54,7 @@
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
     "react-datepicker": "^6.9.0",
     "react-datetime": "^3.2.0",
     "react-dom": "^18.2.0",
