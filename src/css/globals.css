@@ -9,7 +9,7 @@
 }
 
 :root {
-  width: 100vw; 
+  width: 100vw;
   height: 100vh;
   font-size: 62.5%;
   overflow-x: hidden;
@@ -22,7 +22,7 @@
 body {
   background-color: var(--body-bg-color);
   font-size: 1.6rem;
-  
+
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -46,3 +46,81 @@ input {
 div {
   cursor: auto !important;
 }
+
+
+@keyframes moveDataLabelsUp {
+
+  0%,
+  100% {
+    opacity: translateY(-5px);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(5px);
+    opacity: 0.3;
+  }
+}
+
+@keyframes moveDataLabelsDown {
+  
+  0%,
+  100% {
+    transform: translateY(5px);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+.apexcharts-data-labels:nth-child(odd) {
+  animation: moveDataLabelsUp 3s infinite ease-in-out;
+  z-index: 0;
+}
+
+.apexcharts-data-labels:nth-child(even) {
+  animation: moveDataLabelsDown 3s infinite ease-in-out;
+  z-index: 0;
+}
+
+.apexcharts-canvas {
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+background-color: #fff;
+border: 1px solid #ddd;
+}
+
+.apexcharts-legend-series {
+  background-color: #3498db;
+  border-radius: 0.6rem;
+  padding: 0rem 0.5rem 0.4rem 0.5rem;
+}
+
+.apexcharts-legend-series span:first-child {
+  display: none;
+}
+
+.apexcharts-legend-series span {
+  font-weight: bold !important;
+}
+
+
+.apexcharts-tooltip {
+  /* opacity: 0 !important; */
+  color: #373D3F !important;
+  background-color: #ECEFF1 !important;
+  border-color: #90A4AE !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  z-index:9999 !important;
+} 
+
+
+.tooltip {
+  /* opacity: 0 !important; */
+  text-align: start;
+  background-color: transparent;
+  padding: 0.5rem;  
+} 
+  

@@ -1,6 +1,12 @@
+'use client';
+
 import dynamic from 'next/dynamic';
-import React from 'react';
+import { useRef } from 'react';
 import { Props as ApexchartsPropsTypes } from 'react-apexcharts/types/react-apexcharts';
+
+import moment from 'moment';
+
+import * as S from './styles';
 
 interface Service {
   id: number;
@@ -23,83 +29,148 @@ interface Service {
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+function formatDate(date: string) {
+  const now = new Date(date);
+  const year = now.getFullYear().toString().slice(-2);
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+function formatDatePicker(service: Service) {
+  if (service.finished_at) return formatDate(service.finished_at);
+  if (service.modification_at) return formatDate(service.modification_at);
+  return formatDate(service.start_service_at);
+}
+
+const status = {
+  concluded: '✅ Finalizado',
+  analysis: '🔍 Em análise',
+  active: '🚧 Em andamento',
+  paused: '⏸️ Pausado',
+  canceled: '❌ Cancelado'
+} as { [key: string]: string };
+
 export const ChartComponent = ({ services }: { services: Service[] }) => {
-  function formatDatePicker(service: Service) {
-    function formatDate(date: string) {
-      const now = new Date(date);
-      const year = now.getFullYear();
-      const month = (now.getMonth() + 1).toString().padStart(2, '0');
-      const day = now.getDate().toString().padStart(2, '0');
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
+  const openTooltip = useRef(true);
+  const data = services.map((service) => formatDatePicker(service));
 
-      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-    }
-
-    if (service?.finished_at) return formatDate(service?.finished_at);
-    if (service?.modification_at) return formatDate(service?.modification_at);
-    return formatDate(service?.created_at);
-  }
-
-  function formatHourPicker(service: Service) {
-    function formatDate(date: string) {
-      const now = new Date(date);
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-
-      return `${hours}:${minutes}`;
-    }
-
-    if (service?.finished_at) return formatDate(service?.finished_at);
-    if (service?.modification_at) return formatDate(service?.modification_at);
-    return formatDate(service?.created_at);
-  }
-
-  const dataPush = [];
-
-  for (let i = 0; i < services.length; i++) {
-    dataPush.push({
-      day: formatDatePicker(services[i]),
-      hour: formatHourPicker(services[i])
-    });
-  }
-
-  const dataIndex = dataPush.map((i) => i.day);
-
-  const series = [
-    {
-      name: 'Serviço',
-      color: '#27A567',
-      data: dataPush.map(({ day, hour }) => {
-        const dayIndex = dataIndex.indexOf(day);
-        const [hourPart, minutePart] = hour.split(':');
-        const minutes = parseInt(hourPart, 10) * 60 + parseInt(minutePart, 10);
-        return [dayIndex, minutes];
+  const employees = Array.from(
+    new Set(
+      services.map((user) => {
+        return JSON.stringify({
+          employee_id: user.employee_id,
+          name: user.name_tec
+        });
       })
-    }
+    )
+  );
+
+  /*   const colors = [
+    '#3498db',
+    '#2ecc71',
+    '#f39c12',
+    '#e74c3c',
+    '#9b59b6',
+    '#1abc9c',
+    '#e67e22',
+    '#95a5a6',
+    '#d35400',
+    '#c0392b',
+    '#3498db',
+    '#2ecc71',
+    '#f39c12',
+    '#e74c3c',
+    '#9b59b6',
+    '#1abc9c',
+    '#e67e22',
+    '#95a5a6',
+    '#d35400',
+    '#c0392b'
   ];
+ */
 
-  const uniqueKeys: string[] = [];
+  const statusColor = {
+    concluded: '#2ecc71', // Verde claro para indicar sucesso e conclusão
+    analysis: '#f1c40f', // Amarelo para indicar atenção e análise
+    active: '#3498db', // Azul claro para indicar atividade e progresso
+    paused: '#e67e22', // Laranja mais escuro para indicar pausa e espera
+    canceled: '#e74c3c', // Vermelho para indicar cancelamento e parada
+    scheduled: '#95a5a6' // Cinza claro para indicar algo agendado, neutro
+  } as const;
 
-  dataPush.forEach((obj) => {
-    if (!uniqueKeys.includes(obj.day.slice(0, -8))) {
-      uniqueKeys.push(obj.day.slice(0, -8));
+  type TypeStatusColor = keyof typeof statusColor;
+
+  const series = employees.map((user) => {
+    //const color = colors[index % colors.length];
+    const data = services.map((service) => {
+      if (service.employee_id === JSON.parse(user).employee_id) {
+        return formatDatePicker(service);
+      }
+      return '';
+    });
+
+    return {
+      name: String(JSON.parse(user).name),
+      color: 'rgba(40, 40, 40, 0.8)',
+      data: data.map((day, index) => {
+        const time = day?.substring(day.length - 5);
+        const [hourPart, minutePart] = time.split(':');
+        const minutes = parseInt(hourPart, 10) * 60 + parseInt(minutePart, 10);
+
+        const yourDate = moment(services[index].start_service_at);
+        const passedScheduledDate = yourDate.isSameOrBefore(moment());
+
+        return {
+          x: index,
+          y: minutes,
+          fillColor:
+            statusColor[
+              passedScheduledDate ? (services[index].status as TypeStatusColor) : 'scheduled'
+            ]
+        };
+      })
+    };
+  });
+
+  const xAxisValues: string[] = [];
+
+  data.forEach((day) => {
+    if (!xAxisValues.includes(day.slice(0, -6))) {
+      xAxisValues.push(day.slice(0, -6));
     } else {
-      uniqueKeys.push('');
+      xAxisValues.push('');
     }
   });
 
   const options = {
     chart: {
-      stacked: true,
-      height: 350,
-      type: 'area',
+      events: {
+        click: function () {
+          const elemento = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
+
+          if (elemento && openTooltip.current) {
+            openTooltip.current = false;
+            elemento.style.opacity = '0';
+          }
+        }
+      },
+      animations: {
+        enabled: false
+      },
       zoom: {
         enabled: false
       },
       toolbar: {
         show: false
+      }
+    },
+    plotOptions: {
+      line: {
+        isSlopeChart: false
       }
     },
     grid: {
@@ -108,7 +179,8 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         opacity: 0.5
       },
       padding: {
-        bottom: 20
+        bottom: 20,
+        right: 10
       }
     },
     xaxis: {
@@ -116,20 +188,24 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         rotate: -45,
         rotateAlways: true,
 
+        offsetX: 7,
         style: {
           fontSize: '12px',
           fontFamily: 'Arial, sans-serif',
-          color: '#333',
+          colors: '#000',
           fontWeight: 'bold',
           fontStyle: 'italic'
         },
-        formatter: function (value: string) {
-          return uniqueKeys[Number(value)];
+        formatter: (value: string) => xAxisValues[Number(value)]
+      },
+      tooltip: {
+        formatter: function (index: number) {
+          return formatDatePicker(services[index]);
         }
       },
       min: 0,
-      max: services.length - 1,
-      tickAmount: services.length - 1
+      max: services.length,
+      tickAmount: services.length * 2
     },
     yaxis: {
       reversed: false,
@@ -137,11 +213,13 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         style: {
           fontSize: '12px',
           fontFamily: 'Arial, sans-serif',
-          color: '#333',
+          colors: '#000',
           fontWeight: 'bold',
           fontStyle: 'italic'
         },
-        formatter: function (value: number) {
+        offsetY: 0,
+        offsetX: -9,
+        formatter: (value: number) => {
           if (value === 24 * 60) {
             return '00:00';
           } else {
@@ -153,17 +231,59 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       },
       min: 0,
       max: 24 * 60,
-      tickAmount: 24
+      tickAmount: 12
     },
     dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'stepline',
-      width: 3
+      enabled: true,
+      offsetX: 5,
+      offsetY: -15,
+      textAnchor: 'end',
+      formatter: function (
+        timeOfDay: number,
+        props: { dataPointIndex: number; seriesIndex: number; w: unknown }
+      ) {
+        const { dataPointIndex } = props;
+        if (timeOfDay) {
+          return services[dataPointIndex].name_tec;
+        }
+      },
+      background: {
+        //foreColor: '#3498DB',
+        borderRadius: 5,
+        padding: 5
+      },
+      style: {
+        cssClass: 'custom-data-label',
+        colors: ['#3498db'],
+        fontSize: '1.3rem'
+      }
     },
     markers: {
-      size: 6
+      strokeColors: ['#000000'],
+      strokeWidth: 1.5,
+      offsetX: 15,
+      size: 10,
+      onClick: () => {
+        const elemento = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
+        if (elemento) elemento.style.opacity = '1';
+        openTooltip.current = true;
+      }
+    },
+    legend: {
+      show: true,
+      showForSingleSeries: true,
+      position: 'top',
+      horizontalAlign: 'left',
+      offsetY: 10,
+      //offsetX: 20,
+      markers: {
+        width: 0, // Define a largura do marcador como 0 para ocultá-lo
+        height: 0 // Define a altura do marcador como 0 para ocultá-lo
+      },
+      labels: {
+        colors: '#fff',
+        useSeriesColors: false
+      }
     },
     fill: {
       type: 'gradient',
@@ -177,17 +297,38 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         opacityTo: 0.85,
         stops: [50, 0, 100]
       }
+    },
+    tooltip: {
+      custom: ({ dataPointIndex }: { dataPointIndex: number }) => {
+        return `<div class="tooltip">
+          <span>Funcionário: ${services[dataPointIndex].name_tec}</span><br>
+          <span>Solicitante: ${services[dataPointIndex].client_name}</span><br>
+          <span>Cidade: ${services[dataPointIndex].city}</span><br>
+          <span>Protocolo: ${services[dataPointIndex].protocol}</span><br>
+          <span>Serviço: ${status[services[dataPointIndex].status]}</span>
+          </div>
+        `;
+      }
     }
   };
 
+  // <p>Funcionário: {service?.name_tec?.concat(' (TEC)')}</p>
+  // <p>Solicitante: {service?.client_name}</p>
+  // <p>Cidade: {service?.city}</p>
+  // <p>Protocolo: {service?.protocol}</p>
+  // <p>Emissão: {createdAt}</p>
+  // <p>Para: {startServiceAt}</p>
+  // <p>Serviço: {status[service?.status]}</p>
+
   return (
-    <div style={{ paddingBottom: '30px' }}>
+    <S.Table>
       <ApexChart
         key="apex-chart"
         height="500rem"
+        type="scatter"
         options={options as ApexchartsPropsTypes}
         series={series}
       />
-    </div>
+    </S.Table>
   );
 };

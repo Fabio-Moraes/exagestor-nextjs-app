@@ -1,19 +1,16 @@
 'use client';
 
-// import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
 import { ChartComponent } from './_components/Graphic';
+import { IndexColors } from './_components/indexColors';
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import Image from 'components/Vercel/Image';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
-
-import down from './_assets/svg/down.svg';
 
 import * as S from './styles';
 
@@ -96,36 +93,32 @@ export default function GeneralMonitoring() {
 
   return (
     <S.Container>
-      {/*<S.Title></S.Title>*/}
-      <ChartComponent services={services} />
       <S.ListContainer>
-        {/* {services.map((service) => (
-          <S.ListItem key={uuidv4()}>
-            <Card service={service} />
-          </S.ListItem>
-        ))} */}
-
-        {services.length >= 1 &&
-          (spinner ? (
-            <S.Spinner>
-              <div>
-                <Player
-                  src={animationData}
-                  loop
-                  autoplay
-                  speed={1.5}
-                  style={{ height: '7rem', width: '7rem' }}
-                />
-              </div>
-            </S.Spinner>
-          ) : (
-            <button onClick={fetchServices}>
-              <div>
-                <p>Mais resultados</p>
-                <Image priority loading="eager" src={down} alt="Add" width="25" height="25" />
-              </div>
-            </button>
-          ))}
+        <ChartComponent services={services} />
+        <div></div>
+        <S.Button>
+          <IndexColors />
+          {services.length >= 1 &&
+            (spinner ? (
+              <S.Spinner>
+                <div>
+                  <Player
+                    src={animationData}
+                    loop
+                    autoplay
+                    speed={1.5}
+                    style={{ height: '7rem', width: '7rem' }}
+                  />
+                </div>
+              </S.Spinner>
+            ) : (
+              <button onClick={fetchServices}>
+                <div>
+                  <p>Mais resultados</p>
+                </div>
+              </button>
+            ))}
+        </S.Button>
       </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (

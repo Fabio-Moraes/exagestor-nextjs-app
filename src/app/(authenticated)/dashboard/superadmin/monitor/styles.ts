@@ -28,34 +28,11 @@ export const ListContainer = styled.ul`
   list-style: none;
   padding: 0;
 
-  > button {
-    width: 20rem;
-    background-color: #27a567;
-    flex-shrink: 0;
-    color: #fff;
-    padding: 0.7rem;
-    margin: 0rem 0 2rem 0;
-    border-radius: 3rem;
-    font-size: 1.6rem;
-    user-select: none;
-
-    > div {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      > p {
-        text-align: center;
-        width: 100%;
-      }
-    }
-
-    transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px #8bc9a8;
-
-    &:active {
-      transform: translateY(2px);
-      box-shadow: none;
-    }
+  > div:first-child() {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
   }
 `;
 
@@ -112,5 +89,63 @@ export const ErrorContainer = styled.div`
     border-radius: 0.4rem;
     font-size: 1.6rem;
     color: #fff;
+  }
+`;
+
+export const StatusIndex = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+`;
+
+export const Status = styled.div`
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: ${({ color }) => color};
+`;
+
+export const Button = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+
+  > button {
+    width: 20rem;
+    background-color: #27a567;
+    flex-shrink: 0;
+    color: #fff;
+    padding: 0.7rem;
+    margin: 0rem 0 2rem 0;
+    border-radius: 3rem;
+    font-size: 1.6rem;
+    user-select: none;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      > p {
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 3px 0px #8bc9a8;
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
   }
 `;

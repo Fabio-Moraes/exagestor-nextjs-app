@@ -17,7 +17,6 @@ export function SessionConflictPopup() {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleOpenDialog = () => {
-    console.log('open dialog');
     if (dialogRef.current) {
       dialogRef.current.showModal();
     }
