@@ -257,7 +257,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       },
       style: {
         cssClass: 'custom-data-label',
-        colors: ['#3498db'],
+        colors: ['#6b6b6b'],
         fontSize: '1.3rem'
       }
     },
