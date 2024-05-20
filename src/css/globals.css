@@ -87,9 +87,9 @@ div {
 }
 
 .apexcharts-canvas {
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-background-color: #fff;
-border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 .apexcharts-legend-series {
@@ -108,17 +108,27 @@ border: 1px solid #ddd;
 
 
 .apexcharts-tooltip {
-  /* opacity: 0 !important; */
   color: #373D3F !important;
   background-color: #ECEFF1 !important;
   border-color: #90A4AE !important;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   z-index:9999 !important;
+  line-height: 1.5;
 } 
 
+.apexcharts-xaxistooltip {
+  border-radius: 0.5rem !important;
+}
+
+.apexcharts-xaxistooltip:before {
+  display: none;
+}
+
+.apexcharts-xaxistooltip-bottom:after {
+  display: none;
+}
 
 .tooltip {
-  /* opacity: 0 !important; */
   text-align: start;
   background-color: transparent;
   padding: 0.5rem;  

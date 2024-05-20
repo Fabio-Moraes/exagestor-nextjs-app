@@ -1,8 +1,11 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { Props as ApexchartsPropsTypes } from 'react-apexcharts/types/react-apexcharts';
+
+import { encryptObject } from 'functions';
 
 import moment from 'moment';
 
@@ -55,8 +58,10 @@ const status = {
 } as { [key: string]: string };
 
 export const ChartComponent = ({ services }: { services: Service[] }) => {
-  const openTooltip = useRef(true);
+  const openTooltip = useRef<number | null>(null);
   const data = services.map((service) => formatDatePicker(service));
+
+  const router = useRouter();
 
   const employees = Array.from(
     new Set(
@@ -69,43 +74,18 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     )
   );
 
-  /*   const colors = [
-    '#3498db',
-    '#2ecc71',
-    '#f39c12',
-    '#e74c3c',
-    '#9b59b6',
-    '#1abc9c',
-    '#e67e22',
-    '#95a5a6',
-    '#d35400',
-    '#c0392b',
-    '#3498db',
-    '#2ecc71',
-    '#f39c12',
-    '#e74c3c',
-    '#9b59b6',
-    '#1abc9c',
-    '#e67e22',
-    '#95a5a6',
-    '#d35400',
-    '#c0392b'
-  ];
- */
-
   const statusColor = {
-    concluded: '#2ecc71', // Verde claro para indicar sucesso e conclusão
-    analysis: '#f1c40f', // Amarelo para indicar atenção e análise
-    active: '#3498db', // Azul claro para indicar atividade e progresso
-    paused: '#e67e22', // Laranja mais escuro para indicar pausa e espera
-    canceled: '#e74c3c', // Vermelho para indicar cancelamento e parada
-    scheduled: '#95a5a6' // Cinza claro para indicar algo agendado, neutro
+    concluded: '#2ecc71',
+    analysis: '#f1c40f',
+    active: '#3498db',
+    paused: '#e67e22',
+    canceled: '#e74c3c',
+    scheduled: '#95a5a6'
   } as const;
 
   type TypeStatusColor = keyof typeof statusColor;
 
   const series = employees.map((user) => {
-    //const color = colors[index % colors.length];
     const data = services.map((service) => {
       if (service.employee_id === JSON.parse(user).employee_id) {
         return formatDatePicker(service);
@@ -146,17 +126,41 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     }
   });
 
+  type FuncType = (
+    event: { touches: unknown },
+    chartContext: unknown,
+    config: { dataPointIndex: number; seriesIndex: number; w: unknown }
+  ) => void;
+
+  const dataPointSelection: FuncType = (event, chartContext, config) => {
+    if (openTooltip.current === config.dataPointIndex && event.touches) {
+      console.log(event.touches);
+
+      const encryptSlug = encryptObject({
+        protocol: services[config.dataPointIndex].protocol,
+        employeeId: services[config.dataPointIndex].employee_id,
+        updateCount: services[config.dataPointIndex].update_count
+      });
+
+      router.push(`/dashboard/superadmin/manage/details/${encryptSlug}`, { scroll: false });
+    }
+
+    const tooltip = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
+    if (tooltip) tooltip.style.opacity = '1';
+    openTooltip.current = config.dataPointIndex;
+  };
+
   const options = {
     chart: {
       events: {
-        click: function () {
+        dataPointMouseLeave: function () {
           const elemento = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
-
           if (elemento && openTooltip.current) {
-            openTooltip.current = false;
+            openTooltip.current = null;
             elemento.style.opacity = '0';
           }
-        }
+        },
+        dataPointSelection
       },
       animations: {
         enabled: false
@@ -248,7 +252,6 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         }
       },
       background: {
-        //foreColor: '#3498DB',
         borderRadius: 5,
         padding: 5
       },
@@ -263,10 +266,8 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       strokeWidth: 1.5,
       offsetX: 15,
       size: 10,
-      onClick: () => {
-        const elemento = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
-        if (elemento) elemento.style.opacity = '1';
-        openTooltip.current = true;
+      onItemClick: {
+        toggleDataSeries: true
       }
     },
     legend: {
@@ -275,10 +276,9 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       position: 'top',
       horizontalAlign: 'left',
       offsetY: 10,
-      //offsetX: 20,
       markers: {
-        width: 0, // Define a largura do marcador como 0 para ocultá-lo
-        height: 0 // Define a altura do marcador como 0 para ocultá-lo
+        width: 0,
+        height: 0
       },
       labels: {
         colors: '#fff',
@@ -312,19 +312,11 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     }
   };
 
-  // <p>Funcionário: {service?.name_tec?.concat(' (TEC)')}</p>
-  // <p>Solicitante: {service?.client_name}</p>
-  // <p>Cidade: {service?.city}</p>
-  // <p>Protocolo: {service?.protocol}</p>
-  // <p>Emissão: {createdAt}</p>
-  // <p>Para: {startServiceAt}</p>
-  // <p>Serviço: {status[service?.status]}</p>
-
   return (
     <S.Table>
       <ApexChart
         key="apex-chart"
-        height="500rem"
+        height="400rem"
         type="scatter"
         options={options as ApexchartsPropsTypes}
         series={series}
