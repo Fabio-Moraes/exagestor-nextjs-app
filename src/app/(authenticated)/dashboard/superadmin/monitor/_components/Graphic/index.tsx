@@ -85,6 +85,29 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
 
   type TypeStatusColor = keyof typeof statusColor;
 
+  const changeColors = () => {
+    const rects = document.querySelectorAll('.apexcharts-data-labels rect');
+    const texts = document.querySelectorAll('.apexcharts-data-labels text');
+    const textValues = Array.from(texts).map((text) => String(text.textContent));
+    const numbers = textValues
+      .map((text) => {
+        const match = text.match(/^\d+/);
+        return match ? Number(match[0]) : null;
+      })
+      .filter((num) => num !== null) as Array<number>;
+
+    rects.forEach((rect, index) => {
+      const service = services[numbers[index]];
+      if (service) {
+        rect.setAttribute('fill', statusColor[service.status as TypeStatusColor]);
+      }
+    });
+
+    if (rects.length === 0 || texts.length === 0) {
+      setTimeout(changeColors, 500);
+    }
+  };
+
   const series = employees.map((user) => {
     const data = services.map((service) => {
       if (service.employee_id === JSON.parse(user).employee_id) {
@@ -126,16 +149,14 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     }
   });
 
-  type FuncType = (
+  type DataPointSelectionType = (
     event: { touches: unknown },
     chartContext: unknown,
     config: { dataPointIndex: number; seriesIndex: number; w: unknown }
   ) => void;
 
-  const dataPointSelection: FuncType = (event, chartContext, config) => {
+  const dataPointSelection: DataPointSelectionType = (event, chartContext, config) => {
     if (openTooltip.current === config.dataPointIndex && event.touches) {
-      console.log(event.touches);
-
       const encryptSlug = encryptObject({
         protocol: services[config.dataPointIndex].protocol,
         employeeId: services[config.dataPointIndex].employee_id,
@@ -153,14 +174,20 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
   const options = {
     chart: {
       events: {
-        dataPointMouseLeave: function () {
+        dataPointMouseLeave: () => {
           const elemento = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
           if (elemento && openTooltip.current) {
             openTooltip.current = null;
             elemento.style.opacity = '0';
           }
         },
-        dataPointSelection
+        dataPointSelection,
+        mounted: () => {
+          changeColors();
+        },
+        updated: () => {
+          changeColors();
+        }
       },
       animations: {
         enabled: false
@@ -248,7 +275,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       ) {
         const { dataPointIndex } = props;
         if (timeOfDay) {
-          return services[dataPointIndex].name_tec;
+          return `${dataPointIndex} ${services[dataPointIndex].name_tec}`;
         }
       },
       background: {
@@ -257,7 +284,6 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       },
       style: {
         cssClass: 'custom-data-label',
-        colors: ['#6b6b6b'],
         fontSize: '1.3rem'
       }
     },

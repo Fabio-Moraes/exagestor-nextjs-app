@@ -76,6 +76,20 @@ div {
   }
 }
 
+.apexcharts-data-labels text {
+  clip-path: inset(0 0 0 1rem);
+  transform: translateX(-0.5rem);
+  fill: #fff !important;
+}
+
+.apexcharts-data-labels text::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
+
 .apexcharts-data-labels:nth-child(odd) {
   animation: moveDataLabelsUp 3s infinite ease-in-out;
   z-index: 0;
