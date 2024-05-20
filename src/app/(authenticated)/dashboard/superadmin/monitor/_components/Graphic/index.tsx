@@ -156,7 +156,11 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
   ) => void;
 
   const dataPointSelection: DataPointSelectionType = (event, chartContext, config) => {
-    if (openTooltip.current === config.dataPointIndex && event.touches) {
+    if (event.touches) return;
+
+    const tooltip = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
+
+    if (openTooltip.current === config.dataPointIndex) {
       const encryptSlug = encryptObject({
         protocol: services[config.dataPointIndex].protocol,
         employeeId: services[config.dataPointIndex].employee_id,
@@ -164,23 +168,15 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       });
 
       router.push(`/dashboard/superadmin/manage/details/${encryptSlug}`, { scroll: false });
+    } else if (tooltip) {
+      tooltip.style.opacity = '1';
+      openTooltip.current = config.dataPointIndex;
     }
-
-    const tooltip = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
-    if (tooltip) tooltip.style.opacity = '1';
-    openTooltip.current = config.dataPointIndex;
   };
 
   const options = {
     chart: {
       events: {
-        dataPointMouseLeave: () => {
-          const elemento = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
-          if (elemento && openTooltip.current) {
-            openTooltip.current = null;
-            elemento.style.opacity = '0';
-          }
-        },
         dataPointSelection,
         mounted: () => {
           changeColors();
@@ -189,30 +185,14 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
           changeColors();
         }
       },
-      animations: {
-        enabled: false
-      },
-      zoom: {
-        enabled: false
-      },
-      toolbar: {
-        show: false
-      }
+      animations: { enabled: false },
+      zoom: { enabled: false },
+      toolbar: { show: false }
     },
-    plotOptions: {
-      line: {
-        isSlopeChart: false
-      }
-    },
+    plotOptions: { line: { isSlopeChart: false } },
     grid: {
-      row: {
-        colors: ['#fff', '#f2f2f2'],
-        opacity: 0.5
-      },
-      padding: {
-        bottom: 20,
-        right: 10
-      }
+      row: { colors: ['#fff', '#f2f2f2'], opacity: 0.5 },
+      padding: { bottom: 20, right: 10 }
     },
     xaxis: {
       labels: {
@@ -266,8 +246,8 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     },
     dataLabels: {
       enabled: true,
-      offsetX: 5,
-      offsetY: -15,
+      offsetX: 7,
+      offsetY: -12,
       textAnchor: 'end',
       formatter: function (
         timeOfDay: number,
@@ -280,21 +260,14 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       },
       background: {
         borderRadius: 5,
-        padding: 5
-      },
-      style: {
-        cssClass: 'custom-data-label',
-        fontSize: '1.3rem'
+        padding: 1
       }
     },
     markers: {
       strokeColors: ['#000000'],
       strokeWidth: 1.5,
       offsetX: 15,
-      size: 10,
-      onItemClick: {
-        toggleDataSeries: true
-      }
+      size: 10
     },
     legend: {
       show: true,
@@ -332,8 +305,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
           <span>Cidade: ${services[dataPointIndex].city}</span><br>
           <span>Protocolo: ${services[dataPointIndex].protocol}</span><br>
           <span>Serviço: ${status[services[dataPointIndex].status]}</span>
-          </div>
-        `;
+          </div>`;
       }
     }
   };
@@ -346,6 +318,19 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         type="scatter"
         options={options as ApexchartsPropsTypes}
         series={series}
+        onClick={(event: { target: HTMLElement }) => {
+          const targetElement = event.target;
+          const tooltipElement = document.querySelector('.apexcharts-tooltip') as HTMLElement;
+
+          if (targetElement && tooltipElement && openTooltip.current) {
+            const className = targetElement.getAttribute('class');
+
+            if (className !== 'apexcharts-marker') {
+              openTooltip.current = null;
+              tooltipElement.style.opacity = '0';
+            }
+          }
+        }}
       />
     </S.Table>
   );
