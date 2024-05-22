@@ -57,13 +57,102 @@ const status = {
   canceled: '❌ Cancelado'
 } as { [key: string]: string };
 
+const statusColor = {
+  concluded: '#2ecc71',
+  analysis: '#f1c40f',
+  active: '#17A2B8',
+  paused: '#e67e22',
+  canceled: '#e74c3c',
+  scheduled: '#95a5a6'
+} as const;
+
+type TypeStatusColor = keyof typeof statusColor;
+
 export const ChartComponent = ({ services }: { services: Service[] }) => {
   const openTooltip = useRef<number | null>(null);
   const data = services.map((service) => formatDatePicker(service));
-
   const router = useRouter();
 
-  const employees = Array.from(
+  const changeBalloon = () => {
+    const rects = document.querySelectorAll('.apexcharts-data-labels rect');
+    const texts = document.querySelectorAll('.apexcharts-data-labels text');
+    const textValues = Array.from(texts).map((text) => String(text.textContent));
+
+    const numbers = textValues
+      .map((text) => {
+        const match = text.match(/^\d+/);
+        return match ? Number(match[0]) : null;
+      })
+      .filter((num) => num !== null) as Array<number>;
+
+    console.log('service', texts);
+
+    rects.forEach((rect, index) => {
+      const service = services[numbers[index]];
+      if (service) {
+        rect.setAttribute('fill', statusColor[service.status as TypeStatusColor]);
+
+        const svgNS = 'http://www.w3.org/2000/svg';
+
+        const rectX = parseFloat(rect.getAttribute('x')!);
+        const rectY = parseFloat(rect.getAttribute('y')!);
+        const rectWidth = parseFloat(rect.getAttribute('width')!);
+        const rectHeight = parseFloat(rect.getAttribute('height')!);
+
+        // Adicionar balão de fundo para o texto usando <path>
+        const textContent = services[numbers[index]].name_tec;
+        const textWidth = textContent.length * 6.5; // Aproximação da largura do texto em pixels
+        const textHeight = 20; // Altura do texto
+        const balloonWidth = textWidth + 20; // Largura do balão, com margem
+        const balloonHeight = textHeight + 10; // Altura do balão, com margem
+
+        const balloonPath = document.createElementNS(svgNS, 'path');
+        const balloonX = rectX + rectWidth / 5 - balloonWidth + 15; // Centraliza o balão
+        const balloonY = rectY + rectHeight - 25; // Posição abaixo da seta
+
+        const balloonPathData = `
+        M${balloonX + 10},${balloonY}
+        h${balloonWidth - 20}
+        a10,10 0 0 1 10,10
+        v${balloonHeight - 30}
+        a10,10 0 0 1 -10,10
+        h-${balloonWidth - 20}
+        a10,10 0 0 1 -10,-10
+        v-${balloonHeight - 30}
+        a10,10 0 0 1 10,-10
+        Z
+        M${balloonX + balloonWidth - 20},${balloonY + balloonHeight - 6} 
+        L${balloonX + balloonWidth - 15},${balloonY + balloonHeight}
+        L${balloonX + balloonWidth - 10},${balloonY + balloonHeight - 6}
+        Z
+      `;
+        balloonPath.setAttribute('d', balloonPathData);
+        balloonPath.setAttribute('opacity', '0.9');
+        balloonPath.setAttribute('fill', statusColor[service.status as TypeStatusColor]);
+        balloonPath.setAttribute('stroke', '#343A40'); // Cor do contorno do balão
+        balloonPath.setAttribute('stroke-width', '1.5'); // Espessura do contorno do balão
+
+        rect.parentNode?.appendChild(balloonPath);
+
+        // Adicionar texto SVG dentro do balão
+        const svgText = document.createElementNS(svgNS, 'text');
+        svgText.setAttribute('x', String(balloonX + balloonWidth / 2));
+        svgText.setAttribute('y', String(balloonY + balloonHeight / 2));
+        svgText.setAttribute('fill', '#ffffff');
+        svgText.setAttribute('font-size', '12');
+        svgText.setAttribute('text-anchor', 'middle');
+        svgText.textContent = textContent;
+
+        rect.parentNode?.appendChild(svgText);
+      }
+    });
+
+    if (rects.length === 0 || texts.length === 0) {
+      setTimeout(changeBalloon, 500);
+    }
+  };
+
+  const servicesStringify = Array.from(
     new Set(
       services.map((user) => {
         return JSON.stringify({
@@ -74,41 +163,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     )
   );
 
-  const statusColor = {
-    concluded: '#2ecc71',
-    analysis: '#f1c40f',
-    active: '#3498db',
-    paused: '#e67e22',
-    canceled: '#e74c3c',
-    scheduled: '#95a5a6'
-  } as const;
-
-  type TypeStatusColor = keyof typeof statusColor;
-
-  const changeColors = () => {
-    const rects = document.querySelectorAll('.apexcharts-data-labels rect');
-    const texts = document.querySelectorAll('.apexcharts-data-labels text');
-    const textValues = Array.from(texts).map((text) => String(text.textContent));
-    const numbers = textValues
-      .map((text) => {
-        const match = text.match(/^\d+/);
-        return match ? Number(match[0]) : null;
-      })
-      .filter((num) => num !== null) as Array<number>;
-
-    rects.forEach((rect, index) => {
-      const service = services[numbers[index]];
-      if (service) {
-        rect.setAttribute('fill', statusColor[service.status as TypeStatusColor]);
-      }
-    });
-
-    if (rects.length === 0 || texts.length === 0) {
-      setTimeout(changeColors, 500);
-    }
-  };
-
-  const series = employees.map((user) => {
+  const series = servicesStringify.map((user) => {
     const data = services.map((service) => {
       if (service.employee_id === JSON.parse(user).employee_id) {
         return formatDatePicker(service);
@@ -152,12 +207,11 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
   type DataPointSelectionType = (
     event: { touches: unknown },
     chartContext: unknown,
-    config: { dataPointIndex: number; seriesIndex: number; w: unknown }
+    config: { dataPointIndex: number }
   ) => void;
 
   const dataPointSelection: DataPointSelectionType = (event, chartContext, config) => {
     if (event.touches) return;
-
     const tooltip = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
 
     if (openTooltip.current === config.dataPointIndex) {
@@ -179,10 +233,22 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       events: {
         dataPointSelection,
         mounted: () => {
-          changeColors();
+          changeBalloon();
         },
         updated: () => {
-          changeColors();
+          changeBalloon();
+        },
+        click: (event: React.MouseEvent<HTMLElement>) => {
+          const target = event.target as HTMLElement;
+          const targetClass = target.getAttribute('class');
+          const tooltip = document.querySelector('.apexcharts-tooltip') as HTMLElement | null;
+
+          if (tooltip && targetClass) {
+            if (targetClass !== 'apexcharts-marker') {
+              openTooltip.current = null;
+              tooltip.style.opacity = '0';
+            }
+          }
         }
       },
       animations: { enabled: false },
@@ -198,7 +264,6 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       labels: {
         rotate: -45,
         rotateAlways: true,
-
         offsetX: 7,
         style: {
           fontSize: '12px',
@@ -246,16 +311,14 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
     },
     dataLabels: {
       enabled: true,
-      offsetX: 7,
-      offsetY: -12,
+      offsetX: 3,
+      offsetY: -20,
       textAnchor: 'end',
-      formatter: function (
-        timeOfDay: number,
-        props: { dataPointIndex: number; seriesIndex: number; w: unknown }
-      ) {
+
+      formatter: function (timeOfDay: number, props: { dataPointIndex: number }) {
         const { dataPointIndex } = props;
         if (timeOfDay) {
-          return `${dataPointIndex} ${services[dataPointIndex].name_tec}`;
+          return dataPointIndex;
         }
       },
       background: {
@@ -264,7 +327,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       }
     },
     markers: {
-      strokeColors: ['#000000'],
+      strokeColors: ['#343A40'],
       strokeWidth: 1.5,
       offsetX: 15,
       size: 10
@@ -318,19 +381,6 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         type="scatter"
         options={options as ApexchartsPropsTypes}
         series={series}
-        onClick={(event: { target: HTMLElement }) => {
-          const targetElement = event.target;
-          const tooltipElement = document.querySelector('.apexcharts-tooltip') as HTMLElement;
-
-          if (targetElement && tooltipElement && openTooltip.current) {
-            const className = targetElement.getAttribute('class');
-
-            if (className !== 'apexcharts-marker') {
-              openTooltip.current = null;
-              tooltipElement.style.opacity = '0';
-            }
-          }
-        }}
       />
     </S.Table>
   );

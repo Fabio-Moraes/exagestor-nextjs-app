@@ -3,7 +3,7 @@ import * as S from './styles';
 const statusColors = {
   concluído: '#2ecc71',
   análise: '#f1c40f',
-  ativo: '#3498db',
+  ativo: '#17A2B8',
   pausado: '#e67e22',
   cancelado: '#e74c3c',
   agendado: '#95a5a6'
