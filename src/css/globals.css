@@ -80,11 +80,11 @@ div {
   z-index: 99999 !important;
 }
 
-.apexcharts-data-labels text {
+/* .apexcharts-data-labels text { */
   /* clip-path: inset(0 0 0 1rem); */
   /* transform: translateX(-0.5rem); */
   /* fill: #000 !important; */
-}
+/* } */
 
 .apexcharts-data-labels rect {
   /* width: 100%; */

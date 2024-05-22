@@ -5,12 +5,17 @@ import { useEffect, useState } from 'react';
 import { ChartComponent } from './_components/Graphic';
 import { IndexColors } from './_components/indexColors';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import Image from 'components/Vercel/Image';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
+
+import arrowLeft from './_assets/svg/arrowLeft.svg';
+import arrowRight from './_assets/svg/arrowRight.svg';
+import refresh from './_assets/svg/refresh.svg';
 
 import * as S from './styles';
 
@@ -33,11 +38,14 @@ interface Service {
   protocol: string;
 }
 
+type ServicesType = { startIndex: number; data: Service[] };
+
 export default function GeneralMonitoring() {
-  const [services, setServices] = useState<Service[]>([]);
+  const [services, setServices] = useState<ServicesType>({ startIndex: 0, data: [] });
   const [spinner, setSpineer] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  //const [startPosition, setStartPosition] = useState(0);
 
   const maxRetries = 4;
 
@@ -58,10 +66,15 @@ export default function GeneralMonitoring() {
           baseURL: '/api/superadmin/manage/historic',
           employee_id: undefined,
           employee_all: true,
-          initial_id: services.length >= 1 ? services[services.length - 1].id : null
+          initial_id:
+            services.data.length >= 1 ? services.data[services.data.length - 1].id : null
         });
 
-        setServices(response.data);
+        setServices((res) => {
+          return { startIndex: res.data.length, data: [...res.data, ...response.data] };
+        });
+        //if (services.length >= 10) setStartPosition((res) => res + 10);
+        //setStartPosition(services.length + 1 >= 10 ? services.length - 10 : 0);
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {
@@ -91,14 +104,27 @@ export default function GeneralMonitoring() {
     fetchServices();
   }, []);
 
+  /*   const removeLast10Items = () => {
+    setServices((prevArr) => {
+      // Se o array tiver menos de 10 itens, remover todos os itens
+      if (prevArr.length <= 10) {
+        return prevArr;
+      }
+      // Caso contrário, remover os últimos 10 itens
+      return prevArr.slice(0, -10);
+    });
+  }; */
+
   return (
     <S.Container>
       <S.ListContainer>
-        <ChartComponent services={services} />
+        <ChartComponent
+          services={services.data.slice(services.startIndex, services.startIndex + 10)}
+        />
         <div></div>
-        <S.Button>
+        <S.ButtonContainer>
           <IndexColors />
-          {services.length >= 1 &&
+          {services.data.length >= 1 &&
             (spinner ? (
               <S.Spinner>
                 <div>
@@ -112,13 +138,66 @@ export default function GeneralMonitoring() {
                 </div>
               </S.Spinner>
             ) : (
-              <button onClick={fetchServices}>
-                <div>
-                  <p>Mais resultados</p>
-                </div>
-              </button>
+              <div>
+                <S.WrapperButton>
+                  <button style={{ opacity: 0.3 }} onClick={() => {}}>
+                    <Image
+                      priority
+                      loading="eager"
+                      src={refresh}
+                      alt="Add"
+                      width="50"
+                      height="50"
+                    />
+                  </button>
+                </S.WrapperButton>
+                <S.WrapperButton>
+                  <button
+                    style={{ opacity: services.startIndex <= 10 ? 0.3 : 1 }}
+                    onClick={() => {
+                      if (services.startIndex > 10) {
+                        setServices((res) => {
+                          return {
+                            startIndex: res.startIndex - 10,
+                            data: res.data
+                          };
+                        });
+                      }
+                    }}
+                  >
+                    <Image
+                      priority
+                      loading="eager"
+                      src={arrowLeft}
+                      alt="Add"
+                      width="50"
+                      height="50"
+                    />
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (services.startIndex >= services.data.length - 10) {
+                        fetchServices();
+                      } else {
+                        setServices((res) => {
+                          return { startIndex: res.startIndex + 10, data: res.data };
+                        });
+                      }
+                    }}
+                  >
+                    <Image
+                      priority
+                      loading="eager"
+                      src={arrowRight}
+                      alt="Add"
+                      width="50"
+                      height="50"
+                    />
+                  </button>
+                </S.WrapperButton>
+              </div>
             ))}
-        </S.Button>
+        </S.ButtonContainer>
       </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (

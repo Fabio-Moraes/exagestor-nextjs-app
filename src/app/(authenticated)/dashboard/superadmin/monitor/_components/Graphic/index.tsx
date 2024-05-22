@@ -85,8 +85,6 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       })
       .filter((num) => num !== null) as Array<number>;
 
-    console.log('service', texts);
-
     rects.forEach((rect, index) => {
       const service = services[numbers[index]];
       if (service) {
@@ -99,16 +97,16 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         const rectWidth = parseFloat(rect.getAttribute('width')!);
         const rectHeight = parseFloat(rect.getAttribute('height')!);
 
-        // Adicionar balão de fundo para o texto usando <path>
+        // Adicionar balão de fundo
         const textContent = services[numbers[index]].name_tec;
-        const textWidth = textContent.length * 6.5; // Aproximação da largura do texto em pixels
-        const textHeight = 20; // Altura do texto
-        const balloonWidth = textWidth + 20; // Largura do balão, com margem
-        const balloonHeight = textHeight + 10; // Altura do balão, com margem
+        const textWidth = textContent.length * 6.5;
+        const textHeight = 20;
+        const balloonWidth = textWidth + 20;
+        const balloonHeight = textHeight + 10;
 
         const balloonPath = document.createElementNS(svgNS, 'path');
-        const balloonX = rectX + rectWidth / 5 - balloonWidth + 15; // Centraliza o balão
-        const balloonY = rectY + rectHeight - 25; // Posição abaixo da seta
+        const balloonX = rectX + rectWidth / 5 - balloonWidth + 15;
+        const balloonY = rectY + rectHeight - 25;
 
         const balloonPathData = `
         M${balloonX + 10},${balloonY}
@@ -129,8 +127,8 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         balloonPath.setAttribute('d', balloonPathData);
         balloonPath.setAttribute('opacity', '0.9');
         balloonPath.setAttribute('fill', statusColor[service.status as TypeStatusColor]);
-        balloonPath.setAttribute('stroke', '#343A40'); // Cor do contorno do balão
-        balloonPath.setAttribute('stroke-width', '1.5'); // Espessura do contorno do balão
+        balloonPath.setAttribute('stroke', '#343A40');
+        balloonPath.setAttribute('stroke-width', '1.5');
 
         rect.parentNode?.appendChild(balloonPath);
 

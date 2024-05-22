@@ -113,39 +113,39 @@ export const Status = styled.div`
   background-color: ${({ color }) => color};
 `;
 
-export const Button = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: start;
+  width: 100%;
+
+  > div {
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
+export const WrapperButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border-radius: 30rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #8bc9a8;
+  border: 1px solid #ddd;
+  margin: 0rem 0rem 0rem 1rem;
 
   > button {
-    width: 20rem;
-    background-color: #27a567;
     flex-shrink: 0;
-    color: #fff;
-    padding: 0.7rem;
-    margin: 0rem 0 2rem 0;
-    border-radius: 3rem;
-    font-size: 1.6rem;
-    user-select: none;
-
-    > div {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      > p {
-        text-align: center;
-        width: 100%;
-      }
-    }
-
-    transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px #8bc9a8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
 
     &:active {
-      transform: translateY(2px);
-      box-shadow: none;
+      transform: scale(0.95);
+      opacity: 0.5;
     }
   }
 `;
