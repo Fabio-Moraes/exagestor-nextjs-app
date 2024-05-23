@@ -134,7 +134,6 @@ export const WrapperButton = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #8bc9a8;
   border: 1px solid #ddd;
-  margin: 0rem 0rem 0rem 1rem;
 
   > button {
     flex-shrink: 0;

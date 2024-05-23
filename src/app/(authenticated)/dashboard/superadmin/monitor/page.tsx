@@ -53,7 +53,7 @@ export default function GeneralMonitoring() {
     return count > 1 ? `Conectando<br>Tentativa (${count})` : 'Conectando';
   }
 
-  async function fetchServices() {
+  async function fetchServices(startIndex: number | null = null) {
     setConnectionError(false);
 
     for (let index = 0; index < maxRetries; index++) {
@@ -66,15 +66,17 @@ export default function GeneralMonitoring() {
           baseURL: '/api/superadmin/manage/historic',
           employee_id: undefined,
           employee_all: true,
-          initial_id:
-            services.data.length >= 1 ? services.data[services.data.length - 1].id : null
+          initial_id: startIndex
         });
 
         setServices((res) => {
-          return { startIndex: res.data.length, data: [...res.data, ...response.data] };
+          if (startIndex) {
+            return { startIndex: res.data.length, data: [...res.data, ...response.data] };
+          } else {
+            return { startIndex: 0, data: response.data };
+          }
         });
-        //if (services.length >= 10) setStartPosition((res) => res + 10);
-        //setStartPosition(services.length + 1 >= 10 ? services.length - 10 : 0);
+
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {
@@ -104,99 +106,97 @@ export default function GeneralMonitoring() {
     fetchServices();
   }, []);
 
-  /*   const removeLast10Items = () => {
-    setServices((prevArr) => {
-      // Se o array tiver menos de 10 itens, remover todos os itens
-      if (prevArr.length <= 10) {
-        return prevArr;
-      }
-      // Caso contrário, remover os últimos 10 itens
-      return prevArr.slice(0, -10);
-    });
-  }; */
-
   return (
     <S.Container>
       <S.ListContainer>
         <ChartComponent
           services={services.data.slice(services.startIndex, services.startIndex + 10)}
         />
-        <div></div>
         <S.ButtonContainer>
           <IndexColors />
-          {services.data.length >= 1 &&
-            (spinner ? (
-              <S.Spinner>
-                <div>
-                  <Player
-                    src={animationData}
-                    loop
-                    autoplay
-                    speed={1.5}
-                    style={{ height: '7rem', width: '7rem' }}
-                  />
-                </div>
-              </S.Spinner>
-            ) : (
+
+          {services.data.length >= 1 && spinner && (
+            <S.Spinner
+              style={{
+                margin: '0rem 0rem 0rem 0rem',
+                width: '100%'
+              }}
+            >
               <div>
-                <S.WrapperButton>
-                  <button style={{ opacity: 0.3 }} onClick={() => {}}>
-                    <Image
-                      priority
-                      loading="eager"
-                      src={refresh}
-                      alt="Add"
-                      width="50"
-                      height="50"
-                    />
-                  </button>
-                </S.WrapperButton>
-                <S.WrapperButton>
-                  <button
-                    style={{ opacity: services.startIndex <= 10 ? 0.3 : 1 }}
-                    onClick={() => {
-                      if (services.startIndex > 10) {
-                        setServices((res) => {
-                          return {
-                            startIndex: res.startIndex - 10,
-                            data: res.data
-                          };
-                        });
-                      }
-                    }}
-                  >
-                    <Image
-                      priority
-                      loading="eager"
-                      src={arrowLeft}
-                      alt="Add"
-                      width="50"
-                      height="50"
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (services.startIndex >= services.data.length - 10) {
-                        fetchServices();
-                      } else {
-                        setServices((res) => {
-                          return { startIndex: res.startIndex + 10, data: res.data };
-                        });
-                      }
-                    }}
-                  >
-                    <Image
-                      priority
-                      loading="eager"
-                      src={arrowRight}
-                      alt="Add"
-                      width="50"
-                      height="50"
-                    />
-                  </button>
-                </S.WrapperButton>
+                <Player
+                  src={animationData}
+                  loop
+                  autoplay
+                  speed={1.5}
+                  style={{ height: '5rem', width: '5rem' }}
+                />
               </div>
-            ))}
+            </S.Spinner>
+          )}
+
+          <div>
+            <S.WrapperButton>
+              <button
+                onClick={() => {
+                  if (services.startIndex >= 10) {
+                    setServices((res) => {
+                      return {
+                        startIndex: res.startIndex - 10,
+                        data: res.data
+                      };
+                    });
+                  }
+                }}
+              >
+                <Image
+                  priority
+                  loading="eager"
+                  src={arrowLeft}
+                  alt="Add"
+                  width="50"
+                  height="50"
+                  style={{ opacity: services.startIndex < 10 ? 0.3 : 1 }}
+                />
+              </button>
+              <button
+                onClick={() => {
+                  if (services.startIndex >= services.data.length - 10) {
+                    fetchServices(services.data[services.data.length - 1].id);
+                  } else {
+                    setServices((res) => {
+                      return { startIndex: res.startIndex + 10, data: res.data };
+                    });
+                  }
+                }}
+              >
+                <Image
+                  priority
+                  loading="eager"
+                  src={arrowRight}
+                  alt="Add"
+                  width="50"
+                  height="50"
+                />
+              </button>
+            </S.WrapperButton>
+            <S.WrapperButton style={{ marginLeft: '1rem' }}>
+              <button
+                onClick={() => {
+                  if (services.startIndex < 10) fetchServices();
+                }}
+              >
+                <Image
+                  priority
+                  loading="eager"
+                  src={refresh}
+                  alt="Add"
+                  width="50"
+                  height="50"
+                  style={{ opacity: services.startIndex >= 10 ? 0.3 : 1 }}
+                />
+              </button>
+            </S.WrapperButton>
+          </div>
         </S.ButtonContainer>
       </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
