@@ -124,9 +124,16 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         L${balloonX + balloonWidth - 10},${balloonY + balloonHeight - 6}
         Z
       `;
+
+        const yourDate = moment(services[numbers[index]].start_service_at);
+        const passedScheduledDate = yourDate.isSameOrBefore(moment());
+        const statusSelect = passedScheduledDate
+          ? (services[index].status as TypeStatusColor)
+          : 'scheduled';
+
         balloonPath.setAttribute('d', balloonPathData);
         balloonPath.setAttribute('opacity', '0.9');
-        balloonPath.setAttribute('fill', statusColor[service.status as TypeStatusColor]);
+        balloonPath.setAttribute('fill', statusColor[statusSelect]);
         balloonPath.setAttribute('stroke', '#343A40');
         balloonPath.setAttribute('stroke-width', '1.5');
 
