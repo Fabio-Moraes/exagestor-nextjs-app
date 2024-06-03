@@ -18,8 +18,9 @@ import searchSvg from './_assets/svg/search.svg';
 import * as S from './styles';
 
 interface ListProps {
-  id: string;
+  id: number;
   description: string;
+  status: string;
 }
 
 interface ServiceData {
@@ -169,7 +170,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
                 </S.ItemsSkeleton>
               );
             })
-          : filteredItems.map((item) => {
+          : filteredItems?.map((item) => {
               return (
                 <motion.ul
                   key={item.description}
@@ -182,9 +183,9 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
                     item={item.description}
                     count={selectService?.[String(serviceData?.protocol)]?.[item.id]}
                     onSelect={({ count }) => {
-                      toggleItem(item.id, count);
+                      toggleItem(String(item.id), count);
                     }}
-                    onReset={() => toggleItemReset(item.id)}
+                    onReset={() => toggleItemReset(String(item.id))}
                   />
                 </motion.ul>
               );

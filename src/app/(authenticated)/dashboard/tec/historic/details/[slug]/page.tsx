@@ -19,25 +19,32 @@ import iconExa from './_assets/svg/exa_logo.svg';
 
 import * as S from './styles';
 
-interface Service {
-  id: number;
-  client_name: string;
-  city: string;
-  address: string;
-  nomenclature: string;
-  classification: string;
-  status: string;
-  start_service_at: string;
-  update_count: number;
-  created_at: string;
-  modification_at: string;
-  finished_at: string;
-  list_material: string;
-  list_service: string;
-  observation: string;
-  protocol: string;
+interface ServiceData {
+  currentOperation: {
+    id: number;
+    client_name: string;
+    employee_id: string;
+    city: string;
+    address: string;
+    nomenclature: string;
+    classification: string;
+    status: string;
+    update_count: number;
+    start_service_at: string;
+    created_at: string;
+    modification_at: string;
+    finished_at: string;
+    list_material: string;
+    list_service: string;
+    observation: string;
+    protocol: string;
+  }[];
+  serviceList: {
+    id: number;
+    description: string;
+    status: string;
+  }[];
 }
-
 interface Materials {
   id: number;
   product_name: string;
@@ -66,19 +73,7 @@ function formatDate(date: string) {
 }
 
 export default function Details({ params }: SlugType) {
-  const dataListService = [
-    { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '1', description: 'READQ DE POSTES (EQPTOS MEC NO POSTE)' },
-    { id: '2', description: 'INSTALAÇÃO DE PADS PARA PROTEÇÃO DE REDE' }, //<<<<<
-    { id: '3', description: 'RETENC CORD/ CBS' },
-    { id: '4', description: 'RET CORD DO POSTE' },
-    { id: '5', description: 'MANUT PODA DE GALHOS COM REMOCAO-F' },
-    { id: '6', description: 'MANUT CAPINA LIMPZ SOBRE TAMP DE C' },
-    { id: '7', description: 'MANUT CAPINA DE POSTE RAIO = 2,0M-' },
-    { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
-  ];
-
-  const [service, setService] = useState<Service | null>(null);
+  const [service, setService] = useState({} as ServiceData);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +104,7 @@ export default function Details({ params }: SlugType) {
         });
 
         setMaterials(responseDataStock.data);
-        setService(response.data[0]);
+        setService(response.data);
         setIsPopupValue(null);
 
         break;
@@ -174,24 +169,24 @@ export default function Details({ params }: SlugType) {
 
   const modificationFilter = () => {
     if (
-      service?.modification_at &&
-      service?.update_count > 0 &&
-      service?.status !== 'concluded'
+      service?.currentOperation[0].modification_at &&
+      service?.currentOperation[0].update_count > 0 &&
+      service?.currentOperation[0].status !== 'concluded'
     ) {
-      if (service?.status === 'paused') {
-        return <p>Pausado em: {formatDate(service?.modification_at)}</p>;
+      if (service?.currentOperation[0].status === 'paused') {
+        return <p>Pausado em: {formatDate(service?.currentOperation[0].modification_at)}</p>;
       }
 
-      if (service?.status === 'active') {
-        return <p>Retomado em: {formatDate(service?.modification_at)}</p>;
+      if (service?.currentOperation[0].status === 'active') {
+        return <p>Retomado em: {formatDate(service?.currentOperation[0].modification_at)}</p>;
       }
     }
   };
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const objListMaterial = JSON.parse(service?.list_material || '{}');
-  const objListService = JSON.parse(service?.list_service || '{}');
+  const objListMaterial = JSON.parse(service?.currentOperation?.[0].list_material || '{}');
+  const objListService = JSON.parse(service?.currentOperation?.[0].list_service || '{}');
 
   const [handleToPrinter] = useHandlePrint({
     elementRef: elementRef,
@@ -247,21 +242,21 @@ export default function Details({ params }: SlugType) {
                     <span>Telecomunicações</span>
                   </S.ProfileInfoCompany>
                 </S.ProfileCompany>
-                <p>Endereço: {service?.address}</p>
-                <p>Cidade: {service?.city}</p>
-                <p>Classificação: {service?.classification}</p>
-                <p>Solicitante: {service?.client_name}</p>
-                <p>Emissão: {formatDate(service?.created_at)}</p>
-                <p>Para: {formatDate(service?.start_service_at)}</p>
-                {service?.finished_at && (
-                  <p>Concluído em: {formatDate(service?.finished_at)}</p>
+                <p>Endereço: {service?.currentOperation[0].address}</p>
+                <p>Cidade: {service?.currentOperation[0].city}</p>
+                <p>Classificação: {service?.currentOperation[0].classification}</p>
+                <p>Solicitante: {service?.currentOperation[0].client_name}</p>
+                <p>Emissão: {formatDate(service?.currentOperation[0].created_at)}</p>
+                <p>Para: {formatDate(service?.currentOperation[0].start_service_at)}</p>
+                {service?.currentOperation[0].finished_at && (
+                  <p>Concluído em: {formatDate(service?.currentOperation[0].finished_at)}</p>
                 )}
-                {service?.modification_at && modificationFilter()}
-                <p>Nomenclatura: {service?.nomenclature}</p>
-                <p>Protocolo: {service?.protocol}</p>
-                <p>Serviço: {status[service?.status]}</p>
-                <p>Contador de Atualização: {service?.update_count}</p>
-                {service?.list_material && (
+                {service?.currentOperation[0].modification_at && modificationFilter()}
+                <p>Nomenclatura: {service?.currentOperation[0].nomenclature}</p>
+                <p>Protocolo: {service?.currentOperation[0].protocol}</p>
+                <p>Serviço: {status[service?.currentOperation[0].status]}</p>
+                <p>Contador de Atualização: {service?.currentOperation[0].update_count}</p>
+                {service?.currentOperation[0].list_material && (
                   <S.Table>
                     <div>
                       <div>
@@ -311,7 +306,7 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {service?.list_service && (
+                {service?.currentOperation[0].list_service && (
                   <S.Table>
                     <div>
                       <div>
@@ -327,7 +322,10 @@ export default function Details({ params }: SlugType) {
                           <div key={key}>
                             <div>
                               <span>
-                                {dataListService.find((item) => item.id === key)?.description}
+                                {
+                                  service.serviceList.find((item) => String(item.id) === key)
+                                    ?.description
+                                }
                               </span>
                             </div>
                             <div>
@@ -339,10 +337,10 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {service?.observation && (
+                {service?.currentOperation[0].observation && (
                   <S.Observation>
                     <p>Observação</p>
-                    {renderTextWithLineBreaks(service?.observation ?? '')}
+                    {renderTextWithLineBreaks(service?.currentOperation[0].observation ?? '')}
                   </S.Observation>
                 )}
               </>

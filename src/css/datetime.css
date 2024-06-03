@@ -10,9 +10,11 @@
   z-index: 99999 !important;
   background-color: transparent;
 }
+
 .rdtOpen .rdtPicker {
   display: block;
 }
+
 .rdtStatic .rdtPicker {
   box-shadow: none;
   position: static;
@@ -151,8 +153,10 @@
   height: 100%;
 }
 
-.rdtDays {
- width: 250px;
+.rdtDays, 
+.rdtMonths, 
+.rdtYears  {
+  width: 250px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,.1);
   border: 1px solid #dddddd;
@@ -161,9 +165,9 @@
 td.rdtMonth,
 td.rdtYear {
   height: 50px;
-  width: 25%;
   cursor: pointer;
 }
+
 td.rdtMonth:hover,
 td.rdtYear:hover {
   background: #eee;

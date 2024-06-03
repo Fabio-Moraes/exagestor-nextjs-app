@@ -121,6 +121,14 @@ const ListItem = (props: ListItemProps) => {
     router.push(`/dashboard/superadmin/manage/historic/${encryptSlug}`, { scroll: false });
   }
 
+  function fetchProduction() {
+    const encryptSlug = encryptObject({ userId: id, userName: name });
+    handleCloseDialog();
+    router.push(`/dashboard/superadmin/manage/view_production/${encryptSlug}`, {
+      scroll: false
+    });
+  }
+
   function fetchChangePassword() {
     const encryptSlug = encryptObject({ userId: id, userName: name });
     handleCloseDialog();
@@ -172,6 +180,9 @@ const ListItem = (props: ListItemProps) => {
         <>
           <button onClick={fetchStock}>
             <p>VISUALIZAR CARGA</p>
+          </button>
+          <button onClick={fetchProduction}>
+            <p>VISUALIZAR PRODUÇÃO</p>
           </button>
           {status !== 'inactive' && (
             <button onClick={fetchNewServices}>

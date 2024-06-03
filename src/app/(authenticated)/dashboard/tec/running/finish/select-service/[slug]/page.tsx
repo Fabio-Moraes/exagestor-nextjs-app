@@ -11,18 +11,6 @@ import { internalApi } from 'services/apiAxios';
 
 import * as S from './styles';
 
-const data = [
-  { id: '0', description: 'ADQ DE POSTES (EQPTOS MEC NO POSTE)' },
-  { id: '1', description: 'READQ DE POSTES (EQPTOS MEC NO POSTE)' },
-  { id: '2', description: 'INSTALAÇÃO DE PADS PARA PROTEÇÃO DE REDE' }, //<<<<<
-  { id: '3', description: 'RETENC CORD/ CBS' },
-  { id: '4', description: 'RET CORD DO POSTE' },
-  { id: '5', description: 'MANUT PODA DE GALHOS COM REMOCAO-F' },
-  { id: '6', description: 'MANUT CAPINA LIMPZ SOBRE TAMP DE C' },
-  { id: '7', description: 'MANUT CAPINA DE POSTE RAIO = 2,0M-' },
-  { id: '8', description: 'MANUT CAPINA DE MARCO DIÂMTR DE 2.0M' }
-];
-
 interface SlugType {
   params: {
     slug: string;
@@ -30,21 +18,34 @@ interface SlugType {
 }
 
 interface ServiceData {
-  id: number;
-  client_name: string;
-  city: string;
-  address: string;
-  nomenclature: string;
-  classification: string;
-  status: string;
-  update_count: number;
-  start_service_at: string;
-  created_at: string;
-  protocol: string;
+  currentOperation: {
+    id: number;
+    client_name: string;
+    employee_id: string;
+    city: string;
+    address: string;
+    nomenclature: string;
+    classification: string;
+    status: string;
+    update_count: number;
+    start_service_at: string;
+    created_at: string;
+    modification_at: string;
+    finished_at: string;
+    list_material: string;
+    list_service: string;
+    observation: string;
+    protocol: string;
+  }[];
+  serviceList: {
+    id: number;
+    description: string;
+    status: string;
+  }[];
 }
 
 export default function FinishService({ params }: SlugType) {
-  const [serviceData, setServiceData] = useState<ServiceData[]>([]);
+  const [services, setServices] = useState({} as ServiceData);
   const [connectionError, setConnectionError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
@@ -68,7 +69,7 @@ export default function FinishService({ params }: SlugType) {
         });
 
         setIsPopupValue(null);
-        setServiceData(response.data);
+        setServices(response.data);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -105,10 +106,10 @@ export default function FinishService({ params }: SlugType) {
     <S.Container>
       <S.Title>
         <h1>Selecionar Serviço</h1>
-        {isLoading || !serviceData[0]?.protocol ? (
+        {isLoading || !services?.currentOperation?.[0].protocol ? (
           <LineSkaleton width="30rem" />
         ) : (
-          <span>PROTOCOLO: {serviceData[0]?.protocol}</span>
+          <span>PROTOCOLO: {services?.currentOperation?.[0].protocol}</span>
         )}
       </S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
@@ -120,7 +121,7 @@ export default function FinishService({ params }: SlugType) {
           </span>
         </S.ErrorContainer>
       ) : (
-        <List items={data} serviceData={serviceData[0]} />
+        <List items={services.serviceList} serviceData={services?.currentOperation?.[0]} />
       )}
     </S.Container>
   );
