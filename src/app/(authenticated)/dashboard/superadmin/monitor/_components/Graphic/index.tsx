@@ -128,7 +128,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         const yourDate = moment(services[numbers[index]].start_service_at);
         const passedScheduledDate = yourDate.isSameOrBefore(moment());
         const statusSelect = passedScheduledDate
-          ? (services[index].status as TypeStatusColor)
+          ? (services[numbers[index]].status as TypeStatusColor)
           : 'scheduled';
 
         balloonPath.setAttribute('d', balloonPathData);
