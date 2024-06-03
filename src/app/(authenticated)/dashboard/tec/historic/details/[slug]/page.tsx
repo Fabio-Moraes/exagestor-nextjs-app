@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -38,6 +37,9 @@ interface ServiceData {
     list_service: string;
     observation: string;
     protocol: string;
+    name_tec: string;
+    name_creator_leader: string;
+    role_creator_leader: string;
   }[];
   serviceList: {
     id: number;
@@ -45,6 +47,7 @@ interface ServiceData {
     status: string;
   }[];
 }
+
 interface Materials {
   id: number;
   product_name: string;
@@ -80,7 +83,6 @@ export default function Details({ params }: SlugType) {
   const [materials, setMaterials] = useState<Materials[]>([]);
   const [processPrint, setProcessPrint] = useState(false);
 
-  const router = useRouter();
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -97,7 +99,7 @@ export default function Details({ params }: SlugType) {
         const responseDataStock = await internalApi.post('/api/bridge', paramDataStock);
 
         const response = await internalApi.post('/api/bridge', {
-          baseURL: '/api/tec/historic/details',
+          baseURL: '/api/tec/manage/historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
           updateCount: String(decryptSlug.updateCount)
@@ -133,12 +135,6 @@ export default function Details({ params }: SlugType) {
   useEffect(() => {
     fetchServices();
 
-    window.history.pushState(null, '', window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, '', window.location.href);
-      router.push(`/dashboard/tec/historic`);
-    };
-
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -158,35 +154,33 @@ export default function Details({ params }: SlugType) {
   const renderTextWithLineBreaks = (text: string) => {
     const lines = text.split('\n');
 
-    return lines.map((line: string, index: number) => {
-      return (
-        <Fragment key={String(index)}>
-          {line ? <p key={String(index)}>{line}</p> : <div key={`extra-div-${index}`} />}
-        </Fragment>
-      );
-    });
+    return lines.map((line: string, index: number) => (
+      <Fragment key={String(index)}>
+        {line ? <p key={String(index)}>{line}</p> : <div key={`extra-div-${index}`} />}
+      </Fragment>
+    ));
   };
 
   const modificationFilter = () => {
     if (
-      service?.currentOperation[0].modification_at &&
-      service?.currentOperation[0].update_count > 0 &&
-      service?.currentOperation[0].status !== 'concluded'
+      service?.currentOperation[0]?.modification_at &&
+      service?.currentOperation[0]?.update_count > 0 &&
+      service?.currentOperation[0]?.status !== 'concluded'
     ) {
-      if (service?.currentOperation[0].status === 'paused') {
-        return <p>Pausado em: {formatDate(service?.currentOperation[0].modification_at)}</p>;
+      if (service?.currentOperation[0]?.status === 'paused') {
+        return <p>Pausado em: {formatDate(service?.currentOperation[0]?.modification_at)}</p>;
       }
 
-      if (service?.currentOperation[0].status === 'active') {
-        return <p>Retomado em: {formatDate(service?.currentOperation[0].modification_at)}</p>;
+      if (service?.currentOperation[0]?.status === 'active') {
+        return <p>Retomado em: {formatDate(service?.currentOperation[0]?.modification_at)}</p>;
       }
     }
   };
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const objListMaterial = JSON.parse(service?.currentOperation?.[0].list_material || '{}');
-  const objListService = JSON.parse(service?.currentOperation?.[0].list_service || '{}');
+  const objListMaterial = JSON.parse(service?.currentOperation?.[0]?.list_material || '{}');
+  const objListService = JSON.parse(service?.currentOperation?.[0]?.list_service || '{}');
 
   const [handleToPrinter] = useHandlePrint({
     elementRef: elementRef,
@@ -242,21 +236,31 @@ export default function Details({ params }: SlugType) {
                     <span>Telecomunicações</span>
                   </S.ProfileInfoCompany>
                 </S.ProfileCompany>
-                <p>Endereço: {service?.currentOperation[0].address}</p>
-                <p>Cidade: {service?.currentOperation[0].city}</p>
-                <p>Classificação: {service?.currentOperation[0].classification}</p>
-                <p>Solicitante: {service?.currentOperation[0].client_name}</p>
-                <p>Emissão: {formatDate(service?.currentOperation[0].created_at)}</p>
-                <p>Para: {formatDate(service?.currentOperation[0].start_service_at)}</p>
-                {service?.currentOperation[0].finished_at && (
-                  <p>Concluído em: {formatDate(service?.currentOperation[0].finished_at)}</p>
+                <p>Endereço: {service?.currentOperation?.[0]?.address}</p>
+                <p>Cidade: {service?.currentOperation?.[0]?.city}</p>
+                <p>Classificação: {service?.currentOperation?.[0]?.classification}</p>
+                <p>Solicitante: {service?.currentOperation?.[0]?.client_name}</p>
+                <p>
+                  iniciado por:
+                  {service?.currentOperation?.[0]?.name_creator_leader
+                    ? ` ${service?.currentOperation?.[0]?.name_creator_leader.concat(
+                        ` (${service?.currentOperation?.[0]?.role_creator_leader.toUpperCase()})`
+                      )}`
+                    : ` ${service?.currentOperation?.[0]?.name_tec.concat(' (TEC)')}`}
+                </p>
+                <p>Emissão: {formatDate(service?.currentOperation?.[0]?.created_at)}</p>
+                <p>Para: {formatDate(service?.currentOperation?.[0]?.start_service_at)}</p>
+                {service?.currentOperation?.[0]?.finished_at && (
+                  <p>
+                    Concluído em: {formatDate(service?.currentOperation?.[0]?.finished_at)}
+                  </p>
                 )}
-                {service?.currentOperation[0].modification_at && modificationFilter()}
-                <p>Nomenclatura: {service?.currentOperation[0].nomenclature}</p>
-                <p>Protocolo: {service?.currentOperation[0].protocol}</p>
-                <p>Serviço: {status[service?.currentOperation[0].status]}</p>
-                <p>Contador de Atualização: {service?.currentOperation[0].update_count}</p>
-                {service?.currentOperation[0].list_material && (
+                {service?.currentOperation?.[0]?.modification_at && modificationFilter()}
+                <p>Nomenclatura: {service?.currentOperation?.[0]?.nomenclature}</p>
+                <p>Protocolo: {service?.currentOperation?.[0]?.protocol}</p>
+                <p>Serviço: {status[service?.currentOperation?.[0]?.status]}</p>
+                <p>Contador de Atualização: {service?.currentOperation?.[0]?.update_count}</p>
+                {service?.currentOperation?.[0]?.list_material && (
                   <S.Table>
                     <div>
                       <div>
@@ -306,7 +310,7 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {service?.currentOperation[0].list_service && (
+                {service?.currentOperation?.[0]?.list_service && (
                   <S.Table>
                     <div>
                       <div>
@@ -323,7 +327,7 @@ export default function Details({ params }: SlugType) {
                             <div>
                               <span>
                                 {
-                                  service.serviceList.find((item) => String(item.id) === key)
+                                  service?.serviceList.find((item) => String(item.id) === key)
                                     ?.description
                                 }
                               </span>
@@ -337,10 +341,12 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {service?.currentOperation[0].observation && (
+                {service?.currentOperation?.[0]?.observation && (
                   <S.Observation>
                     <p>Observação</p>
-                    {renderTextWithLineBreaks(service?.currentOperation[0].observation ?? '')}
+                    {renderTextWithLineBreaks(
+                      service?.currentOperation?.[0]?.observation ?? ''
+                    )}
                   </S.Observation>
                 )}
               </>
