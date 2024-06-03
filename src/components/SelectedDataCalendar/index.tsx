@@ -16,7 +16,7 @@ interface PropsTypes {
 }
 
 export function SelectedDataCalendar(props: PropsTypes) {
-  const { onChange, range, active, value /* initialDaysSubtract = 0 */ } = props;
+  const { onChange, range, active, value } = props;
 
   const isValidDate = (current: Date | string | Moment) => {
     if (range) {
