@@ -45,7 +45,6 @@ export default function GeneralMonitoring() {
   const [spinner, setSpineer] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-  //const [startPosition, setStartPosition] = useState(0);
 
   const maxRetries = 4;
 

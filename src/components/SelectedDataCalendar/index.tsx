@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import moment, { Moment } from 'moment';
 
@@ -8,29 +8,20 @@ import * as S from './styles';
 import 'moment/locale/pt-br';
 
 interface PropsTypes {
-  value?: (date: Date) => void;
-  defaultData?: Date | string | Moment;
+  value: string | moment.Moment;
+  onChange: (value: Moment | string) => void;
+  initialDaysSubtract?: number;
   range?: { max: Date | string | Moment; min: Date | string | Moment };
   active?: boolean;
 }
 
 export function SelectedDataCalendar(props: PropsTypes) {
-  const { value, range, active, defaultData } = props;
-
-  const [selectedDate, setSelectedDate] = useState<Date | string | Moment>(
-    defaultData ?? moment()
-  );
-
-  const handleDateChange = (date: string | Moment) => {
-    const dateMoment = moment(date);
-    value && value(new Date(dateMoment.startOf('day').format('YYYY-MM-DD')));
-    setSelectedDate(date);
-  };
+  const { onChange, range, active, value /* initialDaysSubtract = 0 */ } = props;
 
   const isValidDate = (current: Date | string | Moment) => {
     if (range) {
       return (
-        moment(current).startOf('day').isAfter(range.min, 'day') &&
+        moment(current).startOf('day').isSameOrAfter(range.min, 'day') &&
         moment(current).startOf('day').isBefore(range.max, 'day')
       );
     }
@@ -48,8 +39,8 @@ export function SelectedDataCalendar(props: PropsTypes) {
     <div>
       <S.StyledDateTime
         $active={active}
-        value={selectedDate}
-        onChange={handleDateChange}
+        value={value}
+        onChange={onChange}
         locale="pt"
         dateFormat="DD/MM/YYYY"
         timeFormat={false}

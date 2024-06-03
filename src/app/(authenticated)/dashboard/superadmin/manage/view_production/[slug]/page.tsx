@@ -73,8 +73,6 @@ export default function ViewProduction({ params }: SlugType) {
       .startOf('day')
       .isSameOrAfter(moment(selectedFirstDate).startOf('day')) && diffDays <= 60;
 
-  /* .startOf('day').subtract(60, 'days') */
-
   async function fetchServices() {
     if (!validDateRange) return;
 
@@ -90,8 +88,6 @@ export default function ViewProduction({ params }: SlugType) {
           selectedFirstDate: selectedFirstDate,
           selectedLastDate: selectedLastDate
         });
-
-        console.log('>>>>>', responseStock);
 
         const totalProduction = {} as ProductionType;
 
@@ -158,21 +154,20 @@ export default function ViewProduction({ params }: SlugType) {
           <S.ContainerSelecteddataCalendar>
             <S.WrapperSelectedDataCalendar>
               <SelectedDataCalendar
-                value={(data) => {
+                onChange={(data) => {
                   setSelectedFirstDate(moment(data).startOf('day'));
+                  console.log('data server', moment(data).startOf('day').format('DD/MM/YYYY'));
                 }}
-                defaultData={moment().startOf('day').subtract(59, 'days')}
-                range={{
-                  min: minDate,
-                  max: moment().add(1, 'days')
-                }}
-                active={true}
+                value={selectedFirstDate}
+                range={{ min: minDate, max: moment().add(1, 'days') }}
+                active
               />
               <span>à</span>
               <SelectedDataCalendar
-                value={(data) => {
+                onChange={(data) => {
                   setSelectedLastDate(moment(data).startOf('day'));
                 }}
+                value={selectedLastDate}
                 range={{
                   min: moment(selectedFirstDate).startOf('day'),
                   max: maxDate.isAfter(todayEndOfDay) ? todayEndOfDay : maxDate
