@@ -71,7 +71,7 @@ export function Header() {
         </S.ProfileInfoCompany>
       </S.ProfileCompany>
       <S.ProfileUser>
-        {user.name ? <span>{user.name}</span> : <LineSkaleton width="30rem" color="#b78e6a" />}
+        {user.name ? <span>{user.name}</span> : <LineSkaleton width="30rem" />}
         <div>
           <div>
             <Image
