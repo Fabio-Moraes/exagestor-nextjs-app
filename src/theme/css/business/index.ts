@@ -1,1 +1,1 @@
-export * from './wmax';
+export * from './exa-telecom';
