@@ -151,7 +151,7 @@ export const Form = () => {
                 marginLeft: -5
               }}
             />
-            <strong>WMAX</strong>
+            <strong>EXATELECOM</strong>
           </div>
 
           <div>

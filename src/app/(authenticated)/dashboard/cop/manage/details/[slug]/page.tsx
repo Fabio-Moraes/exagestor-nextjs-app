@@ -232,7 +232,7 @@ export default function Details({ params }: SlugType) {
                     style={{ width: '3.4rem', height: 'auto' }}
                   />
                   <S.ProfileInfoCompany>
-                    <h1>WMAX</h1>
+                    <h1>EXATELECOM</h1>
                     <span>Soluções em Telecom</span>
                   </S.ProfileInfoCompany>
                 </S.ProfileCompany>
