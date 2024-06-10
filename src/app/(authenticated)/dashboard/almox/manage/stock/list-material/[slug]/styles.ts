@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
+    background-image: linear-gradient(to left, var(--color-palette-primary-200), #dce6dc);
     color: #000;
   }
 `;
@@ -64,8 +64,9 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid #27a567;
-    background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
+    border: 0.2rem solid var(--color-palette-vibrant-100);
+    background-color: ${({ $checked }) =>
+      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
     border-radius: 1rem;
   }
   > span {
@@ -78,7 +79,7 @@ export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 0.2rem solid #000;
-  background-color: #8bc9a8;
+  background-color: var(--color-palette-primary-200);
   padding: 1rem 0;
   width: 100%;
 
@@ -149,7 +150,7 @@ export const Table = styled.div`
 
 export const Button = styled.div`
   width: 30rem;
-  background-color: #27a567;
+  background-color: var(--color-palette-vibrant-100);
   padding: 1rem;
   margin: 2rem 2rem;
   border: 0.1rem solid #000000;
@@ -172,7 +173,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

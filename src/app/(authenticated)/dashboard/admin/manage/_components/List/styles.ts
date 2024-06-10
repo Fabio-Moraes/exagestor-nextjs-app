@@ -9,7 +9,7 @@ export const ListContainer = styled.div`
   /* position: relative; */
 
   > button {
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     align-items: center;
     flex-shrink: 0;
     border-radius: 0.5rem;
@@ -28,7 +28,7 @@ export const ListContainer = styled.div`
     height: 4.5rem;
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px #8bc9a8;
+    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
 
     &:active {
       transform: translateY(2px);
@@ -67,7 +67,7 @@ export const SearchWrapper = styled.div`
   outline: 0.1rem solid #ccc;
 
   &:focus-within {
-    outline: 0.2rem solid #27a567;
+    outline: 0.2rem solid var(--color-palette-vibrant-100);
   }
 
   @media (min-width: 550px) {
@@ -95,12 +95,16 @@ export const Button = styled.button`
   padding: 1rem;
   border-radius: 0.5rem;
   width: 16rem;
-  background-color: #8bc9a8;
+  background-color: var(--color-palette-primary-200);
   cursor: pointer;
 `;
 
 export const ItemsSkeleton = styled.div`
-  background-image: linear-gradient(45deg, #3f7971 65%, #8bc9a8);
+  background-image: linear-gradient(
+    45deg,
+    var(--color-palette-base-100) 65%,
+    var(--color-palette-primary-200)
+  );
   display: flex;
   flex-direction: column;
   justify-content: start;

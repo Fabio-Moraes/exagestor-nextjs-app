@@ -55,7 +55,7 @@ const Container = styled.div`
 
     > button {
       width: 20rem;
-      background-color: #27a567;
+      background-color: var(--color-palette-vibrant-100);
       flex-shrink: 0;
       color: #fff;
       padding: 0.7rem;
@@ -65,7 +65,7 @@ const Container = styled.div`
       user-select: none;
 
       transition: all 0.05s ease;
-      box-shadow: 0px 3px 0px #8bc9a8;
+      box-shadow: 0px 3px 0px var(--color-palette-primary-200);
 
       &:active {
         transform: translateY(2px);

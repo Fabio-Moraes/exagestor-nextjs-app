@@ -50,7 +50,7 @@ const rotateAnimation = keyframes`
 `;
 
 export const WrapperSpinner = styled.div`
-  background-color: #3f7971;
+  background-color: var(--color-palette-base-100);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   border-radius: 8px;
@@ -139,7 +139,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

@@ -80,10 +80,10 @@ const StatusOptions = {
 } as const;
 
 const statusColor = {
-  analysis: '#e9c80f',
-  active: '#5e9987',
-  paused: '#5e9987',
-  scheduled: '#868474'
+  analysis: '--color-palette-analysis',
+  active: '--color-palette-secondary-200',
+  paused: '--color-palette-secondary-200',
+  scheduled: '--color-palette-scheduled'
 } as const;
 
 export function CardHeader(props: { service: RunningService; passedScheduledDate: boolean }) {

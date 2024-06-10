@@ -12,7 +12,13 @@ export const Container = styled.footer`
 `;
 
 export const Wrapper = styled.div`
-  background-image: linear-gradient(90deg, #68b790, #3f7971 20%, #3f7971 80%, #68b790);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-palette-primary-300),
+    var(--color-palette-base-100) 20%,
+    var(--color-palette-base-100) 80%,
+    var(--color-palette-primary-300)
+  );
   width: min(60.1rem, 100%);
   padding-top: 1rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);

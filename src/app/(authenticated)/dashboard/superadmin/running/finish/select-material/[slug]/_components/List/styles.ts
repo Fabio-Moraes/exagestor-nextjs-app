@@ -7,14 +7,14 @@ export const ListContainer = styled.div`
   background-color: #dce6dc;
   border-radius: 0.7rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  border: 0.2rem solid #3f795e;
+  border: 0.2rem solid var(--color-palette-secondary-300);
 
   overflow: hidden;
 
   > div:first-child {
     display: flex;
     padding: 1rem;
-    background-color: #3f795e;
+    background-color: var(--color-palette-secondary-300);
     flex-direction: column;
     align-items: center;
     margin-bottom: 0.9rem;
@@ -50,7 +50,7 @@ export const ListContainer = styled.div`
   > div:last-child {
     display: flex;
     padding: 1rem;
-    background-color: #3f795e;
+    background-color: var(--color-palette-secondary-300);
     margin-top: 0.9rem;
 
     justify-content: space-between;
@@ -97,7 +97,7 @@ export const Button = styled.button`
   border-radius: 0.5rem;
   width: 18rem;
   background-color: #fff;
-  border: 0.2rem solid #27a567;
+  border: 0.2rem solid var(--color-palette-vibrant-100);
   cursor: pointer;
 `;
 
@@ -107,7 +107,7 @@ export const ItemsSkeleton = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 0.2rem solid #27a567;
+  border: 0.2rem solid var(--color-palette-vibrant-100);
   margin: 0.5rem;
   border-radius: 0.5rem;
 

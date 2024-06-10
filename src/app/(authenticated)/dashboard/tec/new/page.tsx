@@ -1,7 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+
+import 'moment/locale/pt-br';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
@@ -9,48 +11,43 @@ import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import moment, { Moment } from 'moment';
-import 'moment/locale/pt-br';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 
 import * as S from './styles';
 
-const cities = ['Curitiba', 'Paranaguá', 'Matinhos', 'Ponta Grossa'];
+const cities: string[] = ['Curitiba', 'Paranaguá', 'Matinhos', 'Ponta Grossa'];
 
 export default function NewService() {
-  const [selectedCity, setSelectedCity] = useState('');
-  const [classificationL, setClassificationL] = useState(0);
-  const [classificationF, setClassificationF] = useState(0);
-  const [address, setAddress] = useState('');
-  const [nomenclature, setNomenclature] = useState('');
-  const [name, setName] = useState('');
-
-  const [modalValue, setModalValue] = useState('');
-  const [iconSvgModal, setIconSvgModal] = useState(alertSvg);
-  const [isPopupValue, setIsPopupValue] = useState('');
-
-  const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState<string | Moment>(moment());
-  const [selectedTime, setSelectedTime] = useState<string | Moment>(moment());
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [classificationL, setClassificationL] = useState<number>(0);
+  const [classificationF, setClassificationF] = useState<number>(0);
+  const [address, setAddress] = useState<string>('');
+  const [nomenclature, setNomenclature] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [modalValue, setModalValue] = useState<string>('');
+  const [iconSvgModal, setIconSvgModal] = useState<string>(alertSvg);
+  const [isPopupValue, setIsPopupValue] = useState<string>('');
+  const [successfullyCompleted, setSuccessfullyCompleted] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Moment>(moment());
+  const [selectedTime, setSelectedTime] = useState<Moment>(moment());
 
   const router = useRouter();
 
-  const handleClickOutside = () => {
-    if (modalValue !== '') {
-      !isPopupValue && setModalValue('');
-    }
-  };
-
   useEffect(() => {
+    const handleClickOutside = () => {
+      if (modalValue !== '') {
+        !isPopupValue && setModalValue('');
+      }
+    };
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  });
+  }, [modalValue, isPopupValue]);
 
-  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(e.target.value);
     setModalValue('');
   };
@@ -65,50 +62,43 @@ export default function NewService() {
     setModalValue('');
   };
 
-  const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
-  const handleServiceOriginAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleServiceOriginAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
 
-  const handleBoxOrCableNomenclatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBoxOrCableNomenclatureChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNomenclature(e.target.value);
   };
 
-  function generateConnectingMessage(count: number): string {
+  const generateConnectingMessage = (count: number): string => {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
-  }
-
-  const handleDateChange = (date: string | Moment) => {
-    setSelectedDate(date);
   };
 
-  const handleTimeChange = (date: string | Moment) => {
-    setSelectedTime(date);
+  const handleDateChange = (date: Moment | string) => {
+    setSelectedDate(moment(date));
   };
 
-  const isValidDate = (current: Date | string | Moment) => {
+  const handleTimeChange = (time: Moment | string) => {
+    setSelectedTime(moment(time));
+  };
+
+  const isValidDate = (current: Moment): boolean => {
     return moment(current).isSameOrAfter(moment(), 'day');
   };
 
-  const dateMoment = moment(selectedDate);
-  const timeMoment = moment(selectedTime);
-
-  const startServiceAt = new Date(
-    `${dateMoment.format('YYYY-MM-DD')} ${timeMoment.format('HH:mm:ss')}`
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    function validateName(str: string) {
+    function validateName(str: string): boolean {
       return /^[a-zA-ZÀ-ÿ ]+$/.test(str);
     }
 
     if (!successfullyCompleted) {
-      setIconSvgModal(iconSvgModal);
+      setIconSvgModal(alertSvg);
 
       if (name.trim() === '') {
         setModalValue('Informe o nome do solicitante.');
@@ -140,14 +130,20 @@ export default function NewService() {
         return;
       }
 
-      const maxRetries = 4;
+      const maxRetries: number = 4;
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
           setIsPopupValue(generateConnectingMessage(retryCount));
 
-          const getClassification = ({ classificationL = 0, classificationF = 0 }) => {
-            const classificationArray = [];
+          const getClassification = ({
+            classificationL = 0,
+            classificationF = 0
+          }: {
+            classificationL: number;
+            classificationF: number;
+          }): string => {
+            const classificationArray: string[] = [];
 
             if (classificationL === 1) {
               classificationArray.push('L');
@@ -157,23 +153,27 @@ export default function NewService() {
               classificationArray.push('F');
             }
 
-            const classification = classificationArray.join('');
+            const classification: string = classificationArray.join('');
             return classification;
           };
 
-          const classification = getClassification({
+          const classification: string = getClassification({
             classificationL,
             classificationF
           });
+
+          const startServiceAt: Date = new Date(
+            `${selectedDate.format('YYYY-MM-DD')} ${selectedTime.format('HH:mm:ss')}`
+          );
 
           const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/tec/new',
             clientName: name,
             city: selectedCity,
-            classification: classification,
-            nomenclature: nomenclature,
-            address: address,
-            startServiceAt: startServiceAt
+            classification,
+            nomenclature,
+            address,
+            startServiceAt
           });
 
           const { success } = response.data;
@@ -185,27 +185,15 @@ export default function NewService() {
             setModalValue('Novo serviço iniciado com êxito.');
 
             await TimedWait(3000);
-            router.push('/dashboard/tec/running');
+            router.push('/dashboard/tec/running', { scroll: false });
             break;
-          } else {
-            console.error('Erro:', response.data.error);
           }
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            const customError = error as CustomError;
-            if (customError.response) {
-              const statusCode = customError.response.status;
-              if (statusCode === 409) {
-                break;
-              }
-
-              if (retryCount === maxRetries) {
-                setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
-                setIsPopupValue('');
-              } else {
-                await TimedWait(3000);
-              }
-            }
+        } catch (error) {
+          if (retryCount === maxRetries - 1) {
+            setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
+            setIsPopupValue('');
+          } else {
+            await TimedWait(3000);
           }
         }
       }

@@ -7,7 +7,7 @@ export const ListContainer = styled.div`
   background-color: #dce6dc;
   border-radius: 0.7rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  border: 0.2rem solid #3f795e;
+  border: 0.2rem solid var(--color-palette-secondary-300);
 
   justify-content: center;
   align-items: center;
@@ -18,7 +18,7 @@ export const ListContainer = styled.div`
     background-color: #fff;
     border-radius: 0.5rem;
 
-    border: 0.2rem solid #3f795e;
+    border: 0.2rem solid var(--color-palette-secondary-300);
 
     justify-content: space-between;
     align-items: center;
@@ -31,7 +31,7 @@ export const ListContainer = styled.div`
   > div:last-child {
     display: flex;
     padding: 1rem;
-    background-color: #3f795e;
+    background-color: var(--color-palette-secondary-300);
 
     justify-content: space-between;
     align-items: center;
@@ -50,7 +50,7 @@ export const Button = styled.button`
   border-radius: 0.5rem;
   width: 18rem;
   background-color: #fff;
-  border: 0.2rem solid #27a567;
+  border: 0.2rem solid var(--color-palette-vibrant-100);
   cursor: pointer;
 `;
 
@@ -108,7 +108,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

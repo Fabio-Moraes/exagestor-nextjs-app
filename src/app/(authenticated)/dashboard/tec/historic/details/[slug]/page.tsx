@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -14,9 +15,20 @@ import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 
-import iconExa from './_assets/svg/exa_logo.svg';
+import iconExa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
+
+const maxRetries = 4;
+type StatusKey = 'concluded' | 'analysis' | 'active' | 'paused' | 'canceled';
+
+const status: Record<StatusKey, string> = {
+  concluded: '✅ Finalizado',
+  analysis: '🔍 Em análise',
+  active: '🚧 Em andamento',
+  paused: '⏸️ Pausado',
+  canceled: '❌ Cancelado'
+};
 
 interface ServiceData {
   currentOperation: {
@@ -37,9 +49,6 @@ interface ServiceData {
     list_service: string;
     observation: string;
     protocol: string;
-    name_tec: string;
-    name_creator_leader: string;
-    role_creator_leader: string;
   }[];
   serviceList: {
     id: number;
@@ -63,7 +72,7 @@ interface SlugType {
   };
 }
 
-function formatDate(date: string) {
+const formatDate = (date: string) => {
   const now = new Date(date);
   const year = now.getFullYear();
   const month = (now.getMonth() + 1).toString().padStart(2, '0');
@@ -73,22 +82,32 @@ function formatDate(date: string) {
   const seconds = now.getSeconds().toString().padStart(2, '0');
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+};
+
+const renderTextWithLineBreaks = (text: string) => {
+  return text
+    .split('\n')
+    .map((line, index) => <Fragment key={index}>{line ? <p>{line}</p> : <div />}</Fragment>);
+};
+
+function isStatusKey(key: string): key is StatusKey {
+  return key in status;
 }
 
 export default function Details({ params }: SlugType) {
-  const [service, setService] = useState({} as ServiceData);
+  const [service, setService] = useState<ServiceData | null>(null);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
   const [processPrint, setProcessPrint] = useState(false);
 
-  const maxRetries = 4;
+  const router = useRouter();
   const decryptSlug = decryptObject(params.slug);
+  const elementRef = useRef<HTMLDivElement>(null);
 
-  async function fetchServices() {
+  const fetchServices = async () => {
     setConnectionError(false);
-
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         const paramDataStock = {
@@ -99,7 +118,7 @@ export default function Details({ params }: SlugType) {
         const responseDataStock = await internalApi.post('/api/bridge', paramDataStock);
 
         const response = await internalApi.post('/api/bridge', {
-          baseURL: '/api/tec/manage/historic/details',
+          baseURL: '/api/tec/historic/details',
           employeeId: String(decryptSlug.employeeId),
           protocol: String(decryptSlug.protocol),
           updateCount: String(decryptSlug.updateCount)
@@ -108,89 +127,61 @@ export default function Details({ params }: SlugType) {
         setMaterials(responseDataStock.data);
         setService(response.data);
         setIsPopupValue(null);
-
         break;
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          const customError = error as CustomError;
-          if (customError.response) {
-            const statusCode = customError.response.status;
-            if (statusCode === 409) {
-              break;
-            }
-
-            if (retryCount === maxRetries) {
-              setConnectionError(true);
-              setIsPopupValue(null);
-            } else {
-              await TimedWait(3000);
-            }
-          }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        if (retryCount === maxRetries - 1) {
+          setConnectionError(true);
+          setIsPopupValue(null);
+        } else {
+          await TimedWait(3000);
         }
       }
     }
-    setIsPopupValue(null);
-  }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     fetchServices();
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    const handlePopState = () => {
+      window.history.pushState(null, '', window.location.href);
+      router.push('/dashboard/tec/historic');
+    };
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = handlePopState;
     return () => {
-      clearTimeout(timer);
+      window.onpopstate = null;
     };
   }, []);
 
-  const status = {
-    concluded: '✅ Finalizado',
-    analysis: '🔍 Em análise',
-    active: '🚧 Em andamento',
-    paused: '⏸️ Pausado',
-    canceled: '❌ Cancelado'
-  } as { [key: string]: string };
-
-  const renderTextWithLineBreaks = (text: string) => {
-    const lines = text.split('\n');
-
-    return lines.map((line: string, index: number) => (
-      <Fragment key={String(index)}>
-        {line ? <p key={String(index)}>{line}</p> : <div key={`extra-div-${index}`} />}
-      </Fragment>
-    ));
-  };
-
   const modificationFilter = () => {
+    const currentOperation = service?.currentOperation[0];
     if (
-      service?.currentOperation[0]?.modification_at &&
-      service?.currentOperation[0]?.update_count > 0 &&
-      service?.currentOperation[0]?.status !== 'concluded'
+      currentOperation?.modification_at &&
+      currentOperation.update_count > 0 &&
+      currentOperation.status !== 'concluded'
     ) {
-      if (service?.currentOperation[0]?.status === 'paused') {
-        return <p>Pausado em: {formatDate(service?.currentOperation[0]?.modification_at)}</p>;
+      if (currentOperation.status === 'paused') {
+        return <p>Pausado em: {formatDate(currentOperation.modification_at)}</p>;
       }
-
-      if (service?.currentOperation[0]?.status === 'active') {
-        return <p>Retomado em: {formatDate(service?.currentOperation[0]?.modification_at)}</p>;
+      if (currentOperation.status === 'active') {
+        return <p>Retomado em: {formatDate(currentOperation.modification_at)}</p>;
       }
     }
   };
 
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  const objListMaterial = JSON.parse(service?.currentOperation?.[0]?.list_material || '{}');
-  const objListService = JSON.parse(service?.currentOperation?.[0]?.list_service || '{}');
+  const objListMaterial = JSON.parse(service?.currentOperation?.[0].list_material || '{}');
+  const objListService = JSON.parse(service?.currentOperation?.[0].list_service || '{}');
 
   const [handleToPrinter] = useHandlePrint({
-    elementRef: elementRef,
+    elementRef,
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });
 
   const [handleToSavePdf] = useHandlePrint({
     download: true,
-    elementRef: elementRef,
+    elementRef,
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });
@@ -232,35 +223,30 @@ export default function Details({ params }: SlugType) {
                     style={{ width: '3.4rem', height: 'auto' }}
                   />
                   <S.ProfileInfoCompany>
-                    <h1>EXA TELECOM</h1>
-                    <span>Telecomunicações</span>
+                    <h1>WMAX</h1>
+                    <span>Soluções em Telecom</span>
                   </S.ProfileInfoCompany>
                 </S.ProfileCompany>
-                <p>Endereço: {service?.currentOperation?.[0]?.address}</p>
-                <p>Cidade: {service?.currentOperation?.[0]?.city}</p>
-                <p>Classificação: {service?.currentOperation?.[0]?.classification}</p>
-                <p>Solicitante: {service?.currentOperation?.[0]?.client_name}</p>
-                <p>
-                  iniciado por:
-                  {service?.currentOperation?.[0]?.name_creator_leader
-                    ? ` ${service?.currentOperation?.[0]?.name_creator_leader.concat(
-                        ` (${service?.currentOperation?.[0]?.role_creator_leader.toUpperCase()})`
-                      )}`
-                    : ` ${service?.currentOperation?.[0]?.name_tec.concat(' (TEC)')}`}
-                </p>
-                <p>Emissão: {formatDate(service?.currentOperation?.[0]?.created_at)}</p>
-                <p>Para: {formatDate(service?.currentOperation?.[0]?.start_service_at)}</p>
-                {service?.currentOperation?.[0]?.finished_at && (
-                  <p>
-                    Concluído em: {formatDate(service?.currentOperation?.[0]?.finished_at)}
-                  </p>
+                <p>Endereço: {service.currentOperation[0].address}</p>
+                <p>Cidade: {service.currentOperation[0].city}</p>
+                <p>Classificação: {service.currentOperation[0].classification}</p>
+                <p>Solicitante: {service.currentOperation[0].client_name}</p>
+                <p>Emissão: {formatDate(service.currentOperation[0].created_at)}</p>
+                <p>Para: {formatDate(service.currentOperation[0].start_service_at)}</p>
+                {service.currentOperation[0].finished_at && (
+                  <p>Concluído em: {formatDate(service.currentOperation[0].finished_at)}</p>
                 )}
-                {service?.currentOperation?.[0]?.modification_at && modificationFilter()}
-                <p>Nomenclatura: {service?.currentOperation?.[0]?.nomenclature}</p>
-                <p>Protocolo: {service?.currentOperation?.[0]?.protocol}</p>
-                <p>Serviço: {status[service?.currentOperation?.[0]?.status]}</p>
-                <p>Contador de Atualização: {service?.currentOperation?.[0]?.update_count}</p>
-                {service?.currentOperation?.[0]?.list_material && (
+                {modificationFilter()}
+                <p>Nomenclatura: {service.currentOperation[0].nomenclature}</p>
+                <p>Protocolo: {service.currentOperation[0].protocol}</p>
+                <p>
+                  Serviço:{' '}
+                  {isStatusKey(service.currentOperation[0].status)
+                    ? status[service.currentOperation[0].status]
+                    : 'Status desconhecido'}
+                </p>
+                <p>Contador de Atualização: {service.currentOperation[0].update_count}</p>
+                {service.currentOperation[0].list_material && (
                   <S.Table>
                     <div>
                       <div>
@@ -278,7 +264,7 @@ export default function Details({ params }: SlugType) {
                     </div>
                     {objListMaterial &&
                       Object.keys(objListMaterial)
-                        .map((key: string) => (
+                        .map((key) => (
                           <div key={key}>
                             <div>
                               <span>
@@ -310,7 +296,7 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {service?.currentOperation?.[0]?.list_service && (
+                {service.currentOperation[0].list_service && (
                   <S.Table>
                     <div>
                       <div>
@@ -322,12 +308,12 @@ export default function Details({ params }: SlugType) {
                     </div>
                     {objListService &&
                       Object.keys(objListService)
-                        .map((key: string) => (
+                        .map((key) => (
                           <div key={key}>
                             <div>
                               <span>
                                 {
-                                  service?.serviceList.find((item) => String(item.id) === key)
+                                  service.serviceList.find((item) => String(item.id) === key)
                                     ?.description
                                 }
                               </span>
@@ -341,12 +327,10 @@ export default function Details({ params }: SlugType) {
                   </S.Table>
                 )}
                 <p />
-                {service?.currentOperation?.[0]?.observation && (
+                {service.currentOperation[0].observation && (
                   <S.Observation>
                     <p>Observação</p>
-                    {renderTextWithLineBreaks(
-                      service?.currentOperation?.[0]?.observation ?? ''
-                    )}
+                    {renderTextWithLineBreaks(service.currentOperation[0].observation)}
                   </S.Observation>
                 )}
               </>
@@ -354,12 +338,7 @@ export default function Details({ params }: SlugType) {
           </S.Info>
           {!isLoading &&
             service &&
-            (!processPrint ? (
-              <S.WrapperButton>
-                <S.Button onClick={handleToPrinter}>Imprimir</S.Button>
-                <S.Button onClick={handleToSavePdf}>Salvar como PDF</S.Button>
-              </S.WrapperButton>
-            ) : (
+            (processPrint ? (
               <S.WrapperSpinner>
                 <div>
                   <Player
@@ -372,6 +351,11 @@ export default function Details({ params }: SlugType) {
                 </div>
                 <p>Aguarde um instante enquanto geramos o relatório.</p>
               </S.WrapperSpinner>
+            ) : (
+              <S.WrapperButton>
+                <S.Button onClick={handleToPrinter}>Imprimir</S.Button>
+                <S.Button onClick={handleToSavePdf}>Salvar como PDF</S.Button>
+              </S.WrapperButton>
             ))}
         </S.Wrapper>
       )}

@@ -112,8 +112,9 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid #27a567;
-    background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
+    border: 0.2rem solid var(--color-palette-vibrant-100);
+    background-color: ${({ $checked }) =>
+      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
     border-radius: 1rem;
   }
 
@@ -179,7 +180,7 @@ export const TogglePasswordVisibilityButton = styled.button`
 
 export const Button = styled.button`
   width: 80%;
-  background-color: #27a567;
+  background-color: var(--color-palette-vibrant-100);
   padding: 1rem;
   margin: 2rem 2rem;
   border-radius: 0.4rem;
@@ -206,7 +207,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

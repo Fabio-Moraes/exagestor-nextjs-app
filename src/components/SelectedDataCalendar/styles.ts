@@ -27,7 +27,7 @@ export const StyledDateTime = styled(DateTime)<{ $active?: boolean }>`
     font-family: 'OpenSans-Regular';
 
     &:focus {
-      outline: 0.2rem solid #27a567;
+      outline: 0.2rem solid var(--color-palette-vibrant-100);
     }
 
     &::placeholder {

@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-image: linear-gradient(to left, #8bc9a8, #dce6dc);
+    background-image: linear-gradient(to left, var(--color-palette-primary-200), #dce6dc);
     color: #000;
   }
 `;
@@ -37,7 +37,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

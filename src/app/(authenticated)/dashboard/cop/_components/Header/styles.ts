@@ -12,13 +12,9 @@ export const Container = styled.div`
 
   @media (max-width: 550px) {
     background-image: linear-gradient(
-      49deg,
-      #92d3b3 10%,
-      #b1d6c3 15%,
-      #ffffff 30%,
-      #ffffff 50%,
-      #b1d6c3 70%,
-      #92d3b3
+      50deg,
+      #ffffff 59.7%,
+      var(--color-palette-secondary-100) 60%
     );
   }
 
@@ -63,7 +59,6 @@ export const ProfileUser = styled.div`
 
     > button {
       border: 0.2rem solid #d4a13b;
-      background: #27a567;
       box-shadow: -1.2rem 0 0 0 rgba(0, 0, 0, 0.5);
       background-color: #fff;
       border-radius: 0.5rem;

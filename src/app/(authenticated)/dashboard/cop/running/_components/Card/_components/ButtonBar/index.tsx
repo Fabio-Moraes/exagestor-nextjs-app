@@ -9,13 +9,7 @@ import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import { useWebsocketConnected } from 'store/websocketConnected';
-
-import checkSvg from './_assets/svg/check.svg';
-import closeSvg from './_assets/svg/close.svg';
-import docSvg from './_assets/svg/doc.svg';
-import pauseSvg from './_assets/svg/pause.svg';
-import playSvg from './_assets/svg/play.svg';
-import refreshSvg from './_assets/svg/refresh.svg';
+import { business } from 'theme/svg/business';
 
 import * as S from './styles';
 
@@ -41,6 +35,13 @@ interface propsImageType {
   width: number;
   height: number;
 }
+
+const checkSvg = business.running.check;
+const closeSvg = business.running.close;
+const docSvg = business.running.doc;
+const pauseSvg = business.running.pause;
+const playSvg = business.running.play;
+const refreshSvg = business.running.refresh;
 
 export function ButtonBar(props: { service: RunningService; passedScheduledDate: boolean }) {
   const { service, passedScheduledDate } = props;
@@ -194,7 +195,7 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
     status === 'analysis' ? onClickButtonRefresh : onClickButtonPlayPause;
 
   return (
-    <S.Container $animation={startAnimation} $color={'#3f7971'}>
+    <S.Container $animation={startAnimation}>
       <S.Wrapper>
         <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
           <Image {...propsImage} src={checkSvg} alt="check" />

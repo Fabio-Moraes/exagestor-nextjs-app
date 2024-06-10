@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: #5e9987;
+    background-color: var(--color-palette-secondary-200);
     color: #fff;
     margin-bottom: 3rem;
   }
@@ -34,7 +34,7 @@ const rotateAnimation = keyframes`
 `;
 
 export const WrapperSpinner = styled.div`
-  background-color: #3f7971;
+  background-color: var(--color-palette-base-100);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   border-radius: 8px;
@@ -115,7 +115,7 @@ export const Table = styled.div`
 
     > div:first-child {
       width: 100%;
-      background-color: #8bc9a8;
+      background-color: var(--color-palette-primary-200);
       border-left: 0;
       align-items: center;
       text-align: center;
@@ -131,7 +131,7 @@ export const Table = styled.div`
       min-width: 6.5rem;
       padding: 0 1rem;
       border-left: 0.2rem solid #000;
-      background-color: #8bc9a8;
+      background-color: var(--color-palette-primary-200);
       text-align: center;
 
       > span {
@@ -188,7 +188,7 @@ export const Observation = styled.div`
     font-family: 'OpenSans-SemiBold';
     padding: 1rem;
     border-bottom: 0.2rem solid #000;
-    background-color: #8bc9a8;
+    background-color: var(--color-palette-primary-200);
     margin-bottom: 1rem;
     text-align: center;
     font-size: 1.5rem;
@@ -247,7 +247,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;
@@ -258,13 +258,17 @@ export const ErrorContainer = styled.div`
 `;
 
 export const ProfileCompany = styled.div`
-  border: 0.2rem solid #3f795e;
+  border: 0.2rem solid var(--color-palette-secondary-300);
   display: flex;
   align-items: center;
   text-align: left;
   display: flex;
   height: 100%;
-  background-image: radial-gradient(35rem at center, #ffffff 15%, #27a567);
+  background-image: radial-gradient(
+    35rem at center,
+    #ffffff 15%,
+    var(--color-palette-vibrant-100)
+  );
   padding: 0.7rem;
   padding-left: 1.1rem;
   border-radius: 0.5rem;

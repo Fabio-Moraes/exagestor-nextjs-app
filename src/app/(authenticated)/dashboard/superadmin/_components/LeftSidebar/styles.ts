@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0.5rem 0.7rem;
-  background-color: #8bc9a8;
+  background-color: var(--color-palette-primary-200);
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
   border-radius: 0.7rem;
   position: sticky;
@@ -63,7 +63,7 @@ export const WrapperLink = styled.div<{ $path?: boolean }>`
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
-      background-color: #27a567;
+      background-color: var(--color-palette-base-100);
       > span {
         color: #fff;
       }
@@ -72,8 +72,8 @@ export const WrapperLink = styled.div<{ $path?: boolean }>`
     const disabledButtonCSS = css`
       background-color: #fff;
       &:hover {
-        background-image: radial-gradient(circle, #27a567, #dce6dc);
-        box-shadow: 0 0.5rem 1rem 0 rgba(39, 165, 103, 0.5);
+        background-image: radial-gradient(circle, var(--color-palette-base-100), #dce6dc);
+        box-shadow: 0 0.5rem 1rem 0 var(--color-palette-base-100);
       }
     `;
 

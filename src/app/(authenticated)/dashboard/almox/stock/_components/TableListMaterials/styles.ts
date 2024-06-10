@@ -31,7 +31,11 @@ export const TableRow = styled.div<{ $isSelected: boolean }>`
 `;
 
 export const Dialog = styled.dialog`
-  background-image: linear-gradient(45deg, #3f7971 65%, #8bc9a8);
+  background-image: linear-gradient(
+    45deg,
+    var(--color-palette-base-100) 65%,
+    var(--color-palette-primary-200)
+  );
   border-radius: 0.7rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
   top: 50%;
@@ -59,7 +63,7 @@ export const Dialog = styled.dialog`
     height: 4.5rem;
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px #8bc9a8;
+    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
 
     &:active {
       transform: translateY(2px);
@@ -93,7 +97,7 @@ export const WrapperLink = styled.div`
   height: 4.5rem;
 
   transition: all 0.05s ease;
-  box-shadow: 0px 3px 0px #8bc9a8;
+  box-shadow: 0px 3px 0px var(--color-palette-primary-200);
 
   &:active {
     transform: translateY(2px);

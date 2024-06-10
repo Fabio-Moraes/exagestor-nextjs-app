@@ -4,12 +4,17 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   z-index: 1;
-  border: 0 solid #3f795e;
+  border: 0 solid var(--color-palette-secondary-300);
   border-width: 0.2rem 0 0.2rem 0;
   display: flex;
   width: 100%;
   padding: 0.3rem min(1.5rem, max(10vw, 1rem));
-  background-image: radial-gradient(35rem at center, #ffffff 20%, #27a567);
+  background-image: radial-gradient(
+    35rem at center,
+    #ffffff 20%,
+    var(--color-palette-vibrant-100)
+  );
+  background-color: #f2f2f2;
   justify-content: space-between;
   white-space: nowrap;
 
@@ -41,7 +46,7 @@ export const WrapperLink = styled.div<{ $path?: boolean }>`
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
-      background-color: #27a567;
+      background-color: var(--color-palette-base-100);
       > span {
         color: #fff;
       }

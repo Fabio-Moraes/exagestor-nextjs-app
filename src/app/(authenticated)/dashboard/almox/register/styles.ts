@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: #5e9987;
+    background-color: var(--color-palette-secondary-200);
     color: #fff;
     margin-bottom: 3rem;
   }
@@ -88,8 +88,9 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid #27a567;
-    background-color: ${({ $checked }) => ($checked ? '#27a567' : '#fff')};
+    border: 0.2rem solid var(--color-palette-vibrant-100);
+    background-color: ${({ $checked }) =>
+      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
     border-radius: 1rem;
   }
 
@@ -136,7 +137,7 @@ export const Observation = styled.textarea`
 
 export const Button = styled.button`
   width: 15rem;
-  background-color: #27a567;
+  background-color: var(--color-palette-vibrant-100);
   padding: 1rem;
   margin: 0 2rem;
   border: 0.1rem solid #000000;

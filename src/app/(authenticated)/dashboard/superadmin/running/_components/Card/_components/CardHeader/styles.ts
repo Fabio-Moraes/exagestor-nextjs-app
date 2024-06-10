@@ -13,10 +13,19 @@ export const Container = styled.div<{ $color: string }>`
   ${({ $color }) => css`
     background: linear-gradient(
       45deg,
-      ${$color} 20%,
-      ${lighten(0.2, $color)} 50%,
-      ${lighten(0.2, $color)},
-      ${$color}
+      var(${$color}) 20%,
+      ${() => {
+          const computedStyle = window.getComputedStyle(document.documentElement);
+          const textBackground = computedStyle.getPropertyValue($color);
+          return lighten(0.2, textBackground);
+        }}
+        50%,
+      ${() => {
+        const computedStyle = window.getComputedStyle(document.documentElement);
+        const textBackground = computedStyle.getPropertyValue($color);
+        return lighten(0.2, textBackground);
+      }},
+      var(${$color})
     );
   `}
 

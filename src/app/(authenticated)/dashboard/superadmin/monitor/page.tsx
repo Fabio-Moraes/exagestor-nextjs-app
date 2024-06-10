@@ -12,10 +12,11 @@ import { internalApi } from 'services/apiAxios';
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
+import { business } from 'theme/svg/business';
 
-import arrowLeft from './_assets/svg/arrowLeft.svg';
-import arrowRight from './_assets/svg/arrowRight.svg';
-import refresh from './_assets/svg/refresh.svg';
+const arrowLeft = business.graphic.arrow_left;
+const arrowRight = business.graphic.arrow_right;
+const refresh = business.graphic.refresh;
 
 import * as S from './styles';
 

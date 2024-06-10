@@ -5,8 +5,10 @@ import { usePathname } from 'next/navigation';
 import Image from 'components/Vercel/Image';
 import Link from 'components/Vercel/Link';
 
-import execution from './_assets/svg/execution.svg';
-import manage from './_assets/svg/manage.svg';
+import { business } from 'theme/svg/business';
+
+const execution = business.menu.rocket;
+const manage = business.menu.bookPen;
 
 import * as S from './styles';
 

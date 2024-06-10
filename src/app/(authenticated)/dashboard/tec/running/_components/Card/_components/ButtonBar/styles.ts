@@ -14,16 +14,21 @@ const animation = keyframes`
   }
 `;
 
-export const Container = styled.div<{ $animation: boolean; $color: string }>`
-  background-color: ${({ $color }) => $color};
-  ${({ $animation, $color }) =>
+export const Container = styled.div<{ $animation: boolean }>`
+  background-color: var(--color-palette-base-100);
+  ${({ $animation }) =>
     $animation &&
     css`
       background: linear-gradient(
         90deg,
-        ${$color} 0%,
-        ${lighten(0.2, $color)} 50%,
-        ${$color} 100%
+        var(--color-palette-base-100) 0%,
+        ${() => {
+            const computedStyle = window.getComputedStyle(document.documentElement);
+            const textBackground = computedStyle.getPropertyValue('--color-palette-base-100');
+            return lighten(0.2, textBackground);
+          }}
+          50%,
+        var(--color-palette-base-100) 100%
       );
 
       > div {

@@ -17,7 +17,11 @@ export const Container = styled.span`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-image: linear-gradient(to top, #3f795e, rgba(63, 121, 94, 0.9));
+  background-image: linear-gradient(
+    to top,
+    var(--color-palette-secondary-300),
+    rgba(63, 121, 94, 0.9)
+  );
   border: 0.2rem solid #000000;
   border-radius: 1rem;
   position: fixed;

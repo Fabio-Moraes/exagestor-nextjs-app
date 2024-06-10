@@ -17,7 +17,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: #5e9987;
+    background-color: var(--color-palette-secondary-200);
     color: #fff;
   }
 `;
@@ -28,7 +28,7 @@ export const ListContainer = styled.ul`
 
   > button {
     width: 20rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     flex-shrink: 0;
     color: #fff;
     padding: 0.7rem;
@@ -48,7 +48,7 @@ export const ListContainer = styled.ul`
     }
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px #8bc9a8;
+    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
 
     &:active {
       transform: translateY(2px);
@@ -81,7 +81,7 @@ export const ListItem = styled.li`
   font-size: 1.8rem;
   margin-bottom: 3rem;
   background-color: #fff;
-  border: 0.2rem solid #3f795e;
+  border: 0.2rem solid var(--color-palette-secondary-300);
   border-radius: 0.7rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.4);
 
@@ -104,7 +104,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: #27a567;
+    background-color: var(--color-palette-vibrant-100);
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

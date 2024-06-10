@@ -5,12 +5,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'components/Vercel/Image';
 import Link from 'components/Vercel/Link';
 
-import add from './_assets/svg/add.svg';
-import execution from './_assets/svg/execution.svg';
-import menu from './_assets/svg/menu.svg';
-import report from './_assets/svg/report.svg';
+import { business } from 'theme/svg/business';
 
 import * as S from './styles';
+
+const add = business.menu.addPerson;
+const execution = business.menu.rocket;
+const menu = business.menu.hamburgerMenu;
+const report = business.menu.bookPen;
 
 export function Toolbar() {
   const pathname = usePathname();

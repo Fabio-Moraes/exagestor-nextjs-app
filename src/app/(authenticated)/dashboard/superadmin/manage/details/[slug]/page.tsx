@@ -14,7 +14,7 @@ import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 
-import iconExa from './_assets/svg/exa_logo.svg';
+import iconExa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
 
@@ -232,8 +232,8 @@ export default function Details({ params }: SlugType) {
                     style={{ width: '3.4rem', height: 'auto' }}
                   />
                   <S.ProfileInfoCompany>
-                    <h1>EXA TELECOM</h1>
-                    <span>Telecomunicações</span>
+                    <h1>WMAX</h1>
+                    <span>Soluções em Telecom</span>
                   </S.ProfileInfoCompany>
                 </S.ProfileCompany>
                 <p>Endereço: {service?.currentOperation?.[0]?.address}</p>

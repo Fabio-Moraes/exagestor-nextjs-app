@@ -37,7 +37,6 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
         reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 3000
-        //query: { ...data }
       });
 
       newSocket.on('connect', async () => {

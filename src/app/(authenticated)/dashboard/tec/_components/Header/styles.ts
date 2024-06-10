@@ -12,13 +12,9 @@ export const Container = styled.div`
 
   @media (max-width: 550px) {
     background-image: linear-gradient(
-      49deg,
-      #92d3b3 10%,
-      #b1d6c3 15%,
-      #ffffff 30%,
-      #ffffff 50%,
-      #b1d6c3 70%,
-      #92d3b3
+      50deg,
+      #ffffff 59.7%,
+      var(--color-palette-secondary-100) 60%
     );
   }
 
@@ -32,7 +28,7 @@ export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(to top, #8bc9a8, #dce6dc);
+  background-image: linear-gradient(to top, var(--color-palette-primary-200), #dce6dc);
   border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
@@ -62,8 +58,7 @@ export const ProfileUser = styled.div`
     width: 100%;
 
     > button {
-      border: 0.2rem solid #27a567;
-      background: #27a567;
+      border: 0.2rem solid var(--color-palette-vibrant-100);
       box-shadow: -1.2rem 0 0 0 rgba(0, 0, 0, 0.5);
       background-color: #fff;
       border-radius: 0.5rem;
@@ -74,8 +69,12 @@ export const ProfileUser = styled.div`
 
       &:hover {
         @media (min-width: 550px) {
-          border: 0.2rem solid #27a567;
-          background-image: radial-gradient(6rem at center, #27a567, #dce6dc);
+          border: 0.2rem solid var(--color-palette-vibrant-100);
+          background-image: radial-gradient(
+            6rem at center,
+            var(--color-palette-vibrant-100),
+            #dce6dc
+          );
         }
       }
     }

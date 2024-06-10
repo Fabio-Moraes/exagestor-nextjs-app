@@ -4,7 +4,12 @@ import styled from 'styled-components';
 
 export const Container = styled.footer`
   z-index: 1000;
-  background-image: linear-gradient(to left, #3f795e, #3f7971, #3f795e);
+  background-image: linear-gradient(
+    to left,
+    var(--color-palette-secondary-300),
+    var(--color-palette-base-100),
+    var(--color-palette-secondary-300)
+  );
   width: min(60.1rem, 100%);
   padding-top: 1rem;
   position: relative;

@@ -8,9 +8,9 @@ import Image from 'components/Vercel/Image';
 import { internalApi } from 'services/apiAxios';
 
 import alert from './_assets/svg/alert.svg';
-import exa from './_assets/svg/exa_logo.svg';
 import eyeClosed from './_assets/svg/eye-closed-.svg';
 import eyeOpen from './_assets/svg/eye-open.svg';
+import exa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
 
@@ -151,7 +151,7 @@ export const Form = () => {
                 marginLeft: -5
               }}
             />
-            <strong>Exa Telecom</strong>
+            <strong>WMAX</strong>
           </div>
 
           <div>

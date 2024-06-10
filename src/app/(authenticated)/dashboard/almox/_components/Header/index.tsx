@@ -6,8 +6,8 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { internalApi } from 'services/apiAxios';
 
-import iconExa from './_assets/svg/exa_logo.svg';
 import iconUser from './_assets/svg/user.svg';
+import iconExa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
 
@@ -67,8 +67,8 @@ export function Header() {
           style={{ width: '5.4rem', height: 'auto' }}
         />
         <S.ProfileInfoCompany>
-          <h1>EXA TELECOM</h1>
-          <span>Telecomunicações</span>
+          <h1>WMAX</h1>
+          <span>Soluções em Telecom</span>
         </S.ProfileInfoCompany>
       </S.ProfileCompany>
       <S.ProfileUser>
