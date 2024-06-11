@@ -4,8 +4,8 @@ import 'theme/css';
 
 export const metadata = {
   title: {
-    default: 'Novo Serviço | EXATELECOM',
-    template: '%s | EXATELECOM'
+    default: 'Novo Serviço | WMAX',
+    template: '%s | WMAX'
   }
 };
 

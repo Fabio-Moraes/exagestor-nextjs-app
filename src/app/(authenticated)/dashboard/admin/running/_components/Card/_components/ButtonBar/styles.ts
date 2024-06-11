@@ -22,12 +22,7 @@ export const Container = styled.div<{ $animation: boolean }>`
       background: linear-gradient(
         90deg,
         var(--color-palette-base-100) 0%,
-        ${() => {
-            const computedStyle = window.getComputedStyle(document.documentElement);
-            const textBackground = computedStyle.getPropertyValue('--color-palette-base-100');
-            return lighten(0.2, textBackground);
-          }}
-          50%,
+        ${lighten(0.2, '#cccc')} 50%,
         var(--color-palette-base-100) 100%
       );
 
