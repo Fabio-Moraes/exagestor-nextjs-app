@@ -188,9 +188,9 @@ export const Button = styled.button`
   color: #fff;
   transition: background-color 0.3s ease;
 
-  &:hover {
+  /* &:hover {
     background-color: #27b466;
-  }
+  } */
 `;
 
 export const ErrorContainer = styled.div`

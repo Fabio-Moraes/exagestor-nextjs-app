@@ -138,6 +138,26 @@ export default function GeneralMonitoring() {
             <S.WrapperButton>
               <button
                 onClick={() => {
+                  if (services.startIndex >= services.data.length - 10) {
+                    fetchServices(services.data[services.data.length - 1].id);
+                  } else {
+                    setServices((res) => {
+                      return { startIndex: res.startIndex + 10, data: res.data };
+                    });
+                  }
+                }}
+              >
+                <Image
+                  priority
+                  loading="eager"
+                  src={arrowLeft}
+                  alt="Add"
+                  width="50"
+                  height="50"
+                />
+              </button>
+              <button
+                onClick={() => {
                   if (services.startIndex >= 10) {
                     setServices((res) => {
                       return {
@@ -151,31 +171,11 @@ export default function GeneralMonitoring() {
                 <Image
                   priority
                   loading="eager"
-                  src={arrowLeft}
-                  alt="Add"
-                  width="50"
-                  height="50"
-                  style={{ opacity: services.startIndex < 10 ? 0.3 : 1 }}
-                />
-              </button>
-              <button
-                onClick={() => {
-                  if (services.startIndex >= services.data.length - 10) {
-                    fetchServices(services.data[services.data.length - 1].id);
-                  } else {
-                    setServices((res) => {
-                      return { startIndex: res.startIndex + 10, data: res.data };
-                    });
-                  }
-                }}
-              >
-                <Image
-                  priority
-                  loading="eager"
                   src={arrowRight}
                   alt="Add"
                   width="50"
                   height="50"
+                  style={{ opacity: services.startIndex < 10 ? 0.3 : 1 }}
                 />
               </button>
             </S.WrapperButton>
