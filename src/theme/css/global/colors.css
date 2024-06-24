@@ -1,5 +1,5 @@
 :root {
-  --color-palette-body-bg: #ffffff;
-  --color-palette-analysis: #e9c80f;
-  --color-palette-scheduled: #868474;
+  --color-palette-body-bg: 255, 255, 255; /* #ffffff */;
+  --color-palette-analysis: 233, 200, 15; /* #e9c80f */;
+  --color-palette-scheduled: 134, 132, 116; /* #868474 */;
 }

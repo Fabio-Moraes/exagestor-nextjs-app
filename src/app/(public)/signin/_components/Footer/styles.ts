@@ -6,9 +6,9 @@ export const Container = styled.footer`
   z-index: 1000;
   background-image: linear-gradient(
     to left,
-    var(--color-palette-secondary-300),
-    var(--color-palette-base-100),
-    var(--color-palette-secondary-300)
+    rgb(var(--color-primary-04)),
+    rgb(var(--color-primary-02)),
+    rgb(var(--color-primary-04))
   );
   width: min(60.1rem, 100%);
   padding-top: 1rem;

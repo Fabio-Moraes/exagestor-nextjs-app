@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: var(--color-palette-secondary-200);
+    background-color: rgb(var(--color-secondary-03));
     color: #fff;
     margin-bottom: 3rem;
   }
@@ -60,14 +60,13 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  //margin: 0 1rem 0rem 0rem;
 
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid var(--color-palette-vibrant-100);
+    border: 0.2rem solid rgb(var(--color-secondary-04));
     background-color: ${({ $checked }) =>
-      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
+      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
     border-radius: 1rem;
   }
   > span {
@@ -80,7 +79,7 @@ export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 0.2rem solid #000;
-  background-color: var(--color-palette-primary-200);
+  background-color: rgba(var(--color-secondary-02), 0.3);
   padding: 1rem 0;
   width: 100%;
 
@@ -109,10 +108,11 @@ export const TableHeader = styled.div`
 
 export const Table = styled.div`
   border: 0.2rem solid #000;
-  border-radius: 0.5rem;
+  border-radius: 1rem 1rem 0rem 0rem;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-bottom: 0rem solid #000;
 
   > div:last-child {
     border-bottom: 0;
@@ -121,7 +121,7 @@ export const Table = styled.div`
 
 export const Button = styled.button`
   width: 30rem;
-  background-color: var(--color-palette-vibrant-100);
+  background-color: rgb(var(--color-secondary-04));
   padding: 1rem;
   margin: 2rem 2rem;
   border: 0.1rem solid #000000;
@@ -144,7 +144,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;
@@ -155,7 +155,6 @@ export const ErrorContainer = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  //background-color: hotpink;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -168,10 +167,10 @@ export const DialogQr = styled.dialog`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(63, 121, 113, 0.3);
+  background-color: rgba(var(--color-primary-01), 0.3);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-  border: 0.5rem solid var(--color-palette-primary-200);
+  border: 0.5rem solid rgb(var(--color-secondary-02));
 
   > button {
     background-color: #fff;
@@ -192,7 +191,7 @@ export const DialogQr = styled.dialog`
     height: 4.5rem;
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
+    box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
 
     &:active {
       transform: translateY(2px);

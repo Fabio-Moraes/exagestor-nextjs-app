@@ -5,6 +5,9 @@ import { useEffect, useRef } from 'react';
 
 import { Spinner } from 'components/Spinner';
 
+import * as animationData from './_assets/lottie/animation.json';
+
+import { Player } from '@lottiefiles/react-lottie-player';
 import QrScanner from 'qr-scanner';
 
 import * as S from './styles';
@@ -32,7 +35,7 @@ export function QRScanner({ handleScanned }: ScannedProps) {
       {
         preferredCamera: 'environment',
         returnDetailedScanResult: true,
-        highlightScanRegion: true,
+        highlightScanRegion: false,
         highlightCodeOutline: true,
         maxScansPerSecond: 1
       }
@@ -63,6 +66,20 @@ export function QRScanner({ handleScanned }: ScannedProps) {
         </>
       )}
       <S.QrVideo ref={videoElementRef} />
+      {isVideoPlaying && (
+        <Player
+          src={animationData}
+          loop
+          autoplay
+          speed={1.5}
+          style={{
+            position: 'absolute',
+            transform: 'translate(-50%, -40%)',
+            width: '35rem',
+            height: '35rem'
+          }}
+        />
+      )}
     </S.VideoWrapper>
   );
 }

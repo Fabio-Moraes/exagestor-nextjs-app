@@ -11,11 +11,7 @@ export const Container = styled.div`
   padding: 1.5rem;
 
   @media (max-width: 550px) {
-    background-image: linear-gradient(
-      50deg,
-      #ffffff 59.7%,
-      var(--color-palette-secondary-100) 60%
-    );
+    background-image: linear-gradient(50deg, #ffffff 59.7%, rgb(var(--color-primary-01)) 60%);
   }
 
   @media (min-width: 550px) {

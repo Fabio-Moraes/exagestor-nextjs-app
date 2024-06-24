@@ -1,1 +1,1 @@
-export * as business from './exa-telecom';
+export * as business from './wmax';

@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: var(--color-palette-primary-200);
+    background-color: rgb(var(--color-secondary-02));
     color: #000;
   }
 `;
@@ -29,7 +29,7 @@ export const ListContainer = styled.ul`
 
   > button {
     width: 20rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     flex-shrink: 0;
     color: #fff;
     padding: 0.7rem;
@@ -49,7 +49,7 @@ export const ListContainer = styled.ul`
     }
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
+    box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
 
     &:active {
       transform: translateY(2px);
@@ -81,7 +81,7 @@ export const Spinner = styled.div`
 export const ListItem = styled.li`
   font-size: 1.8rem;
   margin-bottom: 3rem;
-  border: 0.2rem solid var(--color-palette-secondary-300);
+  border: 0.2rem solid rgb(var(--color-primary-04));
   border-radius: 0.5rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.4);
 
@@ -104,7 +104,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

@@ -20,7 +20,7 @@
 }
 
 body {
-  background-color: var(--color-palette-body-bg);
+  background-color: rgb(var(--color-palette-body-bg));
   font-size: 1.6rem;
 
   -webkit-touch-callout: none;

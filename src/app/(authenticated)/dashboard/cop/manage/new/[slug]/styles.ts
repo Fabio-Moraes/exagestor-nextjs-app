@@ -19,7 +19,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: var(--color-palette-secondary-200);
+    background-color: rgb(var(--color-secondary-03));
     color: #fff;
   }
 `;
@@ -58,7 +58,7 @@ export const Input = styled.input`
   font-family: 'OpenSans-Regular';
 
   &:focus {
-    outline: 0.2rem solid var(--color-palette-vibrant-100);
+    outline: 0.2rem solid rgb(var(--color-secondary-04));
   }
 
   &::placeholder {
@@ -95,9 +95,9 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid var(--color-palette-vibrant-100);
+    border: 0.2rem solid rgb(var(--color-secondary-04));
     background-color: ${({ $checked }) =>
-      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
+      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
     border-radius: 1rem;
   }
   > span {
@@ -108,7 +108,7 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
 
 export const Button = styled.button`
   width: 15rem;
-  background-color: var(--color-palette-vibrant-100);
+  background-color: rgb(var(--color-secondary-04));
   padding: 1rem;
   margin: 3rem 0rem;
   border: none;
@@ -139,7 +139,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;
@@ -161,7 +161,7 @@ export const StyledDateTime = styled(DateTime)`
     font-family: 'OpenSans-Regular';
 
     &:focus {
-      outline: 0.2rem solid var(--color-palette-vibrant-100);
+      outline: 0.2rem solid rgb(var(--color-secondary-04));
     }
 
     &::placeholder {

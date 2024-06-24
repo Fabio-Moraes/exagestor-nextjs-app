@@ -19,8 +19,8 @@ export const Container = styled.span`
   flex-direction: column;
   background-image: linear-gradient(
     to top,
-    var(--color-palette-secondary-300),
-    rgba(63, 121, 94, 0.9)
+    rgba(var(--color-primary-04), 0.9),
+    rgba(var(--color-primary-01), 0.9)
   );
   border: 0.2rem solid #000000;
   border-radius: 1rem;

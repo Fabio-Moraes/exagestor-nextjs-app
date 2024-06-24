@@ -14,10 +14,10 @@ export const Container = styled.footer`
 export const Wrapper = styled.div`
   background-image: linear-gradient(
     90deg,
-    var(--color-palette-primary-300),
-    var(--color-palette-base-100) 20%,
-    var(--color-palette-base-100) 80%,
-    var(--color-palette-primary-300)
+    rgb(var(--color-primary-03)),
+    rgb(var(--color-primary-02)) 20%,
+    rgb(var(--color-primary-02)) 80%,
+    rgb(var(--color-primary-03))
   );
   width: min(60.1rem, 100%);
   padding-top: 1rem;

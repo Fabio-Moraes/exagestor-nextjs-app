@@ -6,7 +6,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 0.2rem solid var(--color-palette-vibrant-100);
+  border: 0.2rem solid rgb(var(--color-secondary-04));
   margin: 0.5rem 1rem 0 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -32,7 +32,7 @@ export const ItemContainer = styled.div<{ selected: boolean }>`
     ${(props) =>
       props.selected &&
       css`
-        background-color: var(--color-palette-primary-200);
+        background-color: rgba(var(--color-primary-03), 0.4);
       `};
   }
 

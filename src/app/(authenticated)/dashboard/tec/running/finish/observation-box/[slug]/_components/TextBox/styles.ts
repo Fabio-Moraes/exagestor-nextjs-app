@@ -4,10 +4,9 @@ import styled from 'styled-components';
 
 export const ListContainer = styled.div`
   margin-top: 2rem;
-  background-color: #dce6dc;
   border-radius: 0.5rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  border: 0.2rem solid var(--color-palette-secondary-300);
+  border: 0.2rem solid rgb(var(--color-primary-04));
 
   justify-content: center;
   align-items: center;
@@ -18,7 +17,7 @@ export const ListContainer = styled.div`
     background-color: #fff;
     border-radius: 0.5rem;
 
-    border: 0.2rem solid var(--color-palette-secondary-300);
+    border: 0.2rem solid rgb(var(--color-primary-04));
 
     justify-content: space-between;
     align-items: center;
@@ -31,7 +30,7 @@ export const ListContainer = styled.div`
   > div:last-child {
     display: flex;
     padding: 1rem;
-    background-color: var(--color-palette-secondary-300);
+    background-color: rgb(var(--color-primary-04));
 
     justify-content: space-between;
     align-items: center;
@@ -50,7 +49,7 @@ export const Button = styled.button`
   border-radius: 0.5rem;
   width: 18rem;
   background-color: #fff;
-  border: 0.2rem solid var(--color-palette-vibrant-100);
+  border: 0.2rem solid rgb(var(--color-secondary-04));
   cursor: pointer;
 `;
 
@@ -108,7 +107,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

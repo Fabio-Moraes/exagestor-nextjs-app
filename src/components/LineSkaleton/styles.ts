@@ -25,9 +25,9 @@ export const Skeleton = styled.div<{ $width: string; $height: string }>`
 
   background: linear-gradient(
     -90deg,
-    var(--color-palette-base-100) 0%,
+    rgb(var(--color-primary-02)) 0%,
     ${lighten(0.2, '#cccc')} 50%,
-    var(--color-palette-base-100) 100%
+    rgb(var(--color-primary-02)) 100%
   );
 
   background-size: 400% 400%;

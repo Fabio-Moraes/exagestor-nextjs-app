@@ -11,11 +11,7 @@ export const Container = styled.div`
   padding: 1.8rem 1.5rem 1.5rem 1.5rem;
 
   @media (max-width: 550px) {
-    background-image: linear-gradient(
-      50deg,
-      #ffffff 59.7%,
-      var(--color-palette-secondary-100) 60%
-    );
+    background-image: linear-gradient(50deg, #ffffff 59.7%, rgb(var(--color-primary-01)) 60%);
   }
 
   @media (min-width: 550px) {
@@ -28,7 +24,7 @@ export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(to top, var(--color-palette-primary-200), #dce6dc);
+  background-image: linear-gradient(to top, rgb(var(--color-secondary-02)), #dce6dc);
   border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
@@ -58,7 +54,7 @@ export const ProfileUser = styled.div`
     width: 100%;
 
     > button {
-      border: 0.2rem solid var(--color-palette-vibrant-100);
+      border: 0.2rem solid rgb(var(--color-secondary-04));
       box-shadow: -1.2rem 0 0 0 rgba(0, 0, 0, 0.5);
       background-color: #fff;
       border-radius: 0.5rem;
@@ -69,10 +65,10 @@ export const ProfileUser = styled.div`
 
       &:hover {
         @media (min-width: 550px) {
-          border: 0.2rem solid var(--color-palette-vibrant-100);
+          border: 0.2rem solid rgb(var(--color-secondary-04));
           background-image: radial-gradient(
             6rem at center,
-            var(--color-palette-vibrant-100),
+            rgb(var(--color-secondary-04)),
             #dce6dc
           );
         }

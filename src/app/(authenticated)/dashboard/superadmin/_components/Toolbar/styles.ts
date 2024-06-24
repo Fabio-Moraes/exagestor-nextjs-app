@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   z-index: 1;
-  border: 0 solid var(--color-palette-secondary-300);
+  border: 0 solid rgb(var(--color-primary-04));
   border-width: 0.2rem 0 0.2rem 0;
   display: flex;
   width: 100%;
@@ -12,7 +12,7 @@ export const Container = styled.div`
   background-image: radial-gradient(
     35rem at center,
     #ffffff 20%,
-    var(--color-palette-vibrant-100)
+    rgb(var(--color-secondary-04))
   );
   background-color: #f2f2f2;
   justify-content: space-between;
@@ -46,7 +46,7 @@ export const WrapperLink = styled.div<{ $path?: boolean }>`
 
   ${({ $path = '' }) => {
     const activeButtonCSS = css`
-      background-color: var(--color-palette-base-100);
+      background-color: rgb(var(--color-primary-02));
       > span {
         color: #fff;
       }

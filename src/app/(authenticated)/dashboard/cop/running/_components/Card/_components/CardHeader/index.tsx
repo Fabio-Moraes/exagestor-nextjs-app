@@ -81,8 +81,8 @@ const StatusOptions = {
 
 const statusColor = {
   analysis: '--color-palette-analysis',
-  active: '--color-palette-secondary-200',
-  paused: '--color-palette-secondary-200',
+  active: '--color-secondary-03',
+  paused: '--color-secondary-03',
   scheduled: '--color-palette-scheduled'
 } as const;
 

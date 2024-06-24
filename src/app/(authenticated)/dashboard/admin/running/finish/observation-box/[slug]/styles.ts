@@ -14,6 +14,7 @@ export const Title = styled.div`
   padding: 0.8rem;
   align-items: center;
   justify-content: center;
+  border-radius: 0.5rem;
   border-radius: 0.7rem;
 
   > h1 {
@@ -26,7 +27,7 @@ export const Title = styled.div`
   }
 
   @media (min-width: 550px) {
-    background-color: #3c7d5d;
+    background-color: rgb(var(--color-primary-05));
     color: #fff;
   }
 `;
@@ -45,7 +46,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

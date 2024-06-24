@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: var(--color-palette-secondary-200);
+    background-color: rgb(var(--color-secondary-03));
     color: #fff;
     margin-bottom: 3rem;
   }
@@ -65,9 +65,9 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid var(--color-palette-vibrant-100);
+    border: 0.2rem solid rgb(var(--color-secondary-04));
     background-color: ${({ $checked }) =>
-      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
+      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
     border-radius: 1rem;
   }
   > span {
@@ -80,11 +80,9 @@ export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 0.2rem solid #000;
-  background-color: var(--color-palette-primary-200);
+  background-color: rgba(var(--color-secondary-02), 0.5);
   padding: 1rem 0;
-  width: 100%;
-
-  div {
+  width: 100% div {
     min-width: 6.7rem;
     border-left: 0.2rem solid #000;
     display: flex;
@@ -111,7 +109,8 @@ export const TableRow = styled.div<{ $isSelected: boolean }>`
   display: flex;
   flex-direction: row;
   border-bottom: 0.2rem solid #000;
-  background-color: ${({ $isSelected }) => ($isSelected ? '#e9c80f' : '#ffffff')};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? 'rgba(var(--color-primary-02), 0.5)' : '#ffffff'};
   padding: 1rem 0;
   width: 100%;
 
@@ -151,7 +150,7 @@ export const Table = styled.div`
 
 export const Button = styled.button`
   width: 30rem;
-  background-color: var(--color-palette-vibrant-100);
+  background-color: rgb(var(--color-secondary-04));
   padding: 1rem;
   margin: 2rem 2rem;
   border: 0.1rem solid #000000;
@@ -174,7 +173,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

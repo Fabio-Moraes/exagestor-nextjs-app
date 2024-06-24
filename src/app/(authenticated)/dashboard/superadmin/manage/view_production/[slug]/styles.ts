@@ -18,7 +18,7 @@ export const Title = styled.h1`
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
     height: 4rem;
     line-height: 4rem;
-    background-color: var(--color-palette-secondary-200);
+    background-color: rgb(var(--color-secondary-03));
     color: #fff;
     margin-bottom: 3rem;
   }
@@ -49,7 +49,7 @@ export const WrapperButton = styled.button`
   justify-content: flex-end;
   border-radius: 30rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: var(--color-palette-primary-200);
+  background-color: rgb(var(--color-secondary-02));
   width: 4.5rem;
   margin-right: 1rem;
   align-items: center;
@@ -74,7 +74,6 @@ export const Table = styled.div`
 
     > div:first-child {
       width: 100%;
-      background-color: var(--color-palette-primary-200);
       border-left: 0;
       align-items: center;
       text-align: center;
@@ -90,7 +89,7 @@ export const Table = styled.div`
       min-width: 6.5rem;
       padding: 0 1rem;
       border-left: 0.2rem solid #000;
-      background-color: var(--color-palette-primary-200);
+      background-color: rgba(var(--color-secondary-02), 0.5);
       text-align: center;
 
       > span {
@@ -152,7 +151,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

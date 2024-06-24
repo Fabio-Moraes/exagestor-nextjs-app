@@ -7,8 +7,8 @@ import { motion } from 'framer-motion';
 export const Container = styled(motion.div)`
   background-image: linear-gradient(
     45deg,
-    var(--color-palette-base-100) 65%,
-    var(--color-palette-primary-200)
+    rgb(var(--color-primary-02)) 65%,
+    rgb(var(--color-secondary-02))
   );
   display: flex;
   flex-direction: column;
@@ -125,8 +125,8 @@ export const ConnectedText = styled.p`
 export const Dialog = styled.dialog`
   background-image: linear-gradient(
     45deg,
-    var(--color-palette-base-100) 65%,
-    var(--color-palette-primary-200)
+    rgb(var(--color-primary-02)) 65%,
+    rgb(var(--color-secondary-02))
   );
   border-radius: 0.7rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
@@ -153,7 +153,7 @@ export const Dialog = styled.dialog`
     height: 4.5rem;
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
+    box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
 
     &:active {
       transform: translateY(2px);

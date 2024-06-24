@@ -16,7 +16,7 @@ export const Title = styled.h1`
   @media (min-width: 550px) {
     height: 4rem;
     line-height: 4rem;
-    background-color: #3c7d5d;
+    background-color: rgb(var(--color-primary-05));
     color: #fff;
   }
 `;
@@ -50,7 +50,7 @@ const rotateAnimation = keyframes`
 `;
 
 export const WrapperSpinner = styled.div`
-  background-color: var(--color-palette-base-100);
+  background-color: rgb(var(--color-primary-02));
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   border-radius: 8px;
@@ -115,7 +115,7 @@ export const Button = styled.button`
   width: auto;
   margin: 2rem 3rem 1.5rem 3rem;
   padding: 2rem 1.5rem;
-  background-color: #3c7d5d;
+  background-color: rgb(var(--color-primary-05));
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
@@ -139,7 +139,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

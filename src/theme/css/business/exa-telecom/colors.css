@@ -1,10 +1,14 @@
 :root {
-  --color-palette-primary-100: #b1d6c3;
-  --color-palette-secondary-100: #92d3b3;
-  --color-palette-primary-200: #8BC9A8;
-  --color-palette-primary-300: #68b790;
-  --color-palette-vibrant-100: #27A567;
-  --color-palette-secondary-200: #5E9987;
-  --color-palette-secondary-300: #3F795E;
-  --color-palette-base-100: #3F7971 ;
+   /* Primary Colors */
+  --color-primary-01: 146, 211, 179; /* #92D3B3 */
+  --color-primary-02: 63, 121, 113; /* #3F7971 */
+  --color-primary-03: 104, 183, 144; /* #68b790 */;
+  --color-primary-04: 63, 121, 94; /* #3F795E */;
+  --color-primary-05: 60, 125, 93; /* #3C7D5D */;
+
+  /* Secondary Colors */
+  --color-secondary-01: 177, 214, 195; /* #b1d6c3 */;
+  --color-secondary-02: 139, 201, 168; /* #8BC9A8 */;
+  --color-secondary-03: 94, 153, 135; /* #5E9987 */;
+  --color-secondary-04: 39, 165, 103; /* #27A567 */;
 }

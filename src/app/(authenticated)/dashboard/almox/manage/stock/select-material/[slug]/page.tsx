@@ -28,7 +28,7 @@ export default function FinishService({ params }: SlugType) {
 
   return (
     <S.Container>
-      <S.Title>Definir Carga</S.Title>
+      <S.Title>Remover da Carga</S.Title>
       <List materials={decryptSlug.selectedMaterials} employeeId={decryptSlug.userId} />
     </S.Container>
   );

@@ -15,15 +15,15 @@ const animation = keyframes`
 `;
 
 export const Container = styled.div<{ $animation: boolean }>`
-  background-color: var(--color-palette-base-100);
+  background-color: rgb(var(--color-primary-02));
   ${({ $animation }) =>
     $animation &&
     css`
       background: linear-gradient(
         90deg,
-        var(--color-palette-base-100) 0%,
+        rgb(var(--color-primary-02)) 0%,
         ${lighten(0.2, '#cccc')} 50%,
-        var(--color-palette-base-100) 100%
+        rgb(var(--color-primary-02)) 100%
       );
 
       > div {

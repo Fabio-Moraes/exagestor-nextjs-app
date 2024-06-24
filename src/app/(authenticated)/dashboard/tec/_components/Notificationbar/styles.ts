@@ -30,7 +30,7 @@ const animationProgress = keyframes`
 `;
 
 export const Container = styled(motion.div)<{ $fullProgress?: boolean }>`
-  border-bottom: 0 solid var(--color-palette-secondary-300);
+  border-bottom: 0 solid rgb(var(--color-primary-04));
   border-width: 0.2rem 0 0.2rem 0;
   display: flex;
   padding: 0.3rem min(1.5rem, max(10vw, 1rem));
@@ -57,16 +57,9 @@ export const Container = styled(motion.div)<{ $fullProgress?: boolean }>`
     content: '';
     background: linear-gradient(
       -90deg,
-      var(--color-palette-secondary-100) 0%,
-      ${() => {
-          const computedStyle = window.getComputedStyle(document.documentElement);
-          const textBackground = computedStyle.getPropertyValue(
-            '--color-palette-secondary-100'
-          );
-          return lighten(0.2, textBackground);
-        }}
-        50%,
-      var(--color-palette-secondary-100) 100%
+      rgb(var(--color-primary-01)) 0%,
+      ${lighten(0.2, '#cccc')} 50%,
+      rgb(var(--color-primary-01)) 100%
     );
     background-size: 400% 400%;
 

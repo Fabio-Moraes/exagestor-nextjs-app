@@ -8,13 +8,13 @@ export const Container = styled.div<{ $isSelected: boolean }>`
   ${(props) =>
     props.$isSelected &&
     css`
-      background-color: var(--color-palette-primary-200);
+      background-color: rgb(var(--color-secondary-02));
     `};
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 0.2rem solid var(--color-palette-vibrant-100);
+  border: 0.2rem solid rgb(var(--color-secondary-04));
   margin: 0.5rem 1rem 0 1rem;
   border-radius: 0.7rem;
   padding: 0.5rem;

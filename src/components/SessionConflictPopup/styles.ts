@@ -30,7 +30,7 @@ export const Container = styled.dialog`
     width: 100%;
 
     > button {
-      background-color: var(--color-palette-vibrant-100);
+      background-color: rgb(var(--color-secondary-04));
       align-items: center;
       flex-shrink: 0;
       border-radius: 0.5rem;
@@ -48,7 +48,7 @@ export const Container = styled.dialog`
       }
 
       transition: all 0.05s ease;
-      box-shadow: 0px 3px 0px var(--color-palette-primary-200);
+      box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
 
       &:active {
         transform: translateY(2px);

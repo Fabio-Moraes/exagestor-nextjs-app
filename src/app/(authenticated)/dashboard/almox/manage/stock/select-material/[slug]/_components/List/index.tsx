@@ -214,8 +214,8 @@ export function List({
             ))}
         </AnimatePresence>
         <div>
-          <S.Button onClick={() => router.back()}>Voltar2</S.Button>
-          <S.Button onClick={() => employeeId && handleSubmit()}>Enviar Carga</S.Button>
+          <S.Button onClick={() => router.back()}>Voltar</S.Button>
+          <S.Button onClick={() => employeeId && handleSubmit()}>Atualizar Carga</S.Button>
         </div>
       </S.ListContainer>
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}

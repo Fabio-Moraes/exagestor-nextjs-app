@@ -2,8 +2,6 @@
 
 import styled, { css } from 'styled-components';
 
-import { lighten } from 'polished';
-
 export const Container = styled.div<{ $color: string }>`
   display: flex;
   align-items: start;
@@ -13,19 +11,10 @@ export const Container = styled.div<{ $color: string }>`
   ${({ $color }) => css`
     background: linear-gradient(
       45deg,
-      var(${$color}) 20%,
-      ${() => {
-          const computedStyle = window.getComputedStyle(document.documentElement);
-          const textBackground = computedStyle.getPropertyValue($color);
-          return lighten(0.2, textBackground);
-        }}
-        50%,
-      ${() => {
-        const computedStyle = window.getComputedStyle(document.documentElement);
-        const textBackground = computedStyle.getPropertyValue($color);
-        return lighten(0.2, textBackground);
-      }},
-      var(${$color})
+      rgb(var(${$color})) 20%,
+      rgb(var(${$color}), 0.5) 50%,
+      rgb(var(${$color}), 0.5),
+      rgb(var(${$color}))
     );
   `}
 

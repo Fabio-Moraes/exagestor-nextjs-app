@@ -11,8 +11,8 @@
 <stop offset="0.2" stop-color="#4AA497"/>
 <stop offset="0.4" stop-color="#71B49F"/>
 <stop offset="0.6" stop-color="#62B99E"/>
-<stop offset="0.8" stop-color="var(--color-palette-vibrant-100)"/>
-<stop offset="1" stop-color="var(--color-palette-vibrant-100)"/>
+<stop offset="0.8" stop-color="rgb(var(--color-secondary-04))"/>
+<stop offset="1" stop-color="rgb(var(--color-secondary-04))"/>
 </linearGradient>
 </defs>
 </svg>

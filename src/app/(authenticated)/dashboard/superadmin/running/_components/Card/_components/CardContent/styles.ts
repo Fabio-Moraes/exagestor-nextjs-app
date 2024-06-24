@@ -34,7 +34,7 @@ export const Container = styled.div`
 `;
 
 export const Countdown = styled.div`
-  background-color: var(--color-palette-base-100);
+  background-color: rgb(var(--color-primary-02));
   margin-inline: 1rem;
   margin-top: 1rem;
   padding: 1rem;

@@ -92,8 +92,6 @@ export const FormContainer = styled.form`
   }
 
   > div:nth-child(2) {
-    //justify-content: center;
-    //padding: 1rem;
     padding: 0 3rem;
     display: flex;
     align-items: center;
@@ -112,9 +110,9 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid var(--color-palette-vibrant-100);
+    border: 0.2rem solid rgb(var(--color-secondary-04));
     background-color: ${({ $checked }) =>
-      $checked ? 'var(--color-palette-vibrant-100)' : '#fff'};
+      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
     border-radius: 1rem;
   }
 
@@ -180,7 +178,7 @@ export const TogglePasswordVisibilityButton = styled.button`
 
 export const Button = styled.button`
   width: 80%;
-  background-color: var(--color-palette-vibrant-100);
+  background-color: rgb(var(--color-secondary-04));
   padding: 1rem;
   margin: 2rem 2rem;
   border-radius: 0.4rem;
@@ -188,9 +186,9 @@ export const Button = styled.button`
   color: #fff;
   transition: background-color 0.3s ease;
 
-  /* &:hover {
-    background-color: #27b466;
-  } */
+  &:hover {
+    background-color: rgb(var(--color-primary-01));
+  }
 `;
 
 export const ErrorContainer = styled.div`
@@ -207,7 +205,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: var(--color-palette-vibrant-100);
+    background-color: rgb(var(--color-secondary-04));
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

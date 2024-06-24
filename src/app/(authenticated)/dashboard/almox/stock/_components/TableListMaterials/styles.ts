@@ -4,7 +4,8 @@ export const TableRow = styled.div<{ $isSelected: boolean }>`
   display: flex;
   flex-direction: row;
   border-bottom: 0.2rem solid #000;
-  background-color: ${({ $isSelected }) => ($isSelected ? '#e9c80f' : '#ffffff')};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? 'rgba(var(--color-primary-02), 0.5)' : '#ffffff'};
   padding: 1rem 0;
   width: 100%;
 
@@ -33,8 +34,8 @@ export const TableRow = styled.div<{ $isSelected: boolean }>`
 export const Dialog = styled.dialog`
   background-image: linear-gradient(
     45deg,
-    var(--color-palette-base-100) 65%,
-    var(--color-palette-primary-200)
+    rgb(var(--color-primary-02)) 65%,
+    rgb(var(--color-secondary-02))
   );
   border-radius: 0.7rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
@@ -63,7 +64,7 @@ export const Dialog = styled.dialog`
     height: 4.5rem;
 
     transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px var(--color-palette-primary-200);
+    box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
 
     &:active {
       transform: translateY(2px);
@@ -97,7 +98,7 @@ export const WrapperLink = styled.div`
   height: 4.5rem;
 
   transition: all 0.05s ease;
-  box-shadow: 0px 3px 0px var(--color-palette-primary-200);
+  box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
 
   &:active {
     transform: translateY(2px);
