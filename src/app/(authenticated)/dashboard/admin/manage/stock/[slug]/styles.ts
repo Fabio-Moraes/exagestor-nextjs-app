@@ -80,11 +80,9 @@ export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 0.2rem solid #000;
-  background-color: rgba(var(--color-secondary-02),0.5);
+  background-color: rgba(var(--color-secondary-02), 0.5);
   padding: 1rem 0;
-  width: 100%
-
-  div {
+  width: 100% div {
     min-width: 6.7rem;
     border-left: 0.2rem solid #000;
     display: flex;
