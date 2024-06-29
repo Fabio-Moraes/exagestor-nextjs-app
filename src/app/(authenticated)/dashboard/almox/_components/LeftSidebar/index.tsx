@@ -12,6 +12,7 @@ import * as S from './styles';
 const add = business.menu.addPerson;
 const execution = business.menu.rocket;
 const manage = business.menu.bookPen;
+const inCirculation = business.menu.bringBackward;
 
 export function LeftSidebar() {
   const pathname = usePathname();
@@ -30,6 +31,20 @@ export function LeftSidebar() {
               height="25"
             />
             <span>Gerenciar Estoque</span>
+          </S.WrapperLink>
+        </Link>
+
+        <Link href="/dashboard/almox/stock_circulation" scroll={false}>
+          <S.WrapperLink $path={['/dashboard/almox/stock_circulation'].includes(pathname)}>
+            <Image
+              priority
+              loading="eager"
+              src={inCirculation}
+              alt="Book"
+              width="25"
+              height="25"
+            />
+            <span>Em Circulação</span>
           </S.WrapperLink>
         </Link>
 

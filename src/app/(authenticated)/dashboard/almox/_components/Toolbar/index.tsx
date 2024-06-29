@@ -12,7 +12,7 @@ import * as S from './styles';
 const add = business.menu.addPerson;
 const execution = business.menu.rocket;
 const manage = business.menu.bookPen;
-const menu = business.menu.hamburgerMenu;
+const inCirculation = business.menu.bringBackward;
 
 export function Toolbar() {
   const pathname = usePathname();
@@ -26,6 +26,24 @@ export function Toolbar() {
             Gerenciar
             <br />
             Estoque
+          </span>
+        </S.WrapperLink>
+      </Link>
+
+      <Link href="/dashboard/almox/stock_circulation" scroll={false}>
+        <S.WrapperLink $path={['/dashboard/almox/stock_circulation'].includes(pathname)}>
+          <Image
+            priority
+            loading="eager"
+            src={inCirculation}
+            alt="Book"
+            width="25"
+            height="25"
+          />
+          <span>
+            Em
+            <br />
+            Circulação
           </span>
         </S.WrapperLink>
       </Link>
@@ -46,17 +64,6 @@ export function Toolbar() {
           <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
           <span>
             Gerenciar <br /> Equipe
-          </span>
-        </S.WrapperLink>
-      </Link>
-
-      <Link href="/" scroll={false}>
-        <S.WrapperLink style={{ opacity: 0 }} rel="preload">
-          <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
-          <span>
-            Mais
-            <br />
-            Opções
           </span>
         </S.WrapperLink>
       </Link>

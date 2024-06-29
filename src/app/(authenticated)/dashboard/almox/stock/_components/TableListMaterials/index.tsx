@@ -114,6 +114,9 @@ export function TableListMaterials(props: TableListMaterialsType) {
               <button onClick={() => {}}>
                 <p>EDITAR QUANTIDADE</p>
               </button>
+              <button onClick={() => {}}>
+                <p>DETALHES</p>
+              </button>
             </S.Dialog>
           </div>
         ))}
