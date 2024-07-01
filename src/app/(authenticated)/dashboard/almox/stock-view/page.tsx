@@ -22,7 +22,7 @@ type Material = {
 
 type FetchMaterial = {
   almox: Material[];
-  employee: Material[];
+  employee: Array<Material & { name_tec: string }>;
 };
 
 export default function NewStock() {
@@ -51,7 +51,6 @@ export default function NewStock() {
         });
 
         setIsPopupValue(null);
-
         setFetchMaterial(response.data);
         break;
       } catch (error: unknown) {
@@ -185,6 +184,8 @@ export default function NewStock() {
               <TableListMaterials
                 checkbox={'manageStock'}
                 materials={selectedListStock()}
+                fetchEmployee={selectedEmployee ? fetchMaterial.employee : []}
+                fetchAlmox={selectedAlmox ? fetchMaterial.almox : []}
                 selectedTableRows={selectedTableRows}
                 toggleRowSelection={toggleRowSelection}
               />

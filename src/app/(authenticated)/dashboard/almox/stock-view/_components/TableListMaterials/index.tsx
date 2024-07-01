@@ -7,21 +7,36 @@ import * as S from './styles';
 type Material = {
   id: number;
   product_name: string;
-  unit_type: string;
   product_code: string;
   quantity_value: string;
+  employee_id?: number;
+  product_batch?: string | null;
+  unit_type: string;
   created_at: string;
 };
 
+/* type FetchEmployeeMaterial = {
+  name_tec: string
+} */
+
 type TableListMaterialsType = {
   materials: Material[];
+  fetchEmployee: Array<Material & { name_tec: string }>;
+  fetchAlmox: Material[];
   checkbox: string;
   selectedTableRows: number[];
   toggleRowSelection: (id: number) => void;
 };
 
 export function TableListMaterials(props: TableListMaterialsType) {
-  const { materials, checkbox, selectedTableRows, toggleRowSelection } = props;
+  const {
+    materials,
+    fetchEmployee,
+    fetchAlmox,
+    checkbox,
+    selectedTableRows,
+    toggleRowSelection
+  } = props;
 
   const [manageStockRowSelection, setManageStockRowSelection] = useState('');
 
@@ -92,9 +107,45 @@ export function TableListMaterials(props: TableListMaterialsType) {
                   </div>
                 </S.TableRow>
                 <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
-                  <button onClick={() => {}}>
-                    <p>DETALHES</p>
-                  </button>
+                  <>
+                    {fetchEmployee &&
+                      fetchEmployee.map((item) => {
+                        if (manageStockRowSelection === String(item.product_code)) {
+                          return (
+                            <div key={uuidv4()}>
+                              <S.TableRow $isSelected={false}>
+                                <div>
+                                  <span>{item.name_tec}</span>
+                                </div>
+                                <div>
+                                  <span>{item.quantity_value}</span>
+                                </div>
+                              </S.TableRow>
+                            </div>
+                          );
+                        }
+                      })}
+                    {fetchAlmox &&
+                      fetchAlmox.map((item) => {
+                        if (manageStockRowSelection === String(item.product_code)) {
+                          return (
+                            <div key={uuidv4()}>
+                              <S.TableRow $isSelected={false}>
+                                <div>
+                                  <span>Almox</span>
+                                </div>
+                                <div>
+                                  <span>{item.quantity_value}</span>
+                                </div>
+                              </S.TableRow>
+                            </div>
+                          );
+                        }
+                      })}
+                    <button onClick={() => {}}>
+                      <p>DETALHES</p>
+                    </button>
+                  </>
                 </S.Dialog>
               </div>
             );
