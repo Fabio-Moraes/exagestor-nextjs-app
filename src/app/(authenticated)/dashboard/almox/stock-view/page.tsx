@@ -1,11 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { TableListMaterials } from './_components/TableListMaterials';
 import { FullScreenLoading } from 'components/FullScreenLoading';
-import { encryptObject } from 'functions';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -13,47 +11,32 @@ import * as S from './styles';
 
 type Material = {
   id: number;
-  employee_id: number;
   product_name: string;
   product_code: string;
-  product_batch: string | null;
   quantity_value: string;
+  employee_id?: number;
+  product_batch?: string | null;
   unit_type: string;
   created_at: string;
 };
 
+type FetchMaterial = {
+  almox: Material[];
+  employee: Material[];
+};
+
 export default function NewStock() {
-  const [materials, setMaterials] = useState<Material[]>([]);
+  const [fetchMaterial, setFetchMaterial] = useState({} as FetchMaterial);
   const [selectedTableRows, setSelectedTableRows] = useState<number[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-
-  const router = useRouter();
+  const [selectedEmployee, setSelectedEmployee] = useState(true);
+  const [selectedAlmox, setSelectedAlmox] = useState(true);
 
   const maxRetries = 4;
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
-  }
-
-  function aggregateData(data: Material[]): Material[] {
-    const aggregatedData: { [product_code: string]: Material } = {};
-
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      const productCode: string = item.product_code;
-      const quantity: number = parseFloat(item.quantity_value);
-
-      if (!aggregatedData[productCode]) {
-        aggregatedData[productCode] = { ...item };
-        aggregatedData[productCode].quantity_value = quantity.toString();
-      } else {
-        const currentQuantity = parseFloat(aggregatedData[productCode].quantity_value);
-        aggregatedData[productCode].quantity_value = (currentQuantity + quantity).toString();
-      }
-    }
-
-    return Object.keys(aggregatedData).map((key) => aggregatedData[key]);
   }
 
   async function fetchServices() {
@@ -64,14 +47,12 @@ export default function NewStock() {
         setIsPopupValue(generateConnectingMessage(retryCount));
 
         const response = await internalApi.post('/api/bridge', {
-          baseURL: '/api/almox/stock-circulation'
+          baseURL: '/api/almox/stock-view'
         });
 
         setIsPopupValue(null);
 
-        const aggregatedData = aggregateData(response.data);
-
-        setMaterials(aggregatedData);
+        setFetchMaterial(response.data);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -106,16 +87,53 @@ export default function NewStock() {
     }
   };
 
-  const selectedMaterials = materials.filter(function (objeto: Material) {
-    return selectedTableRows.includes(objeto.id);
-  });
+  function aggregateData(data: Material[]): Material[] {
+    const aggregatedData: { [product_code: string]: Material } = {};
 
-  const encryptSlug = encryptObject({ selectedMaterials });
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
+      const productCode: string = item.product_code;
+      const quantity: number = parseFloat(item.quantity_value);
+
+      if (!aggregatedData[productCode]) {
+        aggregatedData[productCode] = { ...item };
+        aggregatedData[productCode].quantity_value = quantity.toString();
+      } else {
+        const currentQuantity = parseFloat(aggregatedData[productCode].quantity_value);
+        aggregatedData[productCode].quantity_value = (currentQuantity + quantity).toString();
+      }
+    }
+
+    return Object.keys(aggregatedData).map((key) => aggregatedData[key]);
+  }
+
+  function selectedListStock() {
+    const aggregatedDataArray = [];
+
+    if (selectedAlmox && !selectedEmployee) {
+      fetchMaterial.almox && aggregatedDataArray.push(...fetchMaterial.almox);
+    }
+
+    if (!selectedAlmox && selectedEmployee) {
+      fetchMaterial.employee && aggregatedDataArray.push(...fetchMaterial.employee);
+    }
+
+    if (selectedAlmox && selectedEmployee) {
+      fetchMaterial.almox && aggregatedDataArray.push(...fetchMaterial.almox);
+      fetchMaterial.employee && aggregatedDataArray.push(...fetchMaterial.employee);
+    }
+
+    if (!selectedAlmox && !selectedEmployee) {
+      return [];
+    }
+
+    return aggregateData(aggregatedDataArray);
+  }
 
   return (
     <>
       <S.Container>
-        <S.Title>Em Circulação</S.Title>
+        <S.Title>Visualizar Materiais</S.Title>
         {isPopupValue && <FullScreenLoading message={isPopupValue} />}
         {connectionError ? (
           <S.ErrorContainer>
@@ -126,7 +144,29 @@ export default function NewStock() {
           </S.ErrorContainer>
         ) : (
           <>
-            <S.Wrapper></S.Wrapper>
+            <S.Wrapper>
+              <S.CheckboxButton
+                type="button"
+                $checked={selectedEmployee}
+                onClick={() => {
+                  setSelectedEmployee((i) => !i);
+                }}
+              >
+                <div />
+                <span>Cargas</span>
+              </S.CheckboxButton>
+
+              <S.CheckboxButton
+                type="button"
+                $checked={selectedAlmox}
+                onClick={() => {
+                  setSelectedAlmox((i) => !i);
+                }}
+              >
+                <div />
+                <span>Estoque</span>
+              </S.CheckboxButton>
+            </S.Wrapper>
             <S.Table>
               <S.TableHeader>
                 <div>
@@ -144,20 +184,11 @@ export default function NewStock() {
               </S.TableHeader>
               <TableListMaterials
                 checkbox={'manageStock'}
-                materials={materials}
+                materials={selectedListStock()}
                 selectedTableRows={selectedTableRows}
                 toggleRowSelection={toggleRowSelection}
               />
             </S.Table>
-            {selectedTableRows.length > 0 && (
-              <S.Button
-                onClick={() => {
-                  router.push(`/dashboard/almox/stock/select-material/${encryptSlug}`);
-                }}
-              >
-                Selecionar Quantidade ({selectedTableRows.length})
-              </S.Button>
-            )}
           </>
         )}
       </S.Container>

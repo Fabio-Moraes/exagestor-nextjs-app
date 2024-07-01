@@ -66,36 +66,40 @@ export function TableListMaterials(props: TableListMaterialsType) {
   return (
     <div>
       {materials &&
-        materials.map((item) => (
-          <div key={uuidv4()}>
-            <S.TableRow
-              $isSelected={
-                (checkbox === 'selectMaterial' && selectedTableRows.includes(item.id)) ||
-                manageStockRowSelection === String(item.product_code)
-              }
-              onClick={() => handleTableRow(item)}
-              key={uuidv4()}
-            >
-              <div>
-                <span>{item.product_name.toUpperCase()}</span>
+        materials.map((item) => {
+          if (Number(item.quantity_value) > 0) {
+            return (
+              <div key={uuidv4()}>
+                <S.TableRow
+                  $isSelected={
+                    (checkbox === 'selectMaterial' && selectedTableRows.includes(item.id)) ||
+                    manageStockRowSelection === String(item.product_code)
+                  }
+                  onClick={() => handleTableRow(item)}
+                  key={uuidv4()}
+                >
+                  <div>
+                    <span>{item.product_name.toUpperCase()}</span>
+                  </div>
+                  <div>
+                    <span>{item.quantity_value}</span>
+                  </div>
+                  <div>
+                    <span>{item.unit_type}</span>
+                  </div>
+                  <div>
+                    <span>{item.product_code}</span>
+                  </div>
+                </S.TableRow>
+                <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
+                  <button onClick={() => {}}>
+                    <p>DETALHES</p>
+                  </button>
+                </S.Dialog>
               </div>
-              <div>
-                <span>{item.quantity_value}</span>
-              </div>
-              <div>
-                <span>{item.unit_type}</span>
-              </div>
-              <div>
-                <span>{item.product_code}</span>
-              </div>
-            </S.TableRow>
-            <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
-              <button onClick={() => {}}>
-                <p>DETALHES</p>
-              </button>
-            </S.Dialog>
-          </div>
-        ))}
+            );
+          }
+        })}
     </div>
   );
 }

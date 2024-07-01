@@ -30,8 +30,8 @@ export function Toolbar() {
         </S.WrapperLink>
       </Link>
 
-      <Link href="/dashboard/almox/stock_circulation" scroll={false}>
-        <S.WrapperLink $path={['/dashboard/almox/stock_circulation'].includes(pathname)}>
+      <Link href="/dashboard/almox/stock-view" scroll={false}>
+        <S.WrapperLink $path={['/dashboard/almox/stock-view'].includes(pathname)}>
           <Image
             priority
             loading="eager"
@@ -41,9 +41,9 @@ export function Toolbar() {
             height="25"
           />
           <span>
-            Em
+            Visualizar
             <br />
-            Circulação
+            Materiais
           </span>
         </S.WrapperLink>
       </Link>

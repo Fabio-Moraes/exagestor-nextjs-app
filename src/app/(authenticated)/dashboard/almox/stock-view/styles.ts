@@ -59,6 +59,7 @@ export const AddButton = styled.button`
 export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
+  margin-right: 1.5rem;
   cursor: pointer;
 
   > div {
@@ -157,7 +158,7 @@ export const ErrorContainer = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 1rem;
 `;
 

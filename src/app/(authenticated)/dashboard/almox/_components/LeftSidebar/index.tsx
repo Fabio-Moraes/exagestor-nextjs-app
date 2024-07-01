@@ -34,8 +34,8 @@ export function LeftSidebar() {
           </S.WrapperLink>
         </Link>
 
-        <Link href="/dashboard/almox/stock_circulation" scroll={false}>
-          <S.WrapperLink $path={['/dashboard/almox/stock_circulation'].includes(pathname)}>
+        <Link href="/dashboard/almox/stock-view" scroll={false}>
+          <S.WrapperLink $path={['/dashboard/almox/stock-view'].includes(pathname)}>
             <Image
               priority
               loading="eager"
@@ -44,7 +44,7 @@ export function LeftSidebar() {
               width="25"
               height="25"
             />
-            <span>Em Circulação</span>
+            <span>Visualizar Materiais</span>
           </S.WrapperLink>
         </Link>
 
