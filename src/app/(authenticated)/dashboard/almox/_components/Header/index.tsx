@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -12,6 +13,8 @@ import iconExa from 'app/_assets/svg/brand_logo.svg';
 import * as S from './styles';
 
 export function Header() {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({} as { name: string });
 
@@ -58,7 +61,11 @@ export function Header() {
 
   return (
     <S.Container>
-      <S.ProfileCompany>
+      <S.ProfileCompany
+        onClick={() => {
+          router.push('/', { scroll: false });
+        }}
+      >
         <Image
           src={iconExa}
           priority

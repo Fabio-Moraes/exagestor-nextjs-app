@@ -94,7 +94,7 @@ export const ProfileUser = styled.div`
   }
 `;
 
-export const ProfileCompany = styled.div`
+export const ProfileCompany = styled.button`
   display: flex;
   align-items: center;
   text-align: left;

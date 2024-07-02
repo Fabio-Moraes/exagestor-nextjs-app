@@ -214,7 +214,11 @@ export default function Details({ params }: SlugType) {
               </>
             ) : (
               <>
-                <S.ProfileCompany>
+                <S.ProfileCompany
+                  onClick={() => {
+                    router.push('/', { scroll: false });
+                  }}
+                >
                   <Image
                     src={iconExa}
                     priority
