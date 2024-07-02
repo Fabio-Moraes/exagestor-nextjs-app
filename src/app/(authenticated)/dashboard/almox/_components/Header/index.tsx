@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -63,7 +63,7 @@ export function Header() {
     <S.Container>
       <S.ProfileCompany
         onClick={() => {
-          router.push('/', { scroll: false });
+          router.push('/');
         }}
       >
         <Image
