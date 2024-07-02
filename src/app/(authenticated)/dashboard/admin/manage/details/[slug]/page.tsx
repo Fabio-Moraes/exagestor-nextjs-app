@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -76,6 +77,7 @@ function formatDate(date: string) {
 }
 
 export default function Details({ params }: SlugType) {
+  const router = useRouter();
   const [service, setService] = useState({} as ServiceData);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
