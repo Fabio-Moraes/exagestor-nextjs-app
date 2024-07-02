@@ -59,7 +59,11 @@ export function Header() {
 
   return (
     <S.Container>
-      <S.ProfileCompany>
+      <S.ProfileCompany
+        onClick={() => {
+          router.push('/', { scroll: false });
+        }}
+      >
         <Image
           src={iconExa}
           priority
