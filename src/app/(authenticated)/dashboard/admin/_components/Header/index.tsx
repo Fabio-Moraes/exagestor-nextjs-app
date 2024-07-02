@@ -87,7 +87,9 @@ export function Header() {
               alt="Axa"
               style={{ width: '2.3rem', height: 'auto' }}
             />
-            <span>ADMIN</span>
+            <div>
+              <span>ADMIN</span>
+            </div>
           </div>
           <button
             onClick={() => {
