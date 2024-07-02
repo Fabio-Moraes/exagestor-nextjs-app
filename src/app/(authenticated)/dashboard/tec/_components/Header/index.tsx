@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
@@ -17,6 +17,7 @@ import * as S from './styles';
 
 export function Header() {
   const router = useRouter();
+
   const [user, setUser] = useState({} as { name: string });
 
   const socket = useWebSocket();
@@ -59,7 +60,7 @@ export function Header() {
     <S.Container>
       <S.ProfileCompany
         onClick={() => {
-          router.push('/');
+          router.push('/', { scroll: false });
         }}
       >
         <Image
