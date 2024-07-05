@@ -72,6 +72,12 @@ export function List({ service }: { service: Service[] }) {
     router.push(`/dashboard/superadmin/manage/historic/${encryptSlug}`, { scroll: false });
   }
 
+  function fetchSeviceEnabledAndDisabler() {
+    router.push(`/dashboard/superadmin/manage/service-enabler-and-disabler/`, {
+      scroll: false
+    });
+  }
+
   return (
     <S.ListContainer>
       <div>
@@ -92,9 +98,18 @@ export function List({ service }: { service: Service[] }) {
           />
         </S.SearchWrapper>
       </div>
-      <button onClick={fetchHistoric}>
-        <p>HISTÓRICO GERAL</p>
-      </button>
+      <div>
+        <button onClick={fetchHistoric}>
+          <p>
+            HISTÓRICO <br /> GERAL
+          </p>
+        </button>
+        <button onClick={fetchSeviceEnabledAndDisabler}>
+          <p>
+            DISPONIBILIDADE <br /> DE SERVIÇO
+          </p>
+        </button>
+      </div>
       {isLoading
         ? [...Array(4)].map((_, index) => (
             <S.ItemsSkeleton key={String(index)}>

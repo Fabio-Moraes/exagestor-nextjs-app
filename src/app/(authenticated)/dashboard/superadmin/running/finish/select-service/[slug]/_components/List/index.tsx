@@ -184,7 +184,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
           </S.SearchWrapper>
           <div>
             <div>
-              <S.Button onClick={() => setShowSelected(!showSelected)}>
+              <S.Button onClick={() => setShowSelected((show) => !show)}>
                 {showSelected
                   ? 'Mostrar Todos'
                   : `Filtrar Selecionado${selectedItemKeys.length > 1 ? 's' : ''} (${

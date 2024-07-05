@@ -44,14 +44,14 @@ export function LeftSidebar() {
         <Link href="/dashboard/superadmin/register" scroll={false}>
           <S.WrapperLink $path={['/dashboard/superadmin/register', '/'].includes(pathname)}>
             <Image priority loading="eager" src={add} alt="Add" width="25" height="25" />
-            <span>Novo Resgistro</span>
+            <span>Novo Registro</span>
           </S.WrapperLink>
         </Link>
 
         <Link href="/dashboard/superadmin/manage" scroll={false}>
           <S.WrapperLink $path={['/dashboard/superadmin/manage'].includes(pathname)}>
             <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
-            <span>Gerenciar Equipe</span>
+            <span>Gerenciar Sistema</span>
           </S.WrapperLink>
         </Link>
       </S.Wrapper>

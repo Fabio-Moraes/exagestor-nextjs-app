@@ -8,31 +8,37 @@ export const ListContainer = styled.div`
   border-radius: 0.7rem;
   /* position: relative; */
 
-  > button {
-    background-color: rgb(var(--color-secondary-04));
-    align-items: center;
-    flex-shrink: 0;
-    border-radius: 0.5rem;
-    width: 10rem;
-    margin-bottom: 3rem;
-    cursor: pointer;
-    user-select: none;
-
-    > p {
-      text-align: center;
-      width: 100%;
-      color: #fff;
-    }
-
+  > div:nth-child(2) {
     display: flex;
-    height: 4.5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    > button {
+      background-color: rgb(var(--color-secondary-04));
+      align-items: center;
+      flex-shrink: 0;
+      border-radius: 0.5rem;
+      width: 15rem;
+      margin-bottom: 3rem;
+      cursor: pointer;
+      user-select: none;
 
-    transition: all 0.05s ease;
-    box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
+      > p {
+        text-align: center;
+        width: 100%;
+        color: #fff;
+        padding: 1rem;
+      }
 
-    &:active {
-      transform: translateY(2px);
-      box-shadow: none;
+      display: flex;
+      height: 4.5rem;
+
+      transition: all 0.05s ease;
+      box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
+
+      &:active {
+        transform: translateY(2px);
+        box-shadow: none;
+      }
     }
   }
 

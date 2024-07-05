@@ -71,7 +71,7 @@ export default function FinishService() {
 
   return (
     <S.Container>
-      <S.Title>Gerenciar Equipe</S.Title>
+      <S.Title>Gerenciar Sistema</S.Title>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <S.ErrorContainer>

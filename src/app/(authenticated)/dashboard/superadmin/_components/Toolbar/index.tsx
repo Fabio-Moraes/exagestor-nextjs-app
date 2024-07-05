@@ -55,7 +55,7 @@ export function Toolbar() {
         <S.WrapperLink $path={['/dashboard/superadmin/manage'].includes(pathname)}>
           <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
           <span>
-            Gerenciar <br /> Equipe
+            Gerenciar <br /> Sistema
           </span>
         </S.WrapperLink>
       </Link>

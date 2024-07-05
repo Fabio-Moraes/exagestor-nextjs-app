@@ -7,6 +7,20 @@ export const Container = styled.div`
   padding: 2rem;
 `;
 
+export const BoxButton = styled.div`
+  display: flex;
+  height: 7rem;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+
+  padding: 0.5rem;
+  width: 18rem;
+  background-color: rgb(var(--color-secondary-02));
+  border-radius: 0.7rem;
+`;
+
 export const Title = styled.h1`
   font-size: 2.4rem;
   margin-bottom: 2rem;
@@ -22,83 +36,23 @@ export const Title = styled.h1`
   }
 `;
 
-export const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  padding-top: 1.5rem;
-
-  > div {
-    display: flex;
-    align-items: center;
-  }
-
-  > div:nth-last-child(2) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 1rem;
-  }
-
-  > label {
-    overflow-wrap: break-word;
-    margin: 0 2rem 0.5rem 2rem;
-    text-align: start;
-  }
-`;
-
-export const Input = styled.input`
-  padding: 1rem;
-  margin: 0 0rem 1.5rem 0rem;
-  font-size: 1.6rem;
-  background-color: #fafafa;
-  border-radius: 0.5rem;
-  outline: 0.1rem solid #ccc;
-  font-family: 'OpenSans-Regular';
-
-  &:focus {
-    outline: 0.2rem solid rgb(var(--color-secondary-04));
-  }
-
-  &::placeholder {
-    color: #666;
-  }
-`;
-
 export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0.6rem 1rem 2rem 0.5rem;
+  margin: 0rem;
 
   > div {
     width: 2rem;
     height: 2rem;
     border: 0.2rem solid rgb(var(--color-secondary-04));
     background-color: ${({ $checked }) =>
-      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
+      $checked ? 'rgb(var(--color-primary-02))' : '#fff'};
     border-radius: 1rem;
   }
   > span {
     margin-left: 0.5rem;
     font-size: 1.4rem;
-  }
-`;
-
-export const Button = styled.button`
-  width: 15rem;
-  background-color: rgb(var(--color-secondary-04));
-  padding: 1rem;
-  margin: 3rem 0rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1.6rem;
-  color: #fff;
-
-  &:hover {
-    background-color: #00796b;
-  }
-
-  &:focus {
-    outline: none;
+    color: #ffffff;
   }
 `;
