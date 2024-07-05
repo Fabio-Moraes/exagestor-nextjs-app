@@ -51,20 +51,11 @@ export function RegisterService() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    function validateName(str: string) {
-      return /^[a-zA-ZÀ-ÿ ]+$/.test(str);
-    }
-
     if (!successfullyCompleted) {
       setIconSvgModal(iconSvgModal);
 
       if (description.trim() === '') {
-        setModalValue('Informe o nome do funcionário.');
-        return;
-      }
-
-      if (!validateName(description)) {
-        setModalValue('O nome não pode conter números ou caracteres inválidos.');
+        setModalValue('Informe o nome do serviço.');
         return;
       }
 
@@ -85,7 +76,7 @@ export function RegisterService() {
             setSuccessfullyCompleted(true);
             setIsPopupValue('');
             setIconSvgModal(checkedSvg);
-            setModalValue('Novo funcionário(a) registrado com sucesso.');
+            setModalValue('Novo serviço registrado com sucesso.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push('/dashboard/superadmin/running', { scroll: false });
