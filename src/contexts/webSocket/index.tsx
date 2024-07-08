@@ -63,7 +63,6 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
 
       newSocket.emit('HIDDEN_USER', { ...data, hidden: false });
       document.addEventListener('visibilitychange', handleVisibilityChange);
-      //document.addEventListener('click', handleVisibilityChange);
 
       intervalId = setInterval(() => {
         updateWebsocketConnected(newSocket.connected);
@@ -72,7 +71,6 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
       setSocket(newSocket);
       return () => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
-        //document.removeEventListener('click', handleVisibilityChange);
         newSocket.disconnect();
       };
     });
