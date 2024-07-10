@@ -30,6 +30,7 @@ interface ServiceData {
   status: string;
   start_service_at: string;
   update_count: number;
+  observation: string;
   created_at: string;
   protocol: string;
 }
