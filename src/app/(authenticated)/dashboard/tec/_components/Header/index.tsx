@@ -71,7 +71,7 @@ export function Header() {
           style={{ width: '5.4rem', height: 'auto' }}
         />
         <S.ProfileInfoCompany>
-          <h1>WMAX</h1>
+          <h1>EXATELECOM</h1>
           <span>Soluções em Telecom</span>
         </S.ProfileInfoCompany>
       </S.ProfileCompany>
