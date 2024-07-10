@@ -41,6 +41,13 @@ export const ListContainer = styled.div`
   }
 `;
 
+export const AlertList = styled.p`
+  background-image: linear-gradient(to top, #ffd700, #dce6dc);
+  margin-top: 2rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+`;
+
 export const Button = styled.button`
   display: block;
   align-items: center;

@@ -59,7 +59,7 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
   const onClickButtonCheck = () => {
     if (!passedScheduledDate || allButtonsLocked || status === 'paused') return;
 
-    router.push(`/dashboard/superadmin/running/finish/select-service/${encryptSlug}`);
+    router.push(`/dashboard/superadmin/running/finish/service/${encryptSlug}`);
   };
 
   async function onClickButtonPlayPause() {

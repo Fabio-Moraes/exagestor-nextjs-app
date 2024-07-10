@@ -15,7 +15,7 @@ const redirectRole = {
   admin: '/dashboard/admin/running',
   superadmin: '/dashboard/superadmin/monitor',
   cop: '/dashboard/cop/running',
-  tec: '/dashboard/tec/new',
+  tec: '/dashboard/tec/running',
   almox: '/dashboard/almox/stock'
 };
 

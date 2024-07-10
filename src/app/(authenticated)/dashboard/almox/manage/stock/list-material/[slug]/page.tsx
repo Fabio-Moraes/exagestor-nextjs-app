@@ -153,7 +153,7 @@ export default function NewStock({ params }: SlugType) {
               ))}
           </S.Table>
           {selectedTableRows.length > 0 && (
-            <Link href={`/dashboard/almox/manage/stock/select-material/${encryptSlug}`}>
+            <Link href={`/dashboard/almox/manage/stock/material/${encryptSlug}`}>
               <S.Button>Selecionar Quantidade ({selectedTableRows.length})</S.Button>
             </Link>
           )}

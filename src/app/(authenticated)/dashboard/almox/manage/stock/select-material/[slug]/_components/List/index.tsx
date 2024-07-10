@@ -175,7 +175,7 @@ export function List({
                 <S.Button onClick={() => setShowSelected(!showSelected)}>
                   {showSelected
                     ? 'Mostrar Todos'
-                    : `Filtrar Selecionado${
+                    : `Selecionado${
                         nonZeroQuantityItemsValue > 1 ? 's' : ''
                       } (${nonZeroQuantityItemsValue})`}
                 </S.Button>

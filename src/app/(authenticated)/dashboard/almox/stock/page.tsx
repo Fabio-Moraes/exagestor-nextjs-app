@@ -213,7 +213,7 @@ export default function NewStock() {
             {selectedTableRows.length > 0 && checkbox === 'selectMaterial' && (
               <S.Button
                 onClick={() => {
-                  router.push(`/dashboard/almox/stock/select-material/${encryptSlug}`);
+                  router.push(`/dashboard/almox/stock/material/${encryptSlug}`);
                 }}
               >
                 Selecionar Quantidade ({selectedTableRows.length})
