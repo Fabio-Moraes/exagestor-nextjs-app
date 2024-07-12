@@ -7,16 +7,17 @@ type Decoded = {
   user?: {
     id: number;
     name: string;
-    role: 'admin' | 'tec' | 'almox' | 'cop' | 'superadmin';
+    role: 'tec' | 'almox' | 'cop' | 'admin' | 'superadmin' | 'config';
   };
 };
 
 const redirectRole = {
+  tec: '/dashboard/tec/running',
+  almox: '/dashboard/almox/stock',
+  cop: '/dashboard/cop/running',
   admin: '/dashboard/admin/running',
   superadmin: '/dashboard/superadmin/monitor',
-  cop: '/dashboard/cop/running',
-  tec: '/dashboard/tec/running',
-  almox: '/dashboard/almox/stock'
+  config: '/dashboard/config/settings'
 };
 
 const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';

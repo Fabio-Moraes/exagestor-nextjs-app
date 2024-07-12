@@ -9,7 +9,7 @@ import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import { useWebsocketConnected } from 'store/websocketConnected';
-import { business } from 'theme/svg/business';
+import { business } from 'themes/svg/business';
 
 import * as S from './styles';
 

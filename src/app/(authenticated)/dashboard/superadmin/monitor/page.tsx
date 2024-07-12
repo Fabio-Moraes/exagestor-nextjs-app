@@ -12,7 +12,7 @@ import { internalApi } from 'services/apiAxios';
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
-import { business } from 'theme/svg/business';
+import { business } from 'themes/svg/business';
 
 const arrowLeft = business.graphic.arrow_left;
 const arrowRight = business.graphic.arrow_right;

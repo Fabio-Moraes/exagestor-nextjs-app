@@ -51,7 +51,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
-  border-radius: 1rem;
+  border-radius: 2rem;
   overflow: hidden;
 
   > div {
@@ -79,16 +79,18 @@ export const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 1rem;
+  padding-top: 1.8rem;
   background-color: #ffffff;
 
   > div:nth-child(1) {
     display: flex;
     align-items: center;
-    margin: 0.5rem 0.7rem 1rem 0;
+    width: 100%;
+    padding: 0 2.5rem;
     > strong {
       font-size: 2.2rem;
     }
+    justify-content: space-between;
   }
 
   > div:nth-child(2) {
@@ -105,14 +107,18 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-right: 1.5rem;
+  margin-bottom: 0.5rem;
+  background-color: #dfe0e1;
+  border: 0.1rem solid #ccc;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  width: 9.5rem;
 
   > div {
     width: 2rem;
     height: 2rem;
-    border: 0.2rem solid rgb(var(--color-secondary-04));
-    background-color: ${({ $checked }) =>
-      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
+    border: 0.2rem solid #525352;
+    background-color: ${({ $checked }) => ($checked ? '#2B2B2B' : '#fff')};
     border-radius: 1rem;
   }
 
@@ -178,7 +184,7 @@ export const TogglePasswordVisibilityButton = styled.button`
 
 export const Button = styled.button`
   width: 80%;
-  background-color: rgb(var(--color-secondary-04));
+  background-color: #2b2b2b;
   padding: 1rem;
   margin: 2rem 2rem;
   border-radius: 0.4rem;
@@ -187,7 +193,7 @@ export const Button = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: rgb(var(--color-primary-01));
+    background-color: #525352;
   }
 `;
 
@@ -205,7 +211,7 @@ export const ErrorContainer = styled.div`
 
   > button {
     width: 15rem;
-    background-color: rgb(var(--color-secondary-04));
+    background-color: #2b2b2b;
     padding: 1rem;
     margin: 2rem 2rem;
     border: 0.1rem solid #000000;

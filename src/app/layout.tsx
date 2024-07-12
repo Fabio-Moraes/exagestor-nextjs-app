@@ -1,6 +1,6 @@
 import StyledComponentsRegistry from 'lib/registry';
 
-import 'theme/css';
+import 'themes/css';
 
 export const metadata = {
   title: {
@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html data-theme="wmax">
       <body>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>

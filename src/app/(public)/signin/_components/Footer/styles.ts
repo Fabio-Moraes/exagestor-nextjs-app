@@ -4,12 +4,6 @@ import styled from 'styled-components';
 
 export const Container = styled.footer`
   z-index: 1000;
-  background-image: linear-gradient(
-    to left,
-    rgb(var(--color-primary-04)),
-    rgb(var(--color-primary-02)),
-    rgb(var(--color-primary-04))
-  );
   width: min(60.1rem, 100%);
   padding-top: 1rem;
   position: relative;

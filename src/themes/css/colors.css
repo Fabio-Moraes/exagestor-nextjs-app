@@ -1,0 +1,36 @@
+html[data-theme="exa"] {
+  /* Primary Colors */
+  /*#92D3B3*/--color-primary-01: 146, 211, 179;
+  /*#3F7971*/--color-primary-02: 63, 121, 113;
+  /*#68b790*/--color-primary-03: 104, 183, 144;
+  /*#3F795E*/--color-primary-04: 63, 121, 94;
+  /*#3C7D5D*/--color-primary-05: 60, 125, 93;
+
+  /* Secondary Colors */
+  /*#b1d6c3*/--color-secondary-01: 177, 214, 195;
+  /*#8BC9A8*/--color-secondary-02: 139, 201, 168;
+  /*#5E9987*/--color-secondary-03: 94, 153, 135;
+  /*#27A567*/--color-secondary-04: 39, 165, 103;
+}
+
+html[data-theme="wmax"] {
+  /* Primary Colors */
+  /*#078ABA*/--color-primary-01: 7, 138, 186;
+  /*#078ABA*/--color-primary-02: 7, 138, 186;
+  /*#32455a*/--color-primary-03: 50, 69, 90;
+  /*#0d1d25*/--color-primary-04: 13, 29, 37;
+  /*#343A40*/--color-primary-05: 52, 58, 64;
+
+  /* Secondary Colors */
+  /*#002331*/--color-secondary-01: 0, 35, 49; 
+  /*#343A40*/--color-secondary-02: 52, 58, 64; 
+  /*#1A1A1A*/--color-secondary-03: 26, 26, 26; 
+  /*#1A1A1A*/--color-secondary-04: 26, 26, 26; 
+}
+
+html {
+  /* Global Colors */
+  /*#ffffff*/--color-palette-body-bg: 255, 255, 255;
+  /*#e9c80f*/--color-palette-analysis: 233, 200, 15;
+  /*#868474*/--color-palette-scheduled: 134, 132, 116;
+}

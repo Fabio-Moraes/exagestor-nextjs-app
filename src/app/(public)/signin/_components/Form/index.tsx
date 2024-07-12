@@ -10,7 +10,7 @@ import { internalApi } from 'services/apiAxios';
 import alert from './_assets/svg/alert.svg';
 import eyeClosed from './_assets/svg/eye-closed-.svg';
 import eyeOpen from './_assets/svg/eye-open.svg';
-import exa from 'app/_assets/svg/brand_logo.svg';
+//import exa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
 
@@ -25,7 +25,7 @@ const reconnectDelay = 3000;
 
 export const Form = () => {
   const [identification, setIdentification] = useState('');
-  const [cpfOrCnpj, setCpfOrCnpj] = useState('CNPJ');
+  const [cpfOrCnpj, setCpfOrCnpj] = useState('CPF');
   const [password, setPassword] = useState('');
   const [invalidCredentials, setInvalidCredentials] = useState('');
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
@@ -139,8 +139,9 @@ export const Form = () => {
     <>
       <S.Container>
         <S.FormContainer onSubmit={handleSubmit}>
+          {/*
           <div>
-            <Image
+             <Image
               priority
               src={exa}
               alt="Book"
@@ -151,22 +152,11 @@ export const Form = () => {
                 marginLeft: -5
               }}
             />
-            <strong>EXATELECOM</strong>
+            <strong>GESTOR</strong>
           </div>
+          */}
 
           <div>
-            <S.CheckboxButton
-              type="button"
-              $checked={cpfOrCnpj === 'CNPJ'}
-              onClick={() => {
-                setIdentification('');
-                setCpfOrCnpj('CNPJ');
-              }}
-            >
-              <div />
-              <span>Jurídica</span>
-            </S.CheckboxButton>
-
             <S.CheckboxButton
               type="button"
               $checked={cpfOrCnpj === 'CPF'}
@@ -177,6 +167,18 @@ export const Form = () => {
             >
               <div />
               <span>Física</span>
+            </S.CheckboxButton>
+
+            <S.CheckboxButton
+              type="button"
+              $checked={cpfOrCnpj === 'CNPJ'}
+              onClick={() => {
+                setIdentification('');
+                setCpfOrCnpj('CNPJ');
+              }}
+            >
+              <div />
+              <span>Jurídica</span>
             </S.CheckboxButton>
           </div>
 
