@@ -12,11 +12,7 @@ import { internalApi } from 'services/apiAxios';
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
-import { business } from 'themes/svg/business';
-
-const arrowLeft = business.graphic.arrow_left;
-const arrowRight = business.graphic.arrow_right;
-const refresh = business.graphic.refresh;
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
@@ -44,8 +40,14 @@ type ServicesType = { startIndex: number; data: Service[] };
 export default function GeneralMonitoring() {
   const [services, setServices] = useState<ServicesType>({ startIndex: 0, data: [] });
   const [spinner, setSpineer] = useState(false);
-  const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  const [connectionError, setConnectionError] = useState(false);
+
+  const business = getCurrentBusinessTheme();
+
+  const arrowLeft = business?.graphic.arrow_left;
+  const arrowRight = business?.graphic.arrow_right;
+  const refresh = business?.graphic.refresh;
 
   const maxRetries = 4;
 

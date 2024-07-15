@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html data-theme="wmax">
+    <html>
       <body>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>

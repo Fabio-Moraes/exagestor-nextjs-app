@@ -34,7 +34,7 @@ type FetchService = {
 export function List() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSelected, setShowSelected] = useState<boolean>(false);
-  const [ServiceData, setServiceData] = useState([] as ServiceData[]);
+  const [serviceData, setServiceData] = useState([] as ServiceData[]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -100,7 +100,7 @@ export function List() {
 
   const router = useRouter();
 
-  const filteredItems = ServiceData?.filter(
+  const filteredItems = serviceData?.filter(
     (item) =>
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (showSelected ? item.status === 'inativo' : true)
@@ -135,12 +135,12 @@ export function List() {
                     {showSelected
                       ? 'Mostrar Todos'
                       : `Filtrar Inativo${
-                          ServiceData.filter((services) => services.status === 'inativo')
+                          serviceData.filter((services) => services.status === 'inativo')
                             .length > 1
                             ? 's'
                             : ''
                         } (${
-                          ServiceData.filter((services) => services.status === 'inativo')
+                          serviceData.filter((services) => services.status === 'inativo')
                             .length
                         })`}
                   </S.Button>

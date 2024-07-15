@@ -9,13 +9,7 @@ import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import { useWebsocketConnected } from 'store/websocketConnected';
-import { business } from 'themes/svg/business';
-
-const checkSvg = business.running.check;
-const closeSvg = business.running.close;
-const docSvg = business.running.doc;
-const pauseSvg = business.running.pause;
-const playSvg = business.running.play;
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
@@ -44,6 +38,14 @@ interface propsImageType {
 }
 
 export function ButtonBar(props: { service: RunningService; passedScheduledDate: boolean }) {
+  const business = getCurrentBusinessTheme();
+
+  const checkSvg = business?.running.check;
+  const closeSvg = business?.running.close;
+  const docSvg = business?.running.doc;
+  const pauseSvg = business?.running.pause;
+  const playSvg = business?.running.play;
+
   const { service, passedScheduledDate } = props;
 
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);

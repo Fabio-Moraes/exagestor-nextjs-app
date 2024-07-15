@@ -5,15 +5,16 @@ import { usePathname } from 'next/navigation';
 import Image from 'components/Vercel/Image';
 import Link from 'components/Vercel/Link';
 
-import { business } from 'themes/svg/business';
-
-const execution = business.menu.rocket;
-const manage = business.menu.bookPen;
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
 export function LeftSidebar() {
   const pathname = usePathname();
+  const business = getCurrentBusinessTheme();
+
+  const manage = business?.menu.bookPen;
+  const execution = business?.menu.rocket;
 
   return (
     <S.Container>

@@ -7,6 +7,7 @@ import { internalApi } from 'services/apiAxios';
 
 import { io, Socket } from 'socket.io-client';
 import { useRemoteDisconnectionPopup } from 'store/remoteDisconnectionPopup';
+//import { useThemeCompany } from 'store/themeCompany';
 import { useWebsocketConnected } from 'store/websocketConnected';
 
 type WebSocketContextType = Socket | null;
@@ -29,6 +30,8 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
 
   const connectSocket = async (): Promise<void> => {
     const { data } = await internalApi.post('/api/decode/auth_token');
+    //document.documentElement.setAttribute('data-theme', data.themeCompany);
+
     return new Promise<void>((resolve, reject) => {
       const newSocket = io(String(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER_BASEURL), {
         transports: ['websocket'],

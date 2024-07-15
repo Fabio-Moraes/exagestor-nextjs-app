@@ -5,20 +5,25 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
+import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
+import { useWebSocket } from 'contexts/webSocket';
+import { getCurrentBusinessTheme } from 'themes/svg/business';
+
 import iconUser from './_assets/svg/user.svg';
-import iconExa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
 
 export function Header() {
+  const [user, setUser] = useState({} as { name: string; company: string });
+
+  const business = getCurrentBusinessTheme();
+  const socket = useWebSocket();
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({} as { name: string });
-
-  const maxRetries = 4;
+  const businessLogo = business?.logo.brand_logo;
+  const maxRetries = 5;
 
   async function fetchUser() {
     for (let count = 0; count < maxRetries; count++) {
@@ -27,36 +32,32 @@ export function Header() {
 
         count = maxRetries;
         setUser(response.data);
+        break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await TimedWait(5000);
       }
     }
   }
 
   async function fetchDeletedeToken() {
-    setIsLoading(true);
     for (let count = 0; count < maxRetries; count++) {
       try {
         await internalApi.post('/api/logout');
+        if (socket) socket.disconnect();
         window.location.reload();
-        count = maxRetries;
+        break;
       } catch (error) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        if (count === maxRetries) setIsLoading(false);
+        await TimedWait(5000);
       }
     }
   }
 
   useEffect(() => {
-    fetchUser();
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
+    const initialize = async () => {
+      await fetchUser();
     };
+
+    initialize();
   }, []);
 
   return (
@@ -67,19 +68,19 @@ export function Header() {
         }}
       >
         <Image
-          src={iconExa}
+          src={businessLogo}
           priority
           loading="eager"
           alt="Axa"
           style={{ width: '5.4rem', height: 'auto' }}
         />
         <S.ProfileInfoCompany>
-          <h1>EXATELECOM</h1>
+          <h1>{user.company?.toUpperCase()}</h1>
           <span>Soluções em Telecom</span>
         </S.ProfileInfoCompany>
       </S.ProfileCompany>
       <S.ProfileUser>
-        {user.name && !isLoading ? <span>{user.name}</span> : <LineSkaleton width="30rem" />}
+        {user.name ? <span>{user.name}</span> : <LineSkaleton width="30rem" />}
         <div>
           <div>
             <Image

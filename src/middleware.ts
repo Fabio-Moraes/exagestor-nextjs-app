@@ -17,7 +17,7 @@ const redirectRole = {
   cop: '/dashboard/cop/running',
   admin: '/dashboard/admin/running',
   superadmin: '/dashboard/superadmin/monitor',
-  config: '/dashboard/config/settings'
+  config: '/dashboard/config/theme'
 };
 
 const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';

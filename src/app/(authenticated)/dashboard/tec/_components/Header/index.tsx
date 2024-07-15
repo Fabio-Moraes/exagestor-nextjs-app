@@ -9,18 +9,20 @@ import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import { useWebSocket } from 'contexts/webSocket';
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import iconUser from './_assets/svg/user.svg';
-import iconExa from 'app/_assets/svg/brand_logo.svg';
 
 import * as S from './styles';
 
 export function Header() {
+  const [user, setUser] = useState({} as { name: string; company: string });
+
+  const business = getCurrentBusinessTheme();
+  const socket = useWebSocket();
   const router = useRouter();
 
-  const [user, setUser] = useState({} as { name: string });
-
-  const socket = useWebSocket();
+  const businessLogo = business?.logo.brand_logo;
   const maxRetries = 4;
 
   async function fetchUser() {
@@ -64,14 +66,14 @@ export function Header() {
         }}
       >
         <Image
-          src={iconExa}
+          src={businessLogo}
           priority
           loading="eager"
           alt="Axa"
           style={{ width: '5.4rem', height: 'auto' }}
         />
         <S.ProfileInfoCompany>
-          <h1>EXATELECOM</h1>
+          <h1>{user.company?.toUpperCase()}</h1>
           <span>Soluções em Telecom</span>
         </S.ProfileInfoCompany>
       </S.ProfileCompany>

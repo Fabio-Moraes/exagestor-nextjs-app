@@ -5,21 +5,21 @@ import { usePathname } from 'next/navigation';
 import Image from 'components/Vercel/Image';
 import Link from 'components/Vercel/Link';
 
-import { business } from 'themes/svg/business';
-
-const execution = business.menu.rocket;
-const manage = business.menu.bookPen;
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
 export function LeftSidebar() {
   const pathname = usePathname();
+  const business = getCurrentBusinessTheme();
+
+  const execution = business?.menu.rocket;
 
   return (
     <S.Container>
       <S.Wrapper>
-        <Link href="/dashboard/cop/running" scroll={false}>
-          <S.WrapperLink $path={['/dashboard/cop/running'].includes(pathname)}>
+        <Link href="/dashboard/config/theme" scroll={false}>
+          <S.WrapperLink $path={['/dashboard/config/theme'].includes(pathname)}>
             <Image
               priority
               loading="eager"
@@ -28,14 +28,7 @@ export function LeftSidebar() {
               width="25"
               height="25"
             />
-            <span>Em Execução</span>
-          </S.WrapperLink>
-        </Link>
-
-        <Link href="/dashboard/cop/manage" scroll={false}>
-          <S.WrapperLink $path={['/dashboard/cop/manage'].includes(pathname)}>
-            <Image priority loading="eager" src={manage} alt="Report" width="25" height="25" />
-            <span>Gerenciar Equipe</span>
+            <span>Gerenciar Tema</span>
           </S.WrapperLink>
         </Link>
       </S.Wrapper>

@@ -5,17 +5,18 @@ import { usePathname } from 'next/navigation';
 import Image from 'components/Vercel/Image';
 import Link from 'components/Vercel/Link';
 
-import { business } from 'themes/svg/business';
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
-const add = business.menu.addPerson;
-const execution = business.menu.rocket;
-const graph = business.menu.pitzChart;
-const manage = business.menu.bookPen;
-
 export function LeftSidebar() {
   const pathname = usePathname();
+  const business = getCurrentBusinessTheme();
+
+  const add = business?.menu.addPerson;
+  const execution = business?.menu.rocket;
+  const graph = business?.menu.pitzChart;
+  const manage = business?.menu.bookPen;
 
   return (
     <S.Container>

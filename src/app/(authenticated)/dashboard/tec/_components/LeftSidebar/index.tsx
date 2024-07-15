@@ -5,17 +5,20 @@ import { usePathname } from 'next/navigation';
 import Image from 'components/Vercel/Image';
 import Link from 'components/Vercel/Link';
 
-import { business } from 'themes/svg/business';
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
-const add = business.menu.addPerson;
-const execution = business.menu.rocket;
-const menu = business.menu.hamburgerMenu;
-const report = business.menu.bookPen;
-
 export function LeftSidebar() {
+  const business = getCurrentBusinessTheme();
+
   const pathname = usePathname();
+
+  const add = business?.menu.addPerson;
+  const execution = business?.menu.rocket;
+  const menu = business?.menu.hamburgerMenu;
+  const report = business?.menu.bookPen;
+
   const proportion = { width: 25, height: 25 };
 
   return (

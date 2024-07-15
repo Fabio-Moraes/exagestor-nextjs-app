@@ -10,17 +10,17 @@ import { internalApi } from 'services/apiAxios';
 
 import { useWebSocket } from 'contexts/webSocket';
 
-import iconExa from './_assets/svg/logo_exacode.svg';
+import iconExagestor from './_assets/svg/logo_exagestor.svg';
 import iconUser from './_assets/svg/user.svg';
 
 import * as S from './styles';
 
 export function Header() {
-  const router = useRouter();
-
-  const [user, setUser] = useState({} as { name: string });
+  const [user, setUser] = useState({} as { name: string; company: string });
 
   const socket = useWebSocket();
+  const router = useRouter();
+
   const maxRetries = 5;
 
   async function fetchUser() {
@@ -66,7 +66,7 @@ export function Header() {
         }}
       >
         <Image
-          src={iconExa}
+          src={iconExagestor}
           priority
           loading="eager"
           alt="Axa"
