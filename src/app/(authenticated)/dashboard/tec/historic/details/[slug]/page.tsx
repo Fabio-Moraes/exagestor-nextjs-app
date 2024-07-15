@@ -14,8 +14,7 @@ import { internalApi } from 'services/apiAxios';
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
-
-import iconExa from 'app/_assets/svg/brand_logo.svg';
+import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
@@ -103,8 +102,10 @@ export default function Details({ params }: SlugType) {
   const [processPrint, setProcessPrint] = useState(false);
 
   const router = useRouter();
+  const business = getCurrentBusinessTheme();
   const decryptSlug = decryptObject(params.slug);
   const elementRef = useRef<HTMLDivElement>(null);
+  const businessLogo = business?.logo.brand_logo;
 
   const fetchServices = async () => {
     setConnectionError(false);
@@ -216,7 +217,7 @@ export default function Details({ params }: SlugType) {
               <>
                 <S.ProfileCompany>
                   <Image
-                    src={iconExa}
+                    src={businessLogo}
                     priority
                     loading="eager"
                     alt="Axa"
