@@ -20,7 +20,7 @@ const redirectRole = {
   config: '/dashboard/config/theme'
 };
 
-const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05994';
+const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05999';
 const isPublicEndpoint = (pathname: string) => ['/', '/signin'].includes(pathname);
 
 export default async function middleware(request: NextRequest) {
