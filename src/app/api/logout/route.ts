@@ -9,7 +9,8 @@ type CustomError = {
 export async function POST() {
   try {
     const response = NextResponse.json({ success: true }, { status: 200 });
-    response.cookies.delete('auth_token');
+    response.cookies.delete('_session_auth');
+    response.cookies.delete('_session_ssid');
 
     return response;
   } catch (error: unknown) {

@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -85,7 +86,6 @@ export default function NewRegister() {
             observation: observationBox || null
           });
 
-          console.log('item duplicado');
           const { status } = response.data;
 
           if (status === 'already registered') {
@@ -109,6 +109,12 @@ export default function NewRegister() {
             const customError = error as CustomError;
             if (customError.response) {
               const statusCode = customError.response.status;
+
+              if (statusCode === 403) {
+                HandleLogout();
+                break;
+              }
+
               if (statusCode === 409) {
                 break;
               }
@@ -177,7 +183,7 @@ export default function NewRegister() {
     const textInput = textareaRef.current?.value ?? '';
 
     if (handleCursorPosition()?.columnNumber === 0) {
-      console.log('Está no começo da linha');
+      //Está no começo da linha
       setObservationBox(removeCharactersByIndex());
     } else {
       setObservationBox(textInput.slice(0, 500));

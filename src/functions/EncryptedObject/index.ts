@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const secretKey = 'super_secret_key';
+const secretKey = 'super_SECRET_SALT';
 
 interface EncryptedObject {
   ciphertext: string;

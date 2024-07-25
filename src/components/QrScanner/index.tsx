@@ -43,7 +43,6 @@ export function QRScanner({ handleScanned }: ScannedProps) {
     qrScanner.$canvas.getContext('2d', { willReadFrequently: true });
 
     video.onloadedmetadata = () => {
-      console.log('player video...');
       setIsVideoPlaying(true);
     };
 

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { encryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -77,6 +78,12 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
             const customError = error as CustomError;
             if (customError.response) {
               const statusCode = customError.response.status;
+
+              if (statusCode === 403) {
+                HandleLogout();
+                break;
+              }
+
               if (statusCode === 409) {
                 await TimedWait(10000);
               }
@@ -125,7 +132,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
     const textInput = textareaRef.current?.value ?? '';
 
     if (handleCursorPosition()?.columnNumber === 0) {
-      console.log('Está no começo da linha');
+      //Está no começo da linha
       setObservationBox((prevItems) => {
         return {
           ...prevItems,

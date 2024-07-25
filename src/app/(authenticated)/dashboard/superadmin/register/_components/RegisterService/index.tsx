@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { TextBox } from './_components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -87,6 +88,12 @@ export function RegisterService() {
             const customError = error as CustomError;
             if (customError.response) {
               const statusCode = customError.response.status;
+
+              if (statusCode === 403) {
+                HandleLogout();
+                break;
+              }
+
               if (statusCode === 409) {
                 break;
               }

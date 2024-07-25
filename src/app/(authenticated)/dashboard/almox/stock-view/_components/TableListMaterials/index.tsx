@@ -15,10 +15,6 @@ type Material = {
   created_at: string;
 };
 
-/* type FetchEmployeeMaterial = {
-  name_tec: string
-} */
-
 type TableListMaterialsType = {
   materials: Material[];
   fetchEmployee: Array<Material & { name_tec: string }>;

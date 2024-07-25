@@ -1,16 +1,16 @@
 html[data-theme="exatelecom"] {
-  /* Primary Colors */
-  /*#92D3B3*/--color-primary-01: 146, 211, 179;
-  /*#3F7971*/--color-primary-02: 63, 121, 113;
-  /*#68b790*/--color-primary-03: 104, 183, 144;
-  /*#3F795E*/--color-primary-04: 63, 121, 94;
-  /*#3C7D5D*/--color-primary-05: 60, 125, 93;
+/* Primary Colors */
+  /*#008F7A*/--color-primary-01: 0, 143, 122;
+  /*#008F7A*/--color-primary-02: 0, 143, 122;
+  /*#007A66*/--color-primary-03: 0, 122, 102;
+  /*#006653*/--color-primary-04: 0, 102, 83;
+  /*#4C4F50*/--color-primary-05: 76, 79, 80;
 
   /* Secondary Colors */
-  /*#b1d6c3*/--color-secondary-01: 177, 214, 195;
-  /*#8BC9A8*/--color-secondary-02: 139, 201, 168;
-  /*#5E9987*/--color-secondary-03: 94, 153, 135;
-  /*#27A567*/--color-secondary-04: 39, 165, 103;
+  /*#00594B*/--color-secondary-01: 0, 89, 75;
+  /*#4C4F50*/--color-secondary-02: 76, 79, 80;
+  /*#1A1A1A*/--color-secondary-03: 26, 26, 26;
+  /*#1A1A1A*/--color-secondary-04: 26, 26, 26;
 }
 
 html[data-theme="wmax"] {
@@ -34,3 +34,5 @@ html {
   /*#e9c80f*/--color-palette-analysis: 233, 200, 15;
   /*#868474*/--color-palette-scheduled: 134, 132, 116;
 }
+
+

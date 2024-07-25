@@ -7,20 +7,6 @@ export const Container = styled.div`
   padding: 2rem;
 `;
 
-export const BoxButton = styled.div`
-  display: flex;
-  height: 7rem;
-  align-items: start;
-  justify-content: space-between;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
-
-  padding: 0.5rem;
-  width: 18rem;
-  background-color: rgb(var(--color-secondary-02));
-  border-radius: 0.7rem;
-`;
-
 export const Title = styled.h1`
   font-size: 2.4rem;
   margin-bottom: 2rem;
@@ -34,6 +20,20 @@ export const Title = styled.h1`
     background-color: rgb(var(--color-secondary-03));
     color: #fff;
   }
+`;
+
+export const BoxButton = styled.div`
+  display: flex;
+  height: 7rem;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+
+  padding: 0.5rem;
+  width: 18rem;
+  background-color: rgb(var(--color-secondary-02));
+  border-radius: 0.7rem;
 `;
 
 export const CheckboxButton = styled.button<{ $checked: boolean }>`

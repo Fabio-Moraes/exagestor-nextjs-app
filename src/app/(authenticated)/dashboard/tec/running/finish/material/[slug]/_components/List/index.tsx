@@ -7,6 +7,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -82,6 +83,12 @@ export function List(props: { serviceData: ServiceData }) {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 409) {
               break;
             }

@@ -46,7 +46,21 @@ export function RemoteDisconnectionPopup() {
       ),
       admin: (
         <>
-          <h1>Você foi desconectado pelo administrador do sistema.</h1>
+          <h1>
+            Você foi desconectado pela equipe de segurança do sistema. Por favor, tente fazer
+            login novamente.
+          </h1>
+          <p>
+            Se tiver dúvidas ou precisar de assistência, entre em contato com o suporte
+            técnico.
+          </p>
+        </>
+      ),
+      config: (
+        <>
+          <h1>
+            Você foi desconectado pela equipe de segurança do sistema. tente logar novamente
+          </h1>
           <p>Se houver dúvidas ou preocupações, entre em contato com o suporte técnico.</p>
         </>
       )

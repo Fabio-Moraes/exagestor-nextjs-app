@@ -28,7 +28,7 @@ export function LeftSidebar() {
               width="25"
               height="25"
             />
-            <span>Gerenciar Tema</span>
+            <span>Gerenciar Sistema</span>
           </S.WrapperLink>
         </Link>
       </S.Wrapper>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import CryptoJS from 'crypto-js';
 import { jwtVerify } from 'jose';
 import jwtDecode from 'jwt-decode';
 
@@ -20,21 +21,24 @@ const redirectRole = {
   config: '/dashboard/config/theme'
 };
 
-const JWT_SECRET_KEY = '202b5105-39a4-4fd9-9d9e-d17542d05999';
 const isPublicEndpoint = (pathname: string) => ['/', '/signin'].includes(pathname);
 
 export default async function middleware(request: NextRequest) {
-  const cookie = request.cookies.get('auth_token');
-  const token = cookie?.value;
-  const decoded: Decoded = token ? await jwtDecode(token) : {};
-  const account = token && (await fetchAccountStatus(token));
+  const auth = request.cookies.get('_session_auth')?.value;
+  const ssid = request.cookies.get('_session_ssid')?.value;
+  const salt = process.env.SECRET_SALT!;
+
+  const authentication = CryptoJS.SHA256(ssid + salt).toString(CryptoJS.enc.Hex);
+  const account = auth && (await fetchAccountStatus(auth));
+  const decoded: Decoded = auth ? await jwtDecode(auth) : {};
 
   try {
-    await jwtVerify(token ?? '', new TextEncoder().encode(JWT_SECRET_KEY));
+    await jwtVerify(auth ?? '', new TextEncoder().encode(authentication));
 
     if (account?.status === 'inactive') {
       const response = NextResponse.redirect(new URL('/signin', request.url));
-      response.cookies.delete('auth_token');
+      response.cookies.delete('_session_auth');
+      response.cookies.delete('_session_ssid');
       return response;
     }
 

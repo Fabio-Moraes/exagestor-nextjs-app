@@ -79,14 +79,14 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
       const protocolKey = String(serviceData?.protocol);
 
       if (item === '2') {
-        console.log('TEST-SELECT-MATERIAL', item);
         setSelectMaterial((prevItems) => {
           const protocolKey = String(serviceData?.protocol);
 
           return {
             ...prevItems,
             [protocolKey]: {
-              ...(prevItems[protocolKey] || {}) //, ['4']: count * 3, ['2']: count * 2
+              ...(prevItems[protocolKey] || {})
+              //, ['4']: count * 3, ['2']: count * 2
             }
           };
         });

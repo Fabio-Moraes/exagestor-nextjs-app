@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { backendApi } from 'services/apiAxios';
 
-import { JWT_SECRET_KEY } from '../../../constants';
-
+import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
 
 interface RequestType {
@@ -20,14 +19,30 @@ interface CustomError extends Error {
 export async function POST(request: NextRequest) {
   try {
     const nextRequest: RequestType = await request.json();
-    const contentJwt = await backendApi.post('/api/auth/signin', nextRequest);
-    const token = jwt.sign(contentJwt.data, JWT_SECRET_KEY, { expiresIn: '7d' });
+    const content = await backendApi.post('/api/auth/signin', nextRequest);
+
+    const salt = process.env.SECRET_SALT!;
+    const ssid = content.data.ssid;
+
+    const authentication = CryptoJS.SHA256(ssid + salt).toString(CryptoJS.enc.Hex);
+    const token = jwt.sign({ user: content.data.user }, authentication, { expiresIn: '7d' });
+
     const appEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
     const response = NextResponse.json({ success: true }, { status: 200 });
 
     response.cookies.set({
-      name: 'auth_token',
+      name: '_session_auth',
       value: token,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+      secure: appEnv,
+      httpOnly: true,
+      ...(appEnv && { sameSite: 'strict' })
+    });
+
+    response.cookies.set({
+      name: '_session_ssid',
+      value: String(ssid),
       path: '/',
       maxAge: 60 * 60 * 24 * 7,
       secure: appEnv,

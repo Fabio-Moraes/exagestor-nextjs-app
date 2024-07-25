@@ -6,10 +6,9 @@ import { TextBox } from './_components/TextBox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { decryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
-
-import { useLocalStorage } from 'contexts/localStorage';
 
 import * as S from './styles';
 
@@ -41,8 +40,6 @@ export default function FinishService({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectMaterial } = useLocalStorage();
-
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
@@ -71,6 +68,12 @@ export default function FinishService({ params }: SlugType) {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 409) {
               break;
             }
@@ -88,7 +91,6 @@ export default function FinishService({ params }: SlugType) {
   }
 
   useEffect(() => {
-    console.log(JSON.stringify(selectMaterial[decryptSlug.protocol?.toString() ?? '']));
     fetchServices();
     const timer = setTimeout(() => {
       setIsLoading(false);

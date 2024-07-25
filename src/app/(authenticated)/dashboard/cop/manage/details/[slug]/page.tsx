@@ -6,6 +6,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { useHandlePrint } from 'hooks/useHandlePrint';
 import { internalApi } from 'services/apiAxios';
@@ -116,6 +117,12 @@ export default function Details({ params }: SlugType) {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 409) {
               break;
             }

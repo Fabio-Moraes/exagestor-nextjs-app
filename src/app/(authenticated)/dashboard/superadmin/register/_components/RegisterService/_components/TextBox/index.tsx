@@ -35,7 +35,7 @@ export function TextBox({ onValue }: { onValue: (i: string) => void }) {
     const textInput = textareaRef.current?.value ?? '';
 
     if (handleCursorPosition()?.columnNumber === 0) {
-      console.log('Está no começo da linha');
+      //Está no começo da linha
       setObservationBox(removeCharactersByIndex());
     } else {
       setObservationBox(textInput.slice(0, 500));

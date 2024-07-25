@@ -24,51 +24,47 @@ export const Title = styled.h1`
   }
 `;
 
-export const CheckBoxWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const CheckboxButton = styled.button<{ $checked: boolean }>`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin: 0.6rem 1rem 2rem 0.5rem;
-
-  > div {
-    width: 2rem;
-    height: 2rem;
-    border: 0.2rem solid rgb(var(--color-secondary-04));
-    background-color: ${({ $checked }) =>
-      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
-    border-radius: 1rem;
-  }
-  > span {
-    margin-left: 0.5rem;
-    font-size: 1.4rem;
-  }
-`;
-
-export const ErrorContainer = styled.div`
-  display: flex;
+export const ContainerButton = styled.div`
+  display: grid;
+  grid-gap: 5px;
+  padding: 0.5rem;
   align-items: center;
   justify-content: center;
+  grid-template-columns: repeat(auto-fit, 175px);
+  grid-template-rows: repeat(2, 105px);
+  border-radius: 0.7rem;
+
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
+  background-image: linear-gradient(
+    to right top,
+    rgba(var(--color-primary-04), 1),
+    rgba(var(--color-primary-03), 0.7),
+    rgba(var(--color-primary-03), 0.6),
+    rgba(var(--color-primary-01), 0.7)
+  );
+`;
+
+export const BoxButton = styled.div`
+  display: flex;
+  width: 17rem;
+  height: 10rem;
+  align-items: start;
+  justify-content: space-between;
   flex-direction: column;
 
-  > span {
-    text-align: left;
-    font-size: 1.7rem;
-    color: #333;
-  }
+  overflow: hidden;
+  //margin-bottom: 0.5rem;
 
-  > button {
-    width: 15rem;
-    background-color: rgb(var(--color-secondary-04));
-    padding: 1rem;
-    margin: 2rem 2rem;
-    border: 0.1rem solid #000000;
-    border-radius: 0.4rem;
-    font-size: 1.6rem;
-    color: #fff;
+  //padding-bottom: 1.3rem;
+  backdrop-filter: blur(16px);
+  -webki-backdrop-filter: blur(16px);
+  background-color: rgba(0%, 0%, 0%, 0.3);
+  border-radius: 0.3rem;
+
+  > p {
+    width: 100%;
+    color: #ffffff;
+    background-color: rgb(var(--color-primary-02));
   }
 `;

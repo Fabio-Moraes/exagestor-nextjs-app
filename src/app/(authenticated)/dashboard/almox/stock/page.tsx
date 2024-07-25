@@ -8,6 +8,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { QRScanner } from 'components/QrScanner';
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -34,7 +35,6 @@ export default function NewStock() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
-
   const maxRetries = 4;
 
   function generateConnectingMessage(count: number): string {
@@ -62,6 +62,12 @@ export default function NewStock() {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 409) {
               break;
             }

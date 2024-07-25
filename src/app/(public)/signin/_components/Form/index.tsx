@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
+import { HandleLogout } from 'functions/HandleLogout';
 import { internalApi } from 'services/apiAxios';
 
 import alert from './_assets/svg/alert.svg';
@@ -100,9 +101,6 @@ export const Form = () => {
           password: password
         });
 
-        const response = await internalApi.post('/api/decode/auth_token');
-        console.log(response);
-
         window.location.reload();
         break;
       } catch (error: unknown) {
@@ -110,7 +108,12 @@ export const Form = () => {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
-            console.log('Erro ao fazer login. Código de status:', statusCode);
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 401) {
               setIsPopupValue(null);
               setInvalidCredentials('Credenciais inválidas');

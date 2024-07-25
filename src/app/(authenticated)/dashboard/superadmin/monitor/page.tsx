@@ -6,6 +6,7 @@ import { ChartComponent } from './_components/Graphic';
 import { IndexColors } from './_components/indexColors';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import Image from 'components/Vercel/Image';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -86,6 +87,12 @@ export default function GeneralMonitoring() {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 409) {
               break;
             }

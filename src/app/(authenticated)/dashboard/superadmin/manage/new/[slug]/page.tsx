@@ -6,10 +6,12 @@ import React, { useEffect, useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { decryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import moment, { Moment } from 'moment';
+
 import 'moment/locale/pt-br';
 
 import alertSvg from './_assets/svg/alert.svg';
@@ -203,6 +205,12 @@ export default function NewService({ params }: SlugType) {
             const customError = error as CustomError;
             if (customError.response) {
               const statusCode = customError.response.status;
+
+              if (statusCode === 403) {
+                HandleLogout();
+                break;
+              }
+
               if (statusCode === 409) {
                 await TimedWait(10000);
               } else {

@@ -25,7 +25,7 @@ export function Toolbar() {
           <span>
             Gerenciar
             <br />
-            Tema
+            Sistema
           </span>
         </S.WrapperLink>
       </Link>

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -29,13 +30,9 @@ interface Materials {
   created_at: string;
 }
 
-export function List({
-  materials,
-  employeeId
-}: {
-  materials: Materials[];
-  employeeId: number;
-}) {
+export function List(props: { materials: Materials[]; employeeId: number }) {
+  const { materials, employeeId } = props;
+
   const quantityItemsDefault = {} as { [key: string]: number };
   materials?.forEach((item) => (quantityItemsDefault[String(item.id)] = 1));
 
@@ -138,6 +135,12 @@ export function List({
             const customError = error as CustomError;
             if (customError.response) {
               const statusCode = customError.response.status;
+
+              if (statusCode === 403) {
+                HandleLogout();
+                break;
+              }
+
               if (statusCode === 409) {
                 await TimedWait(10000);
               } else {

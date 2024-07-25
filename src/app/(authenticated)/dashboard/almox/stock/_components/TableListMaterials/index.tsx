@@ -36,12 +36,6 @@ export function TableListMaterials(props: TableListMaterialsType) {
     }
   };
 
-  //const handleCloseDialog = () => {
-  //  if (dialogRef.current) {
-  //    dialogRef.current.close();
-  //  }
-  //};
-
   type EventTypes = React.MouseEvent<HTMLDialogElement, MouseEvent>;
 
   const handleClickOutsideDialog = (event: EventTypes) => {

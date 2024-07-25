@@ -6,6 +6,7 @@ import { FullScreenLoading } from 'components/FullScreenLoading';
 import { SelectedDataCalendar } from 'components/SelectedDataCalendar';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
@@ -116,6 +117,12 @@ export default function ViewProduction({ params }: SlugType) {
           const customError = error as CustomError;
           if (customError.response) {
             const statusCode = customError.response.status;
+
+            if (statusCode === 403) {
+              HandleLogout();
+              break;
+            }
+
             if (statusCode === 409) {
               break;
             }
@@ -156,7 +163,6 @@ export default function ViewProduction({ params }: SlugType) {
               <SelectedDataCalendar
                 onChange={(data) => {
                   setSelectedFirstDate(moment(data).startOf('day'));
-                  console.log('data server', moment(data).startOf('day').format('DD/MM/YYYY'));
                 }}
                 value={selectedFirstDate}
                 range={{ min: minDate, max: moment().add(1, 'days') }}

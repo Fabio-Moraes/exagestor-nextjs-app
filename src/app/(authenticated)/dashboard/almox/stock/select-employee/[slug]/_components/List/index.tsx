@@ -13,6 +13,8 @@ import { internalApi } from 'services/apiAxios';
 
 import ListItem from '../ListItem';
 
+import { useWebSocket } from 'contexts/webSocket';
+
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 import searchSvg from './_assets/svg/search.svg';
@@ -49,6 +51,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
 
   const decryptSlug = decryptObject(slug) as { selectedMaterials: Materials[] };
 
+  const socket = useWebSocket();
   const router = useRouter();
 
   const handleClickOutside = () => {
@@ -104,6 +107,12 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
             const customError = error as CustomError;
             if (customError.response) {
               const statusCode = customError.response.status;
+
+              if (statusCode === 403) {
+                HandleLogout();
+                break;
+              }
+
               if (statusCode === 409) {
                 await TimedWait(10000);
               } else {

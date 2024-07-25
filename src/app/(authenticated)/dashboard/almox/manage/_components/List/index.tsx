@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-//import { encryptObject } from 'functions';
 
 import ListItem from '../ListItem';
 
@@ -68,7 +67,6 @@ export function List({ service }: { service: Service[] }) {
   );
 
   function fetchHistoric() {
-    //const encryptSlug = encryptObject({ employee_all: true });
     router.push('/dashboard/almox/historic', { scroll: false });
   }
 
