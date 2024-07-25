@@ -96,7 +96,7 @@ export const Form = () => {
           retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
         );
 
-        await internalApi.post('/api/login', {
+        await internalApi.post('/api/signin', {
           identification: identification,
           password: password
         });
