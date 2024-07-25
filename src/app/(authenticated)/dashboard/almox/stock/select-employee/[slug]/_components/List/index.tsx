@@ -8,12 +8,11 @@ import { LineSkaleton } from 'components/LineSkaleton';
 import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
+import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
 import ListItem from '../ListItem';
-
-import { useWebSocket } from 'contexts/webSocket';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
@@ -51,7 +50,6 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
 
   const decryptSlug = decryptObject(slug) as { selectedMaterials: Materials[] };
 
-  const socket = useWebSocket();
   const router = useRouter();
 
   const handleClickOutside = () => {
