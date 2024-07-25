@@ -19,7 +19,7 @@ interface CustomError extends Error {
 export async function POST(request: NextRequest) {
   try {
     const nextRequest: RequestType = await request.json();
-    const content = await backendApi.post('/api/signin', nextRequest);
+    const content = await backendApi.post('/api/auth/signin', nextRequest);
 
     const salt = process.env.SECRET_SALT!;
     const ssid = content.data.ssid;
