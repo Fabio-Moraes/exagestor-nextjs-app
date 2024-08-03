@@ -7,7 +7,6 @@ export const ListContainer = styled.div`
   border-radius: 0.7rem;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
   border: 0.2rem solid rgb(var(--color-primary-04));
-
   overflow: hidden;
 
   > div:first-child {

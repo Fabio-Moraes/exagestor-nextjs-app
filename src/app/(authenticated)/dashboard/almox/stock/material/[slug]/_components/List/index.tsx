@@ -144,7 +144,7 @@ export function List({ materials }: { materials: Materials[] }) {
         <S.Button onClick={() => router.back()}>Voltar</S.Button>
         <S.Button
           onClick={() => {
-            router.push(`/dashboard/almox/stock/select-employee/${encryptSlug}`);
+            router.push(`/dashboard/almox/stock/select-employee/${encryptSlug}`, { scroll: false });
           }}
         >
           Avançar

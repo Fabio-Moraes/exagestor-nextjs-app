@@ -12,19 +12,6 @@ import * as S from './styles';
 export function SelectTheme() {
   const [businessData, setBusinessData] = useState('');
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  console.log(isLoading);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   const maxRetries = 4;
 
