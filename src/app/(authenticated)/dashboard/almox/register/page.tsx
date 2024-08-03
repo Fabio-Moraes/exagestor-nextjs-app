@@ -19,6 +19,7 @@ export default function NewRegister() {
   const [productBatch, setProductBatch] = useState('');
   const [quantityValue, setQuantityValue] = useState('');
   const [unitType, setUnitType] = useState('UNID');
+  const [selectedCategory, setSelectedCategory] = useState('Comum');
 
   const [observationBox, setObservationBox] = useState<string | null>(null);
 
@@ -44,6 +45,11 @@ export default function NewRegister() {
       document.removeEventListener('click', handleClickOutside);
     };
   });
+
+  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+    setModalValue('');
+  };
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
@@ -83,7 +89,8 @@ export default function NewRegister() {
             productBatch: productBatch || null,
             quantityValue: quantityValue,
             unitType: unitType,
-            observation: observationBox || null
+            observation: observationBox || null,
+            category: selectedCategory.toUpperCase()
           });
 
           const { status } = response.data;
@@ -101,7 +108,7 @@ export default function NewRegister() {
             setIconSvgModal(checkedSvg);
             setModalValue('Novo produto registrado com sucesso.');
             await TimedWait(1000);
-            router.push('/dashboard/almox/stock');
+            router.push('/dashboard/almox/stock', { scroll: false });
             return;
           }
         } catch (error: unknown) {
@@ -214,6 +221,8 @@ export default function NewRegister() {
     }
   };
 
+  const arr = ['Comum', 'Construção'];
+
   return (
     <S.Container>
       <S.Title>Novo Produto</S.Title>
@@ -222,6 +231,15 @@ export default function NewRegister() {
           Nome do Produto: <S.Asterisk>*</S.Asterisk>
         </label>
         <S.Input type="text" id="Nome" placeholder="Nome do Produto" ref={productName} />
+
+        <label htmlFor="Categoria">Categoria:</label>
+        <S.Select id="selectedCategory" value={selectedCategory} onChange={handleCityChange}>
+          {arr.map((city, index) => (
+            <S.Option key={index.toString()} value={city}>
+              {city}
+            </S.Option>
+          ))}
+        </S.Select>
 
         <label htmlFor="Lote">Lote:</label>
         <S.Input

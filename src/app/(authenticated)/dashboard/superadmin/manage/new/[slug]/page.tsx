@@ -195,7 +195,7 @@ export default function NewService({ params }: SlugType) {
             setModalValue('Novo serviço iniciado com êxito.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            router.push('/dashboard/superadmin/running');
+            router.push('/dashboard/superadmin/running', { scroll: false });
             return;
           } else {
             console.error('Erro:', response.data.error);

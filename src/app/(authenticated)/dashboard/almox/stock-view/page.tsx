@@ -18,6 +18,7 @@ type Material = {
   employee_id?: number;
   product_batch?: string | null;
   unit_type: string;
+  category: string;
   created_at: string;
 };
 
@@ -33,6 +34,7 @@ export default function NewStock() {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState(true);
   const [selectedAlmox, setSelectedAlmox] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('COMUM');
 
   const maxRetries = 4;
 
@@ -133,7 +135,7 @@ export default function NewStock() {
       return [];
     }
 
-    return aggregateData(aggregatedDataArray);
+    return aggregateData(aggregatedDataArray.filter((i) => i.category === selectedCategory));
   }
 
   return (
@@ -150,7 +152,7 @@ export default function NewStock() {
           </S.ErrorContainer>
         ) : (
           <>
-            <S.Wrapper>
+            <S.BoxButton>
               <S.CheckboxButton
                 type="button"
                 $checked={selectedEmployee}
@@ -172,7 +174,25 @@ export default function NewStock() {
                 <div />
                 <span>Estoque</span>
               </S.CheckboxButton>
-            </S.Wrapper>
+            </S.BoxButton>
+            <S.Tabs>
+              <S.TabsButton
+                $checked={Boolean(selectedCategory === 'COMUM')}
+                onClick={() => {
+                  setSelectedCategory('COMUM');
+                }}
+              >
+                Comum
+              </S.TabsButton>
+              <S.TabsButton
+                $checked={Boolean(selectedCategory === 'CONSTRUÇÃO')}
+                onClick={() => {
+                  setSelectedCategory('CONSTRUÇÃO');
+                }}
+              >
+                Contrução
+              </S.TabsButton>
+            </S.Tabs>
             <S.Table>
               <S.TableHeader>
                 <div>

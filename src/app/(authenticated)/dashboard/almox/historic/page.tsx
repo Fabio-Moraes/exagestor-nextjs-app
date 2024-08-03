@@ -18,6 +18,7 @@ interface Material {
   unit_type: string;
   product_code: string;
   quantity_value: string;
+  category: string;
   created_at: string;
 }
 export default function Historic() {
@@ -82,7 +83,7 @@ export default function Historic() {
       <S.ListContainer>
         {material.map((material) => (
           <S.ListItem key={material.id}>
-            <Card service={material} />
+            <Card material={material} />
           </S.ListItem>
         ))}
       </S.ListContainer>

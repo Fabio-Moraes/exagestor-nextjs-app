@@ -23,6 +23,7 @@ interface Materials {
   unit_type: string;
   product_code: string;
   quantity_value: string;
+  category: string;
   created_at: string;
 }
 
@@ -33,6 +34,7 @@ export default function NewStock() {
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
   const [checkbox, setCheckbox] = useState('manageStock');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('COMUM');
 
   const router = useRouter();
   const maxRetries = 4;
@@ -53,6 +55,10 @@ export default function NewStock() {
           productAll: Boolean(productCode.length === 0),
           productCode: productCode
         });
+
+        if (productCode.length !== 0) {
+          setSelectedCategory(response.data[0].category);
+        }
 
         setIsPopupValue(null);
         setMaterials(response.data);
@@ -150,27 +156,29 @@ export default function NewStock() {
         ) : (
           <>
             <S.Wrapper>
-              <S.CheckboxButton
-                type="button"
-                $checked={checkbox === 'selectMaterial'}
-                onClick={() => {
-                  setCheckbox('selectMaterial');
-                }}
-              >
-                <div />
-                <span>Montar Carga</span>
-              </S.CheckboxButton>
+              <S.BoxButton>
+                <S.CheckboxButton
+                  type="button"
+                  $checked={checkbox === 'selectMaterial'}
+                  onClick={() => {
+                    setCheckbox('selectMaterial');
+                  }}
+                >
+                  <div />
+                  <span>Montar Carga</span>
+                </S.CheckboxButton>
 
-              <S.CheckboxButton
-                type="button"
-                $checked={checkbox === 'manageStock'}
-                onClick={() => {
-                  setCheckbox('manageStock');
-                }}
-              >
-                <div />
-                <span>Gerenciar Estoque</span>
-              </S.CheckboxButton>
+                <S.CheckboxButton
+                  type="button"
+                  $checked={checkbox === 'manageStock'}
+                  onClick={() => {
+                    setCheckbox('manageStock');
+                  }}
+                >
+                  <div />
+                  <span>Gerenciar Estoque</span>
+                </S.CheckboxButton>
+              </S.BoxButton>
               <div>
                 <button onClick={() => fetchServices()}>
                   <Image
@@ -194,6 +202,24 @@ export default function NewStock() {
                 </button>
               </div>
             </S.Wrapper>
+            <S.Tabs>
+              <S.TabsButton
+                $checked={Boolean(selectedCategory === 'COMUM')}
+                onClick={() => {
+                  setSelectedCategory('COMUM');
+                }}
+              >
+                Comum
+              </S.TabsButton>
+              <S.TabsButton
+                $checked={Boolean(selectedCategory === 'CONSTRUÇÃO')}
+                onClick={() => {
+                  setSelectedCategory('CONSTRUÇÃO');
+                }}
+              >
+                Contrução
+              </S.TabsButton>
+            </S.Tabs>
             <S.Table>
               <S.TableHeader>
                 <div>
@@ -211,7 +237,7 @@ export default function NewStock() {
               </S.TableHeader>
               <TableListMaterials
                 checkbox={checkbox}
-                materials={materials}
+                materials={materials.filter((i) => i.category === selectedCategory)}
                 selectedTableRows={selectedTableRows}
                 toggleRowSelection={toggleRowSelection}
               />
@@ -219,7 +245,9 @@ export default function NewStock() {
             {selectedTableRows.length > 0 && checkbox === 'selectMaterial' && (
               <S.Button
                 onClick={() => {
-                  router.push(`/dashboard/almox/stock/material/${encryptSlug}`);
+                  router.push(`/dashboard/almox/stock/material/${encryptSlug}`, {
+                    scroll: false
+                  });
                 }}
               >
                 Selecionar Quantidade ({selectedTableRows.length})

@@ -34,6 +34,7 @@ interface Materials {
   unit_type: string;
   product_code: string;
   quantity_value: string;
+  category: string;
   created_at: string;
 }
 
@@ -96,7 +97,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
             setModalValue('Carga distribuída com sucesso.');
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            router.push('/dashboard/almox/stock');
+            router.push('/dashboard/almox/stock', { scroll: false });
           }
 
           return;
@@ -182,7 +183,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
         <S.ContainerButton $isSelected={Boolean(employeeId)}>
           <S.Button
             onClick={() => {
-              router.push(`/dashboard/almox/stock`);
+              router.push(`/dashboard/almox/stock`, { scroll: false });
             }}
           >
             Voltar

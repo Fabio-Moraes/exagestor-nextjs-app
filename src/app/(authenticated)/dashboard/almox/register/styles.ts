@@ -79,6 +79,21 @@ export const Input = styled.input`
   }
 `;
 
+export const Select = styled.select`
+  padding: 1rem 0.6rem;
+  margin: 0 2rem 1.5rem 2rem;
+  border: 0.1rem solid #000000;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  background-color: #fff;
+  font-family: 'OpenSans-Medium';
+`;
+
+export const Option = styled.option`
+  background-color: #fff;
+  color: #777;
+`;
+
 export const CheckboxButton = styled.button<{ $checked: boolean }>`
   display: flex;
   align-items: center;

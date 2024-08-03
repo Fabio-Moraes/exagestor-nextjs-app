@@ -55,6 +55,7 @@ export default function NewStock({ params }: SlugType) {
         });
 
         setMaterials(responseStock.data);
+        console.table(responseStock.data);
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {

@@ -8,6 +8,7 @@ interface Material {
   unit_type: string;
   product_code: string;
   quantity_value: string;
+  category: string;
   created_at: string;
 }
 
@@ -23,22 +24,28 @@ function formatDate(date: string) {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
-export function Card({ service }: { service: Material }) {
-  const createdAt = formatDate(service.created_at);
+const categoriesMap = {
+  CONSTRUCAO: 'CONSTRUÇÃO',
+  INSTALACAO: 'INSTALAÇÃO',
+  COMUM: 'COMUM'
+} as { [key: string]: string };
+
+export function Card({ material }: { material: Material }) {
+  const createdAt = formatDate(material.created_at);
 
   return (
     <S.Container rel="preload" onClick={() => {}}>
       <p></p>
       <div>
         <p>
-          FUNCIONÁRIO: {service?.name_tec?.concat(` (${service?.name_role.toUpperCase()})`)}
+          FUNCIONÁRIO: {material?.name_tec?.concat(` (${material?.name_role.toUpperCase()})`)}
         </p>
-        <p>MATERIAIS: {service?.product_name}</p>
-        <p>QUANTIDADE: {service?.quantity_value}</p>
-        <p>TIPO: {service?.unit_type}</p>
-        <p>CÓDIGO: {service?.product_code}</p>
+        <p>MATERIAIS: {material?.product_name}</p>
+        <p>QUANTIDADE: {material?.quantity_value}</p>
+        <p>TIPO: {material?.unit_type}</p>
+        <p>CÓDIGO: {material?.product_code}</p>
+        <p>CATEGORIA: {categoriesMap[material.category]}</p>
         <p>ENVIADO EM: {createdAt}</p>
-        {/* <p>Serviço: {status[service?.status]}</p> */}
       </div>
     </S.Container>
   );
