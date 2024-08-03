@@ -75,7 +75,7 @@ export const Tabs = styled.div`
   }
 `;
 
-export const TabsButton = styled.button<{ $checked: boolean }>`
+export const TabButton = styled.button<{ $checked: boolean }>`
   color: #ffffff;
   background-color: ${({ $checked }) => $checked && 'rgb(var(--color-primary-02))'};
   color: ${({ $checked }) => ($checked ? '#fff' : '#000')};

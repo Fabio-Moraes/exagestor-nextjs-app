@@ -24,6 +24,28 @@ export const Title = styled.h1`
   }
 `;
 
+export const Tabs = styled.div`
+  display: flex;
+  width: 100%;
+  background-color: rgba(var(--color-secondary-03), 0.3);
+  align-items: end;
+  justify-content: start;
+  flex-direction: row;
+  border-radius: 0.7rem 0.7rem 0rem 0rem;
+  overflow: hidden;
+
+  > button {
+    border-radius: 0.7rem 0.7rem 0rem 0rem;
+    padding: 0.5rem 1rem;
+  }
+`;
+
+export const TabButton = styled.button<{ $checked: boolean }>`
+  color: #ffffff;
+  background-color: ${({ $checked }) => $checked && 'rgb(var(--color-primary-02))'};
+  color: ${({ $checked }) => ($checked ? '#fff' : '#000')};
+`;
+
 export const Form = styled.div`
   margin-bottom: 2rem;
 `;
@@ -82,7 +104,9 @@ export const TableHeader = styled.div`
   border-bottom: 0.2rem solid #000;
   background-color: rgba(var(--color-secondary-02), 0.5);
   padding: 1rem 0;
-  width: 100% div {
+  width: 100%;
+
+  div {
     min-width: 6.7rem;
     border-left: 0.2rem solid #000;
     display: flex;
@@ -138,7 +162,7 @@ export const TableRow = styled.div<{ $isSelected: boolean }>`
 
 export const Table = styled.div`
   border: 0.2rem solid #000;
-  border-radius: 0.5rem;
+  border-radius: 0 0 0.7rem 0.7rem;
   align-items: center;
   justify-content: center;
   overflow: hidden;

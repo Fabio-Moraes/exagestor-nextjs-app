@@ -15,6 +15,7 @@ interface Materials {
   unit_type: string;
   product_code: string;
   quantity_value: string;
+  category: string;
   created_at: string;
 }
 
@@ -22,6 +23,7 @@ export default function NewStock() {
   const [materials, setMaterials] = useState<Materials[]>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('COMUM');
 
   const maxRetries = 4;
 
@@ -89,39 +91,61 @@ export default function NewStock() {
           </span>
         </S.ErrorContainer>
       ) : (
-        <S.Table>
-          <S.TableHeader>
-            <div>
-              <span>MATERIAIS</span>
-            </div>
-            <div>
-              <span>QTD</span>
-            </div>
-            <div>
-              <span>TIPO</span>
-            </div>
-            <div>
-              <span>CÓDIGO</span>
-            </div>
-          </S.TableHeader>
-          {materials &&
-            materials.map((item, index) => (
-              <S.TableRow $isSelected={false} onClick={() => {}} key={index}>
-                <div>
-                  <span>{item.product_name.toUpperCase()}</span>
-                </div>
-                <div>
-                  <span>{item.quantity_value}</span>
-                </div>
-                <div>
-                  <span>{item.unit_type}</span>
-                </div>
-                <div>
-                  <span>{item.product_code}</span>
-                </div>
-              </S.TableRow>
-            ))}
-        </S.Table>
+        <>
+          <S.Tabs>
+            <S.TabButton
+              $checked={Boolean(selectedCategory === 'COMUM')}
+              onClick={() => {
+                setSelectedCategory('COMUM');
+              }}
+            >
+              Comum
+            </S.TabButton>
+            <S.TabButton
+              $checked={Boolean(selectedCategory === 'CONSTRUÇÃO')}
+              onClick={() => {
+                setSelectedCategory('CONSTRUÇÃO');
+              }}
+            >
+              Contrução
+            </S.TabButton>
+          </S.Tabs>
+          <S.Table>
+            <S.TableHeader>
+              <div>
+                <span>MATERIAIS</span>
+              </div>
+              <div>
+                <span>QTD</span>
+              </div>
+              <div>
+                <span>TIPO</span>
+              </div>
+              <div>
+                <span>CÓDIGO</span>
+              </div>
+            </S.TableHeader>
+            {materials &&
+              materials
+                .filter(({ category }) => category === selectedCategory)
+                ?.map((item, index) => (
+                  <S.TableRow $isSelected={false} onClick={() => {}} key={index}>
+                    <div>
+                      <span>{item.product_name.toUpperCase()}</span>
+                    </div>
+                    <div>
+                      <span>{item.quantity_value}</span>
+                    </div>
+                    <div>
+                      <span>{item.unit_type}</span>
+                    </div>
+                    <div>
+                      <span>{item.product_code}</span>
+                    </div>
+                  </S.TableRow>
+                ))}
+          </S.Table>
+        </>
       )}
     </S.Container>
   );

@@ -72,12 +72,12 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
 export const Tabs = styled.div`
   display: flex;
   width: 100%;
-  //height: 3rem;
   background-color: rgba(var(--color-secondary-03), 0.3);
   align-items: end;
   justify-content: start;
   flex-direction: row;
   border-radius: 0.7rem 0.7rem 0rem 0rem;
+  overflow: hidden;
 
   > button {
     border-radius: 0.7rem 0.7rem 0rem 0rem;
@@ -85,7 +85,7 @@ export const Tabs = styled.div`
   }
 `;
 
-export const TabsButton = styled.button<{ $checked: boolean }>`
+export const TabButton = styled.button<{ $checked: boolean }>`
   color: #ffffff;
   background-color: ${({ $checked }) => $checked && 'rgb(var(--color-primary-02))'};
   color: ${({ $checked }) => ($checked ? '#fff' : '#000')};

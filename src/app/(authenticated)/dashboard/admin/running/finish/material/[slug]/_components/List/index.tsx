@@ -10,7 +10,7 @@ import { encryptObject } from 'functions';
 import { ListItem } from '../ListItem';
 
 import { useLocalStorage } from 'contexts/localStorage';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import infoSvg from './_assets/svg/info.svg';
 import searchSvg from './_assets/svg/search.svg';
@@ -157,73 +157,69 @@ export function List(props: { serviceData: ServiceData; items: Materials[] }) {
 
   return (
     <S.ListContainer>
-      <AnimatePresence>
+      <div>
+        <S.SearchWrapper>
+          <Image priority src={searchSvg} alt="Book" width={25} height={25} />
+          <S.SearchBar
+            type="text"
+            placeholder="Pesquisar serviço..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </S.SearchWrapper>
         <div>
-          <S.SearchWrapper>
-            <Image priority src={searchSvg} alt="Book" width={25} height={25} />
-            <S.SearchBar
-              type="text"
-              placeholder="Pesquisar serviço..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </S.SearchWrapper>
           <div>
-            <div>
-              <S.Button onClick={() => setShowSelected(!showSelected)}>
-                {showSelected
-                  ? 'Mostrar Todos'
-                  : `Selecionado${selectedItem.length > 1 ? 's' : ''} (${
-                      selectedItem.length
-                    })`}
-              </S.Button>
+            <S.Button onClick={() => setShowSelected(!showSelected)}>
+              {showSelected
+                ? 'Mostrar Todos'
+                : `Selecionado${selectedItem.length > 1 ? 's' : ''} (${selectedItem.length})`}
+            </S.Button>
 
-              {serviceData?.status !== 'analysis' && !isLoading && (
-                <S.Button onClick={selectServiceClean}>Limpar</S.Button>
-              )}
-            </div>
-            <Image priority src={infoSvg} alt="Add" width={30} height={30} />
-          </div>
-        </div>
-        {isLoading ? (
-          [...Array(8)].map((_, index) => {
-            return (
-              <S.ItemsSkeleton key={String(index)}>
-                <LineSkaleton height="3rem" width="3.5rem" />
-                <LineSkaleton height="3rem" />
-              </S.ItemsSkeleton>
-            );
-          })
-        ) : (
-          <>
-            {serviceData?.status === 'analysis' && (
-              <S.AlertList>
-                O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para
-                validação.
-              </S.AlertList>
+            {serviceData?.status !== 'analysis' && !isLoading && (
+              <S.Button onClick={selectServiceClean}>Limpar</S.Button>
             )}
-            {filteredItems.map((item) => (
-              <motion.ul
-                key={item.product_code}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-              >
-                <ListItem
-                  key={item.product_code}
-                  blocked={Boolean(serviceData?.status === 'analysis')}
-                  item={item.product_name}
-                  count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
-                  onSelect={({ count }) => {
-                    toggleItem(String(item.id), count, Number(item.quantity_value));
-                  }}
-                  onReset={() => toggleItemReset(String(item.id))}
-                />
-              </motion.ul>
-            ))}
-          </>
-        )}
-      </AnimatePresence>
+          </div>
+          <Image priority src={infoSvg} alt="Add" width={30} height={30} />
+        </div>
+      </div>
+      {isLoading ? (
+        [...Array(8)].map((_, index) => {
+          return (
+            <S.ItemsSkeleton key={`skeleton-${index}`}>
+              <LineSkaleton height="3rem" width="3.5rem" />
+              <LineSkaleton height="3rem" />
+            </S.ItemsSkeleton>
+          );
+        })
+      ) : (
+        <>
+          {serviceData?.status === 'analysis' && (
+            <S.AlertList>
+              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para
+              validação.
+            </S.AlertList>
+          )}
+          {filteredItems.map((item, index) => (
+            <motion.ul
+              key={`motion-${index}`}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+            >
+              <ListItem
+                key={`listitem-${index}`}
+                blocked={Boolean(serviceData?.status === 'analysis')}
+                item={item.product_name}
+                count={selectMaterial?.[String(serviceData?.protocol)]?.[item.id]}
+                onSelect={({ count }) => {
+                  toggleItem(String(item.id), count, Number(item.quantity_value));
+                }}
+                onReset={() => toggleItemReset(String(item.id))}
+              />
+            </motion.ul>
+          ))}
+        </>
+      )}
       <div>
         <S.Button onClick={() => routerBack()}>Voltar</S.Button>
         <S.Button onClick={() => fetchConcludedMaterial()}>Avançar</S.Button>

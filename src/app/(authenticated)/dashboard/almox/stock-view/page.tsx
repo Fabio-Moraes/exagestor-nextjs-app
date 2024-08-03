@@ -176,22 +176,22 @@ export default function NewStock() {
               </S.CheckboxButton>
             </S.BoxButton>
             <S.Tabs>
-              <S.TabsButton
+              <S.TabButton
                 $checked={Boolean(selectedCategory === 'COMUM')}
                 onClick={() => {
                   setSelectedCategory('COMUM');
                 }}
               >
                 Comum
-              </S.TabsButton>
-              <S.TabsButton
+              </S.TabButton>
+              <S.TabButton
                 $checked={Boolean(selectedCategory === 'CONSTRUÇÃO')}
                 onClick={() => {
                   setSelectedCategory('CONSTRUÇÃO');
                 }}
               >
                 Contrução
-              </S.TabsButton>
+              </S.TabButton>
             </S.Tabs>
             <S.Table>
               <S.TableHeader>
