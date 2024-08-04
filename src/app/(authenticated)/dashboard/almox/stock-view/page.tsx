@@ -135,7 +135,12 @@ export default function NewStock() {
       return [];
     }
 
-    return aggregateData(aggregatedDataArray.filter((i) => i.category === selectedCategory));
+    return aggregateData(
+      aggregatedDataArray.filter((i) => {
+        if (selectedCategory === 'TODOS') return true;
+        return Boolean(i.category === selectedCategory);
+      })
+    );
   }
 
   return (
@@ -191,6 +196,14 @@ export default function NewStock() {
                 }}
               >
                 Contrução
+              </S.TabButton>
+              <S.TabButton
+                $checked={Boolean(selectedCategory === 'TODOS')}
+                onClick={() => {
+                  setSelectedCategory('TODOS');
+                }}
+              >
+                Todos
               </S.TabButton>
             </S.Tabs>
             <S.Table>

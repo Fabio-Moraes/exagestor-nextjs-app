@@ -219,6 +219,14 @@ export default function NewStock() {
               >
                 Contrução
               </S.TabButton>
+              <S.TabButton
+                $checked={Boolean(selectedCategory === 'TODOS')}
+                onClick={() => {
+                  setSelectedCategory('TODOS');
+                }}
+              >
+                Todos
+              </S.TabButton>
             </S.Tabs>
             <S.Table>
               <S.TableHeader>
@@ -237,7 +245,13 @@ export default function NewStock() {
               </S.TableHeader>
               <TableListMaterials
                 checkbox={checkbox}
-                materials={materials.filter((i) => i.category === selectedCategory)}
+                materials={
+                  materials &&
+                  materials.filter((i) => {
+                    if (selectedCategory === 'TODOS') return i;
+                    return i.category === selectedCategory;
+                  })
+                }
                 selectedTableRows={selectedTableRows}
                 toggleRowSelection={toggleRowSelection}
               />

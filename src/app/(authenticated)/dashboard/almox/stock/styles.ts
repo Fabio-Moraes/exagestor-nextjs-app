@@ -62,7 +62,6 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
 export const Tabs = styled.div`
   display: flex;
   width: 100%;
-  //height: 3rem;
   background-color: rgba(var(--color-secondary-03), 0.3);
   align-items: end;
   justify-content: start;
@@ -116,7 +115,7 @@ export const AddButton = styled.button`
 export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 0.2rem solid #000;
+  border-bottom: 0rem solid #000;
   background-color: rgba(var(--color-secondary-02), 0.3);
   padding: 1rem 0;
   width: 100%;
@@ -149,7 +148,7 @@ export const Table = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-bottom: 0rem solid #000;
+  border-radius: 0rem 0rem 0.7rem 0.7rem;
 
   > div:last-child {
     border-bottom: 0;

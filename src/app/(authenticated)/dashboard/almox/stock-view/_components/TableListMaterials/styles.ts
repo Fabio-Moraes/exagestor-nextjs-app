@@ -3,11 +3,11 @@ import styled from 'styled-components';
 export const TableRow = styled.div<{ $isSelected: boolean }>`
   display: flex;
   flex-direction: row;
-  border-bottom: 0.2rem solid #000;
   background-color: ${({ $isSelected }) =>
     $isSelected ? 'rgba(var(--color-primary-02), 0.5)' : '#ffffff'};
   padding: 1rem 0;
   width: 100%;
+  border-top: 0.2rem solid #000;
 
   > div {
     min-width: 6.7rem;

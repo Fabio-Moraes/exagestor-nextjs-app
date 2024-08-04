@@ -109,6 +109,14 @@ export default function NewStock() {
             >
               Contrução
             </S.TabButton>
+            <S.TabButton
+              $checked={Boolean(selectedCategory === 'TODOS')}
+              onClick={() => {
+                setSelectedCategory('TODOS');
+              }}
+            >
+              Todos
+            </S.TabButton>
           </S.Tabs>
           <S.Table>
             <S.TableHeader>
@@ -127,7 +135,10 @@ export default function NewStock() {
             </S.TableHeader>
             {materials &&
               materials
-                .filter(({ category }) => category === selectedCategory)
+                .filter(({ category }) => {
+                  if (selectedCategory === 'TODOS') return true;
+                  return Boolean(category === selectedCategory);
+                })
                 ?.map((item, index) => (
                   <S.TableRow $isSelected={false} onClick={() => {}} key={index}>
                     <div>

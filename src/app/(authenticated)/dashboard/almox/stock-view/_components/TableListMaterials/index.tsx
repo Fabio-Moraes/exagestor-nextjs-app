@@ -75,7 +75,7 @@ export function TableListMaterials(props: TableListMaterialsType) {
   };
 
   return (
-    <div>
+    <>
       {materials &&
         materials.map((item) => {
           if (Number(item.quantity_value) > 0) {
@@ -147,6 +147,6 @@ export function TableListMaterials(props: TableListMaterialsType) {
             );
           }
         })}
-    </div>
+    </>
   );
 }

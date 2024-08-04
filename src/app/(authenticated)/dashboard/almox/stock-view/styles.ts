@@ -116,8 +116,8 @@ export const AddButton = styled.button`
 export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 0.2rem solid #000;
   background-color: rgba(var(--color-secondary-02), 0.3);
+  border-bottom: 0rem solid #000;
   padding: 1rem 0;
   width: 100%;
 
@@ -146,11 +146,12 @@ export const TableHeader = styled.div`
 
 export const Table = styled.div`
   border: 0.2rem solid #000;
-  border-radius: 0rem 0rem 0rem 0rem;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-bottom: 0rem solid #000;
+  //border-bottom: 0rem solid #000;
+  border-radius: 0rem 0rem 0.7rem 0.7rem;
+  overflow: hidden;
 
   > div:last-child {
     border-bottom: 0;
