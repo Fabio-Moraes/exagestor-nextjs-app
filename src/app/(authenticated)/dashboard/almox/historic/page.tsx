@@ -4,9 +4,16 @@ import { useEffect, useState } from 'react';
 
 import { Card } from './_components/Card';
 import { FullScreenLoading } from 'components/FullScreenLoading';
+import Image from 'components/Vercel/Image';
 import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
+
+import * as animationData from './_assets/lottie/animation.json';
+
+import { Player } from '@lottiefiles/react-lottie-player';
+
+import down from './_assets/svg/down.svg';
 
 import * as S from './styles';
 
@@ -23,6 +30,7 @@ interface Material {
 }
 export default function Historic() {
   const [material, setMaterial] = useState<Material[]>([]);
+  const [spinner, setSpineer] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -37,13 +45,15 @@ export default function Historic() {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(generateConnectingMessage(retryCount));
+        if (retryCount > 0) setIsPopupValue(generateConnectingMessage(retryCount));
+        setSpineer(true);
 
         const response = await internalApi.post('/api/bridge', {
-          baseURL: '/api/almox/historic'
+          baseURL: '/api/almox/historic',
+          initial_id: material.length >= 1 ? material[material.length - 1].id : null
         });
 
-        setMaterial(response.data);
+        setMaterial((res) => [...res, ...response.data]);
         setIsPopupValue(null);
         break;
       } catch (error: unknown) {
@@ -69,6 +79,8 @@ export default function Historic() {
             }
           }
         }
+      } finally {
+        setSpineer(false);
       }
     }
   }
@@ -86,6 +98,27 @@ export default function Historic() {
             <Card material={material} />
           </S.ListItem>
         ))}
+        {material.length >= 1 &&
+          (spinner ? (
+            <S.Spinner>
+              <div>
+                <Player
+                  src={animationData}
+                  loop
+                  autoplay
+                  speed={1.5}
+                  style={{ height: '7rem', width: '7rem' }}
+                />
+              </div>
+            </S.Spinner>
+          ) : (
+            <button onClick={fetchServices}>
+              <div>
+                <p>Mais resultados</p>
+                <Image priority loading="eager" src={down} alt="Add" width="25" height="25" />
+              </div>
+            </button>
+          ))}
       </S.ListContainer>
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError && !isPopupValue && (
