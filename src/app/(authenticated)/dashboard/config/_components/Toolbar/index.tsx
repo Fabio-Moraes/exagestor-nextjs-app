@@ -29,14 +29,10 @@ export function Toolbar() {
           </span>
         </S.WrapperLink>
       </Link>
-      <Link href="/" scroll={false}>
-        <S.WrapperLink style={{ opacity: 0 }}>
-          <Image priority loading="eager" src={menu} alt="Menu" width="25" height="25" />
-          <span>
-            Mais
-            <br />
-            Opções
-          </span>
+      <Link href="/dashboard/config/upload" scroll={false}>
+        <S.WrapperLink $path={['/dashboard/config/upload'].includes(pathname)}>
+          <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
+          <span>Upload Teste</span>
         </S.WrapperLink>
       </Link>
 

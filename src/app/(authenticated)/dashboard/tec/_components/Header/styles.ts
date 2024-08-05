@@ -24,7 +24,7 @@ export const ProfileUser = styled.div`
   display: flex;
   height: 100%;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(to top, rgb(var(--color-secondary-02)), #dce6dc);
+  background-image: linear-gradient(to top, #d2d2d2, #dce6dc);
   border-radius: 0.7rem;
   flex-direction: column;
   justify-content: center;
@@ -54,7 +54,7 @@ export const ProfileUser = styled.div`
     width: 100%;
 
     > button {
-      border: 0.2rem solid rgb(var(--color-secondary-04));
+      border: 0.2rem solid #8f8f8f;
       box-shadow: -1.2rem 0 0 0 rgba(0, 0, 0, 0.5);
       background-color: #fff;
       border-radius: 0.5rem;
@@ -65,12 +65,8 @@ export const ProfileUser = styled.div`
 
       &:hover {
         @media (min-width: 550px) {
-          border: 0.2rem solid rgb(var(--color-secondary-04));
-          background-image: radial-gradient(
-            6rem at center,
-            rgb(var(--color-secondary-04)),
-            #dce6dc
-          );
+          border: 0.2rem solid #8f8f8f;
+          background-image: radial-gradient(6rem at center, #8f8f8f, #dce6dc);
         }
       }
     }
