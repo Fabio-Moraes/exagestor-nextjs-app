@@ -11,11 +11,21 @@ import * as S from './styles';
 const Settings = () => {
   const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
     setFile(selectedFile);
+
+    if (selectedFile) {
+      // Cria uma URL de pré-visualização do arquivo
+      const previewUrl = URL.createObjectURL(selectedFile);
+      setPreview(previewUrl);
+
+      // Faz o upload do arquivo após seleção
+      //uploadImage(selectedFile);
+    }
   };
 
   const uploadImage = async () => {
@@ -68,20 +78,36 @@ const Settings = () => {
       <div>
         <label style={{ backgroundColor: file ? '#008F7A' : '#1A1A1A' }}>
           <input type="file" onChange={handleFileChange} />
+          {preview && (
+            <>
+              <Image
+                src={preview}
+                priority
+                loading="eager"
+                alt="Uploaded Image"
+                style={{ width: '10rem', height: 'auto', borderRadius: '5rem' }}
+                width={400}
+                height={300}
+              />
+            </>
+          )}
           Selecionar arquivo
         </label>
         <button onClick={uploadImage}>Enviar arquivo</button>
       </div>
       {url && (
-        <Image
-          src={url}
-          priority
-          loading="eager"
-          alt="Uploaded Image"
-          style={{ width: '30rem', height: 'auto' }}
-          width={400}
-          height={300}
-        />
+        <>
+          <p>Concluído</p>
+          <Image
+            src={url}
+            priority
+            loading="eager"
+            alt="Uploaded Image"
+            style={{ width: '30rem', height: 'auto' }}
+            width={400}
+            height={300}
+          />
+        </>
       )}
       {error && <p>{error}</p>}
     </S.Container>

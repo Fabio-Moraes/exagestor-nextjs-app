@@ -17,6 +17,9 @@ export const Container = styled.div`
 
     > button,
     label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 20rem;
       background-color: rgb(var(--color-secondary-04));
       flex-shrink: 0;
