@@ -3,8 +3,9 @@
 import { useState } from 'react';
 
 import Image from 'components/Vercel/Image';
+import useGeoLocation from 'hooks/useGeoLocation';
 
-import { supabase } from 'lib/supabase';
+import { useBusiness } from 'store/business';
 
 import * as S from './styles';
 
@@ -12,8 +13,11 @@ const Settings = () => {
   const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [errorUploadImage, setErrorUploadImage] = useState<string | null>(null);
 
+  const { location, error: errorGeoLocation, loading } = useGeoLocation();
+
+  const business = useBusiness((state) => state.business);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
     setFile(selectedFile);
@@ -22,59 +26,50 @@ const Settings = () => {
       // Cria uma URL de pré-visualização do arquivo
       const previewUrl = URL.createObjectURL(selectedFile);
       setPreview(previewUrl);
-
-      // Faz o upload do arquivo após seleção
-      //uploadImage(selectedFile);
     }
   };
 
   const uploadImage = async () => {
     if (!file) {
-      setError('No file selected');
+      setErrorUploadImage('No file selected');
       return;
     }
 
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('text', business.toUpperCase());
+    formData.append('latitude', String(location.latitude ?? '00-000000'));
+    formData.append('longitude', String(location.longitude ?? '00-000000'));
+
     try {
-      // Upload the file
-      const { error: uploadError } = await supabase.storage
-        .from('exagestor')
-        .upload(`${file.name}`, file, {
-          cacheControl: '3600',
-          upsert: true,
-          contentType: file.type
-        });
+      const response = await fetch('/api/update-image', {
+        method: 'POST',
+        body: formData
+      });
 
-      if (uploadError) {
-        throw new Error(uploadError.message);
-      }
+      const data = await response.json();
 
-      // Generate signed URL for the file
-      const { data: signedUrlData, error: signedUrlError } = await supabase.storage
-        .from('exagestor')
-        .createSignedUrl(`${file.name}`, 60); // URL valid for 60 seconds
-
-      if (signedUrlError) {
-        throw new Error(signedUrlError.message);
-      }
-
-      const signedURL = signedUrlData?.signedUrl;
-      if (signedURL) {
-        setUrl(signedURL);
+      if (response.ok && data.signedUrl) {
+        setUrl(data.signedUrl);
       } else {
-        throw new Error('Failed to generate signed URL');
+        throw new Error(data.error || 'Failed to upload image');
       }
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
+        setErrorUploadImage(err.message);
       } else {
-        setError('An unknown error occurred');
+        setErrorUploadImage('An unknown error occurred');
       }
+    } finally {
+      setFile(null);
+      setPreview(null);
     }
   };
 
   return (
     <S.Container>
       <S.Title>Upload Teste</S.Title>
+      {loading && <p>Loading...</p>}
       <div>
         <label style={{ backgroundColor: file ? '#008F7A' : '#1A1A1A' }}>
           <input type="file" onChange={handleFileChange} />
@@ -85,15 +80,15 @@ const Settings = () => {
                 priority
                 loading="eager"
                 alt="Uploaded Image"
-                style={{ width: '10rem', height: 'auto', borderRadius: '5rem' }}
-                width={400}
-                height={300}
+                style={{ width: '10rem', height: '10rem', borderRadius: '5rem' }}
+                width={100}
+                height={100}
               />
             </>
           )}
           Selecionar arquivo
         </label>
-        <button onClick={uploadImage}>Enviar arquivo</button>
+        {file && <button onClick={uploadImage}>Enviar arquivo</button>}
       </div>
       {url && (
         <>
@@ -103,13 +98,14 @@ const Settings = () => {
             priority
             loading="eager"
             alt="Uploaded Image"
-            style={{ width: '30rem', height: 'auto' }}
-            width={400}
-            height={300}
+            style={{ width: '35rem', height: '35rem' }}
+            width={500}
+            height={500}
           />
         </>
       )}
-      {error && <p>{error}</p>}
+      {errorGeoLocation && <p>Error: {errorGeoLocation}</p>}
+      {errorUploadImage && <p>{errorUploadImage}</p>}
     </S.Container>
   );
 };

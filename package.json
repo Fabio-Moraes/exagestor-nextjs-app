@@ -6,9 +6,9 @@
   "license": "OWNER",
   "scripts": {
     "dev": "next dev",
-    "dev:ip": "yarn exec ./scripts/ip-swapper-env && next dev",
+    "dev:ip": "pnpm exec ./scripts/ip-swapper-env && next dev",
     "dev:ssl": "next dev --experimental-https",
-    "tsc:test": "yarn tsc --noEmit",
+    "tsc:test": "pnpm exec tsc --noEmit",
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "build": "next build",
     "lint": "next lint"
@@ -61,6 +61,7 @@
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.12",
     "react-to-print": "^2.15.1",
+    "sharp": "^0.33.4",
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.0.5",
     "utf-8-validate": "^6.0.3",
@@ -69,6 +70,7 @@
   },
   "resolutions": {
     "glob": "^9.0.0",
-    "rimraf": "^4.0.0"
+    "rimraf": "^4.0.0",
+    "@humanwhocodes/config-array": "npm:@eslint/config-array"
   }
 }
