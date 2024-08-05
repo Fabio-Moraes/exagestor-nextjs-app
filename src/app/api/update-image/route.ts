@@ -39,8 +39,7 @@ export async function POST(request: NextRequest) {
                 x="${width / 2}" 
                 y="${height / 2}"
                 font-family="Arial, Helvetica, sans-serif" font-size="60"
-                fill="white"
-                opacity="0.4"
+                fill="rgba(255, 255, 255, 0.4)"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 transform="rotate(45, ${width / 2}, ${height / 2})"
@@ -49,8 +48,7 @@ export async function POST(request: NextRequest) {
                 x="${width / 2}" 
                 y="${height / 2 - 150}"
                 font-family="Arial, Helvetica, sans-serif" font-size="60"
-                fill="white"
-                opacity="0.4"
+                fill="rgba(255, 255, 255, 0.4)"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 transform="rotate(45, ${width / 2}, ${height / 2})"
@@ -59,8 +57,7 @@ export async function POST(request: NextRequest) {
                 x="${width / 2}" 
                 y="${height / 2 + 150}"
                 font-family="Arial, Helvetica, sans-serif" font-size="60"
-                fill="white"
-                opacity="0.4"
+                fill="rgba(255, 255, 255, 0.4)"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 transform="rotate(45, ${width / 2}, ${height / 2})"
@@ -71,8 +68,8 @@ export async function POST(request: NextRequest) {
                 y="50"
                 font-family="Arial, Helvetica, sans-serif"
                 font-size="15"
-                fill="white"
-                opacity="1">Latitude: ${latitude} Longitude: ${longitude}
+                fill="rgba(255, 255, 255, 0.4)"
+                Latitude: ${latitude} Longitude: ${longitude}
                 </text>
                 <!-- Texto -->
                 <text
@@ -80,8 +77,8 @@ export async function POST(request: NextRequest) {
                 y="70"
                 font-family="Arial, Helvetica, sans-serif"
                 font-size="15"
-                fill="white"
-                opacity="1">Teodoro Sampaio SP</text>
+                fill="rgba(255, 255, 255, 0.4)"
+                >Teodoro Sampaio SP</text>
               </g>
             </svg>
           `),
