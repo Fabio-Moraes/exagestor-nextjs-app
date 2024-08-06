@@ -11,6 +11,7 @@ export const ContainerImagePreview = styled.div`
   height: 500px;
   align-items: end;
   border-radius: 10px;
+  position: relative;
 
   > h1 {
     color: #ffffff;
