@@ -144,6 +144,8 @@ export default function UpdateStateEmployee({ params }: SlugType) {
     active: 'Reativar'
   } as { [key: string]: string };
 
+  type OnChange = React.ChangeEvent<HTMLInputElement>;
+
   return (
     <S.Container>
       <S.Title>
@@ -154,7 +156,7 @@ export default function UpdateStateEmployee({ params }: SlugType) {
           type="password"
           placeholder="Digite sua senha de administrador"
           value={yourPassword}
-          onChange={(e) => setYourPassword(e.target.value.trim())}
+          onChange={(e: OnChange) => setYourPassword(e.target.value.trim())}
         />
 
         <S.Button type="submit">{selectedStateAccount[accountStatus]}</S.Button>

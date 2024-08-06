@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { PreviewImage } from './_components/PreviewImage';
 import Image from 'components/Vercel/Image';
 import useGeoLocation from 'hooks/useGeoLocation';
 
@@ -29,14 +30,14 @@ const Settings = () => {
     }
   };
 
-  const uploadImage = async () => {
-    if (!file) {
+  const uploadImage = async (i: File) => {
+    if (!i) {
       setErrorUploadImage('No file selected');
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', i);
     formData.append('text', business.toUpperCase());
     formData.append('latitude', String(location.latitude ?? '00-000000'));
     formData.append('longitude', String(location.longitude ?? '00-000000'));
@@ -88,7 +89,13 @@ const Settings = () => {
           )}
           Selecionar arquivo
         </label>
-        {file && <button onClick={uploadImage}>Enviar arquivo</button>}
+        <PreviewImage
+          value={preview ?? ''}
+          onPreview={(i) => {
+            uploadImage(i);
+          }}
+        />
+        {/* {file && <button onClick={uploadImage}>Enviar arquivo</button>} */}
       </div>
       {url && (
         <>
