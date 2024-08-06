@@ -66,7 +66,6 @@ export async function POST(request: NextRequest) {
             </g>
           </svg>
           `),
-          gravity: 'northwest', // Posição do texto
           top: 0,
           left: 0
         }
