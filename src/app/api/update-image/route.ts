@@ -68,8 +68,7 @@ export async function POST(request: NextRequest) {
                 y="50"
                 font-family="Arial, Helvetica, sans-serif"
                 font-size="15"
-                fill="rgb(255, 255, 255)"
-                Latitude: ${latitude} Longitude: ${longitude}
+                fill="white">Latitude: ${latitude} Longitude: ${longitude}
                 </text>
                 <!-- Texto -->
                 <text
@@ -77,8 +76,7 @@ export async function POST(request: NextRequest) {
                 y="70"
                 font-family="Arial, Helvetica, sans-serif"
                 font-size="15"
-                fill="rgb(255, 255, 255)"
-                >Teodoro Sampaio SP</text>
+                fill="white">Teodoro Sampaio SP</text>
               </g>
             </svg>
           `),
