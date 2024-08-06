@@ -29,16 +29,16 @@ async function processImage(
       }" height="50" fill="rgba(0, 0, 0, 0.6)" rx="15" ry="15" />
       <g transform="rotate(45, ${width / 2}, ${
         height / 2
-      })" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle">
+      })" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)"  text-anchor="middle" alignment-baseline="middle">
         <text x="${width / 2}" y="${height / 2}">${text}</text>
         <text x="${width / 2}" y="${height / 2 - 150}">${text}</text>
         <text x="${width / 2}" y="${height / 2 + 150}">${text}</text>
       </g>
       <g transform="translate(20, ${
         height - 100
-      })" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white">
-        <text x="0" y="50">Latitude: ${latitude} Longitude: ${longitude}</text>
-        <text x="0" y="70">Teodoro Sampaio SP</text>
+      })" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white" text-anchor="middle" alignment-baseline="middle">
+        <text x="10" y="50">Latitude: ${latitude} Longitude: ${longitude}</text>
+        <text x="10" y="70">Teodoro Sampaio SP</text>
       </g>
     </svg>
   `);
