@@ -21,59 +21,92 @@ export async function POST(request: NextRequest) {
     const width = 500;
     const height = 500;
 
-    // Usa sharp para verificar o tipo de imagem
-    const resizedImageBuffer = await sharp(buffer)
-      .resize(500, 500) // Define a largura e altura desejadas
+    // Cria um buffer para a imagem de fundo
+    const backgroundBuffer = await sharp({
+      create: {
+        width,
+        height,
+        channels: 4,
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
+      }
+    })
+      .png()
+      .toBuffer();
+
+    // Cria a camada de texto e gráficos
+    const textBuffer = await sharp({
+      create: {
+        width,
+        height,
+        channels: 4,
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
+      }
+    })
       .composite([
         {
           input: Buffer.from(`
-          <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-            <!-- Fundo com cor escura e bordas arredondadas -->
-            <rect
-              x="10"
-              y="${height - 70}"
-              width="${width - 20}"
-              height="50"
-              fill="rgba(0, 0, 0, 0.6)"
-              rx="15"
-              ry="15" />
+            <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+              <!-- Fundo com cor escura e bordas arredondadas -->
+              <rect
+                x="10"
+                y="${height - 70}"
+                width="${width - 20}"
+                height="50"
+                fill="rgba(0, 0, 0, 0.6)"
+                rx="15"
+                ry="15" />
+            </svg>
+          `),
+          top: 0,
+          left: 0
+        },
+        {
+          input: Buffer.from(`
+            <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+              <!-- Texto rotacionado -->
+              <text x="${width / 2}" y="${
+                height / 2
+              }" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle" transform="rotate(45, ${
+                width / 2
+              }, ${height / 2})">${text}</text>
+              <text x="${width / 2}" y="${
+                height / 2 - 150
+              }" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle" transform="rotate(45, ${
+                width / 2
+              }, ${height / 2})">${text}</text>
+              <text x="${width / 2}" y="${
+                height / 2 + 150
+              }" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle" transform="rotate(45, ${
+                width / 2
+              }, ${height / 2})">${text}</text>
 
-            <!-- Texto rotacionado -->
-            <g transform="rotate(45, ${width / 2}, ${
-              height / 2
-            })" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle">
-              <text x="${width / 2}" y="${height / 2}">
-                ${text}
-              </text>
-              <text x="${width / 2}" y="${height / 2 - 150}">
-                ${text}
-              </text>
-              <text x="${width / 2}" y="${height / 2 + 150}">
-                ${text}
-              </text>
-            </g>
-
-            <!-- Informações de localização -->
-            <g transform="translate(20, ${
-              height - 100
-            })" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white">
-              <text x="0" y="50">
-                Latitude: ${latitude} Longitude: ${longitude}
-              </text>
-              <text x="0" y="70">
-                Teodoro Sampaio SP
-              </text>
-            </g>
-          </svg>
+              <!-- Informações de localização -->
+              <text x="20" y="${
+                height - 50
+              }" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white">Latitude: ${latitude} Longitude: ${longitude}</text>
+              <text x="20" y="${
+                height - 30
+              }" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white">Teodoro Sampaio SP</text>
+            </svg>
           `),
           top: 0,
           left: 0
         }
-      ]) // Adiciona o texto como uma imagem SVG
+      ])
+      .png()
       .toBuffer();
 
-    // Verifica o formato da imagem redimensionada
-    const metadata = await sharp(resizedImageBuffer).metadata();
+    // Combina a imagem original com a camada de texto e gráficos
+    const combinedImageBuffer = await sharp(buffer)
+      .resize(width, height)
+      .composite([
+        { input: backgroundBuffer, blend: 'over' },
+        { input: textBuffer, blend: 'over' }
+      ])
+      .toBuffer();
+
+    // Verifica o formato da imagem combinada
+    const metadata = await sharp(combinedImageBuffer).metadata();
 
     // Verifica se a imagem tem um formato válido
     if (!['png', 'jpg', 'jpeg'].includes(metadata.format || '')) {
@@ -86,7 +119,7 @@ export async function POST(request: NextRequest) {
     // Faz o upload do arquivo
     const { error: uploadError } = await supabase.storage
       .from('exagestor')
-      .upload(`uploads/${file.name}`, resizedImageBuffer, {
+      .upload(`uploads/${file.name}`, combinedImageBuffer, {
         cacheControl: '3600',
         upsert: true,
         contentType: file.type
