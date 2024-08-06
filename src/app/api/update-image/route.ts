@@ -27,59 +27,73 @@ export async function POST(request: NextRequest) {
       .composite([
         {
           input: Buffer.from(`
-            <svg width="${width}" height="${height}">
-              <!-- Fundo com cor escura e bordas arredondadas -->
-              <rect
+          <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fundo com cor escura e bordas arredondadas -->
+            <rect
               x="10"
               y="${height - 70}"
               width="${width - 20}"
-              height="50" fill="rgba(0, 0, 0, 0.6)" rx="15" ry="15" />
-              <!-- Texto -->
-              <text 
-                x="${width / 2}" 
-                y="${height / 2}"
-                font-family="Arial, Helvetica, sans-serif" font-size="60"
-                fill="rgba(255, 255, 255, 0.4)"
-                text-anchor="middle"
-                alignment-baseline="middle"
-                transform="rotate(45, ${width / 2}, ${height / 2})"
-                >${text}</text>
-                <text 
-                x="${width / 2}" 
-                y="${height / 2 - 150}"
-                font-family="Arial, Helvetica, sans-serif" font-size="60"
-                fill="rgba(255, 255, 255, 0.4)"
-                text-anchor="middle"
-                alignment-baseline="middle"
-                transform="rotate(45, ${width / 2}, ${height / 2})"
-                >${text}</text>
-                <text 
-                x="${width / 2}" 
-                y="${height / 2 + 150}"
-                font-family="Arial, Helvetica, sans-serif" font-size="60"
-                fill="rgba(255, 255, 255, 0.4)"
-                text-anchor="middle"
-                alignment-baseline="middle"
-                transform="rotate(45, ${width / 2}, ${height / 2})"
-                >${text}</text>
-              <g transform="translate(20, ${height - 100})">
-                <text
+              height="50"
+              fill="rgba(0, 0, 0, 0.6)"
+              rx="15"
+              ry="15" />
+                  
+            <!-- Texto rotacionado -->
+            <text 
+              x="${width / 2}" 
+              y="${height / 2}"
+              font-family="Arial, Helvetica, sans-serif"
+              font-size="60"
+              fill="rgba(255, 255, 255, 0.4)"
+              text-anchor="middle"
+              alignment-baseline="middle"
+              transform="rotate(45, ${width / 2}, ${height / 2})">
+              ${text}
+            </text>
+            <text 
+              x="${width / 2}" 
+              y="${height / 2 - 150}"
+              font-family="Arial, Helvetica, sans-serif"
+              font-size="60"
+              fill="rgba(255, 255, 255, 0.4)"
+              text-anchor="middle"
+              alignment-baseline="middle"
+              transform="rotate(45, ${width / 2}, ${height / 2})">
+              ${text}
+            </text>
+            <text 
+              x="${width / 2}" 
+              y="${height / 2 + 150}"
+              font-family="Arial, Helvetica, sans-serif"
+              font-size="60"
+              fill="rgba(255, 255, 255, 0.4)"
+              text-anchor="middle"
+              alignment-baseline="middle"
+              transform="rotate(45, ${width / 2}, ${height / 2})">
+              ${text}
+            </text>
+                  
+            <!-- Informações de localização -->
+            <g transform="translate(20, ${height - 100})">
+              <text
                 x="0"
                 y="50"
                 font-family="Arial, Helvetica, sans-serif"
                 font-size="15"
-                fill="white">Latitude: ${latitude} Longitude: ${longitude}
-                </text>
-                <!-- Texto -->
-                <text
+                fill="white">
+                Latitude: ${latitude} Longitude: ${longitude}
+              </text>
+              <text
                 x="0"
                 y="70"
                 font-family="Arial, Helvetica, sans-serif"
                 font-size="15"
-                fill="white">Teodoro Sampaio SP</text>
-              </g>
-            </svg>
-          `),
+                fill="white">
+                Teodoro Sampaio SP
+              </text>
+            </g>
+          </svg>
+        `),
           gravity: 'northwest', // Posição do texto
           top: 0,
           left: 0
