@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { createCanvas } from 'canvas';
 import { supabase } from 'lib/supabase';
 import sharp from 'sharp';
 
@@ -21,88 +22,46 @@ export async function POST(request: NextRequest) {
     const width = 500;
     const height = 500;
 
-    // Cria um buffer para a imagem de fundo
-    const backgroundBuffer = await sharp({
-      create: {
-        width,
-        height,
-        channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
-      }
-    })
-      .png()
-      .toBuffer();
+    // Redimensiona a imagem original
+    //const image = sharp(buffer).resize(width, height);
 
-    // Cria a camada de texto e gráficos
-    const textBuffer = await sharp({
-      create: {
-        width,
-        height,
-        channels: 4,
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
-      }
-    })
-      .composite([
-        {
-          input: Buffer.from(`
-            <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-              <!-- Fundo com cor escura e bordas arredondadas -->
-              <rect
-                x="10"
-                y="${height - 70}"
-                width="${width - 20}"
-                height="50"
-                fill="rgba(0, 0, 0, 0.6)"
-                rx="15"
-                ry="15" />
-            </svg>
-          `),
-          top: 0,
-          left: 0
-        },
-        {
-          input: Buffer.from(`
-            <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-              <!-- Texto rotacionado -->
-              <text x="${width / 2}" y="${
-                height / 2
-              }" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle" transform="rotate(45, ${
-                width / 2
-              }, ${height / 2})">${text}</text>
-              <text x="${width / 2}" y="${
-                height / 2 - 150
-              }" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle" transform="rotate(45, ${
-                width / 2
-              }, ${height / 2})">${text}</text>
-              <text x="${width / 2}" y="${
-                height / 2 + 150
-              }" font-family="Arial, Helvetica, sans-serif" font-size="60" fill="rgba(255, 255, 255, 0.4)" text-anchor="middle" alignment-baseline="middle" transform="rotate(45, ${
-                width / 2
-              }, ${height / 2})">${text}</text>
+    // Cria um canvas para o texto
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext('2d');
 
-              <!-- Informações de localização -->
-              <text x="20" y="${
-                height - 50
-              }" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white">Latitude: ${latitude} Longitude: ${longitude}</text>
-              <text x="20" y="${
-                height - 30
-              }" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="white">Teodoro Sampaio SP</text>
-            </svg>
-          `),
-          top: 0,
-          left: 0
-        }
-      ])
-      .png()
-      .toBuffer();
+    // Desenha o fundo escuro com bordas arredondadas
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.fillRect(10, height - 70, width - 20, 50);
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 15;
 
-    // Combina a imagem original com a camada de texto e gráficos
+    // Desenha o texto rotacionado
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.font = '60px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.translate(width / 2, height / 2);
+    ctx.rotate((45 * Math.PI) / 180);
+    ctx.fillText(text, 0, 0);
+    ctx.fillText(text, 0, -150);
+    ctx.fillText(text, 0, 150);
+    ctx.rotate((-45 * Math.PI) / 180);
+    ctx.translate(-width / 2, -height / 2);
+
+    // Desenha o texto de localização
+    ctx.fillStyle = 'white';
+    ctx.font = '15px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Latitude: ${latitude} Longitude: ${longitude}`, 20, height - 50);
+    ctx.fillText('Teodoro Sampaio SP', 20, height - 30);
+
+    // Converte o canvas para buffer
+    const textBuffer = canvas.toBuffer('image/png');
+
+    // Combina a imagem original com a camada de texto
     const combinedImageBuffer = await sharp(buffer)
       .resize(width, height)
-      .composite([
-        { input: backgroundBuffer, blend: 'over' },
-        { input: textBuffer, blend: 'over' }
-      ])
+      .composite([{ input: textBuffer, blend: 'over' }])
       .toBuffer();
 
     // Verifica o formato da imagem combinada
