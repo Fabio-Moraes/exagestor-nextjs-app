@@ -23,7 +23,7 @@ export function PreviewImage(props: PropsType) {
   const now = new Date();
   const formattedDate = formatDate(now);
 
-  const deploy = false;
+  const deploy = true;
 
   const handleCaptureClick = async () => {
     if (ref.current === null) {
