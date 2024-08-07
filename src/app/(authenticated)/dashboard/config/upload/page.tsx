@@ -81,23 +81,41 @@ const Settings = () => {
                 priority
                 loading="eager"
                 alt="Uploaded Image"
-                style={{ width: '10rem', height: '10rem', borderRadius: '5rem' }}
+                style={{
+                  width: '100%',
+                  height: '15rem',
+                  borderRadius: '2.5rem',
+                  objectFit: 'cover', // Mantém a proporção da imagem e preenche o contêiner
+                  objectPosition: 'center' // Centraliza a imagem dentro do contêiner
+                }}
                 width={100}
                 height={100}
               />
+              <p
+                style={{
+                  position: 'absolute',
+                  marginTop: '6.3rem',
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  padding: '0.6rem'
+                }}
+              >
+                Selecionar arquivo
+              </p>
             </>
           )}
-          Selecionar arquivo
+          {!preview && <p>Selecionar arquivo</p>}
         </label>
-        <PreviewImage
-          value={preview ?? ''}
-          onPreview={(i) => {
-            uploadImage(i);
-          }}
-        />
+        {file && (
+          <PreviewImage
+            value={preview ?? ''}
+            onPreview={(i) => {
+              uploadImage(i);
+            }}
+          />
+        )}
         {/* {file && <button onClick={uploadImage}>Enviar arquivo</button>} */}
       </div>
-      {url && (
+      {url && !preview && (
         <>
           <p>Concluído</p>
           <Image

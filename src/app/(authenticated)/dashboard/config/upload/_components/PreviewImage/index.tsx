@@ -23,19 +23,21 @@ export function PreviewImage(props: PropsType) {
   const now = new Date();
   const formattedDate = formatDate(now);
 
+  const deploy = false;
+
   const handleCaptureClick = async () => {
     if (ref.current === null) {
       return;
     }
 
-    if (errorGeoLocation) {
+    if (errorGeoLocation && deploy) {
       alert(
         'Erro ao obter localização. Por favor, verifique suas configurações de GPS e tente novamente.'
       );
       return;
     }
 
-    if (!location) {
+    if (!location && deploy) {
       alert('Localização não disponível. Por favor, certifique-se de que o GPS está ativado.');
       return;
     }
@@ -74,7 +76,7 @@ export function PreviewImage(props: PropsType) {
           </S.ContainerImagePreview>
         </div>
 
-        <button onClick={handleCaptureClick}>Capture as Image</button>
+        <S.Button onClick={handleCaptureClick}>Enviar arquivo</S.Button>
       </header>
     </div>
   );
