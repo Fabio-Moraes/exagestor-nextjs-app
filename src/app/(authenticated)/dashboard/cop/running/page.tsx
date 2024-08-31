@@ -25,14 +25,15 @@ interface RunningService {
   address: string;
   nomenclature: string;
   classification: string;
-  status: string;
   update_count: number;
-  created_at: string;
+  status: string;
   start_service_at: string;
+  created_at: string;
   protocol: string;
+  name_tec: string;
   name_creator_leader: string;
   role_creator_leader: string;
-  name_tec: string;
+  type_operation: string;
 }
 
 export default function RunningService() {
