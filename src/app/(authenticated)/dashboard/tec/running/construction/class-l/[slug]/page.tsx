@@ -108,10 +108,9 @@ export default function FinishService({ params }: SlugType) {
   }
 
   const refreshFetchServices = async () => {
-    const protocol = operationsCable[0]?.protocol;
     if (socket) {
-      console.log('WEBSOCKET PROTOCOL', protocol);
-      socket.on(`RUNNING_REFRESH_CLASS_L:${protocol}`, async () => {
+      console.log('WEBSOCKET PROTOCOL', decryptSlug.protocol?.toString());
+      socket.on(`RUNNING_REFRESH_CLASS_L:${decryptSlug.protocol?.toString()}`, async () => {
         await fetchServices();
       });
     }
