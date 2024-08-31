@@ -17,9 +17,9 @@ html[data-theme="wmax"] {
   /* Primary Colors */
   /*#078ABA*/--color-primary-01: 7, 138, 186;
   /*#078ABA*/--color-primary-02: 7, 138, 186;
-  /*#32455a*/--color-primary-03: 50, 69, 90;
+  /*#354e69*/--color-primary-03: 53, 78, 105;
   /*#0d1d25*/--color-primary-04: 13, 29, 37;
-  /*#343A40*/--color-primary-05: 52, 58, 64;
+  /*#232323*/--color-primary-05: 35, 35, 35;
 
   /* Secondary Colors */
   /*#002331*/--color-secondary-01: 0, 35, 49; 

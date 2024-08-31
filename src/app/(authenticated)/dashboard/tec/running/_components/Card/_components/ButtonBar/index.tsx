@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'components/Vercel/Image';
 import { encryptObject } from 'functions';
@@ -14,7 +14,7 @@ import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
 
-interface RunningService {
+type RunningService = {
   id: number;
   employee_id: number;
   client_name: string;
@@ -29,7 +29,14 @@ interface RunningService {
   protocol: string;
   name_creator_leader: string;
   name_tec: string;
-}
+  type_operation: string;
+};
+
+type ButtonBarTypes = {
+  service: RunningService;
+  passedScheduledDate: boolean;
+  shared?: boolean;
+};
 
 interface propsImageType {
   priority: boolean;
@@ -38,7 +45,7 @@ interface propsImageType {
   height: number;
 }
 
-export function ButtonBar(props: { service: RunningService; passedScheduledDate: boolean }) {
+export function ButtonBar(props: ButtonBarTypes) {
   const business = getCurrentBusinessTheme();
 
   const checkSvg = business?.running.check;
@@ -47,7 +54,7 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
   const pauseSvg = business?.running.pause;
   const playSvg = business?.running.play;
 
-  const { service, passedScheduledDate } = props;
+  const { service, shared, passedScheduledDate } = props;
 
   const websocketConnected = useWebsocketConnected((status) => status.websocketConnected);
   const [runningLoad, setRunningLoad] = useState(false);
@@ -58,16 +65,41 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
   const router = useRouter();
   const maxRetries = 4;
 
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleOpenDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    }
+  };
+
+  type EventTypes = React.MouseEvent<HTMLDialogElement, MouseEvent>;
+
+  const handleClickOutsideDialog = (event: EventTypes) => {
+    const { clientX, clientY } = event.nativeEvent;
+    if (dialogRef.current) {
+      const rect = dialogRef.current.getBoundingClientRect();
+      if (
+        rect.left > clientX ||
+        rect.right < clientX ||
+        rect.top > clientY ||
+        rect.bottom < clientY
+      ) {
+        dialogRef.current.close();
+      }
+    }
+  };
+
   const allButtonsLocked = !(!runningLoad && websocketConnected && status !== 'analysis');
 
   const onClickButtonCheck = () => {
-    if (!passedScheduledDate || allButtonsLocked || status === 'paused') return;
+    if (!passedScheduledDate || allButtonsLocked || status === 'paused' || shared) return;
 
     router.push(`/dashboard/tec/running/finish/service/${encryptSlug}`, { scroll: false });
   };
 
   async function onClickButtonPlayPause() {
-    if (!passedScheduledDate || allButtonsLocked) return;
+    if (!passedScheduledDate || allButtonsLocked || shared) return;
 
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
@@ -103,7 +135,7 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
   }
 
   async function onClickButtonCancel() {
-    if (allButtonsLocked) return;
+    if (allButtonsLocked || shared) return;
 
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
@@ -137,21 +169,27 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
     }
   }
 
-  const onClickButtonDoc = () => {};
+  function onClickModalConstruction() {
+    if (service.type_operation !== 'TIPO_COMUM') handleOpenDialog();
+  }
 
   const styleButtonCheck = {
-    opacity: !passedScheduledDate || status === 'paused' || allButtonsLocked ? 0.3 : 1
+    opacity:
+      !passedScheduledDate || status === 'paused' || allButtonsLocked || shared ? 0.3 : 1
   };
 
   const styleButtonPlayPause = {
-    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+    opacity: !passedScheduledDate || allButtonsLocked || shared ? 0.3 : 1
   };
 
   const styleButtonDoc = {
-    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+    opacity:
+      !passedScheduledDate || allButtonsLocked || service.type_operation === 'TIPO_COMUM'
+        ? 0.3
+        : 1
   };
 
-  const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };
+  const styleButtonClose = { opacity: allButtonsLocked || shared ? 0.3 : 1 };
 
   const propsImage = {
     priority: true,
@@ -164,21 +202,39 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
   const startAnimation = Boolean(runningLoad || !websocketConnected);
 
   return (
-    <S.Container $animation={startAnimation}>
-      <S.Wrapper>
-        <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
-          <Image {...propsImage} src={checkSvg} alt="check" />
-        </button>
-        <button rel="preload" style={styleButtonPlayPause} onClick={onClickButtonPlayPause}>
-          <Image {...propsImage} src={iconPlayPause} alt="play-pause" />
-        </button>
-        <button rel="preload" style={styleButtonDoc} onClick={onClickButtonDoc}>
-          <Image {...propsImage} src={docSvg} alt="doc" />
-        </button>
-        <button rel="preload" style={styleButtonClose} onClick={onClickButtonCancel}>
-          <Image {...propsImage} src={closeSvg} alt="close" />
-        </button>
-      </S.Wrapper>
-    </S.Container>
+    <>
+      <S.Container $animation={startAnimation}>
+        <S.Wrapper>
+          <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
+            <Image {...propsImage} src={checkSvg} alt="check" />
+          </button>
+          <button rel="preload" style={styleButtonPlayPause} onClick={onClickButtonPlayPause}>
+            <Image {...propsImage} src={iconPlayPause} alt="play-pause" />
+          </button>
+          <button rel="preload" style={styleButtonDoc} onClick={onClickModalConstruction}>
+            <Image {...propsImage} src={docSvg} alt="doc" />
+          </button>
+          <button rel="preload" style={styleButtonClose} onClick={onClickButtonCancel}>
+            <Image {...propsImage} src={closeSvg} alt="close" />
+          </button>
+        </S.Wrapper>
+      </S.Container>
+      <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
+        <>
+          <button
+            onClick={() => {
+              router.push(`/dashboard/tec/running/construction/class-l/${encryptSlug}`, {
+                scroll: false
+              });
+            }}
+          >
+            <p>CLASSE L</p>
+          </button>
+          <button onClick={() => {}}>
+            <p>CLASSE F</p>
+          </button>
+        </>
+      </S.Dialog>
+    </>
   );
 }

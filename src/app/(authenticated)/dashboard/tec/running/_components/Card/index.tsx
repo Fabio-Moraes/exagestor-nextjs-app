@@ -8,7 +8,7 @@ import moment from 'moment';
 
 import * as S from './styles';
 
-interface RunningService {
+type RunningService = {
   id: number;
   employee_id: number;
   client_name: string;
@@ -23,9 +23,15 @@ interface RunningService {
   protocol: string;
   name_creator_leader: string;
   name_tec: string;
-}
+  type_operation: string;
+};
 
-export function Card({ service }: { service: RunningService }) {
+type CardTypes = {
+  service: RunningService;
+  shared?: boolean;
+};
+
+export function Card({ service, shared }: CardTypes) {
   const [currentDate, setCurrentDate] = useState(moment());
   const yourDate = moment(service?.start_service_at);
   const passedScheduledDate = yourDate.isSameOrBefore(currentDate);
@@ -43,10 +49,10 @@ export function Card({ service }: { service: RunningService }) {
 
   return (
     <S.Container>
-      <CardHeader {...props} />
+      <CardHeader shared={shared} {...props} />
       <S.Wrapper>
         <CardContent {...props} />
-        <ButtonBar {...props} />
+        <ButtonBar shared={shared} {...props} />
       </S.Wrapper>
     </S.Container>
   );

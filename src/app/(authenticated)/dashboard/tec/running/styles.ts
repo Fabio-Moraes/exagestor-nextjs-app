@@ -22,6 +22,70 @@ export const Title = styled.h1`
   }
 `;
 
+export const BoxButton = styled.div`
+  display: flex;
+  height: auto;
+  align-items: start;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  padding: 0.5rem 1rem;
+  width: 27rem;
+  background-color: rgba(var(--color-secondary-02), 0.8);
+  border-radius: 0.7rem;
+
+  flex-direction: column;
+
+  > span {
+    color: #ffffff;
+  }
+
+  > div {
+    margin: 0.5rem 0rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+`;
+
+export const Input = styled.input`
+  padding: 1rem;
+  width: 15rem;
+
+  font-size: 1.6rem;
+  background-color: #fafafa;
+  border-radius: 0.5rem;
+  outline: 0.1rem solid #ccc;
+  font-family: 'OpenSans-Regular';
+  height: 3.6rem;
+
+  &:focus {
+    outline: 0.2rem solid rgb(var(--color-secondary-04));
+  }
+
+  &::placeholder {
+    color: #666;
+  }
+`;
+
+export const Button = styled.button`
+  width: 9rem;
+  background-color: rgb(var(--color-secondary-04));
+  margin: 0rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.6rem;
+  color: #fff;
+  height: 4rem;
+
+  &:hover {
+    background-color: #00796b;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 export const ListContainer = styled.ul`
   list-style: none;
   padding: 0;

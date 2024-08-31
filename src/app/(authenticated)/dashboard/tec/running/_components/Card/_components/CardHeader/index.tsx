@@ -3,6 +3,7 @@
 import Image from 'components/Vercel/Image';
 
 import iconPaused from './_assets/svg/cone.svg';
+import iconConnect from './_assets/svg/connect.svg';
 import iconFlagActive from './_assets/svg/flag_active.svg';
 import iconFlagAnalysis from './_assets/svg/flag_analysis.svg';
 import iconFlagDate from './_assets/svg/flag_date.svg';
@@ -11,7 +12,7 @@ import iconUser from './_assets/svg/user.svg';
 
 import * as S from './styles';
 
-interface RunningService {
+type RunningService = {
   id: number;
   employee_id: number;
   client_name: string;
@@ -26,7 +27,13 @@ interface RunningService {
   protocol: string;
   name_creator_leader: string;
   name_tec: string;
-}
+};
+
+type CardHeaderTypes = {
+  service: RunningService;
+  passedScheduledDate: boolean;
+  shared?: boolean;
+};
 
 const StatusOptions = {
   analysis: (
@@ -86,8 +93,8 @@ const statusColor = {
   scheduled: '--color-palette-scheduled'
 } as const;
 
-export function CardHeader(props: { service: RunningService; passedScheduledDate: boolean }) {
-  const { service, passedScheduledDate } = props;
+export function CardHeader(props: CardHeaderTypes) {
+  const { service, shared, passedScheduledDate } = props;
 
   return (
     <S.Container
@@ -120,6 +127,18 @@ export function CardHeader(props: { service: RunningService; passedScheduledDate
               ]
             }
           </div>
+          {shared && (
+            <div style={{ marginLeft: '-0.1rem' }}>
+              <Image
+                src={iconConnect}
+                priority
+                loading="eager"
+                alt="Axa"
+                style={{ width: '2.25rem', height: 'auto' }}
+              />
+              <p style={{ marginLeft: '0.35rem' }}>COMPARTILHADO</p>
+            </div>
+          )}
         </div>
         <button>
           <Image

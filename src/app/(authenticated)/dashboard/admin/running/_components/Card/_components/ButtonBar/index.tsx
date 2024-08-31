@@ -28,6 +28,7 @@ interface RunningService {
   protocol: string;
   name_creator_leader: string;
   name_tec: string;
+  type_operation: string;
 }
 
 interface propsImageType {
@@ -189,7 +190,10 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
   };
 
   const styleButtonDoc = {
-    opacity: !passedScheduledDate || allButtonsLocked ? 0.3 : 1
+    opacity:
+      !passedScheduledDate || allButtonsLocked || service.type_operation === 'TIPO_COMUM'
+        ? 0.3
+        : 1
   };
 
   const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };

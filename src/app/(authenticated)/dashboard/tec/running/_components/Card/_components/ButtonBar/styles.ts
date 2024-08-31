@@ -73,3 +73,47 @@ export const Wrapper = styled.div`
     }
   }
 `;
+
+export const Dialog = styled.dialog`
+  background-image: linear-gradient(
+    45deg,
+    rgb(var(--color-primary-02)) 65%,
+    rgb(var(--color-secondary-02))
+  );
+  border-radius: 0.7rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  > button {
+    background-color: #fff;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    width: 15rem;
+    margin: 1rem;
+    cursor: pointer;
+    user-select: none;
+
+    > p {
+      text-align: center;
+      width: 100%;
+    }
+
+    display: flex;
+    height: 4.5rem;
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 3px 0px rgb(var(--color-secondary-02));
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+  }
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+`;

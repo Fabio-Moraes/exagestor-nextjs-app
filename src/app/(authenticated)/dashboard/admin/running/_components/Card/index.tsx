@@ -24,6 +24,7 @@ interface RunningService {
   name_creator_leader: string;
   role_creator_leader: string;
   name_tec: string;
+  type_operation: string;
 }
 
 export function Card({ service }: { service: RunningService }) {

@@ -106,7 +106,17 @@ const ListItem = (props: ListItemProps) => {
   function fetchNewServices() {
     const encryptSlug = encryptObject({ userId: id });
     handleCloseDialog();
-    router.push(`/dashboard/superadmin/manage/new/${encryptSlug}`, { scroll: false });
+    router.push(`/dashboard/superadmin/manage/new-common-service/${encryptSlug}`, {
+      scroll: false
+    });
+  }
+
+  function fetchNewConstructionService() {
+    const encryptSlug = encryptObject({ userId: id });
+    handleCloseDialog();
+    router.push(`/dashboard/superadmin/manage/new-construction-service/${encryptSlug}`, {
+      scroll: false
+    });
   }
 
   function fetchStock() {
@@ -186,7 +196,12 @@ const ListItem = (props: ListItemProps) => {
           </button>
           {status !== 'inactive' && (
             <button onClick={fetchNewServices}>
-              <p>NOVO SERVIÇO</p>
+              <p>NOVO SERVIÇO COMUM</p>
+            </button>
+          )}
+          {status !== 'inactive' && (
+            <button onClick={fetchNewConstructionService}>
+              <p>NOVO SERVIÇO CONSTRUÇÃO</p>
             </button>
           )}
           <button onClick={fetchHistoric}>
