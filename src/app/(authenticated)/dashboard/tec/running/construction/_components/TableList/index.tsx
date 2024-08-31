@@ -57,8 +57,8 @@ export function ListServiceCable(props: ListCableProps) {
           protocol: serviceCable[Number(selectedCard)].protocol,
           adequacyLengthMeters: count
         });
+        if (dialogRef.current) dialogRef.current.close();
         console.log(data);
-        //window.location.reload();
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {

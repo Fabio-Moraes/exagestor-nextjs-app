@@ -45,8 +45,8 @@ export function HorizontalList(props: ListCableProps) {
           protocol: selectedCable[Number(selectedCard)].protocol,
           usedLengthMeters: count
         });
+        if (dialogRef.current) dialogRef.current.close();
         console.log(data);
-        //window.location.reload();
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
