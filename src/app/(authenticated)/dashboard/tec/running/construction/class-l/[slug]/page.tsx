@@ -111,7 +111,7 @@ export default function FinishService({ params }: SlugType) {
     const protocol = operationsCable[0]?.protocol;
     if (socket) {
       console.log('WEBSOCKET PROTOCOL', protocol);
-      socket.on(`RUNNING_REFRESH_CLASS_L:78708395236098363`, async () => {
+      socket.on(`RUNNING_REFRESH_CLASS_L:${protocol}`, async () => {
         await fetchServices();
       });
     }
