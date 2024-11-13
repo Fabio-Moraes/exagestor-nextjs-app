@@ -101,17 +101,11 @@ export default function NewStock({ params }: SlugType) {
     }
   };
 
-  const selectedMaterials = materials.filter((objeto: Materials) => selectedTableRows.includes(objeto.id));
+  const selectedMaterials = materials.filter((objeto: Materials) =>
+    selectedTableRows.includes(objeto.id)
+  );
 
   const encryptSlug = encryptObject({ selectedMaterials, userId });
-
-  /* 
- materials={
-                  selectedCategory === 'TODOS'
-                    ? materials
-                    : materials.filter((i) => i.category === selectedCategory)
-                }
-*/
 
   return (
     <S.Container>
