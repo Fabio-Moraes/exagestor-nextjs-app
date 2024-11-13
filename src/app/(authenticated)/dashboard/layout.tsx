@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import { RemoteDisconnectionPopup } from 'components/RemoteDisconnectionPopup';
 import { SessionConflictPopup } from 'components/SessionConflictPopup';

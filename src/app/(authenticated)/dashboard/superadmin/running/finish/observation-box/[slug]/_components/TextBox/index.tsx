@@ -35,8 +35,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const [isLoading, setIsLoading] = useState(true);
   const [requestInProcess, setRequestInProcess] = useState(false);
 
-  const { setObservationBox, observationBox, selectMaterial, selectService } =
-    useLocalStorage();
+  const { setObservationBox, observationBox, selectMaterial, selectService } = useLocalStorage();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,9 +69,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
             protocol: serviceData?.protocol,
             employeeId: String(serviceData?.employee_id),
             observation: String(
-              !blocked
-                ? serviceData?.observation ?? ''
-                : observationBox[serviceData?.protocol] ?? ''
+              !blocked ? serviceData?.observation ?? '' : observationBox[serviceData?.protocol] ?? ''
             ),
             listService: JSON.stringify(selectService[serviceData?.protocol]),
             listMaterial: JSON.stringify(selectMaterial[serviceData?.protocol])
@@ -207,16 +204,15 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (
         <>
           {!blocked && (
             <S.AlertList>
-              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para
-              validação.
+              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para validação.
             </S.AlertList>
           )}
           <S.ListContainer>
@@ -249,11 +245,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
               {isLoading || !serviceData?.protocol ? (
                 <LineSkaleton width="3rem" />
               ) : (
-                <>
-                  {blocked && (
-                    <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>
-                  )}
-                </>
+                <>{blocked && <p>{500 - (observationBox[serviceData?.protocol]?.length ?? 0)}</p>}</>
               )}
             </S.ContainerCounter>
             <div>

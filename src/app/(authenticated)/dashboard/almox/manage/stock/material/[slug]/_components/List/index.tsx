@@ -101,9 +101,7 @@ export function List(props: { materials: Materials[]; employeeId: number }) {
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setIsPopupValue(
-            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-          );
+          setIsPopupValue(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
 
           const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/almox/manage/pick-material',

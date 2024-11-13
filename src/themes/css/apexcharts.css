@@ -1,5 +1,4 @@
 @keyframes moveDataLabelsUp {
-
   0%,
   100% {
     transform: translateY(0px);
@@ -13,7 +12,6 @@
 }
 
 @keyframes moveDataLabelsDown {
-  
   0%,
   100% {
     transform: translateY(15px);
@@ -34,7 +32,6 @@
   fill: transparent !important;
 }
 
-
 .apexcharts-data-labels:nth-child(odd) {
   animation: moveDataLabelsUp 3s infinite ease-in-out;
   z-index: 0;
@@ -52,7 +49,7 @@
 }
 
 .apexcharts-legend-series {
-  background-color: #343A40;
+  background-color: #343a40;
   border-radius: 0.6rem;
   padding: 0rem 0.5rem 0.2rem 0.5rem;
 }
@@ -69,13 +66,12 @@
   cursor: auto !important;
 }
 
-
 .apexcharts-tooltip {
-  color: #373D3F !important;
-  background-color: #ECEFF1 !important;
-  border-color: #90A4AE !important;
+  color: #373d3f !important;
+  background-color: #eceff1 !important;
+  border-color: #90a4ae !important;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-  z-index:9999 !important;
+  z-index: 9999 !important;
   line-height: 1.5;
   text-decoration: none !important;
   opacity: 0;
@@ -96,5 +92,5 @@
 .tooltip {
   text-align: start;
   background-color: transparent;
-  padding: 0.5rem;  
-} 
+  padding: 0.5rem;
+}

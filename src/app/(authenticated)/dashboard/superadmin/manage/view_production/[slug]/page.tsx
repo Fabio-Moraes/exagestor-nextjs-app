@@ -10,7 +10,7 @@ import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import moment, { Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 
 import refresh from './_assets/svg/refresh.svg';
 
@@ -70,9 +70,8 @@ export default function ViewProduction({ params }: SlugType) {
     .diff(moment(selectedFirstDate).startOf('day'), 'days');
 
   const validDateRange =
-    moment(selectedLastDate)
-      .startOf('day')
-      .isSameOrAfter(moment(selectedFirstDate).startOf('day')) && diffDays <= 60;
+    moment(selectedLastDate).startOf('day').isSameOrAfter(moment(selectedFirstDate).startOf('day')) &&
+    diffDays <= 60;
 
   async function fetchServices() {
     if (!validDateRange) return;
@@ -152,8 +151,8 @@ export default function ViewProduction({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (
@@ -181,10 +180,7 @@ export default function ViewProduction({ params }: SlugType) {
                 active={validDateRange}
               />
             </S.WrapperSelectedDataCalendar>
-            <S.WrapperButton
-              style={{ opacity: validDateRange ? 1 : 0.3 }}
-              onClick={fetchServices}
-            >
+            <S.WrapperButton style={{ opacity: validDateRange ? 1 : 0.3 }} onClick={fetchServices}>
               <Image priority loading="eager" src={refresh} alt="Add" width="45" height="45" />
             </S.WrapperButton>
           </S.ContainerSelecteddataCalendar>
@@ -204,10 +200,7 @@ export default function ViewProduction({ params }: SlugType) {
                   <div key={key}>
                     <div>
                       <span>
-                        {
-                          production?.serviceList.find((item) => String(item.id) === key)
-                            ?.description
-                        }
+                        {production?.serviceList.find((item) => String(item.id) === key)?.description}
                       </span>
                     </div>
                     <div>

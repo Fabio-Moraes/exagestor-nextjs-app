@@ -195,8 +195,7 @@ export function List(props: { serviceData: ServiceData; items: Materials[] }) {
         <>
           {serviceData?.status === 'analysis' && (
             <S.AlertList>
-              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para
-              validação.
+              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para validação.
             </S.AlertList>
           )}
           {filteredItems.map((item, index) => (

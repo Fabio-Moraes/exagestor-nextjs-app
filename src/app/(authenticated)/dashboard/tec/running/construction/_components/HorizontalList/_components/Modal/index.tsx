@@ -1,6 +1,7 @@
 'use client';
 
-import React, { RefObject } from 'react';
+import type React from 'react';
+import type { RefObject } from 'react';
 
 import * as S from './styles';
 
@@ -20,12 +21,7 @@ export function Modal(props: ModalProps) {
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
       const { clientX, clientY } = event;
-      if (
-        clientX < rect.left ||
-        clientX > rect.right ||
-        clientY < rect.top ||
-        clientY > rect.bottom
-      ) {
+      if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
         dialogRef.current.close();
       }
     }
@@ -35,11 +31,7 @@ export function Modal(props: ModalProps) {
     <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
       <div>
         <S.IncrementButton onClick={onIncrement}>+</S.IncrementButton>
-        <S.SearchBar
-          type="text"
-          value={String(count.toLocaleString('pt-BR'))}
-          onChange={onChange}
-        />
+        <S.SearchBar type="text" value={String(count.toLocaleString('pt-BR'))} onChange={onChange} />
         <S.DecrementButton onClick={onDecrement}>-</S.DecrementButton>
       </div>
       <button

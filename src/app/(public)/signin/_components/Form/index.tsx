@@ -92,9 +92,7 @@ export const Form = () => {
 
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
-        setIsPopupValue(
-          retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-        );
+        setIsPopupValue(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
 
         await internalApi.post('/api/login', {
           identification: identification,

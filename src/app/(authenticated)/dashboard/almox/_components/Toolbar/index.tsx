@@ -33,14 +33,7 @@ export function Toolbar() {
 
       <Link href="/dashboard/almox/stock-view" scroll={false}>
         <S.WrapperLink $path={['/dashboard/almox/stock-view'].includes(pathname)}>
-          <Image
-            priority
-            loading="eager"
-            src={inCirculation}
-            alt="Book"
-            width="25"
-            height="25"
-          />
+          <Image priority loading="eager" src={inCirculation} alt="Book" width="25" height="25" />
           <span>
             Visualizar
             <br />

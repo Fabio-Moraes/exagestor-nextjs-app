@@ -25,14 +25,8 @@ type TableListMaterialsType = {
 };
 
 export function TableListMaterials(props: TableListMaterialsType) {
-  const {
-    materials,
-    fetchEmployee,
-    fetchAlmox,
-    checkbox,
-    selectedTableRows,
-    toggleRowSelection
-  } = props;
+  const { materials, fetchEmployee, fetchAlmox, checkbox, selectedTableRows, toggleRowSelection } =
+    props;
 
   const [manageStockRowSelection, setManageStockRowSelection] = useState('');
 
@@ -50,12 +44,7 @@ export function TableListMaterials(props: TableListMaterialsType) {
     const { clientX, clientY } = event.nativeEvent;
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      if (
-        rect.left > clientX ||
-        rect.right < clientX ||
-        rect.top > clientY ||
-        rect.bottom < clientY
-      ) {
+      if (rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY) {
         dialogRef.current.close();
         setManageStockRowSelection('');
       }
@@ -68,9 +57,7 @@ export function TableListMaterials(props: TableListMaterialsType) {
     }
 
     if (checkbox === 'manageStock') {
-      (async () => setManageStockRowSelection(String(item.product_code)))().then(
-        handleOpenDialog
-      );
+      (async () => setManageStockRowSelection(String(item.product_code)))().then(handleOpenDialog);
     }
   };
 

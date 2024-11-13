@@ -101,13 +101,13 @@ export default function NewStock() {
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
       const productCode: string = item.product_code;
-      const quantity: number = parseFloat(item.quantity_value);
+      const quantity: number = Number.parseFloat(item.quantity_value);
 
       if (!aggregatedData[productCode]) {
         aggregatedData[productCode] = { ...item };
         aggregatedData[productCode].quantity_value = quantity.toString();
       } else {
-        const currentQuantity = parseFloat(aggregatedData[productCode].quantity_value);
+        const currentQuantity = Number.parseFloat(aggregatedData[productCode].quantity_value);
         aggregatedData[productCode].quantity_value = (currentQuantity + quantity).toString();
       }
     }
@@ -151,8 +151,8 @@ export default function NewStock() {
         {connectionError ? (
           <S.ErrorContainer>
             <span>
-              Não foi possível carregar os dados da página devido a instabilidade na conexão.
-              Por favor, tente novamente.
+              Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+              tente novamente.
             </span>
           </S.ErrorContainer>
         ) : (

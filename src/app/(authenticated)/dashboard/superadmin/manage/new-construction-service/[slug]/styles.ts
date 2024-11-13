@@ -29,10 +29,12 @@ export const WrapperHorizontalList = styled.div`
   background: linear-gradient(90deg, rgb(var(--color-primary-03)), #000000);
   position: relative;
   border-radius: 1rem;
+  margin-bottom: 3rem;
 
   @media (max-width: 550px) {
     border-radius: 0;
     margin: 0 -2rem;
+    margin-bottom: 5rem;
   }
 `;
 
@@ -78,6 +80,14 @@ export const Input = styled.input`
   }
 `;
 
+export const ContainerInputNode = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+`;
+
 export const Select = styled.select`
   padding: 1rem;
   margin: 0 0rem 1.5rem 0rem;
@@ -108,8 +118,7 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
     width: 2rem;
     height: 2rem;
     border: 0.2rem solid rgb(var(--color-secondary-04));
-    background-color: ${({ $checked }) =>
-      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
+    background-color: ${({ $checked }) => ($checked ? 'rgb(var(--color-secondary-04))' : '#fff')};
     border-radius: 1rem;
   }
   > span {

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import { Header } from './_components/Header';
 import { LeftSidebar } from './_components/LeftSidebar';

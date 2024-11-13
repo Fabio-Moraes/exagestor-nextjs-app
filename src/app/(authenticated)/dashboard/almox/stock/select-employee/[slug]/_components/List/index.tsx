@@ -72,9 +72,7 @@ export function List({ employee, slug }: { employee: Employee[]; slug: string })
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
         try {
-          setIsPopupValue(
-            retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando'
-          );
+          setIsPopupValue(retryCount > 0 ? `Conectando<br>Tentativa (${retryCount + 1})` : 'Conectando');
 
           const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/almox/stock/select-employee/insert-material',

@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import type React from 'react';
 
-import moment, { Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 
 import * as S from './styles';
 import 'moment/locale/pt-br';

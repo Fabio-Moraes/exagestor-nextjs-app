@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
-import { Props as ApexchartsPropsTypes } from 'react-apexcharts/types/react-apexcharts';
+import type { Props as ApexchartsPropsTypes } from 'react-apexcharts/types/react-apexcharts';
 
 import { encryptObject } from 'functions';
 
@@ -92,10 +92,10 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
 
         const svgNS = 'http://www.w3.org/2000/svg';
 
-        const rectX = parseFloat(rect.getAttribute('x')!);
-        const rectY = parseFloat(rect.getAttribute('y')!);
-        const rectWidth = parseFloat(rect.getAttribute('width')!);
-        const rectHeight = parseFloat(rect.getAttribute('height')!);
+        const rectX = Number.parseFloat(rect.getAttribute('x')!);
+        const rectY = Number.parseFloat(rect.getAttribute('y')!);
+        const rectWidth = Number.parseFloat(rect.getAttribute('width')!);
+        const rectHeight = Number.parseFloat(rect.getAttribute('height')!);
 
         // Adicionar balão de fundo
         const textContent = services[numbers[index]].name_tec;
@@ -182,7 +182,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       data: data.map((day, index) => {
         const time = day?.substring(day.length - 5);
         const [hourPart, minutePart] = time.split(':');
-        const minutes = parseInt(hourPart, 10) * 60 + parseInt(minutePart, 10);
+        const minutes = Number.parseInt(hourPart, 10) * 60 + Number.parseInt(minutePart, 10);
 
         const yourDate = moment(services[index].start_service_at);
         const passedScheduledDate = yourDate.isSameOrBefore(moment());
@@ -191,9 +191,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
           x: index,
           y: minutes,
           fillColor:
-            statusColor[
-              passedScheduledDate ? (services[index].status as TypeStatusColor) : 'scheduled'
-            ]
+            statusColor[passedScheduledDate ? (services[index].status as TypeStatusColor) : 'scheduled']
         };
       })
     };
@@ -280,9 +278,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
         formatter: (value: string) => xAxisValues[Number(value)]
       },
       tooltip: {
-        formatter: function (index: number) {
-          return formatDatePicker(services[index]);
-        }
+        formatter: (index: number) => formatDatePicker(services[index])
       },
       min: 0,
       max: services.length,
@@ -320,7 +316,7 @@ export const ChartComponent = ({ services }: { services: Service[] }) => {
       offsetY: -20,
       textAnchor: 'end',
 
-      formatter: function (timeOfDay: number, props: { dataPointIndex: number }) {
+      formatter: (timeOfDay: number, props: { dataPointIndex: number }) => {
         const { dataPointIndex } = props;
         if (timeOfDay) {
           return dataPointIndex;

@@ -100,9 +100,7 @@ export function CardHeader(props: CardHeaderTypes) {
     <S.Container
       $color={
         statusColor[
-          passedScheduledDate
-            ? (service?.status as 'analysis' | 'active' | 'paused')
-            : 'scheduled'
+          passedScheduledDate ? (service?.status as 'analysis' | 'active' | 'paused') : 'scheduled'
         ]
       }
     >
@@ -121,9 +119,7 @@ export function CardHeader(props: CardHeaderTypes) {
           <div>
             {
               StatusOptions[
-                passedScheduledDate
-                  ? (service?.status as 'analysis' | 'active' | 'paused')
-                  : 'scheduled'
+                passedScheduledDate ? (service?.status as 'analysis' | 'active' | 'paused') : 'scheduled'
               ]
             }
           </div>

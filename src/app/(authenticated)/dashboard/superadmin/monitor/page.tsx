@@ -118,9 +118,7 @@ export default function GeneralMonitoring() {
   return (
     <S.Container>
       <S.ListContainer>
-        <ChartComponent
-          services={services.data.slice(services.startIndex, services.startIndex + 10)}
-        />
+        <ChartComponent services={services.data.slice(services.startIndex, services.startIndex + 10)} />
         <S.ButtonContainer>
           <IndexColors />
 
@@ -156,14 +154,7 @@ export default function GeneralMonitoring() {
                   }
                 }}
               >
-                <Image
-                  priority
-                  loading="eager"
-                  src={arrowLeft}
-                  alt="Add"
-                  width="50"
-                  height="50"
-                />
+                <Image priority loading="eager" src={arrowLeft} alt="Add" width="50" height="50" />
               </button>
               <button
                 onClick={() => {
@@ -212,8 +203,8 @@ export default function GeneralMonitoring() {
       {connectionError && !isPopupValue && (
         <S.ErrorContainer>
           <span>
-            Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor,
-            tente novamente.
+            Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor, tente
+            novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
         </S.ErrorContainer>

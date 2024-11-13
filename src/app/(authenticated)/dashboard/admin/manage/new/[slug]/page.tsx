@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
@@ -10,7 +11,7 @@ import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import moment, { Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 import 'moment/locale/pt-br';
 
 import alertSvg from './_assets/svg/alert.svg';
@@ -104,9 +105,7 @@ export default function NewService({ params }: SlugType) {
   const dateMoment = moment(selectedDate);
   const timeMoment = moment(selectedTime);
 
-  const startServiceAt = new Date(
-    `${dateMoment.format('YYYY-MM-DD')} ${timeMoment.format('HH:mm:ss')}`
-  );
+  const startServiceAt = new Date(`${dateMoment.format('YYYY-MM-DD')} ${timeMoment.format('HH:mm:ss')}`);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

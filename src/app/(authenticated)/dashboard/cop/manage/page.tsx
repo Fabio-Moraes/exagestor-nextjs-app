@@ -83,8 +83,8 @@ export default function FinishService() {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (

@@ -174,9 +174,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
             <S.Button onClick={() => setShowSelected(!showSelected)}>
               {showSelected
                 ? 'Mostrar Todos'
-                : `Selecionado${selectedService.length > 1 ? 's' : ''} (${
-                    selectedService.length
-                  })`}
+                : `Selecionado${selectedService.length > 1 ? 's' : ''} (${selectedService.length})`}
             </S.Button>
 
             {serviceData?.status !== 'analysis' && !isLoading && (
@@ -199,8 +197,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
         <>
           {serviceData?.status === 'analysis' && (
             <S.AlertList>
-              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para
-              validação.
+              O serviço já foi finalizado pelo técnico e está <br /> em modo de análise para validação.
             </S.AlertList>
           )}
           {filteredItems?.map((item, index) => (

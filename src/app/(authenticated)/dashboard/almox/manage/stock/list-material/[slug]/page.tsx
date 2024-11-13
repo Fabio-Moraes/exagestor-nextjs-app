@@ -101,9 +101,7 @@ export default function NewStock({ params }: SlugType) {
     }
   };
 
-  const selectedMaterials = materials.filter(function (objeto: Materials) {
-    return selectedTableRows.includes(objeto.id);
-  });
+  const selectedMaterials = materials.filter((objeto: Materials) => selectedTableRows.includes(objeto.id));
 
   const encryptSlug = encryptObject({ selectedMaterials, userId });
 
@@ -122,8 +120,8 @@ export default function NewStock({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (

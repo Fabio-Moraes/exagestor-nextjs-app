@@ -113,8 +113,8 @@ export default function ProductLabel({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível consultar o histórico devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível consultar o histórico devido a instabilidade na conexão. Por favor, tente
+            novamente.
           </span>
         </S.ErrorContainer>
       ) : (

@@ -99,9 +99,7 @@ export function RegisterService() {
               }
 
               if (retryCount === maxRetries) {
-                setModalValue(
-                  'Não foi possível registrar o funcionário(a) após várias tentativas.'
-                );
+                setModalValue('Não foi possível registrar o funcionário(a) após várias tentativas.');
                 setIsPopupValue('');
               } else {
                 await TimedWait(3000);

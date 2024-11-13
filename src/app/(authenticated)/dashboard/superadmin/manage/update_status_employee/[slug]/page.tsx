@@ -37,11 +37,7 @@ export default function UpdateStateEmployee({ params }: SlugType) {
 
   const [successfullyCompleted, setSuccessfullyCompleted] = useState(false);
 
-  const {
-    userName,
-    userId,
-    accountStatus = ''
-  } = decryptObject(params.slug) as DecryptObjectType;
+  const { userName, userId, accountStatus = '' } = decryptObject(params.slug) as DecryptObjectType;
 
   const socket = useWebSocket();
   const router = useRouter();
@@ -125,9 +121,7 @@ export default function UpdateStateEmployee({ params }: SlugType) {
               }
 
               if (retryCount === maxRetries) {
-                setModalValue(
-                  'Não foi possível inativar o funcionário após várias tentativas.'
-                );
+                setModalValue('Não foi possível inativar o funcionário após várias tentativas.');
                 setIsPopupValue('');
               } else {
                 await TimedWait(3000);

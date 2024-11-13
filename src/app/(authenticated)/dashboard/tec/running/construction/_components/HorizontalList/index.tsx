@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Modal } from './_components/Modal';
 import { ProgressBar } from './_components/ProgressBar';
@@ -35,17 +36,27 @@ export function HorizontalList(props: ListCableProps) {
 
   const maxRetries = 4;
 
+  const handleCloseDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+  };
+
   async function fetchCableLaying() {
     setRunningLoad(true);
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
+        const serviceCableData = selectedCable[Number(selectedCard)];
+        const { id, protocol, cable_length_meters, used_length_meters } = serviceCableData;
+        const usedLengthMeters = count <= cable_length_meters - used_length_meters ? count : null;
+
         const data = await internalApi.post('/api/bridge', {
           baseURL: '/api/tec/running/construction/class-l/cable-laying',
-          id: selectedCable[Number(selectedCard)].id,
-          protocol: selectedCable[Number(selectedCard)].protocol,
-          usedLengthMeters: count
+          id: id,
+          protocol: protocol,
+          usedLengthMeters: usedLengthMeters
         });
-        if (dialogRef.current) dialogRef.current.close();
+
         console.log(data);
         break;
       } catch (error: unknown) {
@@ -124,7 +135,7 @@ export function HorizontalList(props: ListCableProps) {
       if (inputValue === '') return 0;
       if (Number(inputValue) > limiter) return limiter;
 
-      return parseInt(inputValue, 10);
+      return Number.parseInt(inputValue, 10);
     },
     [selectedCard, selectedCable]
   );
@@ -176,7 +187,7 @@ export function HorizontalList(props: ListCableProps) {
         onIncrement={handleIncrement}
         onDecrement={handleDecrement}
         onChange={handleInputChange}
-        onCableLaying={fetchCableLaying}
+        onCableLaying={() => fetchCableLaying().then(handleCloseDialog)}
       />
     </>
   );

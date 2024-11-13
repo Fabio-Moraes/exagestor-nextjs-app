@@ -181,8 +181,7 @@ export function List(props: { serviceData: ServiceData }) {
   );
 
   const selectedItem =
-    materials?.filter((item) => selectMaterial[String(serviceData?.protocol)]?.[item.id]) ??
-    [];
+    materials?.filter((item) => selectMaterial[String(serviceData?.protocol)]?.[item.id]) ?? [];
 
   return (
     <>
@@ -190,8 +189,8 @@ export function List(props: { serviceData: ServiceData }) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (
@@ -211,9 +210,7 @@ export function List(props: { serviceData: ServiceData }) {
                 <S.Button onClick={() => setShowSelected(!showSelected)}>
                   {showSelected
                     ? 'Mostrar Todos'
-                    : `Selecionado${selectedItem.length > 1 ? 's' : ''} (${
-                        selectedItem.length
-                      })`}
+                    : `Selecionado${selectedItem.length > 1 ? 's' : ''} (${selectedItem.length})`}
                 </S.Button>
 
                 <S.Button onClick={selectServiceClean}>Limpar</S.Button>

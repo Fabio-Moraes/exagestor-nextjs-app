@@ -37,9 +37,7 @@ export function Card({ material }: { material: Material }) {
     <S.Container rel="preload" onClick={() => {}}>
       <p></p>
       <div>
-        <p>
-          FUNCIONÁRIO: {material?.name_tec?.concat(` (${material?.name_role.toUpperCase()})`)}
-        </p>
+        <p>FUNCIONÁRIO: {material?.name_tec?.concat(` (${material?.name_role.toUpperCase()})`)}</p>
         <p>MATERIAIS: {material?.product_name}</p>
         <p>QUANTIDADE: {material?.quantity_value}</p>
         <p>TIPO: {material?.unit_type}</p>

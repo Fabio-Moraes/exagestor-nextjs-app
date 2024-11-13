@@ -34,7 +34,7 @@ export const Title = styled.div`
     align-items: start;
 
     > span {
-      font-size: 1.7rem;
+      font-size: 1.75rem;
     }
   }
 

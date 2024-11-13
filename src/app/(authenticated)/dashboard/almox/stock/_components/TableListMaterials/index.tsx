@@ -42,12 +42,7 @@ export function TableListMaterials(props: TableListMaterialsType) {
     const { clientX, clientY } = event.nativeEvent;
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      if (
-        rect.left > clientX ||
-        rect.right < clientX ||
-        rect.top > clientY ||
-        rect.bottom < clientY
-      ) {
+      if (rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY) {
         dialogRef.current.close();
         setManageStockRowSelection('');
       }
@@ -60,9 +55,7 @@ export function TableListMaterials(props: TableListMaterialsType) {
     }
 
     if (checkbox === 'manageStock') {
-      (async () => setManageStockRowSelection(String(item.product_code)))().then(
-        handleOpenDialog
-      );
+      (async () => setManageStockRowSelection(String(item.product_code)))().then(handleOpenDialog);
     }
   };
 
@@ -96,9 +89,7 @@ export function TableListMaterials(props: TableListMaterialsType) {
             </S.TableRow>
             <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
               <Link
-                href={`/dashboard/almox/stock/product-label/${encryptSlug(
-                  manageStockRowSelection
-                )}`}
+                href={`/dashboard/almox/stock/product-label/${encryptSlug(manageStockRowSelection)}`}
                 scroll={false}
               >
                 <S.WrapperLink>

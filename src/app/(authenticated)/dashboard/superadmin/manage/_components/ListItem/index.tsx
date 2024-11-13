@@ -30,16 +30,8 @@ interface ListItemProps {
 }
 
 const ListItem = (props: ListItemProps) => {
-  const {
-    id,
-    name,
-    role,
-    status,
-    identification,
-    created_at,
-    connectedUsers,
-    websocketConnected
-  } = props;
+  const { id, name, role, status, identification, created_at, connectedUsers, websocketConnected } =
+    props;
 
   const router = useRouter();
   const socket = useWebSocket();
@@ -92,12 +84,7 @@ const ListItem = (props: ListItemProps) => {
     const { clientX, clientY } = event.nativeEvent;
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      if (
-        rect.left > clientX ||
-        rect.right < clientX ||
-        rect.top > clientY ||
-        rect.bottom < clientY
-      ) {
+      if (rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY) {
         dialogRef.current.close();
       }
     }
@@ -166,11 +153,7 @@ const ListItem = (props: ListItemProps) => {
   return (
     <>
       <AnimatePresence>
-        <S.Container
-          whileHover={{ scale: 0.98 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleOpenDialog}
-        >
+        <S.Container whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.95 }} onClick={handleOpenDialog}>
           <S.ItemContainer>
             <div>
               <p>{name.toUpperCase()}</p>

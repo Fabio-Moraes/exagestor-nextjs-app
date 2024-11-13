@@ -119,8 +119,8 @@ export function List() {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (
@@ -142,14 +142,10 @@ export function List() {
                     {showSelected
                       ? 'Mostrar Todos'
                       : `Filtrar Inativo${
-                          serviceData.filter((services) => services.status === 'inativo')
-                            .length > 1
+                          serviceData.filter((services) => services.status === 'inativo').length > 1
                             ? 's'
                             : ''
-                        } (${
-                          serviceData.filter((services) => services.status === 'inativo')
-                            .length
-                        })`}
+                        } (${serviceData.filter((services) => services.status === 'inativo').length})`}
                   </S.Button>
                 </div>
                 <Image priority src={infoSvg} alt="Add" width={30} height={30} />

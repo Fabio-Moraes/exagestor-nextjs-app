@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { type ChangeEvent, useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
@@ -132,9 +132,7 @@ export function RegisterEmployee() {
 
           if (status === 'already registered') {
             setIsPopupValue('');
-            setModalValue(
-              `Funcionário(a) do <br>${cpfOrCnpj} ${identification} já existente.`
-            );
+            setModalValue(`Funcionário(a) do <br>${cpfOrCnpj} ${identification} já existente.`);
             break;
           }
 
@@ -164,9 +162,7 @@ export function RegisterEmployee() {
               }
 
               if (retryCount === maxRetries) {
-                setModalValue(
-                  'Não foi possível registrar o funcionário(a) após várias tentativas.'
-                );
+                setModalValue('Não foi possível registrar o funcionário(a) após várias tentativas.');
                 setIsPopupValue('');
               } else {
                 await TimedWait(3000);
@@ -181,13 +177,7 @@ export function RegisterEmployee() {
   return (
     <>
       <S.FormContainer onSubmit={handleSubmit}>
-        <S.Input
-          type="text"
-          id="Nome"
-          placeholder="Nome completo"
-          value={name}
-          onChange={handleName}
-        />
+        <S.Input type="text" id="Nome" placeholder="Nome completo" value={name} onChange={handleName} />
 
         <div>
           <S.CheckboxButton

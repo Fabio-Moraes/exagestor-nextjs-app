@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import type React from 'react';
+import { type ChangeEvent, useEffect, useState } from 'react'
 
 import 'moment/locale/pt-br';
 
@@ -10,7 +11,7 @@ import { Modal } from 'components/Modal';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import moment, { Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';

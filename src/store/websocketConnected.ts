@@ -10,8 +10,7 @@ export const useWebsocketConnected = create<websocketConnectedState>()(
   persist(
     (set) => ({
       websocketConnected: false,
-      updateWebsocketConnected: (connected: boolean) =>
-        set(() => ({ websocketConnected: connected }))
+      updateWebsocketConnected: (connected: boolean) => set(() => ({ websocketConnected: connected }))
     }),
     {
       name: 'websocket-connected-store' // default to LocalStorage

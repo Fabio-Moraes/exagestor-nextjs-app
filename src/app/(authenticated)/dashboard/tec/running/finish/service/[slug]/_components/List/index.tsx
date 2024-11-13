@@ -138,9 +138,7 @@ export function List(props: { serviceData: ServiceData; items: ListProps[] }) {
             <S.Button onClick={() => setShowSelected(!showSelected)}>
               {showSelected
                 ? 'Mostrar Todos'
-                : `Selecionado${selectedService.length > 1 ? 's' : ''} (${
-                    selectedService.length
-                  })`}
+                : `Selecionado${selectedService.length > 1 ? 's' : ''} (${selectedService.length})`}
             </S.Button>
 
             <S.Button onClick={selectServiceClean}>Limpar</S.Button>

@@ -10,9 +10,7 @@ import { useRemoteDisconnectionPopup } from 'store/remoteDisconnectionPopup';
 import * as S from './styles';
 
 export function RemoteDisconnectionPopup() {
-  const { open, role } = useRemoteDisconnectionPopup(
-    (state) => state.remoteDisconnectionPopup
-  );
+  const { open, role } = useRemoteDisconnectionPopup((state) => state.remoteDisconnectionPopup);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -47,20 +45,15 @@ export function RemoteDisconnectionPopup() {
       admin: (
         <>
           <h1>
-            Você foi desconectado pela equipe de segurança do sistema. Por favor, tente fazer
-            login novamente.
+            Você foi desconectado pela equipe de segurança do sistema. Por favor, tente fazer login
+            novamente.
           </h1>
-          <p>
-            Se tiver dúvidas ou precisar de assistência, entre em contato com o suporte
-            técnico.
-          </p>
+          <p>Se tiver dúvidas ou precisar de assistência, entre em contato com o suporte técnico.</p>
         </>
       ),
       config: (
         <>
-          <h1>
-            Você foi desconectado pela equipe de segurança do sistema. tente logar novamente
-          </h1>
+          <h1>Você foi desconectado pela equipe de segurança do sistema. tente logar novamente</h1>
           <p>Se houver dúvidas ou preocupações, entre em contato com o suporte técnico.</p>
         </>
       )

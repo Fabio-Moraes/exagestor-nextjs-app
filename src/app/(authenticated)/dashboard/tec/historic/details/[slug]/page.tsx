@@ -194,8 +194,8 @@ export default function Details({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível consultar o histórico devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível consultar o histórico devido a instabilidade na conexão. Por favor, tente
+            novamente.
           </span>
         </S.ErrorContainer>
       ) : (
@@ -269,26 +269,18 @@ export default function Details({ params }: SlugType) {
                           <div key={key}>
                             <div>
                               <span>
-                                {
-                                  materials.find((item) => String(item.id) === key)
-                                    ?.product_name
-                                }
+                                {materials.find((item) => String(item.id) === key)?.product_name}
                               </span>
                             </div>
                             <div>
                               <span>{objListMaterial[key]}</span>
                             </div>
                             <div>
-                              <span>
-                                {materials.find((item) => String(item.id) === key)?.unit_type}
-                              </span>
+                              <span>{materials.find((item) => String(item.id) === key)?.unit_type}</span>
                             </div>
                             <div>
                               <span>
-                                {
-                                  materials.find((item) => String(item.id) === key)
-                                    ?.product_code
-                                }
+                                {materials.find((item) => String(item.id) === key)?.product_code}
                               </span>
                             </div>
                           </div>

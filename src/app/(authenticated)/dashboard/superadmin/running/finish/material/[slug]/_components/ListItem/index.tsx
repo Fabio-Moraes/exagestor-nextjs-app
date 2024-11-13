@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
-import { motion, PanInfo } from 'framer-motion';
+import { motion, type PanInfo } from 'framer-motion';
 
 import * as S from './styles';
 
@@ -51,7 +52,7 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
     const inputValue = e.target.value;
 
     if (/^\d*$/.test(inputValue) && inputValue.length <= 4) {
-      if (!blocked) onSelect({ count: inputValue === '' ? 0 : parseInt(inputValue, 10) });
+      if (!blocked) onSelect({ count: inputValue === '' ? 0 : Number.parseInt(inputValue, 10) });
     } else {
       console.error('Por favor, insira apenas números inteiros ou zero.');
     }
@@ -77,10 +78,7 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
       <S.Container selected={count > 0}>
         <S.ItemContainer>
           <div>
-            <S.IncrementButton
-              style={{ opacity: blocked ? 0.3 : 1 }}
-              onClick={handleIncrement}
-            >
+            <S.IncrementButton style={{ opacity: blocked ? 0.3 : 1 }} onClick={handleIncrement}>
               +
             </S.IncrementButton>
             <S.SearchBar
@@ -89,10 +87,7 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
               value={String(count)}
               onChange={handleInputChange}
             />
-            <S.DecrementButton
-              style={{ opacity: blocked ? 0.3 : 1 }}
-              onClick={handleDecrement}
-            >
+            <S.DecrementButton style={{ opacity: blocked ? 0.3 : 1 }} onClick={handleDecrement}>
               -
             </S.DecrementButton>
           </div>

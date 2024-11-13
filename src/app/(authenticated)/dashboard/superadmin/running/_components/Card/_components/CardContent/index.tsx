@@ -60,9 +60,7 @@ export function CardContent(props: { service: RunningService; passedScheduledDat
         <p>SOLICITANTE: {service?.client_name.toUpperCase()}</p>
         <p>CIDADE: {service?.city.toUpperCase()}</p>
         <p>ENDEREÇO: {service?.address.toUpperCase()}</p>
-        {service?.nomenclature && (
-          <p>NOMENCL. CX OU CABO: {service?.nomenclature.toUpperCase()}</p>
-        )}
+        {service?.nomenclature && <p>NOMENCL. CX OU CABO: {service?.nomenclature.toUpperCase()}</p>}
         {service?.classification && <p>CLASSE: {service?.classification}</p>}
         <p>PROTOCOLO: {service?.protocol}</p>
         <p>EMISSÃO: {createdAt}</p>

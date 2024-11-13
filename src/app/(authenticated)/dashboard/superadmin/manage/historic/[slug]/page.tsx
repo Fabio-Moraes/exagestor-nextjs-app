@@ -152,8 +152,8 @@ export default function GeneralHistoric({ params }: SlugType) {
       {connectionError && !isPopupValue && (
         <S.ErrorContainer>
           <span>
-            Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor,
-            tente novamente.
+            Não foi possível obter dados da lista devido a instabilidade na conexão. Por favor, tente
+            novamente.
           </span>
           <button onClick={() => fetchServices()}>Tentar Novamente</button>
         </S.ErrorContainer>

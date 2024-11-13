@@ -23,14 +23,7 @@ export function LeftSidebar() {
       <S.Wrapper>
         <Link href="/dashboard/admin/running" scroll={false}>
           <S.WrapperLink $path={['/dashboard/admin/running'].includes(pathname)}>
-            <Image
-              priority
-              loading="eager"
-              src={execution}
-              alt="Book"
-              width="25"
-              height="25"
-            />
+            <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
             <span>Em Execução</span>
           </S.WrapperLink>
         </Link>
@@ -51,14 +44,7 @@ export function LeftSidebar() {
 
         <Link href="/" scroll={false}>
           <S.WrapperLink>
-            <Image
-              priority
-              loading="eager"
-              src={menu}
-              alt="Clipboard"
-              width="25"
-              height="25"
-            />
+            <Image priority loading="eager" src={menu} alt="Clipboard" width="25" height="25" />
             <span>Materiais Utilizados</span>
           </S.WrapperLink>
         </Link>

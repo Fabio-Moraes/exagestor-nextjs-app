@@ -82,8 +82,7 @@ export const CheckboxButton = styled.button<{ $checked: boolean }>`
     width: 2rem;
     height: 2rem;
     border: 0.2rem solid rgb(var(--color-secondary-04));
-    background-color: ${({ $checked }) =>
-      $checked ? 'rgb(var(--color-secondary-04))' : '#fff'};
+    background-color: ${({ $checked }) => ($checked ? 'rgb(var(--color-secondary-04))' : '#fff')};
     border-radius: 1rem;
   }
   > span {

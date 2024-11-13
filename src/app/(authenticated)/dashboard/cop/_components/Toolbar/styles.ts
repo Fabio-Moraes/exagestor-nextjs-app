@@ -9,11 +9,7 @@ export const Container = styled.div`
   display: flex;
   width: 100%;
   padding: 0.3rem min(1.5rem, max(10vw, 1rem));
-  background-image: radial-gradient(
-    35rem at center,
-    #ffffff 20%,
-    rgb(var(--color-secondary-04))
-  );
+  background-image: radial-gradient(35rem at center, #ffffff 20%, rgb(var(--color-secondary-04)));
   justify-content: space-between;
   white-space: nowrap;
 

@@ -1,10 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
-import { HorizontalList } from '../_components/HorizontalList';
-import { SelectedList } from '../_components/SelectedList';
+import { HorizontalListCable } from '../_components/HorizontalListCable';
+import { HorizontalListDgoandbox } from '../_components/HorizontalListDgoandbox';
+import { SelectedListCable } from '../_components/SelectedListCable';
+import { SelectedListDgoandbox } from '../_components/SelectedListDgoandbox';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import { decryptObject } from 'functions';
@@ -12,9 +15,12 @@ import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
 import { internalApi } from 'services/apiAxios';
 
-import { usetaskStore } from '../store/selectedCable';
+import { useNodeName } from '../store/nodeName';
+import { useSelectedCableStore } from '../store/selectedCable';
+import { useSelectedDgoandboxStore } from '../store/selectedDgoandbox';
+import { useSelectedListDgoandbox } from '../store/selectedListDgoandbox';
 
-import moment, { Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 
 import 'moment/locale/pt-br';
 
@@ -50,7 +56,10 @@ export default function NewService({ params }: SlugType) {
   const maxRetries = 4;
   const decryptSlug = decryptObject(params.slug);
 
-  const { selectedCable, setSelectedCable } = usetaskStore();
+  const { nodeName, updateNodeName } = useNodeName();
+  const { selectedCable, setSelectedCable } = useSelectedCableStore();
+  const { selectedDgoandbox, setSelectedDgoandbox } = useSelectedDgoandboxStore();
+  const { selectedListDgoandbox } = useSelectedListDgoandbox();
 
   function generateConnectingMessage(count: number): string {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
@@ -69,7 +78,8 @@ export default function NewService({ params }: SlugType) {
         });
 
         setIsPopupValue(null);
-        setSelectedCable(response.data);
+        setSelectedCable(response.data.cableCatalog);
+        setSelectedDgoandbox(response.data.dgoandboxCatalog);
         isLoading;
         break;
       } catch (error: unknown) {
@@ -133,6 +143,10 @@ export default function NewService({ params }: SlugType) {
     setName(e.target.value);
   };
 
+  const handleNameNode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateNodeName(e.target.value);
+  };
+
   const handleServiceOriginAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
@@ -152,9 +166,35 @@ export default function NewService({ params }: SlugType) {
   const dateMoment = moment(selectedDate);
   const timeMoment = moment(selectedTime);
 
-  const startServiceAt = new Date(
-    `${dateMoment.format('YYYY-MM-DD')} ${timeMoment.format('HH:mm:ss')}`
+  const startServiceAt = new Date(`${dateMoment.format('YYYY-MM-DD')} ${timeMoment.format('HH:mm:ss')}`);
+
+  const idOfFilledFieldsDgoandbox = selectedDgoandbox.map((item) => {
+    if (Object.keys(selectedListDgoandbox?.[String(item.id)] || {}).length > 0) {
+      if (item?.quantity === Object.keys(selectedListDgoandbox?.[String(item.id)] || {}).length) {
+        return String(item.id);
+      }
+    }
+  });
+
+  const allFilledDgoandbox = Boolean(
+    selectedDgoandbox.filter((item) => Number(item?.quantity) > 0).length ===
+      idOfFilledFieldsDgoandbox.filter((i) => i).length &&
+      idOfFilledFieldsDgoandbox.filter((i) => i).length > 0
   );
+
+  function removeEmptyObjects(
+    obj: Record<string, Record<string, { value: string }>>
+  ): Record<string, Record<string, { value: string }>> {
+    return Object.keys(obj).reduce(
+      (acc, key) => {
+        if (typeof obj[key] === 'object' && Object.keys(obj[key]).length > 0) {
+          acc[key] = obj[key];
+        }
+        return acc;
+      },
+      {} as Record<string, Record<string, { value: string }>>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,6 +208,21 @@ export default function NewService({ params }: SlugType) {
 
       if (selectedCable.filter((item) => item.cable_length_meters).length === 0) {
         setModalValue('Informe a quantidade de metros de cabo.');
+        return;
+      }
+
+      if (selectedDgoandbox.filter((item) => item.quantity).length === 0) {
+        setModalValue('Informe a quantidade das caixas.');
+        return;
+      }
+
+      if (!allFilledDgoandbox) {
+        setModalValue('Informe o nome em todas as caixas.');
+        return;
+      }
+
+      if (nodeName.trim() === '') {
+        setModalValue('Informe o nome do Node.');
         return;
       }
 
@@ -200,13 +255,13 @@ export default function NewService({ params }: SlugType) {
           const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/superadmin/manage/new-construction-service/create-service',
             employeeId: decryptObject(params.slug).userId,
-            selectedCable: selectedCable.filter(
-              (item) => Number(item.cable_length_meters) > 0
-            ),
+            selectedCable: selectedCable.filter((item) => Number(item.cable_length_meters) > 0),
             clientName: name,
             city: selectedCity,
             address: address,
-            startServiceAt: startServiceAt
+            startServiceAt: startServiceAt,
+            listDgoandbox: JSON.stringify(removeEmptyObjects(selectedListDgoandbox)),
+            nodeName: nodeName
           });
 
           const { success } = response.data;
@@ -263,11 +318,31 @@ export default function NewService({ params }: SlugType) {
     <S.Container>
       <S.Title>Novo Serviço</S.Title>
       {!isLoading && (
-        <S.WrapperHorizontalList>
-          <HorizontalList />
-        </S.WrapperHorizontalList>
+        <>
+          <S.WrapperHorizontalList>
+            <HorizontalListCable />
+            <SelectedListCable list={selectedCable} />
+          </S.WrapperHorizontalList>
+          <S.ContainerInputNode>
+            <S.Input
+              type="text"
+              id="serviceOriginAddress"
+              placeholder="Nome do node"
+              value={nodeName}
+              onChange={handleNameNode}
+            />
+          </S.ContainerInputNode>
+          <S.WrapperHorizontalList>
+            <HorizontalListDgoandbox />
+            <SelectedListDgoandbox
+              checkNodeName={() => {
+                setModalValue('Informe o nome do Node.');
+              }}
+              list={selectedDgoandbox}
+            />
+          </S.WrapperHorizontalList>
+        </>
       )}
-      <SelectedList list={selectedCable} />
       <S.FormContainer onSubmit={handleSubmit}>
         <S.Input
           type="text"
@@ -319,8 +394,8 @@ export default function NewService({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (

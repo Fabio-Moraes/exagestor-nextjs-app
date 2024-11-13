@@ -210,8 +210,8 @@ export default function Details({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível consultar o histórico devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível consultar o histórico devido a instabilidade na conexão. Por favor, tente
+            novamente.
           </span>
         </S.ErrorContainer>
       ) : (
@@ -259,9 +259,7 @@ export default function Details({ params }: SlugType) {
                 <p>Emissão: {formatDate(service?.currentOperation?.[0]?.created_at)}</p>
                 <p>Para: {formatDate(service?.currentOperation?.[0]?.start_service_at)}</p>
                 {service?.currentOperation?.[0]?.finished_at && (
-                  <p>
-                    Concluído em: {formatDate(service?.currentOperation?.[0]?.finished_at)}
-                  </p>
+                  <p>Concluído em: {formatDate(service?.currentOperation?.[0]?.finished_at)}</p>
                 )}
                 {service?.currentOperation?.[0]?.modification_at && modificationFilter()}
                 <p>Nomenclatura: {service?.currentOperation?.[0]?.nomenclature}</p>
@@ -290,26 +288,18 @@ export default function Details({ params }: SlugType) {
                           <div key={key}>
                             <div>
                               <span>
-                                {
-                                  materials.find((item) => String(item.id) === key)
-                                    ?.product_name
-                                }
+                                {materials.find((item) => String(item.id) === key)?.product_name}
                               </span>
                             </div>
                             <div>
                               <span>{objListMaterial[key]}</span>
                             </div>
                             <div>
-                              <span>
-                                {materials.find((item) => String(item.id) === key)?.unit_type}
-                              </span>
+                              <span>{materials.find((item) => String(item.id) === key)?.unit_type}</span>
                             </div>
                             <div>
                               <span>
-                                {
-                                  materials.find((item) => String(item.id) === key)
-                                    ?.product_code
-                                }
+                                {materials.find((item) => String(item.id) === key)?.product_code}
                               </span>
                             </div>
                           </div>
@@ -352,9 +342,7 @@ export default function Details({ params }: SlugType) {
                 {service?.currentOperation?.[0]?.observation && (
                   <S.Observation>
                     <p>Observação</p>
-                    {renderTextWithLineBreaks(
-                      service?.currentOperation?.[0]?.observation ?? ''
-                    )}
+                    {renderTextWithLineBreaks(service?.currentOperation?.[0]?.observation ?? '')}
                   </S.Observation>
                 )}
               </>

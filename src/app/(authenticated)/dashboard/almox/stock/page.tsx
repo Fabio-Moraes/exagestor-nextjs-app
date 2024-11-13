@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { TableListMaterials } from './_components/TableListMaterials';
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -102,9 +103,7 @@ export default function NewStock() {
     }
   };
 
-  const selectedMaterials = materials.filter(function (objeto: Materials) {
-    return selectedTableRows.includes(objeto.id);
-  });
+  const selectedMaterials = materials.filter((objeto: Materials) => selectedTableRows.includes(objeto.id));
 
   const encryptSlug = encryptObject({ selectedMaterials });
 
@@ -129,12 +128,7 @@ export default function NewStock() {
     const { clientX, clientY } = event.nativeEvent;
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      if (
-        rect.left > clientX ||
-        rect.right < clientX ||
-        rect.top > clientY ||
-        rect.bottom < clientY
-      ) {
+      if (rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY) {
         dialogRef.current.close();
         setIsModalOpen(false);
       }
@@ -149,8 +143,8 @@ export default function NewStock() {
         {connectionError ? (
           <S.ErrorContainer>
             <span>
-              Não foi possível carregar os dados da página devido a instabilidade na conexão.
-              Por favor, tente novamente.
+              Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+              tente novamente.
             </span>
           </S.ErrorContainer>
         ) : (

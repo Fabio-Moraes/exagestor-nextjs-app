@@ -1,11 +1,11 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import React, { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 
 import { internalApi } from 'services/apiAxios';
 
-import { io, Socket } from 'socket.io-client';
+import { io, type Socket } from 'socket.io-client';
 import { useRemoteDisconnectionPopup } from 'store/remoteDisconnectionPopup';
 import { useWebsocketConnected } from 'store/websocketConnected';
 
@@ -17,9 +17,7 @@ const WebSocketContext = createContext<WebSocketContextType>(null);
 const WebSocketProvider = ({ children }: WebSocketProviderType) => {
   const [socket, setSocket] = useState<WebSocketContextType>(null);
 
-  const updateWebsocketConnected = useWebsocketConnected(
-    (state) => state.updateWebsocketConnected
-  );
+  const updateWebsocketConnected = useWebsocketConnected((state) => state.updateWebsocketConnected);
 
   const updateRemoteDisconnectionPopup = useRemoteDisconnectionPopup(
     (state) => state.updateRemoteDisconnectionPopup
@@ -35,7 +33,7 @@ const WebSocketProvider = ({ children }: WebSocketProviderType) => {
         transports: ['websocket'],
         withCredentials: false,
         reconnection: true,
-        reconnectionAttempts: Infinity,
+        reconnectionAttempts: Number.POSITIVE_INFINITY,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 3000
       });
@@ -126,10 +124,7 @@ const useWebSocket = (): WebSocketContextType => {
   return context;
 };
 
-const useWebSocketListenerOn = (
-  eventName: string,
-  handler: <T>(data: Socket | T) => void
-): void => {
+const useWebSocketListenerOn = (eventName: string, handler: <T>(data: Socket | T) => void): void => {
   const socket = useWebSocket();
   const pathname = usePathname();
 

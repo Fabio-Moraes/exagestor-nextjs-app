@@ -191,9 +191,7 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
 
   const styleButtonDoc = {
     opacity:
-      !passedScheduledDate || allButtonsLocked || service.type_operation === 'TIPO_COMUM'
-        ? 0.3
-        : 1
+      !passedScheduledDate || allButtonsLocked || service.type_operation === 'TIPO_COMUM' ? 0.3 : 1
   };
 
   const styleButtonClose = { opacity: allButtonsLocked ? 0.3 : 1 };
@@ -223,11 +221,7 @@ export function ButtonBar(props: { service: RunningService; passedScheduledDate:
         <button rel="preload" style={styleButtonCheck} onClick={onClickButtonCheck}>
           <Image {...propsImage} src={checkSvg} alt="check" />
         </button>
-        <button
-          rel="preload"
-          style={styleButtonPlayPause}
-          onClick={onClickSelectPlayPauseRefresh}
-        >
+        <button rel="preload" style={styleButtonPlayPause} onClick={onClickSelectPlayPauseRefresh}>
           <Image {...propsImage} src={iconPlayPauseRefresh} alt="play-pause-refres" />
         </button>
         <button rel="preload" style={styleButtonDoc} onClick={() => {}}>

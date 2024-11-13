@@ -144,7 +144,7 @@ export default function NewRegister() {
     const inputValue = event.target.value;
 
     if (/^\d*$/.test(inputValue) && inputValue.length <= 8) {
-      setQuantityValue(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
+      setQuantityValue(String(inputValue === '' ? 0 : Number.parseInt(inputValue, 10)));
     }
   };
 
@@ -152,7 +152,7 @@ export default function NewRegister() {
     const inputValue = event.target.value;
 
     if (/^\d*$/.test(inputValue) && inputValue.length <= 8) {
-      setProductCode(String(inputValue === '' ? 0 : parseInt(inputValue, 10)));
+      setProductCode(String(inputValue === '' ? 0 : Number.parseInt(inputValue, 10)));
     }
   };
 

@@ -34,8 +34,7 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
   const [isLoading, setIsLoading] = useState(true);
   const [requestInProcess, setRequestInProcess] = useState(false);
 
-  const { setObservationBox, observationBox, selectMaterial, selectService } =
-    useLocalStorage();
+  const { setObservationBox, observationBox, selectMaterial, selectService } = useLocalStorage();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -184,8 +183,8 @@ export function TextBox({ serviceData }: { serviceData: ServiceData }) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (

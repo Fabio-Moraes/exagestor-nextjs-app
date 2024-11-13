@@ -20,27 +20,13 @@ export function LeftSidebar() {
       <S.Wrapper>
         <Link href="/dashboard/config/theme" scroll={false}>
           <S.WrapperLink $path={['/dashboard/config/theme'].includes(pathname)}>
-            <Image
-              priority
-              loading="eager"
-              src={execution}
-              alt="Book"
-              width="25"
-              height="25"
-            />
+            <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
             <span>Gerenciar Sistema</span>
           </S.WrapperLink>
         </Link>
         <Link href="/dashboard/config/upload" scroll={false}>
           <S.WrapperLink $path={['/dashboard/config/upload'].includes(pathname)}>
-            <Image
-              priority
-              loading="eager"
-              src={execution}
-              alt="Book"
-              width="25"
-              height="25"
-            />
+            <Image priority loading="eager" src={execution} alt="Book" width="25" height="25" />
             <span>Upload Teste</span>
           </S.WrapperLink>
         </Link>

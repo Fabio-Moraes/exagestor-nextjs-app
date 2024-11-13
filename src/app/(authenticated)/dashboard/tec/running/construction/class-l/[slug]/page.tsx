@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { HorizontalList } from '../../_components/HorizontalList';
+import { MenuOptions } from '../../_components/MenuOptions';
 import { ProgressBar } from '../../_components/ProgressBar';
 import { ListServiceCable } from '../../_components/TableList';
 import { FullScreenLoading } from 'components/FullScreenLoading';
@@ -156,9 +157,7 @@ export default function FinishService({ params }: SlugType) {
               <span>PROTOCOLO: {decryptSlug.protocol?.toString()}</span>
               {sharedPassword.length !== 0 && (
                 <S.Pin>
-                  <span>
-                    PIN: {passwordVisible ? sharedPassword[0]?.password : '• • • • • • • •'}
-                  </span>
+                  <span>PIN: {passwordVisible ? sharedPassword[0]?.password : '• • • • • • • •'}</span>
                   <div>
                     <button onClick={() => setPasswordVisible((i) => !i)}>
                       <Image
@@ -188,6 +187,7 @@ export default function FinishService({ params }: SlugType) {
           )
         }
       </S.Title>
+      <MenuOptions protocol={decryptSlug.protocol?.toString()} />
       <ProgressBar
         description="Lançamento"
         percentage={(totalsOperationsCable.totalCableLength / selectedCableLength) * 100}
@@ -205,8 +205,8 @@ export default function FinishService({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (

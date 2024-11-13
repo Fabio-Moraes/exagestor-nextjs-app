@@ -79,12 +79,7 @@ export function ButtonBar(props: ButtonBarTypes) {
     const { clientX, clientY } = event.nativeEvent;
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      if (
-        rect.left > clientX ||
-        rect.right < clientX ||
-        rect.top > clientY ||
-        rect.bottom < clientY
-      ) {
+      if (rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY) {
         dialogRef.current.close();
       }
     }
@@ -174,8 +169,7 @@ export function ButtonBar(props: ButtonBarTypes) {
   }
 
   const styleButtonCheck = {
-    opacity:
-      !passedScheduledDate || status === 'paused' || allButtonsLocked || shared ? 0.3 : 1
+    opacity: !passedScheduledDate || status === 'paused' || allButtonsLocked || shared ? 0.3 : 1
   };
 
   const styleButtonPlayPause = {
@@ -184,9 +178,7 @@ export function ButtonBar(props: ButtonBarTypes) {
 
   const styleButtonDoc = {
     opacity:
-      !passedScheduledDate || allButtonsLocked || service.type_operation === 'TIPO_COMUM'
-        ? 0.3
-        : 1
+      !passedScheduledDate || allButtonsLocked || service.type_operation === 'TIPO_COMUM' ? 0.3 : 1
   };
 
   const styleButtonClose = { opacity: allButtonsLocked || shared ? 0.3 : 1 };
@@ -230,7 +222,13 @@ export function ButtonBar(props: ButtonBarTypes) {
           >
             <p>CLASSE L</p>
           </button>
-          <button onClick={() => {}}>
+          <button
+            onClick={() => {
+              router.push(`/dashboard/tec/running/construction/class-f/${encryptSlug}`, {
+                scroll: false
+              });
+            }}
+          >
             <p>CLASSE F</p>
           </button>
         </>

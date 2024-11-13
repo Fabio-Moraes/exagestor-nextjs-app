@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Modal } from './_components/Modal';
 import { ProgressBar } from './_components/ProgressBar';
@@ -49,14 +50,21 @@ export function ListServiceCable(props: ListCableProps) {
 
   async function fetchCableLaying() {
     setRunningLoad(true);
+
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
+        const serviceCableData = serviceCable[Number(selectedCard)];
+        const { id, protocol, cable_length_meters, adequacy_length_meters } = serviceCableData;
+        const adequacyLengthMeters =
+          count <= cable_length_meters - adequacy_length_meters ? count : null;
+
         const data = await internalApi.post('/api/bridge', {
           baseURL: '/api/tec/running/construction/class-l/cable-adequacy',
-          id: serviceCable[Number(selectedCard)].id,
-          protocol: serviceCable[Number(selectedCard)].protocol,
-          adequacyLengthMeters: count
+          id: id,
+          protocol: protocol,
+          adequacyLengthMeters: adequacyLengthMeters
         });
+
         if (dialogRef.current) dialogRef.current.close();
         console.log(data);
         break;
@@ -119,7 +127,8 @@ export function ListServiceCable(props: ListCableProps) {
   };
 
   const handleIncrement = useCallback(() => {
-    const { cable_length_meters, adequacy_length_meters } = serviceCable[Number(selectedCard)];
+    const serviceCableData = serviceCable[Number(selectedCard)];
+    const { cable_length_meters, adequacy_length_meters } = serviceCableData;
     const limiter = cable_length_meters - adequacy_length_meters;
     setCount((i) => (i < limiter ? i + 1 : i));
   }, [selectedCard, serviceCable]);
@@ -130,14 +139,13 @@ export function ListServiceCable(props: ListCableProps) {
 
   const verificationInputChange = useCallback(
     (inputValue: string) => {
-      const { cable_length_meters, adequacy_length_meters } =
-        serviceCable[Number(selectedCard)];
+      const { cable_length_meters, adequacy_length_meters } = serviceCable[Number(selectedCard)];
       const limiter = cable_length_meters - adequacy_length_meters;
 
       if (inputValue === '') return 0;
       if (Number(inputValue) > limiter) return limiter;
 
-      return parseInt(inputValue, 10);
+      return Number.parseInt(inputValue, 10);
     },
     [selectedCard, serviceCable]
   );
@@ -161,11 +169,7 @@ export function ListServiceCable(props: ListCableProps) {
         {serviceCable &&
           serviceCable.map((item, index) => (
             <div key={uuidv4()}>
-              <S.TableRow
-                $isSelected={false}
-                onClick={() => handleOpenDialog(index)}
-                key={uuidv4()}
-              >
+              <S.TableRow $isSelected={false} onClick={() => handleOpenDialog(index)} key={uuidv4()}>
                 <span>CABO {item.description}</span>
 
                 <div>
@@ -188,9 +192,7 @@ export function ListServiceCable(props: ListCableProps) {
                   <div>
                     <ProgressBar
                       description=""
-                      percentage={
-                        (item.adequacy_length_meters / item.cable_length_meters) * 100
-                      }
+                      percentage={(item.adequacy_length_meters / item.cable_length_meters) * 100}
                     />
                   </div>
                 </div>

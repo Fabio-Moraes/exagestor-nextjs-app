@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
-import { motion, PanInfo } from 'framer-motion';
+import { motion, type PanInfo } from 'framer-motion';
 
 import * as S from './styles';
 
@@ -57,7 +58,7 @@ export const ListItem: React.FC<ListItemProps> = ({ item, count = 0, onSelect, o
     const inputValue = e.target.value;
 
     if (/^\d*$/.test(inputValue) && inputValue.length <= 4) {
-      onSelect({ count: inputValue === '' ? 0 : parseInt(inputValue, 10) });
+      onSelect({ count: inputValue === '' ? 0 : Number.parseInt(inputValue, 10) });
     } else {
       console.error('Por favor, insira apenas números inteiros ou zero.');
     }

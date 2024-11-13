@@ -13,7 +13,7 @@ type SelectedCableStore = {
   editSelectedCable: (id: number, value: number) => void;
 };
 
-export const usetaskStore = create<SelectedCableStore>((set) => ({
+export const useSelectedCableStore = create<SelectedCableStore>((set) => ({
   selectedCable: [],
   setSelectedCable: (data) =>
     set(() => ({
@@ -22,9 +22,7 @@ export const usetaskStore = create<SelectedCableStore>((set) => ({
   editSelectedCable: (id, value) =>
     set((state) => ({
       selectedCable: state.selectedCable.map((selectedCable) =>
-        selectedCable.id === id
-          ? { ...selectedCable, cable_length_meters: value }
-          : selectedCable
+        selectedCable.id === id ? { ...selectedCable, cable_length_meters: value } : selectedCable
       )
     }))
 }));

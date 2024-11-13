@@ -125,15 +125,12 @@ export default function FinishService({ params }: SlugType) {
       {connectionError ? (
         <S.ErrorContainer>
           <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por
-            favor, tente novamente.
+            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+            tente novamente.
           </span>
         </S.ErrorContainer>
       ) : (
-        <List
-          items={ServiceData?.serviceList}
-          serviceData={ServiceData?.currentOperation?.[0]}
-        />
+        <List items={ServiceData?.serviceList} serviceData={ServiceData?.currentOperation?.[0]} />
       )}
     </S.Container>
   );
