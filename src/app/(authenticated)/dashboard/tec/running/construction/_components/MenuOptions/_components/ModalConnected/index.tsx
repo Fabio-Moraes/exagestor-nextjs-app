@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { type RefObject, useEffect, useState } from 'react'
+import { type RefObject, useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { HandleLogout } from 'functions/HandleLogout';

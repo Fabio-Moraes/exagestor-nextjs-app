@@ -103,7 +103,9 @@ export default function NewStock() {
     }
   };
 
-  const selectedMaterials = materials.filter((objeto: Materials) => selectedTableRows.includes(objeto.id));
+  const selectedMaterials = materials.filter((objeto: Materials) =>
+    selectedTableRows.includes(objeto.id)
+  );
 
   const encryptSlug = encryptObject({ selectedMaterials });
 

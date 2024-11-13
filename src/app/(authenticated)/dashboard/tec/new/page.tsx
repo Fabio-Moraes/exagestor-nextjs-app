@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import type React from 'react';
-import { type ChangeEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, useEffect, useState } from 'react';
 
 import 'moment/locale/pt-br';
 
