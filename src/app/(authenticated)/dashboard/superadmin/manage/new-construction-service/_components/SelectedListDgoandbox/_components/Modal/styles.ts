@@ -91,5 +91,6 @@ export const InputContainer = styled.div`
   > span {
     margin-top: 1rem;
     color: #ffffff;
+    white-space: nowrap;
   }
 `;
