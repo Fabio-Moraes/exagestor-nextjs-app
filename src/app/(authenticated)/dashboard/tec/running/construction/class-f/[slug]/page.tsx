@@ -1,11 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import Image from 'components/Vercel/Image';
-import { decryptObject } from 'functions';
+import { decryptObject, encryptObject } from 'functions';
 import { copyToClipboard } from 'functions/CopyToClipboard';
 import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
@@ -31,6 +32,7 @@ type TypeCatalogDgoandbox = {
   node: string;
   status: string;
   type: string;
+  image_count: string;
   created_at: string;
 };
 
@@ -43,7 +45,7 @@ type TypeDgoJsonObject = {
 };
 
 export default function FinishService({ params }: SlugType) {
-  const [sharedPassword /*,setSharedPassword */] = useState<Array<{ password?: string }>>([]);
+  const [sharedPassword, setSharedPassword] = useState<Array<{ password?: string }>>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
 
@@ -54,6 +56,8 @@ export default function FinishService({ params }: SlugType) {
   const [catalogDgoandbox, setCatalogDgoandbox] = useState([] as TypeCatalogDgoandbox[]);
   const [nodeName, setNodeName] = useState('');
   //const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter();
 
   const decryptSlug = decryptObject(params.slug);
 
@@ -86,7 +90,7 @@ export default function FinishService({ params }: SlugType) {
         }
 
         //setOperationsCable(response.data.operationsCable);
-        //setSharedPassword(response.data.sharedPassword);
+        setSharedPassword(response.data.sharedPassword);
         break;
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -126,6 +130,23 @@ export default function FinishService({ params }: SlugType) {
   }, []);
 
   console.log(catalogDgoandbox);
+
+  type OnClickItemList = {
+    dgoandbox: string;
+    protocol: string;
+    imageCount: string;
+  };
+
+  const onClickItemList = ({ dgoandbox, imageCount, protocol }: OnClickItemList) => {
+    const encryptSlug = encryptObject({ protocol, dgoandbox, imageCount });
+
+    router.push(
+      `/dashboard/tec/running/construction/class-f/finesh-dgoandbox/form-dgoandbox/${encryptSlug}`,
+      {
+        scroll: false
+      }
+    );
+  };
 
   return (
     <S.Container>
@@ -193,16 +214,39 @@ export default function FinishService({ params }: SlugType) {
           </S.Tabs>
           <S.List>
             {selectedTab &&
-              Object.keys(dgoJsonObject[selectedTab]).map((subKey: string) => (
-                <button key={uuidv4()}>
-                  <p>{catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0].type}.</p>
-                  <p>
-                    {catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0].node ===
-                      'defined' && `${nodeName}.`}
-                  </p>
-                  <p>{String(dgoJsonObject[selectedTab][subKey]?.value)}</p>
-                </button>
-              ))}
+              Object.keys(dgoJsonObject[selectedTab]).map((subKey: string) => {
+                const typeDgoandbox = `${catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0]
+                  .type}.`;
+
+                const ImageCount = `${catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0]
+                  .image_count}.`;
+
+                const nodeNameDgoandbox =
+                  catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0].node === 'defined' &&
+                  `${nodeName}.`;
+
+                const nameDgoandbox = String(dgoJsonObject[selectedTab][subKey]?.value);
+
+                return (
+                  <button
+                    key={uuidv4()}
+                    onClick={() => {
+                      const checkNodeNameDgoandbox = nodeNameDgoandbox ? nodeNameDgoandbox : '';
+                      const dgoandbox = `${typeDgoandbox}${checkNodeNameDgoandbox}${nameDgoandbox}`;
+
+                      onClickItemList({
+                        dgoandbox: dgoandbox,
+                        protocol: `${decryptSlug.protocol}`,
+                        imageCount: ImageCount
+                      });
+                    }}
+                  >
+                    <p>{typeDgoandbox}</p>
+                    <p>{nodeNameDgoandbox}</p>
+                    <p>{nameDgoandbox}</p>
+                  </button>
+                );
+              })}
           </S.List>
         </>
       )}

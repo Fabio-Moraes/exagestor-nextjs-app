@@ -114,7 +114,6 @@ export const Tabs = styled.div`
 export const List = styled.div`
   display: flex;
   align-items: start;
-  //justify-content: flex-start;
   flex-direction: column;
 
   padding-top: 0.7rem;
@@ -131,6 +130,11 @@ export const List = styled.div`
     border-radius: 0.4rem;
     font-size: 1.6rem;
     color: #fff;
+
+    > p {
+      color: #ffffff;
+      white-space: nowrap;
+    }
   }
 `;
 
