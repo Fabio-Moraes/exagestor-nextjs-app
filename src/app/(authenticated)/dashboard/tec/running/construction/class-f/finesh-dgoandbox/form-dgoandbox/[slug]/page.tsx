@@ -76,6 +76,8 @@ export default function NewService({ params }: SlugType) {
   };
 
   const handleSubmit = async () => {
+    return; // <<<<< Remove
+
     if (!successfullyCompleted) {
       setIconSvgModal(alertSvg);
 
@@ -175,9 +177,6 @@ export default function NewService({ params }: SlugType) {
 
   return (
     <S.Container>
-      <span>{String(location.latitude ?? '00-000000')}</span>
-      <br />
-      <span>{String(location.longitude ?? '00-000000')}</span>
       <S.Title>{decryptSlug.dgoandbox}</S.Title>
       {runningLoad && <p>Loading...</p>}
       {loading && <p>Loading...</p>}
