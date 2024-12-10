@@ -276,7 +276,7 @@ export default function NewService({ params }: SlugType) {
               {previews[index] ? (
                 <>
                   <Image
-                    src={previews[index]}
+                    src={previews[index] || ''}
                     priority
                     loading="eager"
                     alt="Uploaded Image"
