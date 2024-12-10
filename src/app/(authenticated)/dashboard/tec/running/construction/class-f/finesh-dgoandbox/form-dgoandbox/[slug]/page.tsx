@@ -273,7 +273,12 @@ export default function NewService({ params }: SlugType) {
         <S.ContainerCardImages>
           {Array.from({ length: Number(decryptSlug.imageCount) }, (_, index) => (
             <label key={String(index)}>
-              <input type="file" accept="image/*" onChange={(event) => handleFileChange(event, index)} />
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={(event) => handleFileChange(event, index)}
+              />
               {previews[index] ? (
                 <>
                   <Image
