@@ -10,7 +10,7 @@ export const ContainerImagePreview = styled.div`
   width: 500px;
   height: 500px;
   align-items: end;
-  border-radius: 10px;
+  //border-radius: 10px;
   position: relative;
 
   > h1 {

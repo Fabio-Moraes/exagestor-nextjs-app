@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { convertToDirectional, formatDate } from 'functions';
 import useGeoLocation from 'hooks/useGeoLocation';
@@ -53,6 +53,10 @@ export function PreviewImage(props: PropsType) {
     }
   };
 
+  useEffect(() => {
+    handleCaptureClick();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -76,7 +80,7 @@ export function PreviewImage(props: PropsType) {
           </S.ContainerImagePreview>
         </div>
 
-        <S.Button onClick={handleCaptureClick}>Enviar arquivo</S.Button>
+        {/* <S.Button onClick={handleCaptureClick}>Enviar arquivo</S.Button> */}
       </header>
     </div>
   );

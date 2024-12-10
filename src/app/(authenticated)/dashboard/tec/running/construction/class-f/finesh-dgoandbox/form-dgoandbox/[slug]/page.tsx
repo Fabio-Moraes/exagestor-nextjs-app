@@ -6,6 +6,7 @@ import { type ChangeEvent, useEffect, useState } from 'react';
 
 import 'moment/locale/pt-br';
 
+import { PreviewImage } from './_components/PreviewImage';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
@@ -52,6 +53,7 @@ export default function NewService({ params }: SlugType) {
   const [runningLoad, setRunningLoad] = useState(false);
   const [previews, setPreviews] = useState<(string | null)[]>([]);
   const [files, setFiles] = useState<(File | null)[]>([]);
+  const [errorUploadImage, setErrorUploadImage] = useState<string | null>(null);
 
   console.log(files); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -87,6 +89,43 @@ export default function NewService({ params }: SlugType) {
 
   const generateConnectingMessage = (count: number): string => {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
+  };
+
+  const uploadImage = async (file: File | null, index: number) => {
+    if (!file) {
+      setErrorUploadImage('No file selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', `${decryptSlug.protocol}_${decryptSlug.dgoandbox}_${index}`);
+    //formData.append('latitude', String(location.latitude ?? '00-000000'));
+    //formData.append('longitude', String(location.longitude ?? '00-000000'));
+
+    try {
+      const response = await fetch('/api/update-image-dgoandbox', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.signedUrl) {
+        //setUrl(data.signedUrl);
+      } else {
+        throw new Error(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorUploadImage(err.message);
+      } else {
+        setErrorUploadImage('An unknown error occurred');
+      }
+    } finally {
+      //setFile(null);
+      //setPreview(null);
+    }
   };
 
   const handleSubmit = async () => {
@@ -297,6 +336,13 @@ export default function NewService({ params }: SlugType) {
                     width={10}
                     height={100}
                   />
+                  <PreviewImage
+                    key={`preview-${previews[index]}`}
+                    value={previews[index] || ''}
+                    onPreview={(i) => {
+                      uploadImage(i, index);
+                    }}
+                  />
                   <p
                     style={{
                       position: 'absolute',
@@ -314,6 +360,7 @@ export default function NewService({ params }: SlugType) {
         <S.Button onClick={handleSubmit}>Concluir</S.Button>
       </S.FormContainer>
       {errorGeoLocation && <p>Error: {errorGeoLocation}</p>}
+      {errorUploadImage && <p>{errorUploadImage}</p>}
       {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
     </S.Container>
