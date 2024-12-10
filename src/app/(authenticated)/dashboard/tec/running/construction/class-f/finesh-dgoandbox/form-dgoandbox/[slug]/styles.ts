@@ -44,8 +44,8 @@ export const ContainerCardImages = styled.div`
   }
 
   label {
-    height: 8rem;
-    width: 8rem;
+    height: 5rem;
+    width: 5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,7 +54,7 @@ export const ContainerCardImages = styled.div`
     //padding: 0.3rem;
     margin-right: 1rem;
     border-radius: 1rem;
-    font-size: 1.6rem;
+    font-size: 1rem;
     user-select: none;
     background-color: rgb(var(--color-secondary-04));
 
@@ -67,7 +67,7 @@ export const ContainerCardImages = styled.div`
 
     > p {
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 0.8rem;
       //width: 100%;
     }
 

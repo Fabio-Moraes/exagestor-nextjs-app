@@ -15,6 +15,7 @@ import { TimedWait } from 'functions/TimedWait';
 import useGeoLocation from 'hooks/useGeoLocation';
 import { internalApi } from 'services/apiAxios';
 
+import addImage from './_assets/svg/add-image.svg';
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
 import mapSvg from './_assets/svg/map.svg';
@@ -281,8 +282,8 @@ export default function NewService({ params }: SlugType) {
                     loading="eager"
                     alt="Uploaded Image"
                     style={{
-                      width: '8rem',
-                      height: '8rem',
+                      width: '5rem',
+                      height: '5rem',
                       borderRadius: '1rem',
                       objectFit: 'cover',
                       objectPosition: 'center',
@@ -299,7 +300,7 @@ export default function NewService({ params }: SlugType) {
                   ></p>
                 </>
               ) : (
-                <p>Selecionar Imagem</p>
+                <Image {...{ ...propsImage, width: 40, height: 40 }} src={addImage} alt="add-image" />
               )}
             </label>
           ))}
