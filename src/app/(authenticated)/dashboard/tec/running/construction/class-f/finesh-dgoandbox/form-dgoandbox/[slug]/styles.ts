@@ -42,6 +42,43 @@ export const ContainerCardImages = styled.div`
     border-radius: 0.5rem;
     border: 0.2rem solid rgba(var(--color-secondary-04), 0.5);
   }
+
+  label {
+    height: 8rem;
+    width: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    color: #fff;
+    //padding: 0.3rem;
+    margin-right: 1rem;
+    border-radius: 1rem;
+    font-size: 1.6rem;
+    user-select: none;
+    background-color: rgb(var(--color-secondary-04));
+
+    input[type='file'] {
+      display: none;
+    }
+
+    align-items: center;
+    justify-content: center;
+
+    > p {
+      text-align: center;
+      font-size: 1.2rem;
+      //width: 100%;
+    }
+
+    transition: all 0.05s ease;
+    box-shadow: 0px 2px 0px rgb(var(--color-secondary-02));
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+  }
 `;
 
 export const FormContainer = styled.div`
@@ -97,15 +134,13 @@ export const Select = styled.select`
 `;
 
 export const MapButton = styled.button`
-  width: 3rem;
-  height: 3rem;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 1rem;
   margin-bottom: 1.3rem;
-  background-color: hotpink;
-  font-size: 1.6rem;
-  background-color: #fafafa;
-  border-radius: 0.5rem;
-  border: 0.2rem solid rgba(var(--color-secondary-04), 0.5);
 `;
 
 export const Option = styled.option`

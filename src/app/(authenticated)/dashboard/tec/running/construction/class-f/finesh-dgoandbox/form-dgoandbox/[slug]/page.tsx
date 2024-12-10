@@ -8,6 +8,7 @@ import 'moment/locale/pt-br';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
+import Image from 'components/Vercel/Image';
 import { decryptObject } from 'functions';
 import { HandleLogout } from 'functions/HandleLogout';
 import { TimedWait } from 'functions/TimedWait';
@@ -16,6 +17,7 @@ import { internalApi } from 'services/apiAxios';
 
 import alertSvg from './_assets/svg/alert.svg';
 import checkedSvg from './_assets/svg/checked.svg';
+import mapSvg from './_assets/svg/map.svg';
 
 import * as S from './styles';
 
@@ -31,6 +33,13 @@ type OnClickItemList = {
   protocol: string;
 };
 
+interface propsImageType {
+  priority: boolean;
+  loading: 'eager';
+  width: number;
+  height: number;
+}
+
 export default function NewService({ params }: SlugType) {
   const [address, setAddress] = useState<string>('');
   const [latitude, setLatitude] = useState<string>('');
@@ -40,6 +49,10 @@ export default function NewService({ params }: SlugType) {
   const [isPopupValue, setIsPopupValue] = useState<string>('');
   const [successfullyCompleted, setSuccessfullyCompleted] = useState<boolean>(false);
   const [runningLoad, setRunningLoad] = useState(false);
+  const [previews, setPreviews] = useState<(string | null)[]>([]);
+  const [files, setFiles] = useState<(File | null)[]>([]);
+
+  console.log(files); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
   const decryptSlug = decryptObject(params.slug) as OnClickItemList;
 
@@ -76,8 +89,6 @@ export default function NewService({ params }: SlugType) {
   };
 
   const handleSubmit = async () => {
-    return; // <<<<< Remove
-
     if (!successfullyCompleted) {
       setIconSvgModal(alertSvg);
 
@@ -95,6 +106,18 @@ export default function NewService({ params }: SlugType) {
         setModalValue('Informe a longitude.');
         return;
       }
+
+      if (previews.length < Number(decryptSlug.imageCount)) {
+        if (Number(decryptSlug.imageCount) - previews.length === 1) {
+          setModalValue(`(1) Imagem faltando`);
+          return;
+        }
+
+        setModalValue(`(${Number(decryptSlug.imageCount) - previews.length}) Imagens faltando`);
+        return;
+      }
+
+      return; // <<<<<<<<<<<<<<< REMOVE RETURN >>>>>>>>>>>>>>>> //
 
       const maxRetries: number = 4;
 
@@ -138,12 +161,18 @@ export default function NewService({ params }: SlugType) {
 
   async function onClickButtonAddressApi() {
     setRunningLoad(true);
+
+    if (!location.latitude || !location.latitude) {
+      setRunningLoad(false);
+      return;
+    }
+
     for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
       try {
         const response = await internalApi.post('/api/bridge', {
           baseURL: '/api/tec/running/construction/class-f/address-api',
-          latitude: String(location.latitude ?? '-22.105293'),
-          longitude: String(location.longitude ?? '-51.409715')
+          latitude: String(location.latitude),
+          longitude: String(location.longitude)
         });
 
         const { address } = response.data;
@@ -175,11 +204,36 @@ export default function NewService({ params }: SlugType) {
     }
   }
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const selectedFile = event.target.files?.[0] || null;
+    setFiles((prevFiles) => {
+      const newFiles = [...prevFiles];
+      newFiles[index] = selectedFile;
+      return newFiles;
+    });
+
+    if (selectedFile) {
+      const previewUrl = URL.createObjectURL(selectedFile);
+      setPreviews((prevPreviews) => {
+        const newPreviews = [...prevPreviews];
+        newPreviews[index] = previewUrl;
+        return newPreviews;
+      });
+    }
+  };
+
+  const propsImage = {
+    priority: true,
+    loading: 'eager',
+    width: 50,
+    height: 50
+  } as propsImageType;
+
   return (
     <S.Container>
       <S.Title>{decryptSlug.dgoandbox}</S.Title>
       {runningLoad && <p>Loading...</p>}
-      {loading && <p>Loading...</p>}
+      {loading && <p>Carregando endereço...</p>}
       <S.FormContainer>
         <S.Input
           type="text"
@@ -207,17 +261,47 @@ export default function NewService({ params }: SlugType) {
 
         <S.MapButton
           onClick={() => {
-            setLongitude(String(location.longitude ?? '-51.409715'));
-            setLatitude(String(location.latitude ?? '-22.105293'));
+            setLongitude(String(location.longitude ?? '00.000000'));
+            setLatitude(String(location.latitude ?? '00.000000'));
             onClickButtonAddressApi();
           }}
-        />
+        >
+          <Image {...propsImage} src={mapSvg} alt="map" />
+        </S.MapButton>
 
         <S.ContainerCardImages>
           {Array.from({ length: Number(decryptSlug.imageCount) }, (_, index) => (
-            <button onClick={() => console.log('Clicou')} key={index}>
-              Imagem ({index + 1})
-            </button>
+            <label key={String(index)}>
+              <input type="file" onChange={(event) => handleFileChange(event, index)} />
+              {previews[index] ? (
+                <>
+                  <Image
+                    src={previews[index]}
+                    priority
+                    loading="eager"
+                    alt="Uploaded Image"
+                    style={{
+                      width: '8rem',
+                      height: '8rem',
+                      borderRadius: '1rem',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      border: '0.2rem solid #6A6C6A'
+                    }}
+                    width={10}
+                    height={100}
+                  />
+                  <p
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: 'rgba(0,0,0,0.5)'
+                    }}
+                  ></p>
+                </>
+              ) : (
+                <p>Selecionar Imagem</p>
+              )}
+            </label>
           ))}
         </S.ContainerCardImages>
 
