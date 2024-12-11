@@ -9,12 +9,15 @@ import * as S from './styles';
 
 type PropsType = {
   value: string;
+  address: string;
+  latitude: string;
+  longitude: string;
   onPreview: (i: File) => void;
 };
 
 // Definindo o tipo para o ref
 export function PreviewImage(props: PropsType) {
-  const { value, onPreview } = props;
+  const { value, address, latitude, longitude, onPreview } = props;
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -71,11 +74,11 @@ export function PreviewImage(props: PropsType) {
           >
             <p>
               {convertToDirectional({
-                latitude: location?.latitude ?? 0,
-                longitude: location?.longitude ?? 0
+                latitude: Number(latitude) ?? 0,
+                longitude: Number(longitude) ?? 0
               })}
             </p>
-            <p>R. Vitório Scapin - Teodoro Sampaio</p>
+            <p>{address}</p>
             <p>{formattedDate}</p>
           </S.ContainerImagePreview>
         </div>

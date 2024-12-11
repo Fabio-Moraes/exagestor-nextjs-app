@@ -79,14 +79,6 @@ export default function NewService({ params }: SlugType) {
     setAddress(e.target.value);
   };
 
-  const handleLatitudeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLatitude(e.target.value);
-  };
-
-  const handleLongitudeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLongitude(e.target.value);
-  };
-
   const generateConnectingMessage = (count: number): string => {
     return count > 0 ? `Conectando<br>Tentativa (${count + 1})` : 'Conectando';
   };
@@ -100,8 +92,6 @@ export default function NewService({ params }: SlugType) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('name', `${decryptSlug.protocol}_${decryptSlug.dgoandbox}_${index}`);
-    //formData.append('latitude', String(location.latitude ?? '00-000000'));
-    //formData.append('longitude', String(location.longitude ?? '00-000000'));
 
     try {
       const response = await fetch('/api/update-image-dgoandbox', {
@@ -157,6 +147,7 @@ export default function NewService({ params }: SlugType) {
         return;
       }
 
+      router.push(`/dashboard/tec/running/construction/class-f/${params.slug}`, { scroll: false });
       return; // <<<<<<<<<<<<<<< REMOVE RETURN >>>>>>>>>>>>>>>> //
 
       const maxRetries: number = 4;
@@ -182,7 +173,7 @@ export default function NewService({ params }: SlugType) {
             setModalValue('Novo serviço iniciado com êxito.');
 
             await TimedWait(3000);
-            router.push('/dashboard/tec/running', { scroll: false });
+            router.push(`/dashboard/tec/running/construction/class-f/${params.slug}`, { scroll: false });
             break;
           }
         } catch (error) {
@@ -244,6 +235,14 @@ export default function NewService({ params }: SlugType) {
     }
   }
 
+  const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
+    if (address.trim() === '' || latitude.trim() === '' || longitude.trim() === '') {
+      event.preventDefault();
+      setModalValue('Certifique-se de que todas as informações foram preenchidas.');
+      return false;
+    }
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedFile = event.target.files?.[0] || null;
     setFiles((prevFiles) => {
@@ -269,6 +268,12 @@ export default function NewService({ params }: SlugType) {
     height: 50
   } as propsImageType;
 
+  const latDirection = Number(latitude) >= 0 ? 'N' : 'S';
+  const lonDirection = Number(longitude) >= 0 ? 'E' : 'W';
+
+  const absLat = Math.abs(Number(latitude)).toFixed(7);
+  const absLon = Math.abs(Number(longitude)).toFixed(7);
+
   return (
     <S.Container>
       <S.Title>{decryptSlug.dgoandbox}</S.Title>
@@ -287,16 +292,16 @@ export default function NewService({ params }: SlugType) {
           type="text"
           id="boxOrCableNomenclature"
           placeholder="Latitude"
-          value={latitude}
-          onChange={handleLatitudeChange}
+          value={latitude && `${absLat}°${latDirection}`}
+          disabled
         />
 
         <S.Input
           type="text"
           id="boxOrCableNomenclature"
           placeholder="Longitude"
-          value={longitude}
-          onChange={handleLongitudeChange}
+          value={longitude && `${absLon}°${lonDirection}`}
+          disabled
         />
 
         <S.MapButton
@@ -317,6 +322,7 @@ export default function NewService({ params }: SlugType) {
                 accept="image/*"
                 capture="environment"
                 onChange={(event) => handleFileChange(event, index)}
+                onClick={handleClick}
               />
               {previews[index] ? (
                 <>
@@ -339,6 +345,9 @@ export default function NewService({ params }: SlugType) {
                   <PreviewImage
                     key={`preview-${previews[index]}`}
                     value={previews[index] || ''}
+                    address={address}
+                    latitude={latitude}
+                    longitude={longitude}
                     onPreview={(i) => {
                       uploadImage(i, index);
                     }}
