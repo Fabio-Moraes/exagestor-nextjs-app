@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
+import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
 import { decryptObject, encryptObject } from 'functions';
 import { copyToClipboard } from 'functions/CopyToClipboard';
@@ -14,6 +15,7 @@ import { internalApi } from 'services/apiAxios';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import alertSvg from '../_assets/svg/alert.svg';
 import eyeCopy from '../_assets/svg/copy.svg';
 import eyeClosed from '../_assets/svg/eye-closed.svg';
 import eyeOpen from '../_assets/svg/eye-open.svg';
@@ -48,12 +50,14 @@ export default function FinishService({ params }: SlugType) {
   const [sharedPassword, setSharedPassword] = useState<Array<{ password?: string }>>([]);
   const [connectionError, setConnectionError] = useState(false);
   const [isPopupValue, setIsPopupValue] = useState<string | null>(null);
+  const [modalValue, setModalValue] = useState<string>('');
 
   const [selectedTab, setSelectedTab] = useState<string | null>(null);
   const [dgoJsonObject, setDgoJsonObject] = useState({} as TypeDgoJsonObject);
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [catalogDgoandbox, setCatalogDgoandbox] = useState([] as TypeCatalogDgoandbox[]);
+  const [completedDgoenbox, setCompletedDgoenbox] = useState([]);
   const [nodeName, setNodeName] = useState('');
   //const [isLoading, setIsLoading] = useState(true);
 
@@ -87,6 +91,7 @@ export default function FinishService({ params }: SlugType) {
           setNodeName(response.data.selectedDgoandbox[0].node_name);
           setCatalogDgoandbox(response.data.catalogDgoandbox);
           setSelectedTab(Object.keys(jsonObject)[0]);
+          setCompletedDgoenbox(response.data.selectedcompletedDgoenbox);
         }
 
         //setOperationsCable(response.data.operationsCable);
@@ -121,15 +126,19 @@ export default function FinishService({ params }: SlugType) {
 
   useEffect(() => {
     fetchServices();
-    /*     const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    }; */
   }, []);
 
-  console.log(catalogDgoandbox);
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (modalValue !== '') {
+        !isPopupValue && setModalValue('');
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [modalValue, isPopupValue]);
 
   type OnClickItemList = {
     dgoandbox: string;
@@ -227,18 +236,28 @@ export default function FinishService({ params }: SlugType) {
 
                 const nameDgoandbox = String(dgoJsonObject[selectedTab][subKey]?.value);
 
+                const checkNodeNameDgoandbox = nodeNameDgoandbox ? nodeNameDgoandbox : '';
+                const dgoandbox = `${typeDgoandbox}${checkNodeNameDgoandbox}${nameDgoandbox}`;
+
+                const filterCompletedDgoenbox = completedDgoenbox?.filter(
+                  (i: { dgoandbox_name: string }) => i?.dgoandbox_name === dgoandbox.replace(/\s+/g, '')
+                );
+
+                // Determine background color based on completion status
+                const backgroundColor = filterCompletedDgoenbox.length > 0 ? '#EE7427' : '#333';
+
                 return (
                   <button
                     key={uuidv4()}
+                    style={{ backgroundColor }}
                     onClick={() => {
-                      const checkNodeNameDgoandbox = nodeNameDgoandbox ? nodeNameDgoandbox : '';
-                      const dgoandbox = `${typeDgoandbox}${checkNodeNameDgoandbox}${nameDgoandbox}`;
-
-                      onClickItemList({
-                        dgoandbox: dgoandbox,
-                        protocol: `${decryptSlug.protocol}`,
-                        imageCount: ImageCount
-                      });
+                      filterCompletedDgoenbox.length === 0
+                        ? onClickItemList({
+                            dgoandbox: dgoandbox,
+                            protocol: `${decryptSlug.protocol}`,
+                            imageCount: ImageCount
+                          })
+                        : setModalValue('Caixa concluida.');
                     }}
                   >
                     <p>{typeDgoandbox}</p>
@@ -250,6 +269,7 @@ export default function FinishService({ params }: SlugType) {
           </S.List>
         </>
       )}
+      {modalValue && !isPopupValue && <Modal icon={alertSvg} message={modalValue} />}
     </S.Container>
   );
 }

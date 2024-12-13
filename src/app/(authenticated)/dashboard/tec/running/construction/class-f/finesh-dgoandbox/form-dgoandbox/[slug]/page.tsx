@@ -92,6 +92,8 @@ export default function NewService({ params }: SlugType) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('name', `${decryptSlug.protocol}_${decryptSlug.dgoandbox}_${index}`);
+    formData.append('dgoandbox_name', decryptSlug.dgoandbox);
+    formData.append('protocol', decryptSlug.protocol);
 
     try {
       const response = await fetch('/api/update-image-dgoandbox', {
@@ -147,9 +149,6 @@ export default function NewService({ params }: SlugType) {
         return;
       }
 
-      router.push(`/dashboard/tec/running/construction/class-f/${params.slug}`, { scroll: false });
-      return; // <<<<<<<<<<<<<<< REMOVE RETURN >>>>>>>>>>>>>>>> //
-
       const maxRetries: number = 4;
 
       for (let retryCount = 0; retryCount < maxRetries; retryCount++) {
@@ -158,10 +157,14 @@ export default function NewService({ params }: SlugType) {
 
           const response = await internalApi.post('/api/bridge', {
             baseURL: '/api/tec/running/construction/class-f/finished-dgoandbox',
+            protocol: decryptSlug.protocol,
             latitude: latitude,
             longitude: longitude,
             address: address,
-            dgoandbox: decryptSlug.dgoandbox
+            dgoandbox_name: decryptSlug.dgoandbox,
+            dgoandbox_id: 0,
+            node_name: 'TESTE',
+            observation: 'TESTE'
           });
 
           const { success } = response.data;
@@ -170,15 +173,14 @@ export default function NewService({ params }: SlugType) {
             setSuccessfullyCompleted(true);
             setIsPopupValue('');
             setIconSvgModal(checkedSvg);
-            setModalValue('Novo serviço iniciado com êxito.');
-
+            setModalValue('Caixa finalizada com êxito.');
             await TimedWait(3000);
             router.push(`/dashboard/tec/running/construction/class-f/${params.slug}`, { scroll: false });
             break;
           }
         } catch (error) {
           if (retryCount === maxRetries - 1) {
-            setModalValue('Não foi possível iniciar o serviço após várias tentativas.');
+            setModalValue('Não foi possível finalizar a caixa após várias tentativas.');
             setIsPopupValue('');
           } else {
             await TimedWait(3000);

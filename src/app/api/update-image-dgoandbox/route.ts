@@ -1,13 +1,36 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { backendApi } from 'services/apiAxios';
+
+import CryptoJS from 'crypto-js';
+import { jwtVerify } from 'jose';
 import { supabase } from 'lib/supabase';
 import sharp from 'sharp';
 
 export async function POST(request: NextRequest) {
+  const auth = request.cookies.get('_session_auth')?.value;
+  const ssid = request.cookies.get('_session_ssid')?.value;
+  const salt = process.env.SECRET_SALT!;
+
+  const authentication = CryptoJS.SHA256(ssid + salt).toString(CryptoJS.enc.Hex);
+
   try {
+    await jwtVerify(auth ?? '', new TextEncoder().encode(authentication));
+
     const formData = await request.formData();
     const file = formData.get('file') as Blob;
     const name = formData.get('name') as string;
+    const dgoandbox_name = formData.get('dgoandbox_name') as string;
+    const protocol = formData.get('protocol') as string;
+
+    await backendApi.post(
+      '/api/tec/running/construction/class-f/finished-dgoandbox/check-dgoenbox-existence',
+      {
+        token: auth,
+        dgoandbox_name,
+        protocol
+      }
+    );
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
