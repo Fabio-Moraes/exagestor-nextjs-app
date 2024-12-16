@@ -25,7 +25,8 @@ export function MenuOptions({ protocol }: PropsType) {
   return (
     <>
       <S.Container>
-        <S.Button>Reserva Técnica</S.Button>
+        <S.Button>Reserva</S.Button>
+        <S.Button onClick={handleOpenDialog}>Conectados</S.Button>
         <S.Button
           onClick={() => {
             router.push(`/dashboard/tec/running/construction/class-l/historic/${encryptSlug}`, {
@@ -35,7 +36,6 @@ export function MenuOptions({ protocol }: PropsType) {
         >
           Histórico
         </S.Button>
-        <S.Button onClick={handleOpenDialog}>Conectados</S.Button>
       </S.Container>
       <ModalConnected protocol={protocol} dialogRef={modalConnectedRef} />
     </>
