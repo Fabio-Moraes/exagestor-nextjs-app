@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { ProgressBar } from '../../_components/ProgressBar';
+//import { ProgressBar } from '../../_components/ProgressBar';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { LineSkaleton } from 'components/LineSkaleton';
 import { Modal } from 'components/Modal';
@@ -60,7 +60,7 @@ export default function FinishService({ params }: SlugType) {
   const [catalogDgoandbox, setCatalogDgoandbox] = useState([] as TypeCatalogDgoandbox[]);
   const [completedDgoenbox, setCompletedDgoenbox] = useState([]);
   const [nodeName, setNodeName] = useState('');
-  const [allContents, setAllContents] = useState<string[]>([]);
+  //const [allContents, setAllContents] = useState<string[]>([]);
   //const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
@@ -95,11 +95,11 @@ export default function FinishService({ params }: SlugType) {
           setSelectedTab(Object.keys(jsonObject)[0]);
           setCompletedDgoenbox(response.data.selectedcompletedDgoenbox);
 
-          const contents: string[] = Object.values(dgoJsonObject).flatMap(
+          /* const contents: string[] = Object.values(dgoJsonObject).flatMap(
             (subObj: { [key: string]: { value: string } }) =>
               Object.values(subObj).map((item: { value: string }) => item.value)
-          );
-          setAllContents(contents);
+          ); */
+          //setAllContents(contents);
         }
 
         setSharedPassword(response.data.sharedPassword);
@@ -206,10 +206,10 @@ export default function FinishService({ params }: SlugType) {
           )
         }
       </S.Title>
-      <ProgressBar
+      {/* <ProgressBar
         description="Concluido"
         percentage={(completedDgoenbox.length / allContents.length) * 100}
-      />
+      /> */}
       {isPopupValue && <FullScreenLoading message={isPopupValue} />}
       {connectionError ? (
         <S.ErrorContainer>
