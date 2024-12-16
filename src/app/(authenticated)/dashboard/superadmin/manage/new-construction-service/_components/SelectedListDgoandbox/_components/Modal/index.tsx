@@ -1,10 +1,14 @@
 'use client';
 
-import React, { RefObject } from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
+
+import { Modal as ModalAlert } from 'components/Modal';
 
 import { useNodeName } from '../../../../store/nodeName';
 import { useSelectedDgoandboxStore } from '../../../../store/selectedDgoandbox';
 import { useSelectedListDgoandbox } from '../../../../store/selectedListDgoandbox';
+
+import alertSvg from './_assets/svg/alert.svg';
 
 import * as S from './styles';
 
@@ -27,6 +31,21 @@ export function Modal({
   const { selectedListDgoandbox, editSelectedListDgoandbox } = useSelectedListDgoandbox();
   const { selectedDgoandbox } = useSelectedDgoandboxStore();
 
+  const [modalValue, setModalValue] = useState('');
+
+  const handleClickOutside = () => {
+    if (modalValue !== '') {
+      setModalValue('');
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  });
+
   const handleClickOutsideDialog = (event: React.MouseEvent<HTMLDialogElement>) => {
     if (dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
@@ -40,34 +59,48 @@ export function Modal({
   const inputIndexes = Array.from({ length: Number(valueDgoandboxSelected) }, (_, index) => index + 1);
 
   const handleInputChange = (index: number, newValue: string) => {
+    const values = Object.values(selectedListDgoandbox[String(idSelected)] || {}).map(
+      (item) => item.value
+    );
+
+    if (values.includes(newValue)) {
+      setModalValue(`Valor duplicado encontrado: ${newValue}`);
+      return;
+    }
+
     editSelectedListDgoandbox(String(idSelected), String(index), newValue);
   };
 
   const node = selectedDgoandbox.filter((item) => item.id === idSelected && item.node === 'defined');
 
   return (
-    <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
-      <span>
-        {typeDgoandboxSelected} - {valueDgoandboxSelected}
-      </span>
-      <div>
-        {inputIndexes.map((_, index) => (
-          <S.InputContainer key={index}>
-            <span>{typeDgoandboxSelected}.</span>
-            <span>{node.length > 0 && `${nodeName.toUpperCase()}.`}</span>
-            <S.Input
-              type="text"
-              value={selectedListDgoandbox?.[String(idSelected)]?.[String(index)]?.value || ''}
-              onChange={(e) => handleInputChange(index, e.target.value)}
-            />
-          </S.InputContainer>
-        ))}
-      </div>
-      <S.ContainerButton>
-        <S.Button onClick={onCableLaying}>
-          <p>CANCELAR SELEÇÃO</p>
-        </S.Button>
-      </S.ContainerButton>
-    </S.Dialog>
+    <>
+      {!modalValue && (
+        <S.Dialog ref={dialogRef} onClick={handleClickOutsideDialog}>
+          <span>
+            {typeDgoandboxSelected} - {valueDgoandboxSelected}
+          </span>
+          <div>
+            {inputIndexes.map((_, index) => (
+              <S.InputContainer key={index}>
+                <span>{typeDgoandboxSelected}.</span>
+                <span>{node.length > 0 && `${nodeName.toUpperCase()}.`}</span>
+                <S.Input
+                  type="text"
+                  value={selectedListDgoandbox?.[String(idSelected)]?.[String(index)]?.value || ''}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                />
+              </S.InputContainer>
+            ))}
+          </div>
+          <S.ContainerButton>
+            <S.Button onClick={onCableLaying}>
+              <p>CANCELAR SELEÇÃO</p>
+            </S.Button>
+          </S.ContainerButton>
+        </S.Dialog>
+      )}
+      {modalValue && <ModalAlert icon={alertSvg} message={modalValue} />}
+    </>
   );
 }
