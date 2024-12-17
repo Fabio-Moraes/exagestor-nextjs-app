@@ -321,8 +321,6 @@ export default function NewService({ params }: SlugType) {
             <label key={String(index)}>
               <input
                 type="file"
-                accept="image/*"
-                capture="environment"
                 onChange={(event) => handleFileChange(event, index)}
                 onClick={handleClick}
               />
