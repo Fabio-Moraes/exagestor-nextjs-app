@@ -52,10 +52,8 @@ export default function NewService({ params }: SlugType) {
   const [successfullyCompleted, setSuccessfullyCompleted] = useState<boolean>(false);
   const [runningLoad, setRunningLoad] = useState(false);
   const [previews, setPreviews] = useState<(string | null)[]>([]);
-  const [files, setFiles] = useState<(File | null)[]>([]);
   const [errorUploadImage, setErrorUploadImage] = useState<string | null>(null);
-
-  console.log(files); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  const [uploadProgress, setUploadProgress] = useState<number[]>([]);
 
   const decryptSlug = decryptObject(params.slug) as OnClickItemList;
 
@@ -96,27 +94,45 @@ export default function NewService({ params }: SlugType) {
     formData.append('protocol', decryptSlug.protocol);
 
     try {
-      const response = await fetch('/api/update-image-dgoandbox', {
-        method: 'POST',
-        body: formData
-      });
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/update-image-dgoandbox', true);
 
-      const data = await response.json();
+      // Atualizando o progresso do upload
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const progress = Math.round((e.loaded * 100) / e.total);
+          setUploadProgress((prev) => {
+            const newProgress = [...prev];
+            newProgress[index] = progress;
+            return newProgress;
+          });
+        }
+      };
 
-      if (response.ok && data.signedUrl) {
-        //setUrl(data.signedUrl);
-      } else {
-        throw new Error(data.error || 'Failed to upload image');
-      }
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          if (data.signedUrl) {
+            // Sucesso no upload
+          } else {
+            throw new Error(data.error || 'Failed to upload image');
+          }
+        } else {
+          throw new Error('Failed to upload image');
+        }
+      };
+
+      xhr.onerror = () => {
+        throw new Error('An error occurred during the file upload');
+      };
+
+      xhr.send(formData);
     } catch (err) {
       if (err instanceof Error) {
         setErrorUploadImage(err.message);
       } else {
         setErrorUploadImage('An unknown error occurred');
       }
-    } finally {
-      //setFile(null);
-      //setPreview(null);
     }
   };
 
@@ -247,11 +263,6 @@ export default function NewService({ params }: SlugType) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedFile = event.target.files?.[0] || null;
-    setFiles((prevFiles) => {
-      const newFiles = [...prevFiles];
-      newFiles[index] = selectedFile;
-      return newFiles;
-    });
 
     if (selectedFile) {
       const previewUrl = URL.createObjectURL(selectedFile);
@@ -357,7 +368,9 @@ export default function NewService({ params }: SlugType) {
                       position: 'absolute',
                       backgroundColor: 'rgba(0,0,0,0.5)'
                     }}
-                  ></p>
+                  >
+                    {uploadProgress[index] !== undefined && <p>{uploadProgress[index]}%</p>}
+                  </p>
                 </>
               ) : (
                 <Image {...{ ...propsImage, width: 40, height: 40 }} src={addImage} alt="add-image" />
