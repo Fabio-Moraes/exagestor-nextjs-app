@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 import type React from 'react';
-import { type ChangeEvent, useEffect, useState } from 'react';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import 'moment/locale/pt-br';
 
-import { PreviewImage } from './_components/PreviewImage';
+import { CameraCapture } from './_components/CameraCapture';
 import { FullScreenLoading } from 'components/FullScreenLoading';
 import { Modal } from 'components/Modal';
 import Image from 'components/Vercel/Image';
@@ -54,12 +54,28 @@ export default function NewService({ params }: SlugType) {
   const [previews, setPreviews] = useState<(string | null)[]>([]);
   const [errorUploadImage, setErrorUploadImage] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [indexImageCapture, setIndexImageCapture] = useState(0);
 
   const decryptSlug = decryptObject(params.slug) as OnClickItemList;
-
   const { location, error: errorGeoLocation, loading } = useGeoLocation();
 
   const router = useRouter();
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleOpenDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -134,6 +150,11 @@ export default function NewService({ params }: SlugType) {
         setErrorUploadImage('An unknown error occurred');
       }
     }
+  };
+
+  const handleCapture = async (file: File) => {
+    uploadImage(file, indexImageCapture);
+    handleFileChange(file, indexImageCapture);
   };
 
   const handleSubmit = async () => {
@@ -253,19 +274,9 @@ export default function NewService({ params }: SlugType) {
     }
   }
 
-  const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    if (address.trim() === '' || latitude.trim() === '' || longitude.trim() === '') {
-      event.preventDefault();
-      setModalValue('Certifique-se de que todas as informações foram preenchidas.');
-      return false;
-    }
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const selectedFile = event.target.files?.[0] || null;
-
-    if (selectedFile) {
-      const previewUrl = URL.createObjectURL(selectedFile);
+  const handleFileChange = (files: File, index: number) => {
+    if (files) {
+      const previewUrl = URL.createObjectURL(files);
       setPreviews((prevPreviews) => {
         const newPreviews = [...prevPreviews];
         newPreviews[index] = previewUrl;
@@ -281,6 +292,19 @@ export default function NewService({ params }: SlugType) {
     height: 50
   } as propsImageType;
 
+  type EventTypes = React.MouseEvent<HTMLDialogElement, MouseEvent>;
+
+  const handleClickOutsideDialog = (event: EventTypes) => {
+    const { clientX, clientY } = event.nativeEvent;
+    if (dialogRef.current) {
+      const rect = dialogRef.current.getBoundingClientRect();
+      if (rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY) {
+        dialogRef.current.close();
+        setIsModalOpen(false);
+      }
+    }
+  };
+
   const latDirection = Number(latitude) >= 0 ? 'N' : 'S';
   const lonDirection = Number(longitude) >= 0 ? 'E' : 'W';
 
@@ -288,103 +312,104 @@ export default function NewService({ params }: SlugType) {
   const absLon = Math.abs(Number(longitude)).toFixed(7);
 
   return (
-    <S.Container>
-      <S.Title>{decryptSlug.dgoandbox}</S.Title>
-      {runningLoad && <p>Loading...</p>}
-      {loading && <p>Carregando endereço...</p>}
-      <S.FormContainer>
-        <S.Input
-          type="text"
-          id="serviceOriginAddress"
-          placeholder="Endereço"
-          value={address}
-          onChange={handleServiceOriginAddressChange}
-        />
+    <>
+      <S.Container>
+        <S.Title>{decryptSlug.dgoandbox}</S.Title>
+        {runningLoad && <p>Loading...</p>}
+        {loading && <p>Carregando endereço...</p>}
+        <S.FormContainer>
+          <S.Input
+            type="text"
+            id="serviceOriginAddress"
+            placeholder="Endereço"
+            value={address}
+            onChange={handleServiceOriginAddressChange}
+          />
 
-        <S.Input
-          type="text"
-          id="boxOrCableNomenclature"
-          placeholder="Latitude"
-          value={latitude && `${absLat}°${latDirection}`}
-          disabled
-        />
+          <S.Input
+            type="text"
+            id="boxOrCableNomenclature"
+            placeholder="Latitude"
+            value={latitude && `${absLat}°${latDirection}`}
+            disabled
+          />
 
-        <S.Input
-          type="text"
-          id="boxOrCableNomenclature"
-          placeholder="Longitude"
-          value={longitude && `${absLon}°${lonDirection}`}
-          disabled
-        />
+          <S.Input
+            type="text"
+            id="boxOrCableNomenclature"
+            placeholder="Longitude"
+            value={longitude && `${absLon}°${lonDirection}`}
+            disabled
+          />
 
-        <S.MapButton
-          onClick={() => {
-            setLongitude(String(location.longitude ?? '00.000000'));
-            setLatitude(String(location.latitude ?? '00.000000'));
-            onClickButtonAddressApi();
-          }}
-        >
-          <Image {...propsImage} src={mapSvg} alt="map" />
-        </S.MapButton>
+          <S.MapButton
+            onClick={() => {
+              setLongitude(String(location.longitude ?? '00.000000'));
+              setLatitude(String(location.latitude ?? '00.000000'));
+              onClickButtonAddressApi();
+            }}
+          >
+            <Image {...propsImage} src={mapSvg} alt="map" />
+          </S.MapButton>
 
-        <S.ContainerCardImages>
-          {Array.from({ length: Number(decryptSlug.imageCount) }, (_, index) => (
-            <label key={String(index)}>
-              <input
-                type="file"
-                onChange={(event) => handleFileChange(event, index)}
-                onClick={handleClick}
-              />
-              {previews[index] ? (
-                <>
-                  <Image
-                    src={previews[index] || ''}
-                    priority
-                    loading="eager"
-                    alt="Uploaded Image"
-                    style={{
-                      width: '5rem',
-                      height: '5rem',
-                      borderRadius: '1rem',
-                      objectFit: 'cover',
-                      objectPosition: 'center',
-                      border: '0.2rem solid #6A6C6A'
-                    }}
-                    width={10}
-                    height={100}
-                  />
-                  <PreviewImage
-                    key={`preview-${previews[index]}`}
-                    value={previews[index] || ''}
-                    address={address}
-                    latitude={latitude}
-                    longitude={longitude}
-                    onPreview={(i) => {
-                      uploadImage(i, index);
-                    }}
-                  />
-                  <p
-                    style={{
-                      position: 'absolute',
-                      backgroundColor: 'rgba(0,0,0,0.5)'
-                    }}
-                  >
-                    {uploadProgress[index] !== undefined && <p>{uploadProgress[index]}%</p>}
-                  </p>
-                </>
-              ) : (
-                <Image {...{ ...propsImage, width: 40, height: 40 }} src={addImage} alt="add-image" />
-              )}
-            </label>
-          ))}
-        </S.ContainerCardImages>
+          <S.ContainerCardImages>
+            {Array.from({ length: Number(decryptSlug.imageCount) }, (_, index) => (
+              <button
+                key={String(index)}
+                onClick={() => {
+                  if (address.trim() === '' || latitude.trim() === '' || longitude.trim() === '') {
+                    setModalValue('Certifique-se de que todas as <br/> informações foram preenchidas.');
+                    return;
+                  }
 
-        <S.Button onClick={handleSubmit}>Concluir</S.Button>
-      </S.FormContainer>
-      {errorGeoLocation && <p>Error: {errorGeoLocation}</p>}
-      {errorUploadImage && <p>{errorUploadImage}</p>}
-      {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
-      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-    </S.Container>
+                  handleOpenDialog();
+                  setIndexImageCapture(index);
+                }}
+              >
+                {previews[index] ? (
+                  <>
+                    <Image
+                      src={previews[index] || ''}
+                      priority
+                      loading="eager"
+                      alt="Uploaded Image"
+                      style={{
+                        width: '5rem',
+                        height: '5rem',
+                        borderRadius: '1rem',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        border: '0.2rem solid #6A6C6A'
+                      }}
+                      width={10}
+                      height={100}
+                    />
+                    <p>{uploadProgress[index] !== undefined && <p>{uploadProgress[index]}%</p>}</p>
+                  </>
+                ) : (
+                  <Image {...{ ...propsImage, width: 40, height: 40 }} src={addImage} alt="add-image" />
+                )}
+              </button>
+            ))}
+          </S.ContainerCardImages>
+
+          <S.Button onClick={handleSubmit}>Concluir</S.Button>
+        </S.FormContainer>
+        {errorGeoLocation && <p>Error: {errorGeoLocation}</p>}
+        {errorUploadImage && <p>{errorUploadImage}</p>}
+        {modalValue && !isPopupValue && <Modal icon={iconSvgModal} message={modalValue} />}
+        {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+      </S.Container>
+      <S.DialogQr ref={dialogRef} onClick={handleClickOutsideDialog}>
+        {isModalOpen && (
+          <CameraCapture
+            latitude={latitude && `${absLat}°${latDirection}`}
+            longitude={longitude && `${absLon}°${lonDirection}`}
+            address={address}
+            onCapture={(file) => handleCapture(file).then(handleCloseDialog)}
+          />
+        )}
+      </S.DialogQr>
+    </>
   );
 }

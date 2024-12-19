@@ -32,18 +32,7 @@ export const ContainerCardImages = styled.div`
   width: 100%;
   padding-right: 100%;
 
-  > button {
-    min-width: 8rem;
-    min-height: 8rem;
-    margin-right: 1rem;
-    background-color: hotpink;
-    font-size: 1.6rem;
-    background-color: #fafafa;
-    border-radius: 0.5rem;
-    border: 0.2rem solid rgba(var(--color-secondary-04), 0.5);
-  }
-
-  label {
+  button {
     height: 5rem;
     width: 5rem;
     display: flex;
@@ -54,21 +43,20 @@ export const ContainerCardImages = styled.div`
     //padding: 0.3rem;
     margin-right: 1rem;
     border-radius: 1rem;
-    font-size: 1rem;
     user-select: none;
     background-color: rgb(var(--color-secondary-04));
-
-    input[type='file'] {
-      display: none;
-    }
-
     align-items: center;
     justify-content: center;
 
     > p {
-      text-align: center;
-      font-size: 0.8rem;
-      //width: 100%;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.6);
+
+      > p {
+        position: 'absolute';
+        text-align: center;
+        font-size: 1.6rem;
+      }
     }
 
     transition: all 0.05s ease;
@@ -233,5 +221,21 @@ export const StyledDateTime = styled(DateTime)`
     &::placeholder {
       color: #666;
     }
+  }
+`;
+
+export const DialogQr = styled.dialog`
+  border-radius: 2rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(var(--color-primary-01), 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  border: 0.5rem solid rgb(var(--color-secondary-02));
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;

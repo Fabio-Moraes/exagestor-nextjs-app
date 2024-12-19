@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     // Usa sharp para verificar o tipo de imagem
     const resizedImageBuffer = await sharp(buffer)
-      .resize(500, 500) // Define a largura e altura desejadas
+      .resize(800, 800) // Define a largura e altura desejadas
       .jpeg()
       .toBuffer();
 
