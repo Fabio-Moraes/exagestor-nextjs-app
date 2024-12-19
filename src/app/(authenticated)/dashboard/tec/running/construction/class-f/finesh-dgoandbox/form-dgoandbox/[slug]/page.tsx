@@ -177,12 +177,17 @@ export default function NewService({ params }: SlugType) {
       }
 
       if (previews.length < Number(decryptSlug.imageCount)) {
-        if (Number(decryptSlug.imageCount) - previews.length === 1) {
+        if (Number(decryptSlug.imageCount) - previews.filter((item) => item !== '').length === 1) {
           setModalValue(`(1) Imagem faltando`);
           return;
         }
 
-        setModalValue(`(${Number(decryptSlug.imageCount) - previews.length}) Imagens faltando`);
+        console.log(previews);
+        setModalValue(
+          `(${
+            Number(decryptSlug.imageCount) - previews.filter((item) => item !== '').length
+          }) Imagens faltando`
+        );
         return;
       }
 
@@ -384,7 +389,7 @@ export default function NewService({ params }: SlugType) {
                       width={10}
                       height={100}
                     />
-                    <p>{uploadProgress[index] !== undefined && <p>{uploadProgress[index]}%</p>}</p>
+                    {uploadProgress[index] !== undefined && <p>{uploadProgress[index]}%</p>}
                   </>
                 ) : (
                   <Image {...{ ...propsImage, width: 40, height: 40 }} src={addImage} alt="add-image" />

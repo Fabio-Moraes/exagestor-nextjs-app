@@ -51,12 +51,9 @@ export const ContainerCardImages = styled.div`
     > p {
       position: absolute;
       background-color: rgba(0, 0, 0, 0.6);
-
-      > p {
-        position: 'absolute';
-        text-align: center;
-        font-size: 1.6rem;
-      }
+      position: 'absolute';
+      text-align: center;
+      font-size: 1.6rem;
     }
 
     transition: all 0.05s ease;

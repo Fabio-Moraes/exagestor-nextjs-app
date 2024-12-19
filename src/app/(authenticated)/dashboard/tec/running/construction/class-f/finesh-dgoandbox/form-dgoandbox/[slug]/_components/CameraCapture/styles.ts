@@ -17,7 +17,7 @@ export const ButtonCapture = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.2rem;
+  margin: 1.2rem 0;
 
   &:before {
     content: '';
