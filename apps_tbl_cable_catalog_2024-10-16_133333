@@ -1,8 +1,0 @@
-INSERT INTO `tbl_dgoandbox_catalog` (`description`, `type`, `status`, `created_at`) VALUES
-('Distribuidor Geral Óptico', 'DGO', 'Ativo', NOW()),
-('Estação de Telecomunicações', 'ESTACAO', 'Ativo', NOW()),
-('Cabo tronco principal', 'TRONCO', 'Ativo', NOW()),
-('Rede primária de distribuição', 'PRIMARIA', 'Ativo', NOW()),
-('Caixa de Atendimento', 'CAIXA A', 'Ativo', NOW()),
-('Caixa de Manutenção', 'CAIXA M', 'Ativo', NOW()),
-('Nó de Acesso Público', 'NAP', 'Ativo', NOW());

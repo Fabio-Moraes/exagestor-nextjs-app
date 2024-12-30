@@ -54,7 +54,7 @@ export default function FinishService({ params }: SlugType) {
   const [modalValue, setModalValue] = useState<string>('');
 
   const [selectedTab, setSelectedTab] = useState<string | null>(null);
-  const [dgoJsonObject, setDgoJsonObject] = useState({} as TypeDgoJsonObject);
+  const [allDgoandbox, setAllDgoandbox] = useState({} as TypeDgoJsonObject);
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [catalogDgoandbox, setCatalogDgoandbox] = useState([] as TypeCatalogDgoandbox[]);
@@ -86,20 +86,19 @@ export default function FinishService({ params }: SlugType) {
         });
 
         setIsPopupValue(null);
-        if (response.data.selectedDgoandbox && response.data.selectedDgoandbox[0]?.list_dgoandbox) {
-          const jsonObject = JSON.parse(response.data.selectedDgoandbox[0].list_dgoandbox);
-          setDgoJsonObject(jsonObject);
+        if (response.data.selectedDgoandbox) {
+          setAllDgoandbox(response.data.selectedDgoandbox);
 
-          setNodeName(response.data.selectedDgoandbox[0].node_name);
+          const keysArray: string[] = Object.keys(
+            response.data.selectedDgoandbox as {
+              [key: string]: { [key: string]: { [value: string]: string } };
+            }
+          );
+
+          setNodeName(response.data.selectedServiceOperations[0].node_name);
           setCatalogDgoandbox(response.data.catalogDgoandbox);
-          setSelectedTab(Object.keys(jsonObject)[0]);
+          setSelectedTab(keysArray[0]);
           setCompletedDgoenbox(response.data.selectedcompletedDgoenbox);
-
-          /* const contents: string[] = Object.values(dgoJsonObject).flatMap(
-            (subObj: { [key: string]: { value: string } }) =>
-              Object.values(subObj).map((item: { value: string }) => item.value)
-          ); */
-          //setAllContents(contents);
         }
 
         setSharedPassword(response.data.sharedPassword);
@@ -149,12 +148,13 @@ export default function FinishService({ params }: SlugType) {
 
   type OnClickItemList = {
     dgoandbox: string;
+    selectedTab: string;
     protocol: string;
     imageCount: string;
   };
 
-  const onClickItemList = ({ dgoandbox, imageCount, protocol }: OnClickItemList) => {
-    const encryptSlug = encryptObject({ protocol, dgoandbox, imageCount });
+  const onClickItemList = ({ dgoandbox, selectedTab, imageCount, protocol }: OnClickItemList) => {
+    const encryptSlug = encryptObject({ protocol, selectedTab, dgoandbox, imageCount });
 
     router.push(
       `/dashboard/tec/running/construction/class-f/finesh-dgoandbox/form-dgoandbox/${encryptSlug}`,
@@ -221,21 +221,21 @@ export default function FinishService({ params }: SlugType) {
       ) : (
         <>
           <S.Tabs>
-            {Object.keys(dgoJsonObject).map((key) => (
+            {Object.keys(allDgoandbox).map((key) => (
               <S.TabButton
                 key={`tab-button-${key}`}
                 $checked={selectedTab === key}
                 onClick={() => setSelectedTab(key)}
               >
-                {catalogDgoandbox?.filter((i) => String(i.id) === key)[0].type}
+                {catalogDgoandbox?.filter((i) => String(i.id) === key)[0]?.type}
               </S.TabButton>
             ))}
           </S.Tabs>
           <S.List>
             {selectedTab &&
-              Object.keys(dgoJsonObject[selectedTab]).map((subKey: string) => {
+              Object?.keys(allDgoandbox[selectedTab]).map((subKey: string) => {
                 const typeDgoandbox = `${catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0]
-                  .type}.`;
+                  ?.type}.`;
 
                 const ImageCount = `${catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0]
                   .image_count}.`;
@@ -244,10 +244,11 @@ export default function FinishService({ params }: SlugType) {
                   catalogDgoandbox?.filter((i) => String(i.id) === selectedTab)[0].node === 'defined' &&
                   `${nodeName}.`;
 
-                const nameDgoandbox = String(dgoJsonObject[selectedTab][subKey]?.value);
+                const nameDgoandbox = String(allDgoandbox[selectedTab][subKey]?.value);
 
-                const checkNodeNameDgoandbox = nodeNameDgoandbox ? nodeNameDgoandbox : '';
-                const dgoandbox = `${typeDgoandbox}${checkNodeNameDgoandbox}${nameDgoandbox}`;
+                //const checkNodeNameDgoandbox = nodeNameDgoandbox ? nodeNameDgoandbox : '';
+                //const dgoandbox = `${typeDgoandbox}${checkNodeNameDgoandbox}${nameDgoandbox}`;
+                const dgoandbox = nameDgoandbox;
 
                 const filterCompletedDgoenbox = completedDgoenbox?.filter(
                   (i: { dgoandbox_name: string }) => i?.dgoandbox_name === dgoandbox.replace(/\s+/g, '')
@@ -264,6 +265,7 @@ export default function FinishService({ params }: SlugType) {
                       filterCompletedDgoenbox.length === 0
                         ? onClickItemList({
                             dgoandbox: dgoandbox,
+                            selectedTab: selectedTab,
                             protocol: `${decryptSlug.protocol}`,
                             imageCount: ImageCount
                           })

@@ -32,6 +32,7 @@ interface SlugType {
 type OnClickItemList = {
   dgoandbox: string;
   imageCount: string;
+  selectedTab: string;
   protocol: string;
 };
 
@@ -106,7 +107,7 @@ export default function NewService({ params }: SlugType) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('name', `${decryptSlug.protocol}_${decryptSlug.dgoandbox}_${index}`);
-    formData.append('dgoandbox_name', decryptSlug.dgoandbox);
+    formData.append('dgoandbox_name', String(decryptSlug.dgoandbox));
     formData.append('protocol', decryptSlug.protocol);
 
     try {
@@ -204,7 +205,7 @@ export default function NewService({ params }: SlugType) {
             longitude: longitude,
             address: address,
             dgoandbox_name: decryptSlug.dgoandbox,
-            dgoandbox_id: 0,
+            dgoandbox_id: Number(decryptSlug.selectedTab),
             node_name: 'TESTE',
             observation: 'TESTE'
           });

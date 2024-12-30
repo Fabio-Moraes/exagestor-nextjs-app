@@ -23,6 +23,8 @@ export async function POST(request: NextRequest) {
     const dgoandbox_name = formData.get('dgoandbox_name') as string;
     const protocol = formData.get('protocol') as string;
 
+    console.log('AAAAAAAAAAAA', file);
+
     await backendApi.post(
       '/api/tec/running/construction/class-f/finished-dgoandbox/check-dgoenbox-existence',
       {
@@ -55,6 +57,7 @@ export async function POST(request: NextRequest) {
       });
 
     if (uploadError) {
+      console.error('Signed Upload Error:', uploadError.message);
       throw new Error(uploadError.message);
     }
 
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
       .createSignedUrl(`uploads/dgoandbox/${name}`, 60); // URL válida por 60 segundos
 
     if (signedUrlError) {
+      console.error('Signed URL Error:', signedUrlError.message);
       throw new Error(signedUrlError.message);
     }
 
