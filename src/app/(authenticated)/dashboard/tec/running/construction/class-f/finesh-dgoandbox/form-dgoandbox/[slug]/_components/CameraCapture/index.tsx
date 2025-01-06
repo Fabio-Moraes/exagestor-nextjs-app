@@ -28,8 +28,6 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: {
-            width: 800,
-            height: 800,
             facingMode: 'environment'
           }
         });
@@ -152,7 +150,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
   return (
     <div className="App">
       <S.Header className="App-header">
-        <video ref={videoRef} width={300} height={300} autoPlay style={{ display: 'block' }} />
+        <video ref={videoRef} autoPlay style={{ width: '100%', height: '100%', display: 'block' }} />
         <canvas ref={canvasRef} width={800} height={800} style={{ display: 'none' }} />
         <S.ButtonCapture
           onClick={capture}
