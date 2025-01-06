@@ -28,8 +28,6 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: {
-            width: 800,
-            height: 800,
             facingMode: 'environment'
           }
         });
