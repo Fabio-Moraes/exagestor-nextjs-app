@@ -26,21 +26,14 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
   useEffect(() => {
     const getMedia = async () => {
       try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: 800,
-            height: 800,
-            facingMode: 'environment'
-          }
-        });
+        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
         }
       } catch (err) {
-        console.error('Error accessing the camera', err);
+        console.error('Camera error:', err.message);
       }
     };
-
     getMedia();
 
     return () => {
