@@ -149,7 +149,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
 
   return (
     <div className="App">
-      <S.Header className="App-header">
+      <S.Header style={{ width: '100%', height: '100%' }} className="App-header">
         <video ref={videoRef} autoPlay style={{ width: '100%', height: '100%', display: 'block' }} />
         <canvas ref={canvasRef} width={800} height={800} style={{ display: 'none' }} />
         <S.ButtonCapture
