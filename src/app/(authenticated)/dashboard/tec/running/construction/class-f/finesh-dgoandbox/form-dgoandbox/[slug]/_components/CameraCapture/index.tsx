@@ -31,7 +31,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
           videoRef.current.srcObject = mediaStream;
         }
       } catch (err) {
-        console.error('Camera error:', err.message);
+        console.error('Error accessing the camera', err);
       }
     };
     getMedia();
