@@ -380,8 +380,8 @@ export default function NewService({ params }: SlugType) {
                       loading="eager"
                       alt="Uploaded Image"
                       style={{
-                        width: '5rem',
-                        height: '5rem',
+                        minWidth: '5rem',
+                        minHeight: '5rem',
                         borderRadius: '1rem',
                         objectFit: 'cover',
                         objectPosition: 'center',
