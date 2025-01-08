@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const VideoWrapper = styled.div`
-  width: 300px;
-  height: 300px;
+  width: 28rem;
+  height: 28rem;
   position: relative;
   overflow: hidden;
 `;
