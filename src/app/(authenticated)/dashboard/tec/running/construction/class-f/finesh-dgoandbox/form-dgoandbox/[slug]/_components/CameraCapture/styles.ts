@@ -5,7 +5,6 @@ export const VideoWrapper = styled.div`
   height: 300px;
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
 `;
 
 export const VideoElement = styled.video`
@@ -26,16 +25,14 @@ export const CameraContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const Header = styled.header`
   display: flex;
   align-items: center;
-  //height: 100%;
   justify-content: center;
   flex-direction: column;
-  background-color: hotpink;
 `;
 
 export const ButtonCapture = styled.button`
@@ -48,7 +45,7 @@ export const ButtonCapture = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1.2rem 0;
+  margin: 1.2rem 0 1rem 0;
 
   &:before {
     content: '';
@@ -58,4 +55,13 @@ export const ButtonCapture = styled.button`
     border-radius: 50%;
     background-color: #fff;
   }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
 `;

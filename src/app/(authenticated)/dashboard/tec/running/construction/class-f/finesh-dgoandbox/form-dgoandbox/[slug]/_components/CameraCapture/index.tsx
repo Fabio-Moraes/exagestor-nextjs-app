@@ -162,11 +162,12 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
         </S.VideoWrapper>
         <canvas ref={canvasRef} width={800} height={800} style={{ display: 'none' }} />
       </S.Header>
-
-      <S.ButtonCapture
-        style={{ opacity: isCapturing ? 0.3 : 1 }}
-        onClick={!isCapturing ? capture : undefined}
-      />
+      <S.ButtonWrapper>
+        <S.ButtonCapture
+          style={{ opacity: isCapturing ? 0.3 : 1 }}
+          onClick={!isCapturing ? capture : undefined}
+        />
+      </S.ButtonWrapper>
     </S.CameraContainer>
   );
 };
