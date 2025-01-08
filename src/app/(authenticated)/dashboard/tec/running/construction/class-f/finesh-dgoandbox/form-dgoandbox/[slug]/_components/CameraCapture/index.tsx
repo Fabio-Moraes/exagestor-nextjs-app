@@ -56,54 +56,8 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
       setIsCapturing(true);
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
-      const video = videoRef.current;
 
       if (context) {
-        // Obter as dimensões reais do vídeo
-        // Obter as dimensões reais do vídeo
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
-
-        // Calcular a proporção (aspect ratio)
-        const aspectRatio = videoWidth / videoHeight;
-
-        // Definir o tamanho final do canvas quadrado (800x800)
-        const canvasSize = 800;
-
-        // Calcular as dimensões do corte (proporção)
-        let newWidth = canvasSize;
-        let newHeight = canvasSize;
-
-        if (aspectRatio > 1) {
-          // Vídeo mais largo que alto
-          newHeight = canvasSize / aspectRatio;
-        } else {
-          // Vídeo mais alto que largo ou igual
-          newWidth = canvasSize * aspectRatio;
-        }
-
-        // Ajustar o canvas para o corte centralizado
-        const offsetX = (canvasSize - newWidth) / 2;
-        const offsetY = (canvasSize - newHeight) / 2;
-
-        // Definir o tamanho do canvas para o corte sem distorção
-        canvas.width = canvasSize;
-        canvas.height = canvasSize;
-
-        // Limpar o canvas e desenhar o vídeo centralizado
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(
-          video,
-          0, // Posição inicial no eixo X
-          0, // Posição inicial no eixo Y
-          videoWidth, // Largura do vídeo
-          videoHeight, // Altura do vídeo
-          offsetX, // Posição X no canvas
-          offsetY, // Posição Y no canvas
-          newWidth, // Largura ajustada no canvas
-          newHeight // Altura ajustada no canvas
-        );
-        ///////////////////////////////////////////////////////////////////////
         context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
         const latitudeText = `Latitude: ${latitude}`;
