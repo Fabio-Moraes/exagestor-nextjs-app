@@ -59,28 +59,49 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
       const video = videoRef.current;
 
       if (context) {
+        // Obter as dimensões reais do vídeo
+        // Obter as dimensões reais do vídeo
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
 
-        // Dimensões do canvas (800x800)
+        // Calcular a proporção (aspect ratio)
+        const aspectRatio = videoWidth / videoHeight;
+
+        // Definir o tamanho final do canvas quadrado (800x800)
         const canvasSize = 800;
 
-        // Calcular a área de corte (quadrado central)
-        const cropSize = Math.min(videoWidth, videoHeight);
-        const cropX = (videoWidth - cropSize) / 2;
-        const cropY = (videoHeight - cropSize) / 2;
+        // Calcular as dimensões do corte (proporção)
+        let newWidth = canvasSize;
+        let newHeight = canvasSize;
 
-        // Desenhar a área cortada no canvas (sem distorção)
+        if (aspectRatio > 1) {
+          // Vídeo mais largo que alto
+          newHeight = canvasSize / aspectRatio;
+        } else {
+          // Vídeo mais alto que largo ou igual
+          newWidth = canvasSize * aspectRatio;
+        }
+
+        // Ajustar o canvas para o corte centralizado
+        const offsetX = (canvasSize - newWidth) / 2;
+        const offsetY = (canvasSize - newHeight) / 2;
+
+        // Definir o tamanho do canvas para o corte sem distorção
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+
+        // Limpar o canvas e desenhar o vídeo centralizado
+        context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(
-          video, // Fonte
-          cropX, // X de origem (corte)
-          cropY, // Y de origem (corte)
-          cropSize, // Largura do corte
-          cropSize, // Altura do corte
-          0, // X de destino no canvas
-          0, // Y de destino no canvas
-          canvasSize, // Largura no canvas
-          canvasSize // Altura no canvas
+          video,
+          0, // Posição inicial no eixo X
+          0, // Posição inicial no eixo Y
+          videoWidth, // Largura do vídeo
+          videoHeight, // Altura do vídeo
+          offsetX, // Posição X no canvas
+          offsetY, // Posição Y no canvas
+          newWidth, // Largura ajustada no canvas
+          newHeight // Altura ajustada no canvas
         );
         ///////////////////////////////////////////////////////////////////////
         context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
