@@ -56,6 +56,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
       setIsCapturing(true);
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
+
       if (context) {
         context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
