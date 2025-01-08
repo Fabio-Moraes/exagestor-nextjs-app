@@ -33,7 +33,7 @@ export const ContainerCardImages = styled.div`
   padding-right: 100%;
 
   button {
-    height: 5rem;
+    height: 4rem;
     width: 5rem;
     display: flex;
     flex-direction: column;
