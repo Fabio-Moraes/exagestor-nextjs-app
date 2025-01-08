@@ -1,5 +1,25 @@
 import styled from 'styled-components';
 
+export const VideoWrapper = styled.div`
+  width: 300px;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+`;
+
+export const VideoElement = styled.video`
+  width: auto;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+`;
+
 export const CameraContainer = styled.div`
   width: 30rem;
   height: auto;

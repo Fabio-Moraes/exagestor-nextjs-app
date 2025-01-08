@@ -153,7 +153,13 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
   return (
     <S.CameraContainer>
       <S.Header>
-        <video ref={videoRef} autoPlay style={{ width: '100%', height: '100%', display: 'block' }} />
+        <S.VideoWrapper>
+          <S.VideoElement
+            ref={videoRef}
+            autoPlay
+            style={{ width: '100%', height: '100%', display: 'block' }}
+          />
+        </S.VideoWrapper>
         <canvas ref={canvasRef} width={800} height={800} style={{ display: 'none' }} />
       </S.Header>
 
