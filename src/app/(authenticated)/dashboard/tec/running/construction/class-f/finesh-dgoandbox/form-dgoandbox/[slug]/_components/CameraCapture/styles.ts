@@ -5,6 +5,14 @@ export const VideoWrapper = styled.div`
   height: 28rem;
   position: relative;
   overflow: hidden;
+
+  > p {
+    color: #ffffff;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 export const VideoElement = styled.video`

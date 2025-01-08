@@ -49,7 +49,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
         stream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [isCapturing]);
 
   const capture = useCallback(() => {
     if (canvasRef.current && videoRef.current) {
@@ -155,11 +155,15 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
     <S.CameraContainer>
       <S.Header>
         <S.VideoWrapper>
-          <S.VideoElement
-            ref={videoRef}
-            autoPlay
-            style={{ width: '100%', height: '100%', display: 'block' }}
-          />
+          {!isCapturing ? (
+            <S.VideoElement
+              ref={videoRef}
+              autoPlay
+              style={{ width: '100%', height: '100%', display: 'block' }}
+            />
+          ) : (
+            <p>Processando...</p>
+          )}
         </S.VideoWrapper>
         <canvas ref={canvasRef} width={800} height={800} style={{ display: 'none' }} />
       </S.Header>
