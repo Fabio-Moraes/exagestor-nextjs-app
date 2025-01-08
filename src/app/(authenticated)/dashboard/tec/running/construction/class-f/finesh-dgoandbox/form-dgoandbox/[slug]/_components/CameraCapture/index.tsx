@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 
 import { formatDate } from 'functions';
 
@@ -19,6 +19,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
 
   const now = new Date();
   const formattedDate = formatDate(now);
@@ -52,6 +53,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
 
   const capture = useCallback(() => {
     if (canvasRef.current && videoRef.current) {
+      setIsCapturing(true);
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
       if (context) {
@@ -115,6 +117,7 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
             const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
             onCapture(file);
           }
+          setIsCapturing(false); // Finaliza o estado de captura
         }, 'image/png');
       }
     }
@@ -148,17 +151,16 @@ export const CameraCapture: React.FC<CameraComponentProps> = ({
   };
 
   return (
-    <div className="App">
-      <S.Header className="App-header">
+    <S.CameraContainer>
+      <S.Header>
         <video ref={videoRef} autoPlay style={{ width: '100%', height: '100%', display: 'block' }} />
         <canvas ref={canvasRef} width={800} height={800} style={{ display: 'none' }} />
-        <S.ButtonCapture
-          onClick={capture}
-          style={{
-            cursor: 'pointer'
-          }}
-        ></S.ButtonCapture>
       </S.Header>
-    </div>
+
+      <S.ButtonCapture
+        style={{ opacity: isCapturing ? 0.3 : 1 }}
+        onClick={!isCapturing ? capture : undefined}
+      />
+    </S.CameraContainer>
   );
 };

@@ -1,10 +1,21 @@
 import styled from 'styled-components';
 
+export const CameraContainer = styled.div`
+  width: 30rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const Header = styled.header`
   display: flex;
   align-items: center;
+  //height: 100%;
   justify-content: center;
   flex-direction: column;
+  background-color: hotpink;
 `;
 
 export const ButtonCapture = styled.button`
