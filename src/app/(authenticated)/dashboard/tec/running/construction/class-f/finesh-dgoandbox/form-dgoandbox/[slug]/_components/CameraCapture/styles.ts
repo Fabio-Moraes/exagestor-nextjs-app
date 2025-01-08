@@ -20,7 +20,7 @@ export const VideoElement = styled.video`
 `;
 
 export const CameraContainer = styled.div`
-  width: 30rem;
+  width: 28rem;
   height: auto;
   display: flex;
   flex-direction: column;
