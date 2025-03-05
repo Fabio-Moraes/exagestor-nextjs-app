@@ -98,26 +98,28 @@ export default function FinishService({ params }: SlugType) {
   }, []);
 
   return (
-    <S.Container>
-      <S.Title>
-        <h1>Campo de Observação</h1>
-        {isLoading || !servicesData[0]?.protocol ? (
-          <LineSkaleton width="30rem" />
+    <>
+      <S.Container>
+        <S.Title>
+          <h1>Campo de Observação</h1>
+          {isLoading || !servicesData[0]?.protocol ? (
+            <LineSkaleton width="30rem" />
+          ) : (
+            <span>PROTOCOLO: {servicesData[0]?.protocol}</span>
+          )}
+        </S.Title>
+        {isPopupValue && <FullScreenLoading message={isPopupValue} />}
+        {connectionError ? (
+          <S.ErrorContainer>
+            <span>
+              Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
+              tente novamente.
+            </span>
+          </S.ErrorContainer>
         ) : (
-          <span>PROTOCOLO: {servicesData[0]?.protocol}</span>
+          <TextBox serviceData={servicesData[0]} />
         )}
-      </S.Title>
-      {isPopupValue && <FullScreenLoading message={isPopupValue} />}
-      {connectionError ? (
-        <S.ErrorContainer>
-          <span>
-            Não foi possível carregar os dados da página devido a instabilidade na conexão. Por favor,
-            tente novamente.
-          </span>
-        </S.ErrorContainer>
-      ) : (
-        <TextBox serviceData={servicesData[0]} />
-      )}
-    </S.Container>
+      </S.Container>
+    </>
   );
 }

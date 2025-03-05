@@ -22,7 +22,7 @@ export function Header() {
   const router = useRouter();
   const socket = useWebSocket();
 
-  const businessLogo = business.logo.brand_logo;
+  const businessLogo = business?.logo.brand_logo;
   const maxRetries = 5;
 
   async function fetchUser() {
