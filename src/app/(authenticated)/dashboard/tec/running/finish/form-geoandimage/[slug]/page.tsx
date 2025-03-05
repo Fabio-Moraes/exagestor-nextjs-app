@@ -160,7 +160,7 @@ export default function NewService({ params }: SlugType) {
 
   async function fetchConcludedMaterial() {
     const encryptSlug = encryptObject({ protocol: decryptSlug?.protocol });
-    router.push(`/dashboard/tec/running/finish/form-geoandimage/${encryptSlug}`, {
+    router.push(`/dashboard/tec/running/finish/observation-box/${encryptSlug}`, {
       scroll: false
     });
   }
