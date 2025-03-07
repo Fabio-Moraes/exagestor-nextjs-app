@@ -20,19 +20,6 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get('file') as Blob;
     const name = formData.get('name') as string;
-    //const image_name = formData.get('image_name') as string;
-    //const protocol = formData.get('protocol') as string;
-
-    console.log('AAAAAAAAAAAA', file);
-
-    //await backendApi.post(
-    //  '/api/tec/running/construction/class-f/finished-dgoandbox/check-dgoenbox-existence',
-    //  {
-    //    token: auth,
-    //    dgoandbox_name: image_name,
-    //    protocol
-    //  }
-    //);
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });

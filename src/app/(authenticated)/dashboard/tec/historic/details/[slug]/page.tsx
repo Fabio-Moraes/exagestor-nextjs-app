@@ -197,10 +197,10 @@ export default function Details({ params }: SlugType) {
   });
 
   const specificImages = [
-    `${service?.currentOperation[0].protocol}_undefined_0`,
-    `${service?.currentOperation[0].protocol}_undefined_1`,
-    `${service?.currentOperation[0].protocol}_undefined_2`,
-    `${service?.currentOperation[0].protocol}_undefined_3`
+    `${service?.currentOperation[0].protocol}_0`,
+    `${service?.currentOperation[0].protocol}_1`,
+    `${service?.currentOperation[0].protocol}_2`,
+    `${service?.currentOperation[0].protocol}_3`
   ];
 
   useEffect(() => {

@@ -106,7 +106,7 @@ export default function NewService({ params }: SlugType) {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('name', `${decryptSlug.protocol}_${decryptSlug.dgoandbox}_${index}`);
+    formData.append('name', `${decryptSlug.protocol}_${index}`);
     //formData.append('image_name', String(decryptSlug.dgoandbox));
     formData.append('protocol', decryptSlug.protocol);
 
