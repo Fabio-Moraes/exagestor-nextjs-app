@@ -288,3 +288,14 @@ export const ProfileInfoCompany = styled.div`
     color: #000;
   }
 `;
+
+export const ContainerImage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+
+  min-width: 100%;
+  height: auto;
+`;

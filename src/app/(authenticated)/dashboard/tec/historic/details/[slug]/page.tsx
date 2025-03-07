@@ -14,6 +14,7 @@ import { internalApi } from 'services/apiAxios';
 import * as animationData from './_assets/lottie/animation.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
+import { supabase } from 'lib/supabase'; //
 import { getCurrentBusinessTheme } from 'themes/svg/business';
 
 import * as S from './styles';
@@ -93,6 +94,11 @@ function isStatusKey(key: string): key is StatusKey {
   return key in status;
 }
 
+interface Image {
+  name: string;
+  url: string;
+}
+
 export default function Details({ params }: SlugType) {
   const [service, setService] = useState<ServiceData | null>(null);
   const [connectionError, setConnectionError] = useState(false);
@@ -100,6 +106,9 @@ export default function Details({ params }: SlugType) {
   const [isLoading, setIsLoading] = useState(true);
   const [materials, setMaterials] = useState<Materials[]>([]);
   const [processPrint, setProcessPrint] = useState(false);
+
+  const [images, setImages] = useState<Image[]>([]); //
+  const [loadingImages, setLoadingImages] = useState(false); //
 
   const router = useRouter();
   const business = getCurrentBusinessTheme();
@@ -186,6 +195,39 @@ export default function Details({ params }: SlugType) {
     onBeforePrint: () => setProcessPrint(true),
     onAfterPrint: () => setProcessPrint(false)
   });
+
+  const specificImages = [
+    `${service?.currentOperation[0].protocol}_undefined_0`,
+    `${service?.currentOperation[0].protocol}_undefined_1`,
+    `${service?.currentOperation[0].protocol}_undefined_2`,
+    `${service?.currentOperation[0].protocol}_undefined_3`
+  ];
+
+  useEffect(() => {
+    async function fetchImages() {
+      setLoadingImages(true);
+
+      const imageList = await Promise.all(
+        specificImages.map(async (imageName) => {
+          const { data: urlData, error: urlError } = await supabase.storage
+            .from('exagestor')
+            .createSignedUrl(`uploads/service-tec/${imageName}`, 60);
+
+          if (urlError) {
+            console.error('Error fetching signed URL for', imageName, ':', urlError.message);
+            return null;
+          }
+
+          return { name: imageName, url: urlData.signedUrl };
+        })
+      );
+
+      setImages(imageList.filter(Boolean) as Image[]); // Verifique se as imagens estão sendo armazenadas corretamente
+      setLoadingImages(false);
+    }
+
+    fetchImages();
+  }, [service]); // Adicionar 'service' como dependência se necessário
 
   return (
     <S.Container>
@@ -326,6 +368,22 @@ export default function Details({ params }: SlugType) {
                     {renderTextWithLineBreaks(service.currentOperation[0].observation)}
                   </S.Observation>
                 )}
+
+                <S.ContainerImage>
+                  {images.map((image) => (
+                    <div key={image.name}>
+                      <Image
+                        src={image.url}
+                        alt={image.name}
+                        style={{ borderRadius: '8px' }}
+                        width={400}
+                        height={400}
+                      />
+                    </div>
+                  ))}
+                </S.ContainerImage>
+
+                {loadingImages && <p>Carregando Imagens</p>}
               </>
             )}
           </S.Info>
